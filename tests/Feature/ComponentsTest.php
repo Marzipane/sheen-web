@@ -73,6 +73,12 @@ B);
         $this->assertMatchesRegularExpression('#data-sheen-step="1" aria-label="More"\s+disabled#', $high);
     }
 
+    public function test_key_value_keeps_a_style_given_by_the_page(): void
+    {
+        $html = $this->render('<x-sheen::key-value :rows="[[\'key\' => \'Built\', \'value\' => \'2023\']]" :columns="1" style="margin-top:8px" />');
+        $this->assertMatchesRegularExpression('#style="--sheen-cols:1;\s*margin-top:8px;?"#', $html);
+    }
+
     public function test_itinerary_isolates_names_and_times_for_right_to_left(): void
     {
         $html = $this->render('<x-sheen::itinerary :stops="$s" />', ['s' => [

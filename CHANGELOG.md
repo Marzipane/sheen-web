@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.1
+
+- `key-value`: a `style` given by the page no longer breaks the column count on Laravel 10 (the component's own
+  `--sheen-cols` now ends with `;` before Blade merges the page's style).
+
 ## 0.1.0
 
 First release: sheen for the web, from Flutter sheen 0.3.6.

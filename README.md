@@ -44,8 +44,8 @@ Then load the files in your layout and put `class="sheen"` on `<body>`:
 Without Laravel, use the CSS and script from a tag through jsDelivr:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Marzipane/sheen-web@v0.1.0/dist/sheen.min.css">
-<script src="https://cdn.jsdelivr.net/gh/Marzipane/sheen-web@v0.1.0/dist/sheen.min.js" defer></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Marzipane/sheen-web@v0.1.1/dist/sheen.min.css">
+<script src="https://cdn.jsdelivr.net/gh/Marzipane/sheen-web@v0.1.1/dist/sheen.min.js" defer></script>
 ```
 
 ## Quick start
