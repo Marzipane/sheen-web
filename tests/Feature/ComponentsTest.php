@@ -36,6 +36,19 @@ B);
         $this->assertDoesNotMatchRegularExpression('/Q[a-z]+Q/', $words);
     }
 
+    public function test_hotel_card_save_is_a_button_beside_the_link_not_inside_it(): void
+    {
+        $html = $this->render('<x-sheen::hotel-card href="/h" name="Raffles" price="AED 1" save="Save Raffles" :saved="true" />');
+
+        $this->assertStringContainsString('<div class="sheen-hotel-card-wrap">', $html);
+        $this->assertMatchesRegularExpression('#</a>\s*<button type="button" class="sheen-save sheen-glass-clear" data-sheen-save aria-pressed="true" aria-label="Save Raffles">#', $html);
+        $this->assertDoesNotMatchRegularExpression('#<a [^>]*>(?:(?!</a>).)*<button#s', $html);
+
+        $plain = $this->render('<x-sheen::hotel-card href="/h" name="Raffles" price="AED 1" />');
+        $this->assertStringNotContainsString('sheen-save', $plain);
+        $this->assertStringNotContainsString('sheen-hotel-card-wrap', $plain);
+    }
+
     public function test_trip_card_shows_the_deal_like_hotels(): void
     {
         $html = $this->render('<x-sheen::trip-card href="/en/tours/1" title="Istanbul and Ephesus" price="from AED 3,001" per="a person" photo="/t.webp" :deal="$d" />',

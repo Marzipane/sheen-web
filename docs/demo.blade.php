@@ -16,7 +16,7 @@
 </style></head>
 <body class="sheen">
 <header class="sheen-container" style="padding-block:16px"><div class="sheen-glass" style="height:64px;border-radius:32px;display:flex;align-items:center;gap:8px;padding-inline:22px 10px">
-<b style="font-size:19px">sheen-web</b><span class="sheen-secondary sheen-footnote" style="margin-inline-start:10px">0.1.1</span>
+<b style="font-size:19px">sheen-web</b><span class="sheen-secondary sheen-footnote" style="margin-inline-start:10px">0.1.2</span>
 <span style="margin-inline-start:auto;display:flex;gap:8px"><x-sheen::button href="?dir={{ $dir === 'rtl' ? 'ltr' : 'rtl' }}" size="small" onclick="document.documentElement.dir=document.documentElement.dir==='rtl'?'ltr':'rtl';return false">RTL / LTR</x-sheen::button>
 <x-sheen::button href="https://github.com/Marzipane/sheen-web" prominent size="small">GitHub</x-sheen::button></span></div></header>
 <main class="sheen-container" style="padding-block:24px 96px">

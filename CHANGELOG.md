@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.2
+
+- `hotel-card`: `save` now renders the save button. It sits beside the card's link (a button inside a link is not
+  valid HTML and would open the hotel), over the photo, in a `.sheen-hotel-card-wrap`. `saved` sets `aria-pressed`, and
+  `data-sheen-save` is there for the page's own script.
+
 ## 0.1.1
 
 - `key-value`: a `style` given by the page no longer breaks the column count on Laravel 10 (the component's own
