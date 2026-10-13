@@ -1,0 +1,30 @@
+{
+    "name": "marzipane/sheen-web",
+    "description": "sheen for the web: the glass design system of Flutter sheen as CSS custom properties, a small script and Blade components for Laravel.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": ["design-system", "glassmorphism", "blade", "laravel", "css", "rtl"],
+    "homepage": "https://github.com/Marzipane/sheen-web",
+    "authors": [{"name": "Marzipane"}],
+    "require": {
+        "php": "^8.1",
+        "illuminate/support": "^10.0|^11.0|^12.0",
+        "illuminate/view": "^10.0|^11.0|^12.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^8.0|^9.0|^10.0",
+        "phpunit/phpunit": "^10.5|^11.0"
+    },
+    "autoload": {
+        "psr-4": {"Marzipane\\SheenWeb\\": "src/php/"}
+    },
+    "autoload-dev": {
+        "psr-4": {"Marzipane\\SheenWeb\\Tests\\": "tests/"}
+    },
+    "extra": {
+        "laravel": {"providers": ["Marzipane\\SheenWeb\\SheenServiceProvider"]}
+    },
+    "scripts": {"test": "phpunit"},
+    "config": {"sort-packages": true},
+    "minimum-stability": "stable"
+}

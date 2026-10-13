@@ -1,0 +1,12 @@
+{
+  "name": "@marzipane/sheen-web",
+  "version": "0.1.0",
+  "description": "sheen for the web: the glass design system of Flutter sheen as CSS custom properties, a small script and Blade components.",
+  "license": "MIT",
+  "repository": "github:Marzipane/sheen-web",
+  "style": "dist/sheen.css",
+  "main": "dist/sheen.js",
+  "files": ["dist", "tokens", "icons"],
+  "scripts": {"build": "node build.mjs", "check": "node build.mjs --check && node scripts/check-flutter.mjs"},
+  "engines": {"node": ">=20"}
+}

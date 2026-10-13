@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>sheen-web</title>
+<meta name="description" content="The glass design system of Flutter sheen for the web: tokens, glass and Blade components.">
+<link rel="stylesheet" href="sheen.min.css"><script src="sheen.min.js" defer></script>
+<style>
+.demo-hero{position:relative;border-radius:32px;overflow:hidden;padding:clamp(24px,5vw,56px);background:radial-gradient(120% 140% at 10% 0%,#2a5bd7 0,#0c1a3a 45%,#05070b 100%);color:#fff}
+.demo-hero::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(255,255,255,.05) 0 2px,transparent 2px 22px)}
+.demo-hero>*{position:relative}
+.demo-sec{margin-top:64px}
+.demo-sec h2{margin-bottom:16px}
+.demo-photo{background:linear-gradient(135deg,#3a7bd5,#00d2ff 60%,#9be15d)}
+.demo-photo.b{background:linear-gradient(135deg,#f7971e,#ffd200)}
+.demo-photo.c{background:linear-gradient(135deg,#654ea3,#eaafc8)}
+</style></head>
+<body class="sheen">
+<header class="sheen-container" style="padding-block:16px"><div class="sheen-glass" style="height:64px;border-radius:32px;display:flex;align-items:center;gap:8px;padding-inline:22px 10px">
+<b style="font-size:19px">sheen-web</b><span class="sheen-secondary sheen-footnote" style="margin-inline-start:10px">0.1.0</span>
+<span style="margin-inline-start:auto;display:flex;gap:8px"><a href="?dir=rtl" class="sheen-button sheen-small" onclick="document.documentElement.dir=document.documentElement.dir==='rtl'?'ltr':'rtl';return false">RTL / LTR</a>
+<a href="https://github.com/Marzipane/sheen-web" class="sheen-button sheen-glass-prominent sheen-small">GitHub</a>
+</span></div></header>
+<main class="sheen-container" style="padding-block:24px 96px">
+<section class="demo-hero"><p class="sheen-subhead" style="opacity:.85">The glass design system of Flutter sheen, for the web</p>
+<h1 class="sheen-display" style="margin-top:8px">Frosted glass, same tokens</h1>
+<div class="sheen-row sheen-wrap" style="margin-top:28px;--sheen-gap:10px">
+<button type="button" aria-pressed="true" class="sheen-chip sheen-glass-clear">All dates</button>
+<button type="button" aria-pressed="false" class="sheen-chip sheen-glass-clear">Jun 2027</button>
+<button type="button" aria-pressed="true" class="sheen-chip sheen-deal"><svg class="sheen-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 12.2V4.5a1 1 0 0 1 1-1h7.7l8.3 8.3a1 1 0 0 1 0 1.4l-7.3 7.3a1 1 0 0 1-1.4 0Z"></path><circle cx="8" cy="8" r="1.4"></circle></svg>
+Deals · 3</button>
+<button type="button" class="sheen-button sheen-glass-prominent"><svg class="sheen-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5"></circle><path d="M16 16l4.5 4.5"></path></svg>
+Search</button>
+<button type="button" aria-label="Save" title="Save"  class="sheen-icon-button sheen-glass-clear"><svg class="sheen-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 19.5s-7.5-4.4-7.5-10A4.2 4.2 0 0 1 12 7a4.2 4.2 0 0 1 7.5 2.5c0 5.6-7.5 10-7.5 10Z"></path></svg>
+</button>
+</div></section>
+
+<section class="demo-sec"><h2 class="sheen-title">Cards with deals</h2>
+<div class="sheen-grid sheen-scroll-s" style="--sheen-cols:3">
+<a href="#" class="sheen-hotel-card demo-a">
+<span class="sheen-photo"><span class="sheen-photo-placeholder"><svg class="sheen-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 18V7"></path><path d="M3 14h18v4"></path><path d="M21 14v-2.5A2.5 2.5 0 0 0 18.5 9H11v5"></path><circle cx="7" cy="11" r="1.6"></circle></svg>
+</span><span class="sheen-deal-badge">−10%</span></span>
+<span class="sheen-card-text">
+<span class="sheen-row" style="justify-content:space-between;--sheen-gap:10px"><b class="sheen-card-title sheen-ellipsis" dir="auto">Palace Hotel</b> <span class="sheen-score"  role="img" aria-label="4.7 out of 5" >4.7</span>
+</span>
+<span class="sheen-card-meta sheen-ellipsis" dir="auto">Near the old town</span> 
+<span class="sheen-price">AED 2,493.72 <small>total · 2 nights</small></span>
+<span class="sheen-card-deal"><s class="sheen-was-price" >AED 2,770.80</s>
+ · <span class="sheen-deal-ends">Ends Wed 21 Oct</span></span>
+ 
+</span></a>
+<a href="#" class="sheen-trip-card">
+<span class="sheen-photo"><span class="sheen-photo-placeholder"><svg class="sheen-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"></circle><path d="m15.5 8.5-2 5-5 2 2-5Z"></path></svg>
+</span><span class="sheen-deal-badge">−5%</span></span>
+<span class="sheen-card-text">
+<span class="sheen-card-eyebrow sheen-ellipsis" dir="auto">A tour operator</span> 
+<span class="sheen-card-title sheen-lines-2" dir="auto">Six days of old cities and coastlines</span>
+<span class="sheen-card-meta">6 days · Turkey</span> 
+<span class="sheen-price">from AED 3,001 <small>a person</small></span>
+<span class="sheen-card-deal"><s class="sheen-was-price" >AED 3,159</s>
+ · <span class="sheen-deal-ends">until 31 Oct</span></span>
+ 
+</span></a>
+<a href="#" class="sheen-trip-card">
+<span class="sheen-photo"><span class="sheen-photo-placeholder"><svg class="sheen-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3.5 13h17l-2.2 4.5H5.7Z"></path><path d="M7 13V9.5h10V13"></path><path d="M10.5 9.5v-3h3v3"></path><path d="M3 20.5c1.5 0 1.5-1 3-1s1.5 1 3 1 1.5-1 3-1 1.5 1 3 1 1.5-1 3-1 1.5 1 3 1"></path></svg>
+</span><span class="sheen-trip-tag">Cruise line</span></span>
+<span class="sheen-card-text">
+<span class="sheen-card-eyebrow sheen-ellipsis" dir="auto">A ship</span> 
+<span class="sheen-card-title sheen-lines-2" dir="auto">Nine nights from Istanbul to Rome: islands, temples and harbours</span>
+<span class="sheen-card-meta">9 nights · from Istanbul</span> 
+<span class="sheen-price">Price on request </span>
+ 
+</span></a>
+</div></section>
+
+<section class="demo-sec"><h2 class="sheen-title">Choices with a round mark</h2>
+<fieldset class="sheen-choices"><legend class="sheen-visually-hidden">Cabins</legend><label class="sheen-choice sheen-has-media">
+<input type="radio" name="cabin" value="inside" checked  >
+<span class="sheen-choice-media" aria-hidden="true"><svg class="sheen-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 18V7"></path><path d="M3 14h18v4"></path><path d="M21 14v-2.5A2.5 2.5 0 0 0 18.5 9H11v5"></path><circle cx="7" cy="11" r="1.6"></circle></svg>
+</span>
+<span style="min-width:0"><b>Inside</b><span class="sheen-footnote sheen-secondary" style="display:block">160–254 sq ft · 2–4 guests</span></span>
+<span class="sheen-choice-end"><b class="sheen-num">AED 17,036.98</b><s class="sheen-was-price" >AED 18,929.98</s></span></label>
+<label class="sheen-choice sheen-has-media">
+<input type="radio" name="cabin" value="balcony"   >
+<span class="sheen-choice-media" aria-hidden="true"><svg class="sheen-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 18V7"></path><path d="M3 14h18v4"></path><path d="M21 14v-2.5A2.5 2.5 0 0 0 18.5 9H11v5"></path><circle cx="7" cy="11" r="1.6"></circle></svg>
+</span>
+<span style="min-width:0"><b>Balcony</b><span class="sheen-footnote sheen-secondary" style="display:block">231–358 sq ft · 2–4 guests</span></span>
+<span class="sheen-choice-end"><b class="sheen-num">AED 23,157.03</b></span></label>
+<label class="sheen-choice sheen-has-media">
+<input type="radio" name="cabin" value="suite"  disabled >
+<span class="sheen-choice-media" aria-hidden="true"><svg class="sheen-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 18V7"></path><path d="M3 14h18v4"></path><path d="M21 14v-2.5A2.5 2.5 0 0 0 18.5 9H11v5"></path><circle cx="7" cy="11" r="1.6"></circle></svg>
+</span>
+<span style="min-width:0"><b>Suite</b><span class="sheen-footnote sheen-secondary" style="display:block">Not sold on this sailing</span></span>
+</label></fieldset>
+</section>
+
+<section class="demo-sec" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:40px">
+<div><h2 class="sheen-title">Itinerary</h2>
+<ol class="sheen-itinerary">
+<li class=""><span class="sheen-itinerary-marker">1</span>
+<span style="display:flex;flex-direction:column;min-width:0"><span class="sheen-itinerary-title"><bdi>Istanbul</bdi></span><span class="sheen-itinerary-sub">Turkey</span> </span>
+<span class="sheen-itinerary-time">— → 5:00 PM</span></li>
+<li class=""><span class="sheen-itinerary-marker">2</span>
+<span style="display:flex;flex-direction:column;min-width:0"><span class="sheen-itinerary-title"><bdi>Kusadasi</bdi></span><span class="sheen-itinerary-sub">Turkey</span> </span>
+<span class="sheen-itinerary-time">1:00 PM → 9:00 PM</span></li>
+<li class="sheen-quiet"><span class="sheen-itinerary-marker">3</span>
+<span style="display:flex;flex-direction:column;min-width:0"><span class="sheen-itinerary-title"><bdi>At sea</bdi></span> </span>
+<span class="sheen-itinerary-time"></span></li>
+<li class=""><span class="sheen-itinerary-marker">4</span>
+<span style="display:flex;flex-direction:column;min-width:0"><span class="sheen-itinerary-title"><bdi>Valletta</bdi></span><span class="sheen-itinerary-sub">Malta</span> </span>
+<span class="sheen-itinerary-time">11:00 AM → 9:00 PM</span></li>
+</ol>
+</div>
+<div><h2 class="sheen-title">Facts and forms</h2>
+<dl style="--sheen-cols:1" class="sheen-key-value">
+<div><dt>Built</dt><dd>2023</dd></div><div><dt>Guests</dt><dd>3,099</dd></div><div><dt>Double room</dt><dd>AED 3,053.51<s class="sheen-was-price" >AED 3,214.22</s>
+</dd></div></dl>
+<div class="sheen-stack" style="margin-top:20px">
+<div class="sheen-row" style="justify-content:space-between"><span>Adults</span><div class="sheen-stepper" data-sheen-stepper role="group" aria-label="Adults">
+<button type="button" data-sheen-step="-1" aria-label="Fewer adults" ><svg class="sheen-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"></path></svg>
+</button>
+<input type="number" inputmode="numeric" name="adults" value="2" min="1" max="9" aria-label="Adults" >
+<button type="button" data-sheen-step="1" aria-label="More adults" ><svg class="sheen-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+</button>
+</div>
+</div>
+<div>
+<label for="f-b1221c83" class="sheen-field"><span>E-mail</span>
+<input id="f-b1221c83"  type="email" name="email" placeholder="you@example.com"></label>
+</div>
+<label class="sheen-check"><input type="checkbox"  name="terms" checked="checked"><span>I have read the cancellation terms</span></label>
+<ol class="sheen-steps"  aria-label="Booking state" >
+<li class="sheen-done" >Price asked</li> <li class=""  aria-current="step" >Price ready</li> <li class="" >Confirming</li> <li class="" >Confirmed</li> </ol>
+<div class="sheen-row sheen-wrap"><span class="sheen-pill sheen-warning">Price ready</span>
+<span class="sheen-pill sheen-success">Confirmed</span>
+<span class="sheen-score" >4.7</span>
+<span class="sheen-stars" role="img" aria-label="5 stars"><svg class="sheen-icon" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="m12 3.6 2.5 5.2 5.6.6-4.2 3.8 1.2 5.6L12 16l-5.1 2.8 1.2-5.6L3.9 9.4l5.6-.6Z"></path></svg>
+<svg class="sheen-icon" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="m12 3.6 2.5 5.2 5.6.6-4.2 3.8 1.2 5.6L12 16l-5.1 2.8 1.2-5.6L3.9 9.4l5.6-.6Z"></path></svg>
+<svg class="sheen-icon" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="m12 3.6 2.5 5.2 5.6.6-4.2 3.8 1.2 5.6L12 16l-5.1 2.8 1.2-5.6L3.9 9.4l5.6-.6Z"></path></svg>
+<svg class="sheen-icon" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="m12 3.6 2.5 5.2 5.6.6-4.2 3.8 1.2 5.6L12 16l-5.1 2.8 1.2-5.6L3.9 9.4l5.6-.6Z"></path></svg>
+<svg class="sheen-icon" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="m12 3.6 2.5 5.2 5.6.6-4.2 3.8 1.2 5.6L12 16l-5.1 2.8 1.2-5.6L3.9 9.4l5.6-.6Z"></path></svg>
+</span>
+</div>
+</div></div></section>
+</main>
+<div class="sheen-action-bar sheen-glass" style="max-width:520px;margin-inline:auto;"  role="region" aria-label="Price" >
+<span class="sheen-action-bar-text"><b class="sheen-num" style="font-size:18px">AED 17,037 <s class="sheen-was-price sheen-caption" >AED 18,930</s>
+</b><span class="sheen-caption sheen-secondary">from · a person</span></span><button type="button" class="sheen-button sheen-glass-prominent">Ask for a price</button>
+</div>
+</body></html>

@@ -1,0 +1,62 @@
+/* The travel library, named as in Flutter sheen: SheenDealBadge, SheenWasPrice, SheenScoreBadge, hotel and trip cards
+   (SheenPremiumCard, SheenTripCard, SheenTripTag), SheenItinerary, SheenKeyValueCard, SheenListRow, SheenActionBar.
+   A deal is shown the same way everywhere: the badge top start on the photo, the usual price struck under the price,
+   the end date in the warning colour. */
+.sheen-deal-badge{display:inline-flex;align-items:center;height:28px;padding-inline:10px;border-radius:14px;background:var(--sheen-deal-fill);color:#fff;font-size:14px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;unicode-bidi:isolate}
+.sheen-deal-badge.sheen-small{height:22px;padding-inline:8px;border-radius:11px;font-size:12.5px}
+.sheen-photo>.sheen-deal-badge{position:absolute;inset-inline-start:12px;top:12px;z-index:1}
+.sheen-was-price{color:var(--sheen-text-secondary);text-decoration:line-through;text-decoration-thickness:1.5px;font-weight:500;font-variant-numeric:tabular-nums;unicode-bidi:isolate}
+.sheen-deal-ends{color:var(--sheen-warning);font-weight:600}
+.sheen-score{display:inline-flex;align-items:center;justify-content:center;height:26px;min-width:38px;padding-inline:8px;border-radius:8px;background:var(--sheen-accent);color:var(--sheen-on-accent);font-size:14px;font-weight:700;font-variant-numeric:tabular-nums}
+.sheen-score.sheen-large{height:40px;min-width:56px;font-size:19px;border-radius:12px}
+.sheen-stars{display:inline-flex;gap:1px;color:var(--sheen-rating)}
+.sheen-price{font-size:17px;font-weight:700;font-variant-numeric:tabular-nums}
+.sheen-price small{font-size:14px;font-weight:500;color:var(--sheen-text-secondary)}
+.sheen-photo{position:relative;display:block;overflow:hidden;border-radius:22px;background:var(--sheen-surface-muted);aspect-ratio:4/3}
+.sheen-photo>img{width:100%;height:100%;object-fit:cover;display:block}
+.sheen-photo-placeholder{display:flex;height:100%;align-items:center;justify-content:center;color:var(--sheen-text-tertiary)}
+.sheen-save{position:absolute;inset-inline-end:12px;top:12px;z-index:1;width:40px;height:40px;border-radius:20px;display:flex;align-items:center;justify-content:center;border:0;cursor:pointer}
+.sheen-save[aria-pressed="true"] svg{fill:#fff}
+.sheen-trip-tag{position:absolute;inset-inline-start:12px;bottom:12px;z-index:1;max-width:calc(100% - 24px);height:26px;padding-inline:10px;border-radius:13px;background:rgba(0,0,0,.55);color:#fff;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.sheen-hotel-card,.sheen-trip-card{display:flex;flex-direction:column;gap:10px;min-width:0;color:inherit;text-decoration:none}
+.sheen-card-text{display:flex;flex-direction:column;gap:3px;padding-inline:4px;min-width:0}
+.sheen-card-title{font-size:18px;font-weight:600;line-height:1.3}
+.sheen-card-eyebrow{font-size:13.5px;font-weight:600;color:var(--sheen-text-secondary)}
+.sheen-card-meta{font-size:14px;color:var(--sheen-text-secondary)}
+.sheen-card-deal{font-size:14px}
+.sheen-hotel-card:hover .sheen-photo>img,.sheen-trip-card:hover .sheen-photo>img{transform:scale(1.02)}
+.sheen-photo>img{transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.sheen-result-row{display:grid;grid-template-columns:300px minmax(0,1fr) auto;gap:22px;padding:14px;border-radius:26px;background:var(--sheen-surface)}
+.sheen-result-row .sheen-photo{aspect-ratio:auto;height:210px;border-radius:18px}
+.sheen-result-end{display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;text-align:end;padding:4px 4px 2px}
+@media (max-width:720px){.sheen-result-row{grid-template-columns:minmax(0,1fr);padding:0;gap:12px;background:none}.sheen-result-row .sheen-photo{height:220px}.sheen-result-end{align-items:flex-start;text-align:start}}
+.sheen-itinerary{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.sheen-itinerary li{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:14px;padding:10px 0;position:relative}
+.sheen-itinerary li::before{content:"";position:absolute;inset-inline-start:17px;top:0;bottom:0;width:2px;background:var(--sheen-separator)}
+.sheen-itinerary li:first-child::before{top:22px}
+.sheen-itinerary li:last-child::before{bottom:calc(100% - 22px)}
+.sheen-itinerary li:only-child::before{display:none}
+.sheen-itinerary-marker{position:relative;z-index:1;min-width:36px;height:24px;border-radius:12px;background:var(--sheen-track);font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}
+.sheen-itinerary li.sheen-quiet .sheen-itinerary-marker{background:none;box-shadow:inset 0 0 0 2px var(--sheen-track);color:var(--sheen-text-tertiary)}
+.sheen-itinerary li.sheen-quiet .sheen-itinerary-title{color:var(--sheen-text-secondary)}
+.sheen-itinerary-title{font-weight:600}
+.sheen-itinerary-sub{font-size:14px;color:var(--sheen-text-secondary)}
+.sheen-itinerary-body{font-size:15px;color:var(--sheen-text-secondary);margin-top:4px}
+.sheen-itinerary-time{font-size:14px;color:var(--sheen-text-secondary);font-variant-numeric:tabular-nums;white-space:nowrap;direction:ltr;unicode-bidi:isolate}
+.sheen-key-value{display:grid;grid-template-columns:repeat(var(--sheen-cols,2),minmax(0,1fr));column-gap:28px;margin:0}
+.sheen-key-value>div{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-top:1px solid var(--sheen-separator);font-size:15px;min-width:0}
+.sheen-key-value dt{color:var(--sheen-text-secondary)}
+.sheen-key-value dd{margin:0;font-weight:600;text-align:end;min-width:0}
+.sheen-key-value dd .sheen-was-price{display:block;font-size:13.5px}
+@media (max-width:1100px){.sheen-key-value{grid-template-columns:minmax(0,1fr)}}
+.sheen-list{list-style:none;margin:0;padding:0;border-radius:var(--sheen-radius-group);background:var(--sheen-surface);overflow:hidden}
+.sheen-list-row{display:flex;align-items:center;gap:14px;padding:14px 16px;min-height:52px;color:inherit;text-decoration:none}
+.sheen-list-row+.sheen-list-row,.sheen-list>li+li{border-top:1px solid var(--sheen-separator)}
+.sheen-list-row-text{flex:1;min-width:0;display:flex;flex-direction:column}
+.sheen-list-row-value{color:var(--sheen-text-secondary);text-align:end}
+.sheen-action-bar{position:fixed;inset-inline:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;min-height:72px;border-radius:36px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:10px;padding-inline:22px 10px}
+.sheen-action-bar-text{display:flex;flex-direction:column;line-height:1.25;min-width:0}
+.sheen-action-bar.sheen-phone-only{display:none}
+@media (max-width:1100px){.sheen-action-bar.sheen-phone-only{display:flex}}
+.sheen-pin{position:absolute;transform:translate(-50%,-100%);height:32px;border-radius:16px;padding-inline:12px;display:flex;align-items:center;font-size:14px;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums;border:0;cursor:pointer}
+.sheen-pin.sheen-deal{background:var(--sheen-deal-fill);color:#fff}

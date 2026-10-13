@@ -1,0 +1,32 @@
+# A tag vX.Y.Z publishes a release: the tests and checks run, the tag must match package.json, and the GitHub Release
+# gets dist/ as a zip. Composer reads the tag from GitHub; jsDelivr serves dist/ from it.
+name: Release
+
+on:
+  push:
+    tags: ['v[0-9]+.[0-9]+.[0-9]+*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - uses: shivammathur/setup-php@v2
+        with: { php-version: '8.3', coverage: none }
+      - name: The tag matches the version
+        run: test "v$(node -p "require('./package.json').version")" = "${GITHUB_REF_NAME}"
+      - run: node build.mjs --check
+      - run: node scripts/check-flutter.mjs
+      - run: composer update --prefer-dist --no-interaction --no-progress
+      - run: vendor/bin/phpunit
+      - run: cd dist && zip -q ../sheen-web-${GITHUB_REF_NAME}.zip *
+      - name: GitHub Release
+        env: { GH_TOKEN: '${{ github.token }}' }
+        run: |
+          notes=$(awk -v v="## ${GITHUB_REF_NAME#v}" '$0==v{f=1;next} /^## /{f=0} f' CHANGELOG.md)
+          gh release create "${GITHUB_REF_NAME}" "sheen-web-${GITHUB_REF_NAME}.zip" --title "${GITHUB_REF_NAME}" --notes "${notes}"

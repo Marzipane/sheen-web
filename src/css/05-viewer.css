@@ -1,0 +1,20 @@
+/* SheenPhotoViewer: photos full screen with chips (all, a hotel's tags, a ship and each cabin group). A <dialog>; the
+   script (sheen.js) moves between photos with the arrows, a swipe or the chips, and closes with Esc. */
+.sheen-viewer{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:0;border:0;background:#000;color:#fff;display:none;flex-direction:column}
+.sheen-viewer[open]{display:flex}
+.sheen-viewer::backdrop{background:#000}
+.sheen-viewer-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px clamp(16px,4.45vw,64px);padding-top:calc(16px + env(safe-area-inset-top,0px))}
+.sheen-viewer-chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;min-width:0}
+.sheen-viewer-chips button{flex:none;height:36px;padding-inline:14px;border-radius:18px;border:0;background:rgba(255,255,255,.14);color:#fff;font:inherit;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap}
+.sheen-viewer-chips button[aria-pressed="true"]{background:#fff;color:#000}
+.sheen-viewer-stage{flex:1;position:relative;display:flex;align-items:center;justify-content:center;min-height:0;padding-inline:clamp(12px,6vw,96px);touch-action:pan-y}
+.sheen-viewer-stage img{max-width:100%;max-height:100%;object-fit:contain;border-radius:12px;user-select:none;-webkit-user-drag:none}
+.sheen-viewer-prev,.sheen-viewer-next{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:24px;border:0;background:rgba(255,255,255,.14);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.sheen-viewer-prev{inset-inline-start:16px}.sheen-viewer-next{inset-inline-end:16px}
+[dir="rtl"] .sheen-viewer-prev svg,[dir="rtl"] .sheen-viewer-next svg{transform:scaleX(-1)}
+.sheen-viewer-caption{text-align:center;font-size:14px;opacity:.85;padding:10px 16px}
+.sheen-viewer-strip{display:flex;gap:8px;justify-content:center;overflow-x:auto;padding:12px 16px calc(16px + env(safe-area-inset-bottom,0px));scrollbar-width:none}
+.sheen-viewer-strip button{flex:none;width:84px;height:60px;padding:0;border:0;border-radius:10px;overflow:hidden;opacity:.55;cursor:pointer;background:#222}
+.sheen-viewer-strip button[aria-current="true"]{opacity:1;box-shadow:0 0 0 2px #fff}
+.sheen-viewer-strip img{width:100%;height:100%;object-fit:cover;display:block}
+@media (max-width:720px){.sheen-viewer-prev,.sheen-viewer-next{display:none}.sheen-viewer-strip{display:none}}

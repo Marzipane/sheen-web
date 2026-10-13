@@ -1,0 +1,22 @@
+/* Glass: only on navigation and controls (headers, the search bar, floating bars, map controls), never on cards or
+   long scrolling areas; at most three glass surfaces in a viewport. The blur radius is never animated.
+   .sheen-glass          regular glass over the page
+   .sheen-glass-clear    clear glass over a photo (white text)
+   .sheen-glass-prominent the accent fill (primary actions)                                                         */
+.sheen-glass,.sheen-glass-clear,.sheen-glass-prominent{position:relative;isolation:isolate}
+.sheen-glass{background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.035)),rgba(28,31,38,.62);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);box-shadow:inset 0 .5px 0 rgba(255,255,255,.18),0 10px 28px rgba(0,0,0,.42),0 1px 2px rgba(0,0,0,.3)}
+.sheen-glass-clear{color:#fff;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.05)),rgba(0,0,0,.28);-webkit-backdrop-filter:blur(10px) saturate(170%);backdrop-filter:blur(10px) saturate(170%);box-shadow:inset 0 .5px 0 rgba(255,255,255,.3),0 6px 18px rgba(0,0,0,.25)}
+.sheen-glass-prominent{color:var(--sheen-on-accent);background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,0) 60%),var(--sheen-accent);box-shadow:inset 0 .5px 0 rgba(255,255,255,.3),0 6px 16px color-mix(in srgb,var(--sheen-accent) 24%,transparent)}
+.sheen-glass::after,.sheen-glass-clear::after,.sheen-glass-prominent::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;background:linear-gradient(170deg,rgba(255,255,255,.2),rgba(255,255,255,.07) 45%,rgba(255,255,255,.05) 75%,rgba(255,255,255,.1));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.sheen-glass-clear::after{background:linear-gradient(170deg,rgba(255,255,255,.38),rgba(255,255,255,.12) 45%,rgba(255,255,255,.08) 75%,rgba(255,255,255,.2))}
+.sheen-glass-prominent::after{background:linear-gradient(170deg,rgba(255,255,255,.3),rgba(255,255,255,.08) 50%,rgba(255,255,255,.12))}
+:root[data-theme="light"] .sheen-glass{background:linear-gradient(180deg,rgba(255,255,255,.82),rgba(255,255,255,.5) 50%,rgba(255,255,255,.64));-webkit-backdrop-filter:blur(14px) saturate(200%) brightness(1.06);backdrop-filter:blur(14px) saturate(200%) brightness(1.06);box-shadow:inset 0 1px .5px #fff,inset 0 -1px .5px rgba(255,255,255,.7),inset 0 0 0 .5px rgba(0,0,0,.05),0 10px 30px rgba(16,20,30,.14),0 1px 3px rgba(16,20,30,.08)}
+:root[data-theme="light"] .sheen-glass::after{background:linear-gradient(160deg,#fff,rgba(255,255,255,.4) 35%,rgba(255,255,255,.2) 62%,rgba(255,255,255,.9))}
+@media (prefers-color-scheme: light){
+:root:not([data-theme="dark"]) .sheen-glass{background:linear-gradient(180deg,rgba(255,255,255,.82),rgba(255,255,255,.5) 50%,rgba(255,255,255,.64));-webkit-backdrop-filter:blur(14px) saturate(200%) brightness(1.06);backdrop-filter:blur(14px) saturate(200%) brightness(1.06);box-shadow:inset 0 1px .5px #fff,inset 0 -1px .5px rgba(255,255,255,.7),inset 0 0 0 .5px rgba(0,0,0,.05),0 10px 30px rgba(16,20,30,.14),0 1px 3px rgba(16,20,30,.08)}
+:root:not([data-theme="dark"]) .sheen-glass::after{background:linear-gradient(160deg,#fff,rgba(255,255,255,.4) 35%,rgba(255,255,255,.2) 62%,rgba(255,255,255,.9))}}
+.sheen-lens{background:rgba(255,255,255,.11);box-shadow:inset 0 .5px 0 rgba(255,255,255,.14)}
+:root[data-theme="light"] .sheen-lens{background:rgba(118,118,128,.14);box-shadow:inset 0 1px .5px rgba(255,255,255,.9)}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .sheen-lens{background:rgba(118,118,128,.14);box-shadow:inset 0 1px .5px rgba(255,255,255,.9)}}
+/* no backdrop-filter: an opaque surface of the same colour */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.sheen-glass{background:var(--sheen-surface-muted)}.sheen-glass-clear{background:rgba(0,0,0,.6)}}

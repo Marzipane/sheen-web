@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - { php: '8.2', laravel: '^10.0', testbench: '^8.0' }
+          - { php: '8.3', laravel: '^11.0', testbench: '^9.0' }
+          - { php: '8.4', laravel: '^12.0', testbench: '^10.0' }
+    name: PHP ${{ matrix.php }} · Laravel ${{ matrix.laravel }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: shivammathur/setup-php@v2
+        with: { php-version: '${{ matrix.php }}', coverage: none }
+      - run: composer require --no-update "illuminate/support:${{ matrix.laravel }}" "illuminate/view:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --dev
+      - run: composer update --prefer-dist --no-interaction --no-progress
+      - run: vendor/bin/phpunit
+
+  dist:
+    runs-on: ubuntu-latest
+    name: dist/ is built and tokens match Flutter sheen
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - run: node build.mjs --check
+      - run: node scripts/check-flutter.mjs

@@ -1,0 +1,13 @@
+/* The user's settings win, as in Flutter sheen: reduced transparency and high contrast make glass opaque; reduced
+   motion stops movement. */
+@media (prefers-reduced-transparency: reduce){
+.sheen-glass{background:var(--sheen-surface-muted);-webkit-backdrop-filter:none;backdrop-filter:none}
+.sheen-glass-clear,.sheen-trip-tag{background:rgba(0,0,0,.72);-webkit-backdrop-filter:none;backdrop-filter:none}}
+@media (prefers-contrast: more){
+.sheen-glass{background:var(--sheen-surface);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:inset 0 0 0 1.5px var(--sheen-text-secondary)}
+.sheen-glass-clear{background:rgba(0,0,0,.8)}
+.sheen-choice,.sheen-field{box-shadow:inset 0 0 0 1.5px var(--sheen-text-secondary)}
+.sheen-secondary{color:var(--sheen-text)}}
+@media (prefers-reduced-motion: reduce){
+.sheen *,.sheen *::before,.sheen *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+@media (forced-colors: active){.sheen-deal-badge,.sheen-score,.sheen-pill{border:1px solid CanvasText}}
