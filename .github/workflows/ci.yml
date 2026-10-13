@@ -19,6 +19,10 @@ jobs:
       - uses: actions/checkout@v7
       - uses: shivammathur/setup-php@v2
         with: { php-version: '${{ matrix.php }}', coverage: none }
+      # Laravel 10 and 11 are past their security support, so Composer blocks them by default; this job only checks
+      # that the components still render there (apps still on 10, such as Rehla, until they upgrade)
+      - if: matrix.laravel != '^12.0'
+        run: composer config audit.block-insecure false
       - run: composer require --no-update "illuminate/support:${{ matrix.laravel }}" "illuminate/view:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --dev
       - run: composer update --prefer-dist --no-interaction --no-progress
       - run: vendor/bin/phpunit
