@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.2.0 (unreleased)
+
+- Music, from the Flutter sheen music widgets (0.4): `.sheen-dock` (the floating tab capsule with its lens and a
+  search circle), `.sheen-mini-player`, `.sheen-track-row` with `.sheen-track-action`, `.sheen-artwork`,
+  `.sheen-artwork-glow`, `.sheen-seek` (`data-sheen-seek`), `.sheen-transport`, `.sheen-playing-bars`,
+  `.sheen-shelf`. Built to stay smooth on a phone: glass only on the dock, the mini player and the play button,
+  and every moving part animates only `transform`.
+- `.sheen-sheet`: a bottom sheet on `<dialog autofocus>`; a tap outside, Esc and `[data-sheen-sheet-close]` slide it
+  down (`sheenWeb.closeSheet`).
+- `dist/sheen-icons.svg`: every glyph as an SVG sprite for pages without Laravel (`#sheen-play-fill`), and the music
+  glyphs of Flutter sheen 0.4 (waveform, library, queue, shuffle, repeat, lyrics, on-device, …).
+- Demo: `docs/music.html` (`#fps` shows frames per second).
+
 ## 0.1.3
 
 - Base styles: the `<button>` reset is now `:where(.sheen button)`, so it has no specificity and a `<button>`

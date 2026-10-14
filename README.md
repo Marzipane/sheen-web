@@ -20,6 +20,12 @@ built with sheen and its website look like one product.
 - **The travel library.** Deal badges, struck prices, hotel and trip cards, cabin and room choices with a round mark,
   itineraries, a photo viewer with chips, the floating action bar.
 
+## Music
+
+The music widgets of Flutter sheen as plain HTML and CSS, for a web player that should feel like the app and stay
+smooth on a phone: see [`docs/music.html`](docs/music.html) for every piece in use. Icons without Laravel come from
+the sprite: `<svg><use href="sheen-icons.svg#sheen-pause-fill"/></svg>`.
+
 ## Install
 
 From GitHub (Composer):

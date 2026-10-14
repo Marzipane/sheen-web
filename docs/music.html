@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>sheen-web music</title>
+<meta name="description" content="The music widgets of Flutter sheen for the web: dock, mini player, track rows, shelves, player and sheets.">
+<link rel="stylesheet" href="sheen.min.css">
+<script src="sheen.min.js" defer></script>
+<style>
+/* the demo app's own colour (Tunes) over the sheen tokens */
+:root{--sheen-accent:#D92D45;--sheen-accent-text:#D92D45}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--sheen-accent:#FF4D63;--sheen-accent-text:#FF6B7E}}
+:root[data-theme="dark"]{--sheen-accent:#FF4D63;--sheen-accent-text:#FF6B7E}
+html,body{margin:0;min-height:100%}
+body{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 170px)}
+.page{max-width:720px;margin:0 auto;padding-top:calc(env(safe-area-inset-top,0px) + 24px)}
+.page>h1{padding-inline:16px;margin:24px 0 16px}
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-inline:16px;margin-bottom:28px}
+.quick button{display:flex;align-items:center;gap:12px;height:56px;padding-inline:16px;border:0;border-radius:18px;background:var(--sheen-surface);color:var(--sheen-text);font-family:inherit;font-size:17px;font-weight:600;cursor:pointer}
+.quick svg{width:22px;height:22px;color:var(--sheen-accent-text)}
+.section{margin-bottom:28px}
+.list{display:flex;flex-direction:column}
+.bottom{position:fixed;inset-inline:0;bottom:calc(env(safe-area-inset-bottom,0px) + 80px);z-index:29;display:flex;justify-content:center;padding-inline:16px}
+.bottom .sheen-mini-player{max-width:548px}
+.icon{width:1em;height:1em}
+/* player */
+.player{position:fixed;inset:0;z-index:40;display:flex;flex-direction:column;gap:20px;padding:calc(env(safe-area-inset-top,0px) + 12px) 24px calc(env(safe-area-inset-bottom,0px) + 24px);isolation:isolate;transform:translateY(100%);transition:transform .38s cubic-bezier(.2,.9,.3,1);overflow:hidden}
+.player.open{transform:none}
+.player-top{display:flex;align-items:center;justify-content:space-between}
+.player-top p{margin:0;text-align:center;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--sheen-text-secondary)}
+.player-top b{display:block;font-size:15px;letter-spacing:0;text-transform:none;color:var(--sheen-text)}
+.player .big{--s:min(84vw,420px);--r:22px;align-self:center;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.player .meta{display:flex;align-items:center;gap:12px}
+.player .meta h2{margin:0;font-size:24px;line-height:1.2}
+.player .meta p{margin:0;font-size:17px;color:var(--sheen-text-secondary)}
+.menu{display:flex;flex-direction:column;padding-inline:8px}
+.menu button{display:flex;align-items:center;gap:14px;height:52px;padding-inline:16px;border:0;border-radius:14px;background:none;color:var(--sheen-text);font:inherit;font-size:17px;text-align:start;cursor:pointer}
+.menu button svg{width:22px;height:22px;color:var(--sheen-text-secondary)}
+.menu button:active{background:var(--sheen-tonal,rgba(127,127,127,.14))}
+.sheet-head{display:flex;align-items:center;gap:12px;padding:4px 20px 12px}
+</style>
+</head>
+<body class="sheen">
+<div style="display:none" id="sprite"></div>
+
+<main class="page" id="home">
+  <h1 class="sheen-large-title">Good evening</h1>
+  <div class="quick">
+    <button type="button"><svg><use href="sheen-icons.svg#sheen-waveform"/></svg>My Wave</button>
+    <button type="button"><svg><use href="sheen-icons.svg#sheen-heart-fill"/></svg>Liked songs</button>
+  </div>
+
+  <section class="sheen-shelf section">
+    <div class="sheen-shelf-head"><h2>Recently played</h2><a class="sheen-link sheen-subhead" href="#">See all</a></div>
+    <div class="sheen-shelf-row" id="recent"></div>
+  </section>
+
+  <section class="sheen-shelf section">
+    <div class="sheen-shelf-head"><h2>Your artists</h2></div>
+    <div class="sheen-shelf-row" id="artists"></div>
+  </section>
+
+  <section class="section">
+    <div class="sheen-shelf-head" style="margin-bottom:4px"><h2 class="sheen-title" style="font-size:22px">Because you played Memory</h2></div>
+    <div class="list" id="songs"></div>
+  </section>
+</main>
+
+<div class="bottom">
+  <div class="sheen-mini-player sheen-glass" id="mini" role="button" tabindex="0" aria-label="Open the player">
+    <span class="sheen-artwork" id="mini-art"></span>
+    <span class="sheen-mini-player-text"><span class="sheen-mini-player-title" id="mini-title"></span><span class="sheen-mini-player-sub" id="mini-sub"></span></span>
+    <button type="button" id="mini-play" aria-label="Pause"><svg><use href="sheen-icons.svg#sheen-pause-fill"/></svg></button>
+    <button type="button" id="mini-next" aria-label="Next"><svg><use href="sheen-icons.svg#sheen-next-fill"/></svg></button>
+    <span class="sheen-mini-player-progress" id="mini-progress"></span>
+  </div>
+</div>
+
+<nav class="sheen-dock" aria-label="Tabs">
+  <div class="sheen-dock-tabs sheen-glass" id="tabs" style="--n:3;--i:0">
+    <span class="sheen-dock-lens"></span>
+    <button type="button" class="sheen-dock-tab" aria-current="page"><svg><use href="sheen-icons.svg#sheen-home-fill"/></svg>Home</button>
+    <button type="button" class="sheen-dock-tab"><svg><use href="sheen-icons.svg#sheen-waveform"/></svg>Wave</button>
+    <button type="button" class="sheen-dock-tab"><svg><use href="sheen-icons.svg#sheen-library"/></svg>Library</button>
+  </div>
+  <button type="button" class="sheen-dock-search sheen-glass" aria-label="Search"><svg><use href="sheen-icons.svg#sheen-search"/></svg></button>
+</nav>
+
+<section class="player" id="player" aria-label="Now playing">
+  <div class="sheen-artwork-glow"><img id="glow" alt=""></div>
+  <div class="player-top">
+    <button type="button" class="sheen-icon-button" id="close" aria-label="Close"><svg class="icon" style="font-size:22px"><use href="sheen-icons.svg#sheen-chevron-down"/></svg></button>
+    <p>Playing from<b>My Wave</b></p>
+    <button type="button" class="sheen-icon-button" id="more" aria-label="More"><svg class="icon" style="font-size:22px"><use href="sheen-icons.svg#sheen-more"/></svg></button>
+  </div>
+  <span class="sheen-artwork big" id="big-art"></span>
+  <div class="meta">
+    <div style="flex:1;min-width:0"><h2 class="sheen-ellipsis" id="p-title"></h2><p class="sheen-ellipsis" id="p-sub"></p></div>
+    <button type="button" class="sheen-icon-button" aria-label="Like"><svg class="icon" style="font-size:22px"><use href="sheen-icons.svg#sheen-heart"/></svg></button>
+  </div>
+  <div>
+    <div class="sheen-seek" data-sheen-seek role="slider" tabindex="0" aria-label="Position" id="seek" style="--b:.55"><div class="sheen-seek-track"></div></div>
+    <div class="sheen-seek-times"><span id="t-now">0:00</span><span id="t-left">-3:04</span></div>
+  </div>
+  <div class="sheen-transport">
+    <button type="button" class="sheen-transport-small" aria-pressed="false" aria-label="Shuffle"><svg><use href="sheen-icons.svg#sheen-shuffle"/></svg></button>
+    <button type="button" class="sheen-transport-skip" aria-label="Previous"><svg><use href="sheen-icons.svg#sheen-previous-fill"/></svg></button>
+    <button type="button" class="sheen-transport-play sheen-glass" id="p-play" aria-label="Pause"><svg><use href="sheen-icons.svg#sheen-pause-fill"/></svg></button>
+    <button type="button" class="sheen-transport-skip" id="p-next" aria-label="Next"><svg><use href="sheen-icons.svg#sheen-next-fill"/></svg></button>
+    <button type="button" class="sheen-transport-small" aria-pressed="false" aria-label="Repeat"><svg><use href="sheen-icons.svg#sheen-repeat"/></svg></button>
+  </div>
+</section>
+
+<dialog class="sheen-sheet" id="menu" aria-label="Song" autofocus>
+  <div class="sheet-head"><span class="sheen-artwork" id="menu-art"></span><div style="min-width:0"><b class="sheen-ellipsis" style="display:block" id="menu-title"></b><span class="sheen-secondary sheen-footnote" id="menu-sub"></span></div></div>
+  <div class="menu">
+    <button type="button" data-sheen-sheet-close><svg><use href="sheen-icons.svg#sheen-queue"/></svg>Play next</button>
+    <button type="button" data-sheen-sheet-close><svg><use href="sheen-icons.svg#sheen-on-device"/></svg>Save to this phone</button>
+    <button type="button" data-sheen-sheet-close><svg><use href="sheen-icons.svg#sheen-plus"/></svg>Add to playlist</button>
+    <button type="button" data-sheen-sheet-close><svg><use href="sheen-icons.svg#sheen-versions"/></svg>Other versions</button>
+    <button type="button" data-sheen-sheet-close><svg><use href="sheen-icons.svg#sheen-thumb-down"/></svg>Don't play this artist</button>
+  </div>
+</dialog>
+
+<script>
+// Demo content: covers are generated gradients (no photos are shipped with the demo).
+const cover = (a, b) => 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient></defs><rect width="10" height="10" fill="url(#g)"/><circle cx="7" cy="3" r="2.2" fill="#fff" opacity=".18"/></svg>`);
+const songs = [
+  ['Memory', 'ALBLAK 52, MyDee 52', '#3a1c71', '#d76d77', true, 184],
+  ['How much is money?', 'Husky', '#0f2027', '#2c5364', false, 201],
+  ['Top Dawg', 'ALBLAK 52, ICEGERGERT', '#5a3f37', '#2c7744', true, 163],
+  ['Skyscraper', 'FRIENDLY THUG 52 NGG, Markul', '#1d2b64', '#f8cdda', false, 192],
+  ['astral step', 'shadowraze', '#200122', '#6f0000', false, 145],
+  ['78 flow', 'ICEGERGERT', '#000428', '#004e92', true, 176],
+].map(([title, artist, a, b, stored, secs]) => ({ title, artist, img: cover(a, b), stored, secs }));
+const artists = [['Baby Melo', '#ee9ca7', '#ffdde1'], ['ALBLAK 52', '#614385', '#516395'], ['Husky', '#134e5e', '#71b280'], ['Markul', '#c33764', '#1d2671'], ['MIYAGI', '#e65c00', '#f9d423']];
+const use = (id) => `<svg><use href="sheen-icons.svg#sheen-${id}"/></svg>`;
+const art = (src, extra = '') => `<span class="sheen-artwork ${extra}"><img src="${src}" alt="" loading="lazy" decoding="async"></span>`;
+
+document.getElementById('recent').innerHTML = songs.map((s, i) =>
+  `<button type="button" class="sheen-shelf-item" data-i="${i}">${art(s.img)}<span class="sheen-shelf-title">${s.title}</span><span class="sheen-shelf-sub">${s.artist}</span></button>`).join('');
+document.getElementById('artists').innerHTML = artists.map(([n, a, b]) =>
+  `<button type="button" class="sheen-shelf-item" style="--s:120px">${art(cover(a, b), 'sheen-round')}<span class="sheen-shelf-title" style="text-align:center">${n}</span></button>`).join('');
+const list = document.getElementById('songs');
+const renderList = () => {
+  list.innerHTML = songs.map((s, i) => `<div class="sheen-track-row" role="button" tabindex="0" data-i="${i}" ${i === cur ? 'aria-current="true"' : ''}>
+    ${art(s.img)}<span class="sheen-track-row-text"><span class="sheen-track-row-title">${s.title}</span>
+    <span class="sheen-track-row-sub">${s.stored ? use('on-device') : ''}<span>${s.artist}</span></span></span>
+    ${i === cur ? `<span class="sheen-playing-bars ${playing ? 'sheen-playing' : ''}"><i></i><i></i><i></i></span>` : ''}
+    <button type="button" class="sheen-track-action" data-menu="${i}" aria-label="More">${use('more')}</button></div>`).join('');
+};
+
+let cur = 0, playing = true, pos = 21;
+const fmt = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+function show() {
+  const s = songs[cur];
+  document.getElementById('mini-art').innerHTML = `<img src="${s.img}" alt="">`;
+  document.getElementById('big-art').innerHTML = `<img src="${s.img}" alt="">`;
+  document.getElementById('glow').src = s.img;
+  document.getElementById('mini-title').textContent = document.getElementById('p-title').textContent = s.title;
+  document.getElementById('mini-sub').textContent = document.getElementById('p-sub').textContent = s.artist;
+  const icon = playing ? 'pause-fill' : 'play-fill';
+  for (const id of ['mini-play', 'p-play']) {
+    const b = document.getElementById(id);
+    b.innerHTML = use(icon);
+    b.setAttribute('aria-label', playing ? 'Pause' : 'Play');
+  }
+  renderList();
+  tick();
+}
+function tick() {
+  const s = songs[cur];
+  const p = Math.min(1, pos / s.secs);
+  document.getElementById('mini-progress').style.setProperty('--p', p);
+  document.getElementById('seek').style.setProperty('--p', p);
+  document.getElementById('t-now').textContent = fmt(pos);
+  document.getElementById('t-left').textContent = '-' + fmt(s.secs - pos);
+}
+const play = (i) => { cur = i; pos = 0; playing = true; show(); };
+setInterval(() => { if (playing && !seeking) { pos += 1; if (pos >= songs[cur].secs) play((cur + 1) % songs.length); else tick(); } }, 1000);
+
+let seeking = false;
+document.addEventListener('sheen-seeking', (e) => { seeking = true; pos = e.detail.value * songs[cur].secs; document.getElementById('t-now').textContent = fmt(pos); });
+document.addEventListener('sheen-seek', (e) => { seeking = false; pos = e.detail.value * songs[cur].secs; tick(); });
+
+document.addEventListener('click', (e) => {
+  const t = e.target.closest('button, [role="button"]');
+  if (!t) return;
+  if (t.dataset.menu != null) {
+    e.stopPropagation();
+    const s = songs[+t.dataset.menu];
+    document.getElementById('menu-art').innerHTML = `<img src="${s.img}" alt="">`;
+    document.getElementById('menu-title').textContent = s.title;
+    document.getElementById('menu-sub').textContent = s.artist;
+    return document.getElementById('menu').showModal();
+  }
+  if (t.dataset.i != null) return play(+t.dataset.i);
+  if (t.id === 'mini-play' || t.id === 'p-play') { e.stopPropagation(); playing = !playing; return show(); }
+  if (t.id === 'mini-next' || t.id === 'p-next') { e.stopPropagation(); return play((cur + 1) % songs.length); }
+  if (t.id === 'mini') return document.getElementById('player').classList.add('open');
+  if (t.id === 'close') return document.getElementById('player').classList.remove('open');
+  if (t.id === 'more') return document.querySelector('[data-menu="' + cur + '"]').click();
+  if (t.classList.contains('sheen-dock-tab')) {
+    const tabs = [...document.querySelectorAll('.sheen-dock-tab')];
+    tabs.forEach((x) => x.removeAttribute('aria-current'));
+    t.setAttribute('aria-current', 'page');
+    document.getElementById('tabs').style.setProperty('--i', tabs.indexOf(t));
+  }
+  if (t.getAttribute('aria-pressed') != null) t.setAttribute('aria-pressed', String(t.getAttribute('aria-pressed') !== 'true'));
+});
+show();
+
+// #fps: frames per second while you scroll and tap (an on-phone check that the page stays smooth)
+if (location.hash === '#fps') {
+  const box = Object.assign(document.createElement('div'), { id: 'fps' });
+  box.style.cssText = 'position:fixed;top:calc(env(safe-area-inset-top,0px) + 4px);inset-inline-end:8px;z-index:99;padding:4px 8px;border-radius:8px;background:rgba(0,0,0,.7);color:#7CFC9A;font:600 12px/1.3 ui-monospace,monospace;pointer-events:none';
+  document.body.append(box);
+  let frames = [], last = performance.now();
+  const loop = (t) => { frames.push(t - last); last = t; requestAnimationFrame(loop); };
+  requestAnimationFrame(loop);
+  setInterval(() => {
+    const f = frames.splice(0).sort((a, b) => a - b);
+    if (!f.length) return;
+    const avg = f.reduce((s, x) => s + x, 0) / f.length;
+    box.textContent = `${Math.round(1000 / avg)} fps · worst ${Math.round(f[f.length - 1])} ms`;
+  }, 1000);
+}
+</script>
+</body>
+</html>

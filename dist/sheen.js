@@ -8,6 +8,11 @@
 //   Words come from the dialog: data-label-of="Photo @n of @all".
 // - Stepper: <div class="sheen-stepper" data-sheen-stepper> with an <input type="number" min max> and two buttons
 //   data-sheen-step="-1" / "1". The buttons disable at the bounds; the input fires "input" and "change".
+// - Seek bar: <div class="sheen-seek" data-sheen-seek role="slider" tabindex="0"> around a .sheen-seek-track. A drag
+//   (finger or mouse) or the arrow keys move it: "sheen-seeking" while moving and "sheen-seek" at the end, both with
+//   detail.value 0…1. The page sets --p (played) and --b (buffered) and aria-valuetext itself.
+// - Sheet: <dialog class="sheen-sheet">; sheenWeb.closeSheet(dialog) slides it down, as do a tap outside it and any
+//   [data-sheen-sheet-close] inside it. Open it with dialog.showModal().
 (function () {
   'use strict';
   if (typeof document === 'undefined' || window.sheenWeb) return;
@@ -161,5 +166,72 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', syncAll); else syncAll();
   document.addEventListener('livewire:navigated', syncAll);
 
-  window.sheenWeb = { version: '0.1.0', openViewer: open, syncSteppers: syncAll };
+  // ---------- seek bar ----------
+  var seek = null;
+  function seekValue(bar, x) {
+    var r = bar.getBoundingClientRect();
+    var v = r.width ? (x - r.left) / r.width : 0;
+    if (rtl(bar)) v = 1 - v;
+    return Math.min(1, Math.max(0, v));
+  }
+  function seekTo(bar, v, done) {
+    bar.style.setProperty('--p', String(v));
+    bar.dispatchEvent(new CustomEvent(done ? 'sheen-seek' : 'sheen-seeking', { bubbles: true, detail: { value: v } }));
+  }
+  document.addEventListener('pointerdown', function (e) {
+    var bar = e.target.closest && e.target.closest('[data-sheen-seek]');
+    if (!bar || e.button > 0) return;
+    seek = { bar: bar, id: e.pointerId };
+    bar.classList.add('sheen-active');
+    try { bar.setPointerCapture(e.pointerId); } catch (err) { /* not capturable */ }
+    seekTo(bar, seekValue(bar, e.clientX), false);
+  });
+  document.addEventListener('pointermove', function (e) {
+    if (seek && e.pointerId === seek.id) seekTo(seek.bar, seekValue(seek.bar, e.clientX), false);
+  });
+  function seekEnd(e) {
+    if (!seek || e.pointerId !== seek.id) return;
+    var bar = seek.bar;
+    seek = null;
+    bar.classList.remove('sheen-active');
+    if (e.type === 'pointerup') seekTo(bar, seekValue(bar, e.clientX), true);
+  }
+  document.addEventListener('pointerup', seekEnd);
+  document.addEventListener('pointercancel', seekEnd);
+  document.addEventListener('keydown', function (e) {
+    var bar = e.target.closest && e.target.closest('[data-sheen-seek]');
+    if (!bar) return;
+    var step = { ArrowRight: .05, ArrowUp: .05, ArrowLeft: -.05, ArrowDown: -.05, Home: -1, End: 1 }[e.key];
+    if (step == null) return;
+    e.preventDefault();
+    if ((e.key === 'ArrowRight' || e.key === 'ArrowLeft') && rtl(bar)) step = -step;
+    var v = Number(getComputedStyle(bar).getPropertyValue('--p')) || 0;
+    seekTo(bar, Math.min(1, Math.max(0, v + step)), true);
+  });
+
+  // ---------- sheet ----------
+  function closeSheet(dialog) {
+    if (!dialog || !dialog.open || dialog.classList.contains('sheen-closing')) return;
+    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) { dialog.close(); return; }
+    dialog.classList.add('sheen-closing');
+    var done = function () { dialog.classList.remove('sheen-closing'); if (dialog.open) dialog.close(); };
+    dialog.addEventListener('animationend', done, { once: true });
+    setTimeout(done, 400);
+  }
+  document.addEventListener('click', function (e) {
+    var t = e.target;
+    if (t.classList && t.classList.contains('sheen-sheet') && t.open) {
+      var r = t.getBoundingClientRect();
+      if (e.clientY < r.top || e.clientY > r.bottom || e.clientX < r.left || e.clientX > r.right) closeSheet(t);
+      return;
+    }
+    var c = t.closest && t.closest('[data-sheen-sheet-close]');
+    if (c) closeSheet(c.closest('.sheen-sheet'));
+  });
+  document.addEventListener('cancel', function (e) {
+    if (e.target.classList && e.target.classList.contains('sheen-sheet')) { e.preventDefault(); closeSheet(e.target); }
+  }, true);
+
+  window.sheenWeb = { version: '0.2.0', openViewer: open, syncSteppers: syncAll, closeSheet: closeSheet };
 })();
