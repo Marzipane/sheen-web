@@ -36,4 +36,12 @@ class DistTest extends TestCase
         $this->assertStringContainsString('@media (prefers-contrast: more)', $css);
         $this->assertStringContainsString('@media (prefers-reduced-motion: reduce)', $css);
     }
+
+    public function test_the_base_button_rule_never_outranks_a_sheen_button(): void
+    {
+        // 0.1.2 had ".sheen button{font:inherit}" (0,1,1), which beat ".sheen-button" (0,1,0) and its sizes
+        $css = preg_replace('#/\*.*?\*/#s', '', $this->css());
+        $this->assertDoesNotMatchRegularExpression('/(^|[},])\s*\.sheen button\s*\{/', $css);
+        $this->assertStringContainsString(':where(.sheen button){font:inherit;color:inherit}', $css);
+    }
 }

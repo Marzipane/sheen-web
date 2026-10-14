@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.3
+
+- Base styles: the `<button>` reset is now `:where(.sheen button)`, so it has no specificity and a `<button>`
+  SheenButton keeps its size and weight (`.sheen-button`, `.sheen-large`, `.sheen-small`). In 0.1.2 the reset won.
+
 ## 0.1.2
 
 - `hotel-card`: `save` now renders the save button. It sits beside the card's link (a button inside a link is not

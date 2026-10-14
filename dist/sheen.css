@@ -11,7 +11,8 @@
 .sheen a.sheen-link,.sheen .sheen-link{color:var(--sheen-accent-text)}
 .sheen a.sheen-link:hover{text-decoration:underline}
 .sheen :focus-visible{outline:2px solid var(--sheen-accent-text);outline-offset:2px}
-.sheen button{font:inherit;color:inherit}
+/* :where keeps this at no specificity, so .sheen-button (and its sizes) always set a <button>'s font */
+:where(.sheen button){font:inherit;color:inherit}
 .sheen img{max-width:100%}
 .sheen-container{width:100%;max-width:var(--sheen-width-page);margin-inline:auto;padding-inline:clamp(16px,4.45vw,64px)}
 .sheen-readable{max-width:var(--sheen-width-readable)}
