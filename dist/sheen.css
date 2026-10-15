@@ -412,7 +412,7 @@
 .sheen-avatar[data-presence]::after{content:"";position:absolute;right:-1px;bottom:-1px;width:calc(var(--s)*.3);height:calc(var(--s)*.3);min-width:10px;min-height:10px;border-radius:50%;background:var(--sheen-success);box-shadow:0 0 0 2.5px var(--sheen-background)}
 .sheen-avatar[data-presence="playing"]::after{display:none}
 .sheen-avatar-badge{position:absolute;right:-3px;bottom:-3px;width:calc(var(--s)*.4);height:calc(var(--s)*.4);min-width:18px;min-height:18px;border-radius:50%;display:grid;place-items:center;background:var(--sheen-accent);color:var(--sheen-on-accent);box-shadow:0 0 0 2.5px var(--sheen-background)}
-.sheen-avatar-badge>.sheen-playing-bars{width:55%;height:45%;color:inherit}
+.sheen-avatar-badge>.sheen-playing-bars{width:10px;height:9px;gap:1.5px;color:inherit}
 .sheen-avatar-stack{display:inline-flex;flex:none}
 .sheen-avatar-stack>.sheen-avatar{--s:28px;box-shadow:0 0 0 2px var(--sheen-background)}
 .sheen-avatar-stack>.sheen-avatar+.sheen-avatar{margin-inline-start:-9px}
