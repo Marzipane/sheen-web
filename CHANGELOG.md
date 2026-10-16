@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.1
+
+- Picker search: the exact value comes first, then the popular values, then names that start with what was typed. "dollar" now finds the US dollar before the Australian one.
+
 ## 0.2.0
 
 - New `<x-sheen::picker>`: one choice from a list, never the browser's own dropdown.
