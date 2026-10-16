@@ -44,4 +44,16 @@ class DistTest extends TestCase
         $this->assertDoesNotMatchRegularExpression('/(^|[},])\s*\.sheen button\s*\{/', $css);
         $this->assertStringContainsString(':where(.sheen button){font:inherit;color:inherit}', $css);
     }
+
+    public function test_a_field_shows_focus_never_a_box_around_its_words(): void
+    {
+        // 0.1.4 (owner, 16 Oct): the base focus ring drew a sharp box around a bare input inside a rounded field or a
+        // search bar's part; Airbnb, Booking, Expedia and Agoda all show focus on the field or part instead
+        $css = $this->css();
+        $this->assertStringContainsString('.sheen :is(.sheen-field,.sheen-segment) :is(input,select,textarea,.sheen-segment-trigger):focus-visible{outline:none}', $css);
+        $this->assertMatchesRegularExpression('/\.sheen-field:focus-within\{[^}]*0 0 0 4px/', $css);
+        $this->assertMatchesRegularExpression('/\.sheen-segment:focus-within\{[^}]*background/', $css);
+        // the field still shows where the keyboard is when the system draws no shadows
+        $this->assertMatchesRegularExpression('/@media \(forced-colors: active\)\{[^@]*\.sheen-field:focus-within/', $css);
+    }
 }

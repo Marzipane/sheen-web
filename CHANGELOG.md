@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.4
+
+- Fields show focus as a field, never as a box around the words.
+  - The base `:focus-visible` ring drew a sharp rectangle around a bare `<input>` inside a rounded `.sheen-field` or a glass bar. Inputs, selects and textareas inside `.sheen-field` or `.sheen-segment` no longer draw it.
+  - `.sheen-field:focus-within` is now a 1.5px accent line with a soft 4px glow, and the label turns the accent.
+  - New `.sheen-segment` for a part of a glass bar: it lights up as its own pill while being filled. `.sheen-segment-trigger` marks a button that opens the part's picker.
+  - With forced colors, the field or part gets a real outline.
+
 ## 0.1.3
 
 - Base styles: the `<button>` reset is now `:where(.sheen button)`, so it has no specificity and a `<button>`

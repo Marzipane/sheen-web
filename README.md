@@ -98,6 +98,14 @@ Without Laravel, use the CSS and script from a tag through jsDelivr:
 
 Each component's file starts with a comment that documents its attributes.
 
+### Focus on fields
+
+The field shows focus, and the words inside it never get a box of their own.
+- A `.sheen-field` gets a calm accent line, a soft glow and an accent label.
+- A part of a glass bar, `.sheen-segment` (a search bar's where, dates and guests), lights up as its own pill. A button that opens the part's picker takes `.sheen-segment-trigger`.
+
+Buttons and links keep their focus ring. With forced colors, the field or part gets a real outline.
+
 ## Tokens
 
 | Flutter | CSS | Dark | Light |
