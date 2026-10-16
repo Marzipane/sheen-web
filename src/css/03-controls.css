@@ -25,7 +25,7 @@
    accent. The glow needs color-mix; without it the line alone shows. */
 .sheen-field:focus-within{box-shadow:inset 0 0 0 1.5px var(--sheen-accent-text);box-shadow:inset 0 0 0 1.5px var(--sheen-accent-text),0 0 0 4px color-mix(in srgb,var(--sheen-accent) 24%,transparent)}
 .sheen-field:focus-within>span:first-child{color:var(--sheen-accent-text)}
-.sheen :is(.sheen-field,.sheen-segment) :is(input,select,textarea,.sheen-segment-trigger):focus-visible{outline:none}
+.sheen :is(.sheen-field,.sheen-segment,.sheen-picker-pill) :is(input,select,textarea,.sheen-segment-trigger,.sheen-picker-trigger):focus-visible{outline:none}
 /* A part of a glass bar (a search bar's where, dates, guests): the part being filled lights up as its own pill. Its
    opener (a button that opens a calendar) takes .sheen-segment-trigger; what opens from it keeps its own focus ring. */
 .sheen-segment{border-radius:999px;transition:background-color .15s,box-shadow .15s}

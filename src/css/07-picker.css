@@ -1,0 +1,62 @@
+/* SheenPicker: a choice from a list. The field (or a glass pill) opens a list under it, with a search box when the
+   list is long; a sheet in the middle for long lists (data-layout="sheet") and from the bottom on phones. Without
+   JavaScript the native <select> stays. Chips with radios (.sheen-chip-choice) are for a few choices shown at once. */
+.sheen-picker{min-width:0}
+.sheen-picker:not(.sheen-picker-ready) .sheen-picker-trigger{display:none}
+.sheen-picker-ready select{display:none!important}
+.sheen-picker-field{cursor:pointer}
+.sheen-picker-trigger{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:8px;width:100%;min-width:0;font:inherit;font-size:17px;color:var(--sheen-text);cursor:pointer}
+.sheen-picker-trigger>span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sheen-picker-trigger>svg{flex:none;color:var(--sheen-text-secondary);transition:transform .15s}
+.sheen-picker-trigger[aria-expanded="true"]>svg{transform:rotate(180deg)}
+.sheen-picker-trigger .sheen-picker-placeholder{color:var(--sheen-text-tertiary)}
+/* the field stays lit while its list is open, as while it has the focus */
+.sheen-picker-open .sheen-picker-field{box-shadow:inset 0 0 0 1.5px var(--sheen-accent-text),0 0 0 4px color-mix(in srgb,var(--sheen-accent) 24%,transparent)}
+.sheen-picker-open .sheen-picker-field>span:first-child{color:var(--sheen-accent-text)}
+.sheen-picker-invalid .sheen-picker-field{box-shadow:inset 0 0 0 2px var(--sheen-danger)}
+.sheen-picker-pill{display:inline-flex;align-items:center;gap:8px;height:44px;max-width:100%;padding-inline:16px 14px;border-radius:22px;cursor:pointer}
+.sheen-picker-pill .sheen-picker-trigger,.sheen-picker-pill select{font-size:15px;font-weight:600;width:auto}
+.sheen-picker-pill select{all:unset;cursor:pointer;font-size:15px;font-weight:600;min-width:0}
+.sheen-picker-pill:focus-within,.sheen-picker-open .sheen-picker-pill{outline:2px solid var(--sheen-accent-text);outline-offset:2px}
+
+.sheen-picker-pop{position:fixed;inset:auto;margin:0;border:0;z-index:60;box-sizing:border-box;flex-direction:column;gap:4px;padding:8px;max-height:440px;overflow:hidden;border-radius:20px;color:var(--sheen-text);font-size:15.5px;background:color-mix(in srgb,var(--sheen-sheet) 90%,transparent);-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);box-shadow:inset 0 0 0 .5px var(--sheen-separator),inset 0 .5px 0 rgba(255,255,255,.12),0 18px 48px rgba(0,0,0,.35),0 2px 6px rgba(0,0,0,.18);animation:sheen-picker-in .14s ease-out}
+.sheen-picker-pop:not([hidden]){display:flex}
+@keyframes sheen-picker-in{from{opacity:0}}
+.sheen-picker-title{display:none;align-items:center;gap:10px;padding:2px 4px 6px}
+.sheen-picker-title b{flex:1;font-size:17px;font-weight:600}
+.sheen-picker-title .sheen-icon-button{width:34px;height:34px}
+.sheen-picker-search{flex:none;display:flex;align-items:center;gap:8px;height:44px;padding-inline:12px;border-radius:14px;background:var(--sheen-tonal,rgba(127,127,127,.14));color:var(--sheen-text-secondary);cursor:text}
+.sheen-picker-search:focus-within{box-shadow:inset 0 0 0 1.5px var(--sheen-accent-text)}
+.sheen-picker-search input{all:unset;flex:1;min-width:0;font-size:16px;color:var(--sheen-text)}
+.sheen-picker-search input::placeholder{color:var(--sheen-text-tertiary)}
+.sheen .sheen-picker-search input:focus-visible,.sheen .sheen-picker-list:focus-visible{outline:none}
+.sheen-picker-list{position:relative;flex:1;min-height:0;list-style:none;margin:0;padding:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
+.sheen-picker-head{padding:10px 10px 4px;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--sheen-text-tertiary)}
+.sheen-picker-option{display:flex;align-items:center;gap:12px;min-height:44px;padding:6px 10px;border-radius:12px;cursor:pointer}
+@media (hover:hover){.sheen-picker-option:hover{background:var(--sheen-tonal,rgba(127,127,127,.14))}}
+.sheen-picker-option.sheen-active{background:var(--sheen-tonal,rgba(127,127,127,.14));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--sheen-accent-text) 55%,transparent)}
+.sheen-picker-option[aria-selected="true"]{background:color-mix(in srgb,var(--sheen-accent) 18%,transparent);font-weight:600}
+.sheen-picker-option[aria-selected="true"]::after{content:"";flex:none;width:11px;height:6px;margin-inline:4px 2px;border-inline-start:2.5px solid var(--sheen-accent-text);border-bottom:2.5px solid var(--sheen-accent-text);transform:translateY(-2px) rotate(-45deg)}
+[dir="rtl"] .sheen-picker-option[aria-selected="true"]::after{transform:translateY(-2px) rotate(45deg)}
+.sheen-picker-option[aria-disabled="true"]{opacity:.45;cursor:not-allowed}
+.sheen-picker-badge{flex:none;min-width:40px;height:24px;padding-inline:6px;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;background:var(--sheen-tonal,rgba(127,127,127,.14));color:var(--sheen-text-secondary);font-size:11.5px;font-weight:700;font-variant-numeric:tabular-nums}
+.sheen-picker-label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sheen-picker-hint{flex:none;color:var(--sheen-text-tertiary);font-size:13.5px;font-weight:400}
+.sheen-picker-empty{margin:0;padding:14px 10px;font-size:14.5px;color:var(--sheen-text-secondary)}
+.sheen-picker-empty[hidden]{display:none}
+/* a sheet: in the middle for long lists, from the bottom on phones (rising with the keyboard) */
+.sheen-picker-pop.sheen-picker-sheet{inset-inline:0;top:max(16px,10vh);margin-inline:auto;width:min(440px,calc(100vw - 32px));max-height:min(620px,80vh);padding:12px;border-radius:26px}
+.sheen-picker-pop.sheen-picker-sheet::backdrop{background:rgba(0,0,0,.4)}
+.sheen-picker-sheet .sheen-picker-title{display:flex}
+@media (max-width:640px){
+.sheen-picker-pop.sheen-picker-sheet{top:auto;bottom:var(--sheen-picker-kb,0px);width:auto;max-height:min(85vh,calc(var(--sheen-picker-vh,100vh) - 48px));padding:8px 12px calc(12px + env(safe-area-inset-bottom,0px));border-radius:26px 26px 0 0}
+.sheen-picker-pop.sheen-picker-sheet::before{content:"";flex:none;align-self:center;width:38px;height:5px;border-radius:3px;background:var(--sheen-text-tertiary);opacity:.5;margin-block:2px 4px}
+.sheen-picker-option{min-height:48px}}
+
+.sheen-chip-choice{border:0;margin:0;padding:0;min-width:0}
+.sheen-chip-choice>legend{padding:0;margin-bottom:8px;font-size:12.5px;font-weight:600;color:var(--sheen-text-secondary)}
+.sheen-chip:has(>input[type="radio"]){position:relative}
+.sheen-chip>input[type="radio"]{position:absolute;inset:0;margin:0;opacity:0;cursor:pointer;border-radius:inherit}
+.sheen-chip:has(>input:checked){background:var(--sheen-text);color:var(--sheen-background)}
+.sheen-chip:has(>input:focus-visible){outline:2px solid var(--sheen-accent-text);outline-offset:2px}
+.sheen-chip:has(>input:disabled){opacity:.45;cursor:not-allowed}

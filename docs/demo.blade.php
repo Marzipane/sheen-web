@@ -16,7 +16,7 @@
 </style></head>
 <body class="sheen">
 <header class="sheen-container" style="padding-block:16px"><div class="sheen-glass" style="height:64px;border-radius:32px;display:flex;align-items:center;gap:8px;padding-inline:22px 10px">
-<b style="font-size:19px">sheen-web</b><span class="sheen-secondary sheen-footnote" style="margin-inline-start:10px">0.1.2</span>
+<b style="font-size:19px">sheen-web</b><span class="sheen-secondary sheen-footnote" style="margin-inline-start:10px">0.2.0</span>
 <span style="margin-inline-start:auto;display:flex;gap:8px"><x-sheen::button href="?dir={{ $dir === 'rtl' ? 'ltr' : 'rtl' }}" size="small" onclick="document.documentElement.dir=document.documentElement.dir==='rtl'?'ltr':'rtl';return false">RTL / LTR</x-sheen::button>
 <x-sheen::button href="https://github.com/Marzipane/sheen-web" prominent size="small">GitHub</x-sheen::button></span></div></header>
 <main class="sheen-container" style="padding-block:24px 96px">
@@ -48,6 +48,9 @@
 <div class="sheen-stack" style="margin-top:20px">
 <div class="sheen-row" style="justify-content:space-between"><span>Adults</span><x-sheen::stepper name="adults" :value="2" :min="1" :max="9" label="Adults" fewer="Fewer adults" more="More adults" /></div>
 <x-sheen::field label="E-mail" name="email" type="email" placeholder="you@example.com" />
+<x-sheen::picker label="Currency" name="currency" value="AED" :popular="['AED', 'USD', 'EUR']" popular-label="Popular" all-label="All currencies" search="Search currency or code" empty="No currency matches “@q”" :options="['AED' => ['label' => 'UAE Dirham', 'badge' => 'AED', 'hint' => 'د.إ'], 'USD' => ['label' => 'US Dollar', 'badge' => 'USD', 'hint' => '$'], 'EUR' => ['label' => 'Euro', 'badge' => 'EUR', 'hint' => '€'], 'GBP' => ['label' => 'British Pound', 'badge' => 'GBP', 'hint' => '£'], 'SAR' => ['label' => 'Saudi Riyal', 'badge' => 'SAR'], 'INR' => ['label' => 'Indian Rupee', 'badge' => 'INR', 'hint' => '₹'], 'JPY' => ['label' => 'Japanese Yen', 'badge' => 'JPY', 'hint' => '¥'], 'TRY' => ['label' => 'Turkish Lira', 'badge' => 'TRY', 'hint' => '₺'], 'KWD' => ['label' => 'Kuwaiti Dinar', 'badge' => 'KWD']]" />
+<div><x-sheen::picker label="Your passport" name="passport" variant="pill" icon="passport" layout="sheet" placeholder="Choose your passport" search="Search country" empty="No country matches “@q”" close="Close" :options="['AE' => 'United Arab Emirates', 'SA' => 'Saudi Arabia', 'IN' => 'India', 'RU' => 'Russia', 'GB' => 'United Kingdom', 'US' => 'United States', 'EG' => 'Egypt', 'PK' => 'Pakistan', 'PH' => 'Philippines', 'TR' => 'Türkiye', 'DE' => 'Germany', 'FR' => 'France', 'CI' => 'Côte d’Ivoire']" /></div>
+<x-sheen::chip-choice legend="Document" name="kind" value="passport" :options="['passport' => 'Passport', 'visa' => 'Visa', 'infant' => 'Infant’s proof', 'other' => 'Other']" />
 <x-sheen::check name="terms" checked>I have read the cancellation terms</x-sheen::check>
 <x-sheen::steps :steps="['Price asked', 'Price ready', 'Confirming', 'Confirmed']" :current="1" label="Booking state" />
 <div class="sheen-row sheen-wrap"><x-sheen::pill tone="warning">Price ready</x-sheen::pill><x-sheen::pill tone="success">Confirmed</x-sheen::pill><x-sheen::score>4.7</x-sheen::score><x-sheen::stars :count="5" label="5 stars" /></div>

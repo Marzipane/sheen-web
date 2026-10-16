@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.0
+
+- New `<x-sheen::picker>`: one choice from a list, never the browser's own dropdown.
+  - The field (or a glass pill, `variant="pill"`) opens a glass list under it. From eight options it has a search box that ignores case and accents. Popular values come first, and the chosen one is ticked.
+  - `layout="sheet"` opens a sheet in the middle for long lists. On phones every picker is a sheet from the bottom.
+  - The list is in the top layer (`popover`), so dialogs and clipped parents never cut it.
+  - Keyboard and screen readers: a combobox and a listbox; ↑ ↓, Page Up/Down, Enter, Esc, and type-to-jump without a search box.
+  - A native `<select>` stays underneath: it is the control without JavaScript, and it fires `input` and `change` when something is chosen.
+- New `<x-sheen::chip-choice>`: a few choices shown at once, as chips that are native radios.
+- `sheenWeb.initPickers()` and `sheenWeb.closePicker()`.
+
 ## 0.1.4
 
 - Fields show focus as a field, never as a box around the words.

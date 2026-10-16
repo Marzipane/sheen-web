@@ -29,6 +29,8 @@ class ComponentsTest extends TestCase
 <x-sheen::icon-button icon="heart" label="Qx" />
 <x-sheen::list-row href="/x" title="Qy" subtitle="Qz" value="Qaa" />
 <x-sheen::steps :steps="['Qab', 'Qac']" :current="1" />
+<x-sheen::picker label="Qad" name="c" :options="['a' => 'Qae']" value="a" search="Qaf" empty="Qag" close="Qah" :search-from="1" />
+<x-sheen::chip-choice legend="Qai" name="k" :options="['p' => 'Qaj', 'v' => 'Qak']" />
 B);
         $words = $this->words($html);
         $this->assertSame('', trim(preg_replace('/Q[a-z]+|·/', '', $words)), 'only the words given: '.$words);
@@ -138,5 +140,48 @@ B);
         $this->assertStringContainsString('<label for="em"', $html);
         $this->assertMatchesRegularExpression('#<input id="em"\s+aria-invalid="true" aria-describedby="em-e"#', $html);
         $this->assertStringContainsString('<p class="sheen-field-error" id="em-e">Write a valid e-mail.</p>', $html);
+    }
+
+    public function test_picker_keeps_a_native_select_and_draws_its_list_from_it(): void
+    {
+        $html = $this->render('<x-sheen::picker id="cur" label="Currency" name="code" :options="$o" value="USD" :popular="[\'AED\', \'USD\']" popular-label="Popular" all-label="All currencies" search="Search currency" empty="No currency like @q" :select="[\'data-pick\' => true, \'required\' => true]" />',
+            ['o' => ['AED' => ['label' => 'UAE Dirham', 'badge' => 'AED', 'hint' => 'د.إ'], 'USD' => ['label' => 'US Dollar', 'badge' => 'USD', 'keywords' => 'dollar america'], 'EUR' => 'Euro']]);
+
+        // the select carries the name, the page's attributes and every option; the chosen one is selected
+        $this->assertMatchesRegularExpression('#<select id="cur" name="code"\s+data-pick\s+required\s*>#', $html);
+        $this->assertMatchesRegularExpression('#<option value="USD" selected\s+data-badge="USD" data-label="US Dollar"\s+data-keywords="dollar america"\s*>USD · US Dollar</option>#', $html);
+        $this->assertStringContainsString('<option value="EUR"  >Euro</option>', preg_replace('/\s+>/', '  >', $html));
+        // the trigger names the field and says what is chosen
+        $this->assertMatchesRegularExpression('#aria-labelledby="cur-l cur-v"><span id="cur-v"\s*>USD · US Dollar</span>#', $html);
+        $this->assertStringContainsString('data-popular="AED,USD"', $html);
+        $this->assertMatchesRegularExpression('#data-label-popular="Popular"\s+data-label-all="All currencies"#', $html);
+        // three options are fewer than eight: no search box; the list itself takes the keys
+        $this->assertStringNotContainsString('role="combobox"', $html);
+        $this->assertStringContainsString('role="listbox" aria-labelledby="cur-l" tabindex="0"', $html);
+        $this->assertStringContainsString('data-label="No currency like @q"', $html);
+    }
+
+    public function test_a_long_picker_gets_a_search_box_and_a_placeholder_until_chosen(): void
+    {
+        $o = [];
+        foreach (range(1, 9) as $i) {
+            $o['C'.$i] = 'Country '.$i;
+        }
+        $html = $this->render('<x-sheen::picker id="pp" label="Your passport" name="passport" :options="$o" placeholder="Choose" search="Search country" variant="pill" icon="passport" layout="sheet" close="Close" />', ['o' => $o]);
+        $this->assertStringContainsString('<option value="" disabled selected>Choose</option>', $html);
+        $this->assertMatchesRegularExpression('#<span id="pp-v"\s+class="sheen-picker-placeholder"\s*>Choose</span>#', $html);
+        $this->assertMatchesRegularExpression('#<input type="text" role="combobox" aria-autocomplete="list" aria-expanded="true" aria-controls="pp-list" aria-label="Search country"#', $html);
+        $this->assertStringContainsString('class="sheen-picker-pill sheen-glass"', $html);
+        $this->assertStringContainsString('<span id="pp-l" class="sheen-visually-hidden">Your passport</span>', $html);
+        $this->assertStringContainsString('data-layout="sheet"', $html);
+        $this->assertStringContainsString('aria-label="Close"', $html);
+    }
+
+    public function test_chip_choice_is_native_radios_in_a_fieldset(): void
+    {
+        $html = $this->render('<x-sheen::chip-choice legend="Document" name="kind" :options="[\'passport\' => \'Passport\', \'visa\' => \'Visa\']" value="visa" size="small" :input="[\'form\' => \'f1\']" />');
+        $this->assertStringContainsString('<fieldset class="sheen-chip-choice"><legend >Document</legend>', preg_replace('/<legend\s+class="">/', '<legend >', $html));
+        $this->assertMatchesRegularExpression('#<label class="sheen-chip sheen-small"><input type="radio" name="kind" value="visa" checked\s+form="f1"\s*>Visa</label>#', $html);
+        $this->assertMatchesRegularExpression('#<input type="radio" name="kind" value="passport"\s+form="f1"\s*>Passport#', $html);
     }
 }

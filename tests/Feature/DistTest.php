@@ -50,10 +50,25 @@ class DistTest extends TestCase
         // 0.1.4 (owner, 16 Oct): the base focus ring drew a sharp box around a bare input inside a rounded field or a
         // search bar's part; Airbnb, Booking, Expedia and Agoda all show focus on the field or part instead
         $css = $this->css();
-        $this->assertStringContainsString('.sheen :is(.sheen-field,.sheen-segment) :is(input,select,textarea,.sheen-segment-trigger):focus-visible{outline:none}', $css);
+        $this->assertStringContainsString('.sheen :is(.sheen-field,.sheen-segment,.sheen-picker-pill) :is(input,select,textarea,.sheen-segment-trigger,.sheen-picker-trigger):focus-visible{outline:none}', $css);
         $this->assertMatchesRegularExpression('/\.sheen-field:focus-within\{[^}]*0 0 0 4px/', $css);
         $this->assertMatchesRegularExpression('/\.sheen-segment:focus-within\{[^}]*background/', $css);
         // the field still shows where the keyboard is when the system draws no shadows
         $this->assertMatchesRegularExpression('/@media \(forced-colors: active\)\{[^@]*\.sheen-field:focus-within/', $css);
+    }
+
+    public function test_a_picker_hides_its_select_only_once_the_script_has_run(): void
+    {
+        // without JavaScript the native select is the control; the script marks the picker ready and shows its trigger
+        $css = $this->css();
+        $this->assertStringContainsString('.sheen-picker:not(.sheen-picker-ready) .sheen-picker-trigger{display:none}', $css);
+        $this->assertStringContainsString('.sheen-picker-ready select{display:none!important}', $css);
+        // a [popover] is display:none until shown; the list sets its display only while not hidden
+        $this->assertStringContainsString('.sheen-picker-pop:not([hidden]){display:flex}', $css);
+        $this->assertDoesNotMatchRegularExpression('/\.sheen-picker-pop\{[^}]*display:/', $css);
+        $js = file_get_contents(__DIR__.'/../../dist/sheen.js');
+        foreach (['showPopover', "dispatchEvent(new Event('change'", 'aria-activedescendant', 'initPickers'] as $s) {
+            $this->assertStringContainsString($s, $js);
+        }
     }
 }

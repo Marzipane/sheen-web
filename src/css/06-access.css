@@ -12,4 +12,5 @@
 .sheen *,.sheen *::before,.sheen *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 @media (forced-colors: active){.sheen-deal-badge,.sheen-score,.sheen-pill{border:1px solid CanvasText}
 /* shadows are not drawn here: the field or part being filled gets a real outline */
-.sheen-field:focus-within,.sheen-segment:focus-within{outline:2px solid Highlight;outline-offset:2px}}
+.sheen-field:focus-within,.sheen-segment:focus-within,.sheen-picker-open .sheen-picker-field{outline:2px solid Highlight;outline-offset:2px}
+.sheen-picker-pop{border:1px solid CanvasText}.sheen-picker-option.sheen-active{outline:2px solid Highlight;outline-offset:-2px}}

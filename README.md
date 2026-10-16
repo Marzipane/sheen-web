@@ -94,9 +94,33 @@ Without Laravel, use the CSS and script from a tag through jsDelivr:
 | `SheenActionBar` | `<x-sheen::action-bar>` | the floating price and action bar on phones |
 | `SheenPhotoViewer` | `<x-sheen::photo-viewer>` | photos full screen with chips |
 | text fields, steppers | `<x-sheen::field>`, `<x-sheen::stepper>`, `<x-sheen::check>` | forms |
+| a choice from a list | `<x-sheen::picker>` | a currency, a country: a glass list with search, never the browser's own dropdown |
+| a few choices at once | `<x-sheen::chip-choice>` | a document's kind, a child's age: chips that are native radios |
 | `SheenBadge`, steps, alerts | `<x-sheen::pill>`, `<x-sheen::steps>`, `<x-sheen::alert>`, `<x-sheen::tabs>` | states |
 
 Each component's file starts with a comment that documents its attributes.
+
+### Pickers
+
+`<x-sheen::picker>` replaces the browser's own dropdown. The field opens a glass list under it, with a search box
+from eight options (`searchFrom`), popular values first (`popular`) and the chosen one ticked. `layout="sheet"` opens
+a sheet in the middle for long lists; on phones every picker is a sheet from the bottom that rises with the keyboard.
+`variant="pill"` makes the field a glass pill with an icon, for a filter over a page.
+
+```blade
+<x-sheen::picker label="Currency" name="code" :value="$code" :options="$currencies" :popular="['AED', 'USD', 'EUR']"
+  popular-label="Popular" all-label="All currencies" search="Search currency or code" empty="No currency matches “@q”" />
+```
+
+A real `<select>` stays underneath. Without JavaScript it is the control; with it, the form sends the value and the
+select fires `input` and `change`. The list is a `role="listbox"` driven from a `role="combobox"` search box:
+↑ ↓, Page Up/Down, Enter and Esc work, and without a search box typing jumps to a name. The list opens in the top
+layer (`popover`), so a dialog or a clipped parent never cuts it. Search ignores case and accents and also matches the
+value and `keywords`. Pickers added after the page loaded are set up by `sheenWeb.initPickers()`; inside a Livewire
+component, wrap one in `wire:ignore`.
+
+When every choice fits on the screen, show them all instead: `<x-sheen::chip-choice>` draws chips that are native
+radios.
 
 ### Focus on fields
 
