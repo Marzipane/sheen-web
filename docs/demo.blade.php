@@ -29,7 +29,7 @@
 <section class="demo-sec"><h2 class="sheen-title">Cards with deals</h2>
 <div class="sheen-grid sheen-scroll-s" style="--sheen-cols:3">
 <x-sheen::hotel-card href="#" name="Palace Hotel" score="4.7" score-label="4.7 out of 5" line="Near the old town" price="AED 2,493.72" per="total · 2 nights" :deal="['badge' => '−10%', 'was' => 'AED 2,770.80', 'ends' => 'Ends Wed 21 Oct']" class="demo-a" />
-<x-sheen::trip-card href="#" title="Six days of old cities and coastlines" eyebrow="A tour operator" facts="6 days · Turkey" price="from AED 3,001" per="a person" :deal="['badge' => '−5%', 'was' => 'AED 3,159', 'ends' => 'until 31 Oct']" />
+<x-sheen::trip-card href="#" title="Six days of old cities and coastlines" eyebrow="A tour operator" facts="6 days · Turkey" price="from AED 3,001" per="a person" :deal="['badge' => '−5%', 'was' => 'AED 3,159', 'ends' => 'until 31 Oct']" :icons="[['icon' => 'user', 'label' => 'Tour leader'], ['icon' => 'bed', 'label' => 'Hotels'], ['icon' => 'car', 'label' => 'Transport'], ['icon' => 'compass', 'label' => 'Sightseeing']]" />
 <x-sheen::trip-card href="#" title="Nine nights from Istanbul to Rome: islands, temples and harbours" eyebrow="A ship" facts="9 nights · from Istanbul" price="Price on request" tag="Cruise line" cruise />
 </div></section>
 

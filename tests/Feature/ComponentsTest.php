@@ -22,7 +22,8 @@ class ComponentsTest extends TestCase
     {
         // every word on screen comes from the site (translated); a component that renders text itself fails here
         $html = $this->render(<<<'B'
-<x-sheen::trip-card href="/t" title="Qa" eyebrow="Qb" facts="Qc" price="Qd" per="Qe" photo="/p.webp" tag="Qf" :deal="['badge' => 'Qg', 'was' => 'Qh', 'ends' => 'Qi']" />
+<x-sheen::trip-card href="/t" title="Qa" eyebrow="Qb" facts="Qc" price="Qd" per="Qe" photo="/p.webp" tag="Qf" :deal="['badge' => 'Qg', 'was' => 'Qh', 'ends' => 'Qi']" :icons="[['icon' => 'bed', 'label' => 'Qal']]" />
+<x-sheen::included :items="[['icon' => 'car', 'label' => 'Qam']]" />
 <x-sheen::hotel-card href="/h" name="Qj" score="Qk" line="Ql" price="Qm" per="Qn" :deal="['badge' => 'Qo', 'was' => 'Qp', 'ends' => 'Qq']" />
 <x-sheen::stepper name="adults" :value="2" label="Qr" fewer="Qs" more="Qt" />
 <x-sheen::photo-viewer id="v" :groups="[]" close="Qu" previous="Qv" next="Qw" />
@@ -60,6 +61,22 @@ B);
         $this->assertStringContainsString('<span class="sheen-deal-ends">until 31 Oct</span>', $html);
         // the badge sits in the photo box (top start), not in the text
         $this->assertMatchesRegularExpression('#class="sheen-photo">.*sheen-deal-badge#s', $html);
+    }
+
+    public function test_trip_card_shows_what_is_included_as_icons_named_for_screen_readers(): void
+    {
+        $html = $this->render('<x-sheen::trip-card href="/t" title="Tour" price="from AED 1" :icons="$i" />',
+            ['i' => [['icon' => 'bed', 'label' => 'Hotels'], ['icon' => 'car', 'label' => 'Transport']]]);
+        $this->assertStringContainsString('class="sheen-included sheen-included-compact"', $html);
+        $this->assertSame(2, substr_count($html, 'class="sheen-included-item"'));
+        $this->assertStringContainsString('title="Hotels"', $html);
+        $this->assertStringContainsString('aria-label="Transport"', $html);
+        // the full list names each one in words
+        $full = $this->render('<x-sheen::included :items="$i" />', ['i' => [['icon' => 'bed', 'label' => 'Hotels']]]);
+        $this->assertStringContainsString('<span>Hotels</span>', $full);
+        $this->assertStringNotContainsString('title=', $full);
+        // no icons, nothing drawn
+        $this->assertStringNotContainsString('sheen-included', $this->render('<x-sheen::trip-card href="/t" title="Tour" price="x" />'));
     }
 
     public function test_trip_card_without_a_photo_draws_the_placeholder_glyph(): void

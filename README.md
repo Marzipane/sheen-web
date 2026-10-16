@@ -86,7 +86,8 @@ Without Laravel, use the CSS and script from a tag through jsDelivr:
 | `SheenWasPrice` | `<x-sheen::was-price>`, `<x-sheen::deal-line>` | the usual price, struck; the end date |
 | `SheenScoreBadge` | `<x-sheen::score>`, `<x-sheen::stars>` | guest score, hotel stars |
 | `SheenPremiumCard` | `<x-sheen::hotel-card>` | a hotel in a row |
-| `SheenTripCard`, `SheenTripTag` | `<x-sheen::trip-card>`, `<x-sheen::trip-tag>` | tours and cruises |
+| `SheenTripCard`, `SheenTripTag` | `<x-sheen::trip-card>`, `<x-sheen::trip-tag>` | tours and cruises; `icons` shows what is included |
+| what a trip includes | `<x-sheen::included>` | an icon and a name each, as the app's tour icons |
 | `SheenChoice` | `<x-sheen::choices>`, `<x-sheen::choice>` | rooms, cabins, how to pay: native radios |
 | `SheenItinerary` | `<x-sheen::itinerary>` | days of a tour, ports of a cruise |
 | `SheenKeyValueCard` | `<x-sheen::key-value>` | facts and policies |

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.2
+
+- New `<x-sheen::included>`: what a trip includes, each an icon with its name, as the app's tour icons. `compact` draws the icons only, with the name for screen readers and on pointing.
+- `<x-sheen::trip-card>` takes `icons` and shows them compact under the facts.
+
 ## 0.2.1
 
 - Picker search: the exact value comes first, then the popular values, then names that start with what was typed. "dollar" now finds the US dollar before the Australian one.
