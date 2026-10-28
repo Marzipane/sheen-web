@@ -36,3 +36,6 @@ jobs:
         with: { node-version: '20' }
       - run: node build.mjs --check
       - run: node scripts/check-flutter.mjs
+      # the app elements (dist/sheen-elements.js) are tested in jsdom
+      - run: npm ci --no-audit --no-fund
+      - run: node --test tests/elements/

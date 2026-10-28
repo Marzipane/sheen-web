@@ -71,4 +71,33 @@ class DistTest extends TestCase
             $this->assertStringContainsString($s, $js);
         }
     }
+    public function test_app_ui_holds_up_at_phone_width_and_inside_fields(): void
+    {
+        // found by screenshotting an app at 390 px: titles squeezed to nothing, tabs spilling, sliders flattened
+        $css = $this->css();
+        $this->assertStringContainsString('.sheen-panel-head{display:flex;flex-wrap:wrap', $css);
+        $this->assertStringContainsString('.sheen-panel-head>:first-child{margin:0;font-size:17px;font-weight:700;flex:1 1 10em', $css);
+        $this->assertStringContainsString('.sheen-tabs{max-inline-size:100%;overflow-x:auto', $css);
+        $this->assertStringContainsString('background:var(--sheen-swatch,transparent)', $css);
+        $this->assertStringContainsString('.sheen-field .sheen-range{appearance:none', $css);
+        $this->assertMatchesRegularExpression('/\[dir="rtl"\] \.sheen-field:has\(>select\)::after\{transform:rotate\(-45deg\)\}/', $css);
+    }
+
+    public function test_the_elements_bundle_defines_every_element_with_its_styles(): void
+    {
+        // 0.3.0: the app elements ship as dist/sheen-elements.js; each one has its rules in dist/sheen.css
+        $js = file_get_contents(__DIR__.'/../../dist/sheen-elements.js');
+        $css = $this->css();
+        foreach (['sheen-glyph', 'sheen-progress-ring', 'sheen-drop-zone', 'sheen-toaster', 'sheen-command-palette',
+            'sheen-video', 'sheen-waveform', 'sheen-compare', 'sheen-timeline', 'sheen-transcript', 'sheen-node-graph',
+            'sheen-tour'] as $tag) {
+            $this->assertStringContainsString("define('$tag'", $js, $tag);
+            $selector = $tag === 'sheen-command-palette' ? '.sheen-cmd' : $tag;   // the palette styles its <dialog>
+            $this->assertStringContainsString($selector, $css, "$tag has styles");
+        }
+        // motion stops for people who ask for less of it
+        $this->assertMatchesRegularExpression('/@media \(prefers-reduced-motion: reduce\)\{\.sheen-aurora::before,\.sheen-aurora::after\{animation:none\}\}/', $css);
+        $this->assertStringContainsString('reducedMotion()', $js);
+    }
 }
+
