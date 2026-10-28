@@ -1,5 +1,33 @@
 # Changelog
 
+## 0.3.0
+
+App elements and app UI, for apps that are not Laravel sites (first user: Video Studio). Additive: nothing that
+existed changes.
+
+- New `dist/sheen-elements.js` (and `.min.js`): framework-free custom elements. They draw in the light DOM, take every
+  word from attributes, mirror for `dir="rtl"`, follow light and dark, and stop moving under reduced motion.
+  - `<sheen-glyph>`: the sheen icons plus 39 media glyphs (play, scissors, captions, timeline, nodes…).
+  - `<sheen-progress-ring>`: round progress, or a spinner without a value.
+  - `<sheen-drop-zone>`: drop files or choose them by keyboard; fires `sheen-files`.
+  - `<sheen-toaster>` and `sheenElements.toast()`: a queue of toasts with actions, paused while pointed at.
+  - `<sheen-command-palette>`: ⌘K, grouped results, free-text commands, disabled rows with a reason.
+  - `<sheen-video>`: a player with a scrubber slider, in/out points, markers and J/K/L, I/O keys.
+  - `<sheen-waveform>`: audio peaks as a seek slider.
+  - `<sheen-compare>`: before and after with a split handle (images or synced videos).
+  - `<sheen-timeline>`: tracks for video, audio (with peaks), captions and overlays; zoom, trim handles, split.
+  - `<sheen-transcript>`: text-based editing; select words and delete to cut, fillers and pauses highlighted.
+  - `<sheen-node-graph>`: drag nodes and connect ports, with a keyboard way to do both.
+  - `<sheen-tour>`: an onboarding tour with a spotlight.
+- New CSS for app UIs: `.sheen-shell`, `.sheen-rail`, `.sheen-topbar`, `.sheen-search-trigger`, `.sheen-panel`,
+  `.sheen-glow`, `.sheen-aurora` (animated gradient background), `.sheen-dialog`, `.sheen-switch`, `.sheen-range`,
+  `.sheen-kbd` and `.sheen-shortcuts`, `.sheen-empty`, skeleton variants (`-line`, `-block`, `-circle`),
+  `.sheen-stat`, `.sheen-table`, `.sheen-badge`, `.sheen-progress`, `.sheen-toolbar`, `.sheen-swatch`, `.sheen-chat`
+  with `.sheen-msg`, and `.sheen-drawer`.
+- The media glyphs live in `glyphs/media/`, apart from `icons/`, which stays identical to Flutter sheen.
+- Tests: `node --test tests/elements/` (jsdom, 19 tests) runs in CI and before every release; a dist test checks that
+  every element is defined and styled. Live stories: `docs/elements.html`.
+
 ## 0.2.2
 
 - New `<x-sheen::included>`: what a trip includes, each an icon with its name, as the app's tour icons. `compact` draws the icons only, with the name for screen readers and on pointing.

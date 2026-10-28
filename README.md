@@ -131,6 +131,82 @@ The field shows focus, and the words inside it never get a box of their own.
 
 Buttons and links keep their focus ring. With forced colors, the field or part gets a real outline.
 
+## App elements (0.3.0)
+
+For apps that are not Laravel sites, `dist/sheen-elements.js` adds framework-free custom elements. Load it after the
+stylesheet (no build step):
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Marzipane/sheen-web@v0.3.0/dist/sheen.min.css">
+<script src="https://cdn.jsdelivr.net/gh/Marzipane/sheen-web@v0.3.0/dist/sheen-elements.min.js" defer></script>
+```
+
+The rules every element follows:
+- It draws in the light DOM, so `sheen.css` styles it and your page can restyle it.
+- It takes every word from its attributes, already translated; it never shows text of its own.
+- It mirrors for `dir="rtl"`: positions use logical properties, and the arrow keys follow the reading direction.
+- It follows light and dark through the tokens, and stops moving under `prefers-reduced-motion`.
+
+Live stories for every element: `docs/elements.html` (open it from a local server or the demo site).
+
+| Element | Use | Attributes · properties | Events | Keys |
+| --- | --- | --- | --- | --- |
+| `<sheen-glyph>` | a sheen icon or media glyph | `name`, `size`, `label` (without it: decorative) | | |
+| `<sheen-progress-ring>` | round progress | `value` 0..1, `size`, `label`, `show-value`, `indeterminate` | | |
+| `<sheen-drop-zone>` | drop or choose files | `label`, `hint`, `accept`, `multiple`, `glyph`, `disabled` | `sheen-files` {files} | Enter, Space |
+| `<sheen-toaster>` | toast queue (aria-live) | `close-label`, `max`; `show(opts)`, `dismiss(id)` | | |
+| `<sheen-command-palette>` | ⌘K command box | `label`, `placeholder`, `empty`, `submit-label` ("@q"), `hotkey`; `items`, `aside`, `open()`, `close()`, `value` | `sheen-select` {item, text}, `sheen-submit` {text}, `sheen-open`, `sheen-close` | ↑ ↓, Enter, Esc, ⌘K |
+| `<sheen-video>` | player with scrubber | `src`, `poster`, `keys`, `play-label`, `pause-label`, `seek-label`, `mute-label`, `unmute-label`; `markers`, `inPoint`, `outPoint`, `seek(t)`, `play()`, `pause()` | `sheen-time` {time}, `sheen-inout` {in, out} | Space/K, J, L, I, O; on the scrubber ← → Home End |
+| `<sheen-waveform>` | audio peaks as a seek slider | `duration`, `progress`, `label`; `peaks` | `sheen-seek` {time} | ← → (Shift: 1 s) |
+| `<sheen-compare>` | before and after | `before`, `after`, `kind` (image, video), `position`, `label`, `before-label`, `after-label` | `sheen-change` {position} | ← → on the handle |
+| `<sheen-timeline>` | simple multi-track timeline | `duration`, `playhead`, `label`, `zoom-in-label`, `zoom-out-label`, `split-label`; `tracks`, `splitAt(t)`, `setZoom(z)` | `sheen-seek`, `sheen-split`, `sheen-clipchange`, `sheen-clipdelete`, `sheen-select` | on a clip: Alt+← → trims the start, Shift+← → the end, S splits, Delete removes |
+| `<sheen-transcript>` | text-based editing | `label`, `current`, `removed-label`, `follow`; `words`, `removeKind(kind)`, `toggleCut(indices)` | `sheen-seek` {time}, `sheen-edit` {removed, restored} | ← →, Shift to select, Delete, Enter |
+| `<sheen-node-graph>` | node graph | `label`, `connect-label`, `connected-label`, `remove-label`; `nodes`, `edges`, `order()` | `sheen-graphchange` {nodes, edges}, `sheen-nodeopen` {node} | arrows move, C then Enter connects, Delete |
+| `<sheen-tour>` | onboarding tour | `next-label`, `back-label`, `done-label`, `skip-label`, `step-label` ("@n of @all"); `steps`, `start()`, `stop()` | `sheen-tour-step` {index}, `sheen-tour-end` {completed} | Enter, Esc, Tab stays inside |
+
+```html
+<sheen-command-palette id="cmd" hotkey label="Command bar" placeholder="Type a command or search…"
+                       empty="Nothing found" submit-label="Run “@q”"></sheen-command-palette>
+<script>
+  cmd.items = [{ group: 'Presets', label: 'Make shorts', hint: 'vertical clips', glyph: 'phone' },
+               { group: 'AI', label: 'Write titles', glyph: 'sparkle', disabled: true, reason: 'Needs an AI provider' }];
+  cmd.addEventListener('sheen-submit', (e) => plan(e.detail.text));
+</script>
+
+<sheen-transcript id="words" label="Transcript" removed-label="cut" follow></sheen-transcript>
+<script>
+  words.words = [{ text: 'So', start: 0, end: .4 }, { text: 'um', start: .4, end: .8, kind: 'filler' }];
+  words.addEventListener('sheen-edit', (e) => save(e.detail.removed, e.detail.restored));
+  removeFillers.onclick = () => words.removeKind('filler');
+</script>
+
+<sheen-timeline id="tl" duration="90" label="Timeline" zoom-in-label="Zoom in" zoom-out-label="Zoom out"
+                split-label="Split at the playhead"></sheen-timeline>
+<script>
+  tl.tracks = [{ id: 'v', label: 'Video', kind: 'video', clips: [{ id: 'c1', start: 0, end: 90, label: 'Talk' }] },
+               { id: 'a', label: 'Audio', kind: 'audio', peaks: [/* 0..1 */], clips: [] }];
+</script>
+```
+
+`window.sheenElements` gives `version`, `glyph(name, size, label)`, `glyphNames()`, `fmtTime(seconds)` and
+`toast({title, message, tone: 'info'|'success'|'warning'|'danger', timeout, action: {label, onClick}})`.
+
+### App UI classes
+
+| Class | Use |
+| --- | --- |
+| `.sheen-shell`, `.sheen-rail`, `.sheen-rail-item`, `.sheen-main`, `.sheen-topbar`, `.sheen-search-trigger` | an app shell: a navigation rail (a bottom bar on phones), a glass top bar, a ⌘K button |
+| `.sheen-panel` (+ `.sheen-glass`), `.sheen-panel-head`, `.sheen-glow` | glass panels with a soft accent glow on hover and focus |
+| `.sheen-aurora` | a fixed, slowly moving gradient behind the page (`--sheen-aurora-a/b/c` set its colours) |
+| `.sheen-dialog` (+ `-head`, `-body`, `-foot`, `.sheen-wide`) | a native `<dialog>` with a blurred page behind it |
+| `.sheen-switch`, `.sheen-range` | a switch around `<input type="checkbox" role="switch">`; a range slider (`--sheen-range-fill`) |
+| `.sheen-kbd`, `.sheen-shortcuts`, `.sheen-shortcut` | keys and a shortcut cheat sheet |
+| `.sheen-empty` (+ `-glyph`, `-title`, `-actions`) | empty states |
+| `.sheen-skeleton-line`, `-block`, `-circle` | skeleton loaders (with `.sheen-skeleton`) |
+| `.sheen-stat` (+ `-label`, `-value`, `-note`), `.sheen-table`, `.sheen-badge` (`.sheen-ok`, `.sheen-warn`, `.sheen-bad`, `.sheen-run`), `.sheen-progress` | dashboards and job lists |
+| `.sheen-toolbar`, `.sheen-swatch`, `.sheen-small-icon` | rows of controls, colour swatches, 36 px icon buttons |
+| `.sheen-chat`, `.sheen-msg-user`, `.sheen-msg-ai`, `.sheen-msg-note`, `.sheen-drawer` | a chat side panel |
+
 ## Tokens
 
 | Flutter | CSS | Dark | Light |
@@ -151,6 +227,7 @@ setting `--sheen-accent` and `--sheen-accent-text`.
 composer install
 node build.mjs                         # tokens + src/ → dist/ and resources/icons.php
 vendor/bin/phpunit                     # components and built files
+npm ci && node --test tests/elements/  # the app elements, in jsdom
 node scripts/check-flutter.mjs ../sheen  # tokens and icons against a Flutter sheen checkout
 ```
 
