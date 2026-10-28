@@ -209,6 +209,10 @@ class SheenCompare extends HTMLElement {
       if (s) { e.preventDefault(); self.position = self.position + s * (e.shiftKey ? 10 : 2); }
     });
     if (video) {
+      // Chromium paints nothing until the first seek: show each video's first frame once it can
+      [this.before, this.after].forEach(function (m) {
+        m.addEventListener('loadedmetadata', function () { if (!m.currentTime) m.currentTime = 0.001; });
+      });
       this.before.addEventListener('timeupdate', function () {
         if (Math.abs(self.after.currentTime - self.before.currentTime) > 0.15) self.after.currentTime = self.before.currentTime;
       });

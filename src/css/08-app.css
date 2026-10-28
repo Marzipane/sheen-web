@@ -3,6 +3,8 @@
    .sheen-shell            the page grid: .sheen-rail (navigation) + main (+ an optional .sheen-drawer)
    .sheen-panel            a glass panel with .sheen-panel-head; .sheen-glow adds the soft accent glow on hover/focus
    .sheen-aurora           a fixed, slowly moving gradient behind everything (still under reduced motion)        */
+/* the hidden attribute always wins over the display these classes set */
+:where(.sheen-panel,.sheen-badge,.sheen-progress,.sheen-drawer,.sheen-empty,.sheen-toolbar,.sheen-stat,.sheen-switch,.sheen-table-wrap,.sheen-alert,.sheen-kbd,.sheen-skeleton)[hidden]{display:none!important}
 .sheen-shell{display:grid;grid-template-columns:auto minmax(0,1fr) auto;min-block-size:100dvh}
 .sheen-rail{position:sticky;inset-block-start:0;block-size:100dvh;display:flex;flex-direction:column;gap:4px;padding:16px 10px;inline-size:84px;z-index:5}
 .sheen-rail-brand{display:grid;place-items:center;block-size:44px;margin-block-end:12px}
@@ -50,6 +52,7 @@
 .sheen-switch{display:inline-flex;align-items:center;gap:10px;cursor:pointer;font-size:15px}
 .sheen-switch input{appearance:none;-webkit-appearance:none;margin:0;inline-size:46px;block-size:28px;border-radius:14px;background:var(--sheen-track);position:relative;cursor:pointer;transition:background-color .2s;flex:none}
 .sheen-switch input::after{content:"";position:absolute;inset-block-start:3px;inset-inline-start:3px;inline-size:22px;block-size:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:inset-inline-start .2s}
+.sheen-switch input:not(:checked){background:color-mix(in srgb,var(--sheen-text) 45%,transparent)}   /* 3:1 against the panel */
 .sheen-switch input:checked{background:var(--sheen-accent)}
 .sheen-switch input:checked::after{inset-inline-start:21px}
 .sheen-switch input:disabled{opacity:.45;cursor:not-allowed}
@@ -62,6 +65,12 @@
 .sheen-range::-moz-range-progress{block-size:6px;border-radius:3px;background:var(--sheen-accent)}
 .sheen-range::-webkit-slider-thumb{-webkit-appearance:none;inline-size:20px;block-size:20px;border-radius:50%;background:#fff;margin-block-start:-7px;box-shadow:0 1px 4px rgba(0,0,0,.35)}
 .sheen-range::-moz-range-thumb{inline-size:20px;block-size:20px;border:0;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.35)}
+/* inside a .sheen-field the field's input reset would flatten the slider: put it back */
+.sheen-field .sheen-range{appearance:none;-webkit-appearance:none;inline-size:100%;block-size:28px;cursor:pointer}
+/* a select inside a .sheen-field shows that it opens a list */
+.sheen-field:has(>select){position:relative;padding-inline-end:40px}
+.sheen-field:has(>select)::after{content:"";position:absolute;inset-inline-end:18px;inset-block-end:19px;inline-size:7px;block-size:7px;border-block-end:2px solid var(--sheen-text-secondary);border-inline-end:2px solid var(--sheen-text-secondary);transform:rotate(45deg);pointer-events:none}
+[dir="rtl"] .sheen-field:has(>select)::after{transform:rotate(-45deg)}
 
 .sheen-kbd{display:inline-flex;align-items:center;justify-content:center;min-inline-size:24px;block-size:24px;padding-inline:6px;border-radius:7px;font:600 12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--sheen-text-secondary);background:var(--sheen-tonal);box-shadow:inset 0 -1px 0 var(--sheen-separator)}
 .sheen-shortcuts{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:4px 24px}

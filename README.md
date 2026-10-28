@@ -190,6 +190,8 @@ Live stories for every element: `docs/elements.html` (open it from a local serve
 
 `window.sheenElements` gives `version`, `glyph(name, size, label)`, `glyphNames()`, `fmtTime(seconds)` and
 `toast({title, message, tone: 'info'|'success'|'warning'|'danger', timeout, action: {label, onClick}})`.
+`paintRange(input)` sets a slider's `--sheen-range-fill`; you rarely need it, because every
+`<input class="sheen-range">` on the page is painted by itself when it is added and while it moves.
 
 ### App UI classes
 

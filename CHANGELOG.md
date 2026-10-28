@@ -25,7 +25,14 @@ existed changes.
   `.sheen-stat`, `.sheen-table`, `.sheen-badge`, `.sheen-progress`, `.sheen-toolbar`, `.sheen-swatch`, `.sheen-chat`
   with `.sheen-msg`, and `.sheen-drawer`.
 - The media glyphs live in `glyphs/media/`, apart from `icons/`, which stays identical to Flutter sheen.
-- Tests: `node --test tests/elements/` (jsdom, 19 tests) runs in CI and before every release; a dist test checks that
+- `sheenElements.paintRange(input)`; every `<input class="sheen-range">` on the page is painted by itself (when added
+  and while it moves), so the filled part of the track follows the thumb.
+- Polish found by screenshotting a whole app built on 0.3.0 in dark, light and phone widths:
+  a `.sheen-range` inside a `.sheen-field` keeps its height (the field's input reset flattened it); a `select` inside a
+  `.sheen-field` shows a chevron (mirrored right to left); off `.sheen-switch` tracks reach about 3:1 contrast;
+  the `hidden` attribute always wins over the app classes' `display`; `<sheen-compare>` shows each video's first frame
+  before it is played; the `<sheen-tour>` card goes beside a target as tall as the window instead of covering it.
+- Tests: `node --test tests/elements/` (jsdom, 21 tests) runs in CI and before every release; a dist test checks that
   every element is defined and styled. Live stories: `docs/elements.html`.
 
 ## 0.2.2

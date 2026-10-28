@@ -61,3 +61,18 @@ test('tour: steps with their words, Back and Next, Esc ends it unfinished, the l
   assert.deepEqual(ends[1], { completed: true });
   assert.equal(tour.card.getAttribute('role'), 'dialog');
 });
+
+test('tour: a target as tall as the window gets the card beside it, on the reading side, also right to left', () => {
+  for (const dir of ['ltr', 'rtl']) {
+    const w = page(`<nav id="rail">Rail</nav><sheen-tour next-label="Next" back-label="Back" done-label="Done"></sheen-tour>`, dir);
+    const W = w.innerWidth, H = w.innerHeight;
+    // an 84px rail down the inline-start edge: the left in LTR, the right in RTL
+    const box = dir === 'ltr' ? { left: 0, right: 84 } : { left: W - 84, right: W };
+    w.document.getElementById('rail').getBoundingClientRect = () => ({ ...box, top: 0, bottom: H, width: 84, height: H });
+    const tour = w.document.querySelector('sheen-tour');
+    tour.steps = [{ target: '#rail', title: 'Rail', text: 'All screens' }];
+    tour.start();
+    assert.equal(tour.card.style.top, '12px', dir);
+    assert.equal(tour.card.style.insetInlineStart, '100px', `${dir}: 84px rail + 16px gap, counted from the inline start`);
+  }
+});

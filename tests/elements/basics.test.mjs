@@ -67,3 +67,17 @@ test('the elements carry no words of their own', () => {
   const letters = w.document.body.textContent.replace(/esc|\d|[:/.\s–]/g, '');
   assert.equal(letters, '');
 });
+
+test('a sheen-range slider fills up to its thumb: on load, when added later, and as it moves', async () => {
+  const w = page('<input type="range" class="sheen-range" min="0.1" max="1.1" value="0.85">');
+  const r = w.document.querySelector('input');
+  assert.equal(r.style.getPropertyValue('--sheen-range-fill'), '75%');
+  r.value = '0.35';
+  r.dispatchEvent(new w.Event('input', { bubbles: true }));
+  assert.equal(r.style.getPropertyValue('--sheen-range-fill'), '25%');
+  const later = w.document.createElement('input');
+  later.type = 'range'; later.className = 'sheen-range'; later.value = '30';
+  w.document.body.append(later);
+  await new Promise((done) => w.setTimeout(done, 0));          // the observer runs after the insert
+  assert.equal(later.style.getPropertyValue('--sheen-range-fill'), '30%');
+});

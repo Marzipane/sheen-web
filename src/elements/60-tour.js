@@ -75,10 +75,17 @@ class SheenTour extends HTMLElement {
     this.spot.style.insetInlineStart = (isRtl(this) ? window.innerWidth - r.right - pad : r.left - pad) + 'px';
     this.spot.style.width = (r.width + pad * 2) + 'px';
     this.spot.style.height = (r.height + pad * 2) + 'px';
-    var cardH = this.card.offsetHeight || 180, below = r.bottom + 16 + cardH < window.innerHeight;
-    this.card.style.top = Math.max(12, below ? r.bottom + 16 : r.top - 16 - cardH) + 'px';
-    var start = isRtl(this) ? window.innerWidth - r.right : r.left;
-    this.card.style.insetInlineStart = clamp(start, 12, Math.max(12, window.innerWidth - (this.card.offsetWidth || 360) - 12)) + 'px';
+    // below the target, else above it, else beside it (after, then before), else over a target that fills the screen;
+    // start/end are measured from the inline-start side of the window, so the same rules hold right to left
+    var cardH = this.card.offsetHeight || 180, cardW = this.card.offsetWidth || 360, W = window.innerWidth, H = window.innerHeight;
+    var gap = 16, rtl = isRtl(this), start = rtl ? W - r.right : r.left, end = rtl ? W - r.left : r.right, top, at;
+    if (r.bottom + gap + cardH < H) { top = r.bottom + gap; at = start; }
+    else if (r.top - gap - cardH > 0) { top = r.top - gap - cardH; at = start; }
+    else if (end + gap + cardW < W) { top = r.top; at = end + gap; }
+    else if (start - gap - cardW > 0) { top = r.top; at = start - gap - cardW; }
+    else { top = H - cardH - 24; at = (W - cardW) / 2; }
+    this.card.style.top = clamp(top, 12, Math.max(12, H - cardH - 12)) + 'px';
+    this.card.style.insetInlineStart = clamp(at, 12, Math.max(12, W - cardW - 12)) + 'px';
   }
 }
 define('sheen-tour', SheenTour);
