@@ -206,7 +206,7 @@ Live stories for every element: `docs/elements.html` (open it from a local serve
 | `.sheen-empty` (+ `-glyph`, `-title`, `-actions`) | empty states |
 | `.sheen-skeleton-line`, `-block`, `-circle` | skeleton loaders (with `.sheen-skeleton`) |
 | `.sheen-stat` (+ `-label`, `-value`, `-note`), `.sheen-table`, `.sheen-badge` (`.sheen-ok`, `.sheen-warn`, `.sheen-bad`, `.sheen-run`), `.sheen-progress` | dashboards and job lists |
-| `.sheen-toolbar`, `.sheen-swatch`, `.sheen-small-icon` | rows of controls, colour swatches, 36 px icon buttons |
+| `.sheen-toolbar`, `.sheen-swatch`, `.sheen-small-icon` | rows of controls, colour swatches (`style="--sheen-swatch:#F97316"`), 36 px icon buttons |
 | `.sheen-chat`, `.sheen-msg-user`, `.sheen-msg-ai`, `.sheen-msg-note`, `.sheen-drawer` | a chat side panel |
 
 ## Tokens

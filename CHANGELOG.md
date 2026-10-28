@@ -32,6 +32,8 @@ existed changes.
   `.sheen-field` shows a chevron (mirrored right to left); off `.sheen-switch` tracks reach about 3:1 contrast;
   the `hidden` attribute always wins over the app classes' `display`; `<sheen-compare>` shows each video's first frame
   before it is played; the `<sheen-tour>` card goes beside a target as tall as the window instead of covering it.
+  At phone width: `.sheen-panel-head` wraps its actions under the title instead of squeezing it to nothing, and
+  `.sheen-tabs` scroll sideways when they do not fit. `.sheen-swatch` takes its colour from `--sheen-swatch`.
 - Tests: `node --test tests/elements/` (jsdom, 21 tests) runs in CI and before every release; a dist test checks that
   every element is defined and styled. Live stories: `docs/elements.html`.
 
