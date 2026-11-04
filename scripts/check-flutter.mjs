@@ -28,6 +28,9 @@ const darkAcc = dart.match(/defaultDarkAccent = Color\(0xFF([0-9A-F]{6})\)/i)[1]
 if (tokens.color.light.accent !== '#' + light.toUpperCase()) problems.push(`light.accent: Flutter #${light}`);
 if (tokens.color.dark.accent !== '#' + darkAcc.toUpperCase()) problems.push(`dark.accent: Flutter #${darkAcc}`);
 
+const motion = JSON.parse(await read('tool/motion.json'));
+if (JSON.stringify(tokens.motion) !== JSON.stringify(motion)) problems.push('motion: tokens.json differs from Flutter sheen tool/motion.json (node scripts/sync-motion.mjs ../sheen)');
+
 if (src) {
   for (const set of ['stroke', 'filled']) {
     const theirs = readdirSync(`${src}/tool/icons/${set}`).sort();
