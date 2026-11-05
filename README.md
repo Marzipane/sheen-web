@@ -202,6 +202,8 @@ Live stories for every element: `docs/elements.html` (open it from a local serve
 | Class | Use |
 | --- | --- |
 | `.sheen-shell`, `.sheen-rail`, `.sheen-rail-item`, `.sheen-main`, `.sheen-topbar`, `.sheen-search-trigger` | an app shell: a navigation rail (a bottom bar on phones), a glass top bar, a ⌘K button |
+| `.sheen-sidebar-shell`, `.sheen-sidebar`, `.sheen-sidebar-nav`, `.sheen-sidebar-item`, `.sheen-app-main`, `.sheen-app-bar`, `.sheen-app-content` | an app shell with a labelled sidebar, for record-heavy apps; on top below 760px |
+| `.sheen-auth-page`, `.sheen-auth-card`, `.sheen-form-field`, `.sheen-input`, `.sheen-form-error` | a small centred sign-in page |
 | `.sheen-panel` (+ `.sheen-glass`), `.sheen-panel-head`, `.sheen-glow` | glass panels with a soft accent glow on hover and focus |
 | `.sheen-aurora` | a fixed, slowly moving gradient behind the page (`--sheen-aurora-a/b/c` set its colours) |
 | `.sheen-dialog` (+ `-head`, `-body`, `-foot`, `.sheen-wide`) | a native `<dialog>` with a blurred page behind it |

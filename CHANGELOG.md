@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.5.0
+
+A sidebar shell and motion tokens. Additive: nothing that existed changes.
+
+- `.sheen-sidebar-shell`, `.sheen-sidebar` and its parts, `.sheen-app-main`, `.sheen-app-bar`, `.sheen-app-search`, `.sheen-app-tool`, `.sheen-app-content`: a labelled sidebar for record-heavy apps. Below 760px the sidebar sits on top.
+- `.sheen-auth-page`, `.sheen-auth-card`, `.sheen-form`, `.sheen-form-field`, `.sheen-input`, `.sheen-form-error`: a small centred sign-in page.
+- `.sheen-icon`, `.sheen-grow`.
+- `--sheen-motion-*`: durations, easing, springs as `linear()` and the press scale, from Flutter sheen's `tool/motion.json`, with a drift check. Under reduced motion every spring becomes a plain fade.
+
 ## 0.4.0
 
 Four elements for record-heavy apps. Additive: nothing that existed changes.
