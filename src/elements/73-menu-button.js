@@ -20,6 +20,12 @@ class SheenMenuButton extends HTMLElement {
     });
     this.draw();
   }
+  static get observedAttributes() { return ['label']; }
+  attributeChangedCallback(name, was, now) {
+    if (!this.menu) return;
+    this.button.textContent = now || '';
+    this.menu.setAttribute('aria-label', now || '');
+  }
   get items() { return this._items || []; }
   set items(v) { this._items = Array.isArray(v) ? v : []; if (this.menu) this.draw(); }
   rows() { return Array.prototype.slice.call(this.menu.querySelectorAll('[role="menuitem"]:not([aria-disabled="true"])')); }

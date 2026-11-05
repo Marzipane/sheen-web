@@ -183,3 +183,19 @@ test('menu button: Esc closes it and picks nothing', () => {
   assert.equal(picks.length, 0);
   assert.equal(w.document.activeElement, button);
 });
+
+test('words set after the element is on the page take effect, as a framework binding sets them', () => {
+  const w = page('<sheen-hover-card></sheen-hover-card><sheen-side-panel></sheen-side-panel><sheen-scope-picker></sheen-scope-picker><sheen-menu-button></sheen-menu-button>');
+  const d = w.document;
+  d.querySelector('sheen-hover-card').setAttribute('label', 'Facts');
+  assert.equal(d.querySelector('sheen-hover-card').getAttribute('aria-label'), 'Facts');
+  d.querySelector('sheen-side-panel').setAttribute('close-label', 'Close');
+  assert.equal(d.querySelector('sheen-side-panel button').getAttribute('aria-label'), 'Close');
+  const picker = d.querySelector('sheen-scope-picker');
+  picker.setAttribute('all-label', 'All');
+  picker.setAttribute('label', 'Zones');
+  assert.match(picker.querySelector('legend').textContent, /Zones/);
+  assert.match(picker.querySelectorAll('.sheen-scope-mode')[0].textContent, /All/);
+  d.querySelector('sheen-menu-button').setAttribute('label', 'Export');
+  assert.equal(d.querySelector('sheen-menu-button button').textContent, 'Export');
+});

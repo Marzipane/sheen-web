@@ -23,6 +23,8 @@ class SheenHoverCard extends HTMLElement {
     });
     if (this.pending) { var t = this.pending; this.pending = null; this.attach(t); }
   }
+  static get observedAttributes() { return ['label']; }
+  attributeChangedCallback(name, was, now) { this.setAttribute('aria-label', now || ''); }
   get delay() { return parseInt(this.getAttribute('delay'), 10) || 350; }
   attach(trigger) {
     if (!this.ready) { this.pending = trigger; return; }

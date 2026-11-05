@@ -22,8 +22,16 @@ class SheenScopePicker extends HTMLElement {
     this.replaceChildren(h('fieldset', { class: 'sheen-scope-modes' }, h('legend', { text: this.getAttribute('label') || '' }), this.radios[0], this.radios[1], this.radios[2]), this.tools, this.list, this.status);
     this.draw();
   }
-  static get observedAttributes() { return ['result']; }
-  attributeChangedCallback(name, was, now) { if (this.status) this.status.textContent = now || ''; }
+  static get observedAttributes() { return ['result', 'label', 'all-label', 'only-label', 'except-label', 'search-label', 'select-shown-label']; }
+  attributeChangedCallback(name, was, now) {
+    if (!this.status) return;
+    var text = now || '';
+    if (name === 'result') this.status.textContent = text;
+    else if (name === 'label') this.querySelector('legend').textContent = text;
+    else if (name === 'search-label') { this.search.setAttribute('aria-label', text); this.search.placeholder = text; }
+    else if (name === 'select-shown-label') this.shown.textContent = text;
+    else this.radios[['all-label', 'only-label', 'except-label'].indexOf(name)].lastChild.textContent = text;
+  }
   get groups() { return this._groups || []; }
   set groups(v) { this._groups = Array.isArray(v) ? v : []; if (this.list) this.draw(); }
   get value() { return this._value; }

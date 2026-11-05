@@ -21,6 +21,11 @@ class SheenSidePanel extends HTMLElement {
       if (e.key === 'Escape') { e.preventDefault(); self.close(); }
     });
   }
+  static get observedAttributes() { return ['label', 'close-label']; }
+  attributeChangedCallback(name, was, now) {
+    if (name === 'label') this.setAttribute('aria-label', now || '');
+    else if (this.closeButton) this.closeButton.setAttribute('aria-label', now || '');
+  }
   open() {
     this.opener = document.activeElement;
     this.hidden = false;
