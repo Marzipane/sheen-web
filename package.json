@@ -14,8 +14,8 @@
   "scripts": {
     "build": "node build.mjs",
     "check": "node build.mjs --check && node scripts/check-flutter.mjs",
-    "test:elements": "node --test tests/elements/",
-    "test": "node build.mjs --check && node --test tests/elements/ && vendor/bin/phpunit"
+    "test:elements": "node --test tests/elements/*.test.mjs",
+    "test": "node build.mjs --check && node --test tests/elements/*.test.mjs && vendor/bin/phpunit"
   },
   "engines": {
     "node": ">=20"
