@@ -95,7 +95,7 @@ const areas = [
 ];
 
 function picker(value) {
-  const w = page('<sheen-scope-picker label="Zones" all-label="All" only-label="Only these" except-label="All except" search-label="Search" select-shown-label="Select all shown"></sheen-scope-picker>');
+  const w = page('<sheen-scope-picker label="Zones" all-label="All" chosen-label="Only these" except-label="All except" search-label="Search" select-shown-label="Select all shown"></sheen-scope-picker>');
   const p = w.document.querySelector('sheen-scope-picker');
   p.groups = areas;
   if (value) p.value = value;
