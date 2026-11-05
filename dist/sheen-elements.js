@@ -1450,6 +1450,9 @@ class SheenMenuButton extends HTMLElement {
   open() {
     this.menu.hidden = false;
     this.button.setAttribute('aria-expanded', 'true');
+    this.menu.classList.remove('sheen-menu-flip');
+    var box = this.menu.getBoundingClientRect();
+    if (box.left < 0 || box.right > window.innerWidth) this.menu.classList.add('sheen-menu-flip');
     var rows = this.rows();
     if (rows.length) rows[0].focus();
   }

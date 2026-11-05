@@ -188,6 +188,17 @@ test('menu button: keyboard opens it, arrows skip a disabled item, Enter picks a
   assert.equal(w.document.activeElement, button);
 });
 
+test('menu button: a menu that would leave the screen flips to the other edge', () => {
+  const { w, m, button } = menu();
+  const list = m.querySelector('[role="menu"]');
+  list.getBoundingClientRect = () => ({ left: -40, right: 140 });
+  button.click();
+  assert.equal(list.classList.contains('sheen-menu-flip'), true);
+  key(w, w.document.activeElement, 'Escape');
+  list.getBoundingClientRect = () => ({ left: 10, right: 190 });
+  button.click();
+  assert.equal(list.classList.contains('sheen-menu-flip'), false);
+});
 test('menu button: Esc closes it and picks nothing', () => {
   const { w, m, picks, button } = menu();
   button.click();
