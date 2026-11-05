@@ -143,6 +143,16 @@ test('scope picker: search filters, and Select all shown takes only what is show
   assert.deepEqual(changes.at(-1).include, ['area:abudhabi']);
 });
 
+test('scope picker: ticking a row keeps focus on that row, group or item', () => {
+  const { w, p } = picker({ mode: 'only', include: [], exclude: [] });
+  for (const id of [areas[0].items[0].id, areas[0].id]) {
+    const row = box(p, id);
+    row.focus();
+    row.click();
+    assert.equal(w.document.activeElement, box(p, id));
+  }
+});
+
 test('scope picker: a search that finds nothing says so', () => {
   const { p } = picker();
   p.setAttribute('empty-label', 'Nothing found');

@@ -1385,6 +1385,7 @@ class SheenScopePicker extends HTMLElement {
   }
   draw() {
     var self = this, mode = this._value.mode, choosing = mode !== 'all';
+    var focused = this.list.contains(document.activeElement) ? document.activeElement.value : null;
     this.radios.forEach(function (r) { var i = r.querySelector('input'); i.checked = i.value === mode; });
     this.tools.hidden = !choosing;
     this.list.hidden = !choosing;
@@ -1404,6 +1405,8 @@ class SheenScopePicker extends HTMLElement {
       self.list.appendChild(h('div', { role: 'group', 'aria-label': group.label }, head.row, items));
     });
     if (!this.list.children.length) this.list.appendChild(h('p', { class: 'sheen-footnote sheen-secondary sheen-scope-empty', role: 'status', text: this.getAttribute('empty-label') || '' }));
+    // Drawing replaces every row, so the row a keyboard user just ticked gets its focus back.
+    if (focused != null) Array.prototype.forEach.call(this.list.querySelectorAll('input'), function (input) { if (input.value === focused) input.focus(); });
   }
 }
 define('sheen-scope-picker', SheenScopePicker);
