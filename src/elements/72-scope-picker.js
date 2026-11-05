@@ -1,5 +1,6 @@
 // <sheen-scope-picker label="Zones" all-label="All" chosen-label="Only these" except-label="All except"
-//                     search-label="Search" select-shown-label="Select all shown" result="Applies to 43 of 46 zones">
+//                     search-label="Search" select-shown-label="Select all shown" empty-label="Nothing found"
+//                     result="Applies to 43 of 46 zones">
 //   Chooses a rule, not a list. picker.groups = [{id, label, items: [{id, label}]}].
 //   picker.value = {mode: 'all'|'only'|'all_except', include: [ids], exclude: [ids]}. A whole group is stored as the
 //   group's id, so something added to that group later joins the rule. The page works out the result line and sets it.
@@ -22,7 +23,7 @@ class SheenScopePicker extends HTMLElement {
     this.replaceChildren(h('fieldset', { class: 'sheen-scope-modes' }, h('legend', { text: this.getAttribute('label') || '' }), this.radios[0], this.radios[1], this.radios[2]), this.tools, this.list, this.status);
     this.draw();
   }
-  static get observedAttributes() { return ['result', 'label', 'all-label', 'chosen-label', 'except-label', 'search-label', 'select-shown-label']; }
+  static get observedAttributes() { return ['result', 'label', 'all-label', 'chosen-label', 'except-label', 'search-label', 'select-shown-label', 'empty-label']; }
   attributeChangedCallback(name, was, now) {
     if (!this.status) return;
     var text = now || '';
@@ -30,6 +31,7 @@ class SheenScopePicker extends HTMLElement {
     else if (name === 'label') this.querySelector('legend').textContent = text;
     else if (name === 'search-label') { this.search.setAttribute('aria-label', text); this.search.placeholder = text; }
     else if (name === 'select-shown-label') this.shown.textContent = text;
+    else if (name === 'empty-label') this.draw();
     else this.radios[['all-label', 'chosen-label', 'except-label'].indexOf(name)].lastChild.textContent = text;
   }
   get groups() { return this._groups || []; }
@@ -97,6 +99,7 @@ class SheenScopePicker extends HTMLElement {
       rows.forEach(function (row) { items.appendChild(row); });
       self.list.appendChild(h('div', { role: 'group', 'aria-label': group.label }, head.row, items));
     });
+    if (!this.list.children.length) this.list.appendChild(h('p', { class: 'sheen-footnote sheen-secondary sheen-scope-empty', role: 'status', text: this.getAttribute('empty-label') || '' }));
   }
 }
 define('sheen-scope-picker', SheenScopePicker);

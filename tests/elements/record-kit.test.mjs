@@ -143,6 +143,19 @@ test('scope picker: search filters, and Select all shown takes only what is show
   assert.deepEqual(changes.at(-1).include, ['area:abudhabi']);
 });
 
+test('scope picker: a search that finds nothing says so', () => {
+  const { p } = picker();
+  p.setAttribute('empty-label', 'Nothing found');
+  p.value = { mode: 'only', include: [], exclude: [] };
+  const search = p.querySelector('input[type=search]');
+  search.value = 'zzz';
+  search.dispatchEvent(new search.ownerDocument.defaultView.Event('input'));
+  assert.equal(p.querySelector('.sheen-scope-empty').textContent, 'Nothing found');
+  search.value = '';
+  search.dispatchEvent(new search.ownerDocument.defaultView.Event('input'));
+  assert.equal(p.querySelector('.sheen-scope-empty'), null);
+});
+
 test('scope picker: modes are radios with one name, and the result line uses the page words', () => {
   const { p } = picker();
   const radios = [...p.querySelectorAll('input[type=radio]')];
