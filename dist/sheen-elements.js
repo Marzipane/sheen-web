@@ -9,7 +9,7 @@ var GLYPHS = {"arrow-up":"<path d=\"M12 19V5.5\"></path><path d=\"m6 11 6-6 6 6\
 // - takes all of its words from attributes (already translated); it never renders text of its own;
 // - mirrors for dir="rtl" (positions use inset-inline-start, keys follow the reading direction);
 // - follows light/dark through the sheen tokens and stops motion under prefers-reduced-motion.
-var VERSION = '0.3.0';
+var VERSION = '0.4.0';
 
 function define(tag, cls) {
   if (!window.customElements.get(tag)) window.customElements.define(tag, cls);
@@ -1160,6 +1160,320 @@ class SheenTour extends HTMLElement {
   }
 }
 define('sheen-tour', SheenTour);
+
+// ---- 70-hover-card.js
+// <sheen-hover-card label="Customer details" delay="350"> … </sheen-hover-card>
+//   A card of facts and quick actions beside a link. card.attach(trigger) joins it to one element at a time.
+//   Hover opens it after the delay, so moving across a table sends nothing; focus and Space open it with no pointer; a
+//   touch never does. It stays while the pointer is over it, and Esc closes it and returns focus (WCAG 1.4.13).
+//   Fires "sheen-hover-open" {trigger} just before it shows, which is when to load the facts, and "sheen-hover-close".
+var HOVER_LEAVE_MS = 200;
+
+class SheenHoverCard extends HTMLElement {
+  connectedCallback() {
+    if (this.ready) return;
+    this.ready = true;
+    var self = this;
+    this.hidden = true;
+    this.classList.add('sheen-glass');
+    this.setAttribute('role', 'dialog');
+    this.setAttribute('aria-modal', 'false');
+    this.setAttribute('aria-label', this.getAttribute('label') || '');
+    this.tabIndex = -1;
+    this.addEventListener('pointerenter', function () { window.clearTimeout(self.leaveTimer); });
+    this.addEventListener('pointerleave', function () { self.leaveSoon(); });
+    this.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { e.preventDefault(); self.close(); if (self.trigger) self.trigger.focus(); }
+    });
+    if (this.pending) { var t = this.pending; this.pending = null; this.attach(t); }
+  }
+  static get observedAttributes() { return ['label']; }
+  attributeChangedCallback(name, was, now) { this.setAttribute('aria-label', now || ''); }
+  get delay() { return parseInt(this.getAttribute('delay'), 10) || 350; }
+  attach(trigger) {
+    if (!this.ready) { this.pending = trigger; return; }
+    var self = this;
+    this.detach();
+    this.trigger = trigger;
+    trigger.setAttribute('aria-haspopup', 'dialog');
+    trigger.setAttribute('aria-expanded', 'false');
+    this.onEnter = function (e) {
+      if (e.pointerType === 'touch') return;
+      window.clearTimeout(self.leaveTimer);
+      self.openTimer = window.setTimeout(function () { self.open(); }, self.delay);
+    };
+    this.onLeave = function () { window.clearTimeout(self.openTimer); self.leaveSoon(); };
+    this.onKey = function (e) {
+      if (e.key === ' ' && self.hidden) {
+        e.preventDefault();
+        self.open();
+        var first = self.querySelector('a[href],button:not([disabled]),input,select,textarea');
+        (first || self).focus();
+      } else if (e.key === 'Escape') self.close();
+    };
+    trigger.addEventListener('pointerenter', this.onEnter);
+    trigger.addEventListener('pointerleave', this.onLeave);
+    trigger.addEventListener('keydown', this.onKey);
+  }
+  detach() {
+    if (!this.trigger) return;
+    this.trigger.removeEventListener('pointerenter', this.onEnter);
+    this.trigger.removeEventListener('pointerleave', this.onLeave);
+    this.trigger.removeEventListener('keydown', this.onKey);
+    this.trigger = null;
+  }
+  disconnectedCallback() {
+    window.clearTimeout(this.openTimer);
+    window.clearTimeout(this.leaveTimer);
+    this.detach();
+    this.ready = false;
+  }
+  leaveSoon() {
+    var self = this;
+    window.clearTimeout(this.leaveTimer);
+    this.leaveTimer = window.setTimeout(function () { self.close(); }, HOVER_LEAVE_MS);
+  }
+  open() {
+    if (!this.hidden) return;
+    emit(this, 'sheen-hover-open', { trigger: this.trigger });
+    this.hidden = false;
+    if (this.trigger) this.trigger.setAttribute('aria-expanded', 'true');
+    this.place();
+  }
+  close() {
+    window.clearTimeout(this.openTimer);
+    if (this.hidden) return;
+    this.hidden = true;
+    if (this.trigger) this.trigger.setAttribute('aria-expanded', 'false');
+    emit(this, 'sheen-hover-close', {});
+  }
+  place() {
+    if (!this.trigger) return;
+    var r = this.trigger.getBoundingClientRect(), W = window.innerWidth, H = window.innerHeight, gap = 8;
+    var w = this.offsetWidth || 300, hh = this.offsetHeight || 200, rtl = isRtl(this);
+    var start = rtl ? W - r.right : r.left, top = r.bottom + gap + hh < H ? r.bottom + gap : r.top - gap - hh;
+    this.style.top = clamp(top, 12, Math.max(12, H - hh - 12)) + 'px';
+    this.style.insetInlineStart = clamp(start, 12, Math.max(12, W - w - 12)) + 'px';
+  }
+}
+define('sheen-hover-card', SheenHoverCard);
+
+// ---- 71-side-panel.js
+// <sheen-side-panel label="Booking" close-label="Close"> … </sheen-side-panel>
+//   A panel on the end edge (the left in Arabic) with no backdrop, so the page behind keeps its scroll, filters and
+//   selection. panel.open() and panel.close(). It takes focus when it opens, and Esc or the close button gives it back.
+//   Fires "sheen-panel-close".
+class SheenSidePanel extends HTMLElement {
+  connectedCallback() {
+    if (this.body) return;
+    var self = this;
+    this.body = h('div', { class: 'sheen-panel-body' });
+    while (this.firstChild) this.body.appendChild(this.firstChild);
+    this.closeButton = h('button', { type: 'button', class: 'sheen-button sheen-small sheen-panel-close', 'aria-label': this.getAttribute('close-label') || '', onclick: function () { self.close(); } }, glyph('close', 18));
+    this.appendChild(this.closeButton);
+    this.appendChild(this.body);
+    this.classList.add('sheen-glass');
+    this.setAttribute('role', 'dialog');
+    this.setAttribute('aria-modal', 'false');
+    this.setAttribute('aria-label', this.getAttribute('label') || '');
+    this.tabIndex = -1;
+    this.hidden = true;
+    this.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { e.preventDefault(); self.close(); }
+    });
+  }
+  static get observedAttributes() { return ['label', 'close-label']; }
+  attributeChangedCallback(name, was, now) {
+    if (name === 'label') this.setAttribute('aria-label', now || '');
+    else if (this.closeButton) this.closeButton.setAttribute('aria-label', now || '');
+  }
+  open() {
+    this.opener = document.activeElement;
+    this.hidden = false;
+    this.focus();
+  }
+  close() {
+    if (this.hidden) return;
+    this.hidden = true;
+    emit(this, 'sheen-panel-close', {});
+    if (this.opener && this.opener.focus) this.opener.focus();
+  }
+}
+define('sheen-side-panel', SheenSidePanel);
+
+// ---- 72-scope-picker.js
+// <sheen-scope-picker label="Zones" all-label="All" chosen-label="Only these" except-label="All except"
+//                     search-label="Search" select-shown-label="Select all shown" empty-label="Nothing found"
+//                     result="Applies to 43 of 46 zones">
+//   Chooses a rule, not a list. picker.groups = [{id, label, items: [{id, label}]}].
+//   picker.value = {mode: 'all'|'only'|'all_except', include: [ids], exclude: [ids]}. A whole group is stored as the
+//   group's id, so something added to that group later joins the rule. The page works out the result line and sets it.
+//   Fires "sheen-scope-change" with the value.
+class SheenScopePicker extends HTMLElement {
+  connectedCallback() {
+    if (this.list) return;
+    var self = this, name = uid('scope');
+    this._groups = this._groups || [];
+    this._value = this._value || { mode: 'all', include: [], exclude: [] };
+    this.query = '';
+    this.radios = [['all', 'all-label'], ['only', 'chosen-label'], ['all_except', 'except-label']].map(function (m) {
+      return h('label', { class: 'sheen-scope-mode' }, h('input', { type: 'radio', name: name, value: m[0], onchange: function () { self.setMode(m[0]); } }), self.getAttribute(m[1]) || '');
+    });
+    this.search = h('input', { type: 'search', 'aria-label': this.getAttribute('search-label') || '', placeholder: this.getAttribute('search-label') || '', oninput: function (e) { self.query = e.target.value.trim().toLowerCase(); self.draw(); } });
+    this.shown = h('button', { type: 'button', class: 'sheen-button sheen-small sheen-scope-shown', text: this.getAttribute('select-shown-label') || '', onclick: function () { self.selectShown(); } });
+    this.tools = h('div', { class: 'sheen-row sheen-scope-tools' }, h('label', { class: 'sheen-field' }, this.search), this.shown);
+    this.list = h('div', { class: 'sheen-scope-list' });
+    this.status = h('p', { class: 'sheen-footnote sheen-secondary', role: 'status', text: this.getAttribute('result') || '' });
+    this.replaceChildren(h('fieldset', { class: 'sheen-scope-modes' }, h('legend', { text: this.getAttribute('label') || '' }), this.radios[0], this.radios[1], this.radios[2]), this.tools, this.list, this.status);
+    this.draw();
+  }
+  static get observedAttributes() { return ['result', 'label', 'all-label', 'chosen-label', 'except-label', 'search-label', 'select-shown-label', 'empty-label']; }
+  attributeChangedCallback(name, was, now) {
+    if (!this.status) return;
+    var text = now || '';
+    if (name === 'result') this.status.textContent = text;
+    else if (name === 'label') this.querySelector('legend').textContent = text;
+    else if (name === 'search-label') { this.search.setAttribute('aria-label', text); this.search.placeholder = text; }
+    else if (name === 'select-shown-label') this.shown.textContent = text;
+    else if (name === 'empty-label') this.draw();
+    else this.radios[['all-label', 'chosen-label', 'except-label'].indexOf(name)].lastChild.textContent = text;
+  }
+  get groups() { return this._groups || []; }
+  set groups(v) { this._groups = Array.isArray(v) ? v : []; if (this.list) this.draw(); }
+  get value() { return this._value; }
+  set value(v) { this._value = { mode: v.mode, include: (v.include || []).slice(), exclude: (v.exclude || []).slice() }; if (this.list) this.draw(); }
+  // In "only" the picks live in include, in "all except" in exclude.
+  get picks() { return this._value.mode === 'only' ? this._value.include : this._value.exclude; }
+  set picks(v) { if (this._value.mode === 'only') this._value.include = v; else this._value.exclude = v; }
+  picked(group, item) { return this.picks.indexOf(group.id) >= 0 || (item != null && this.picks.indexOf(item.id) >= 0); }
+  setMode(mode) {
+    this._value.mode = mode;
+    this.draw();
+    this.changed();
+  }
+  changed() { emit(this, 'sheen-scope-change', { mode: this._value.mode, include: this._value.include.slice(), exclude: this._value.exclude.slice() }); }
+  visible(group) {
+    var q = this.query;
+    if (!q || group.label.toLowerCase().indexOf(q) >= 0) return group.items;
+    return group.items.filter(function (i) { return i.label.toLowerCase().indexOf(q) >= 0; });
+  }
+  setGroup(group, on) {
+    var inGroup = group.items.map(function (i) { return i.id; }).concat(group.id);
+    var rest = this.picks.filter(function (p) { return inGroup.indexOf(p) < 0; });
+    this.picks = on ? rest.concat(group.id) : rest;
+  }
+  setItem(group, item, on) {
+    var ids = group.items.filter(function (i) { return this.picked(group, i); }, this).map(function (i) { return i.id; });
+    ids = on ? ids.concat(item.id) : ids.filter(function (id) { return id !== item.id; });
+    if (ids.length === group.items.length) { this.setGroup(group, true); return; }
+    this.setGroup(group, false);
+    this.picks = this.picks.concat(ids);
+  }
+  selectShown() {
+    this.groups.forEach(function (group) {
+      var shown = this.visible(group);
+      if (shown.length === group.items.length) this.setGroup(group, true);
+      else shown.forEach(function (i) { this.setItem(group, i, true); }, this);
+    }, this);
+    this.draw();
+    this.changed();
+  }
+  box(id, label, checked, change, cls) {
+    var input = h('input', { type: 'checkbox', value: id, onchange: change });
+    input.checked = checked;
+    return { input: input, row: h('label', { class: cls }, input, label) };
+  }
+  draw() {
+    var self = this, mode = this._value.mode, choosing = mode !== 'all';
+    var focused = this.list.contains(document.activeElement) ? document.activeElement.value : null;
+    this.radios.forEach(function (r) { var i = r.querySelector('input'); i.checked = i.value === mode; });
+    this.tools.hidden = !choosing;
+    this.list.hidden = !choosing;
+    this.list.replaceChildren();
+    if (!choosing) return;
+    this.groups.forEach(function (group) {
+      var shown = self.visible(group);
+      if (!shown.length) return;
+      var count = group.items.filter(function (i) { return self.picked(group, i); }).length;
+      var head = self.box(group.id, group.label, count === group.items.length, function (e) { self.setGroup(group, e.target.checked); self.draw(); self.changed(); }, 'sheen-scope-group');
+      head.input.indeterminate = count > 0 && count < group.items.length;
+      var rows = shown.map(function (item) {
+        return self.box(item.id, item.label, self.picked(group, item), function (e) { self.setItem(group, item, e.target.checked); self.draw(); self.changed(); }, 'sheen-scope-item').row;
+      });
+      var items = h('div', { class: 'sheen-scope-items' });
+      rows.forEach(function (row) { items.appendChild(row); });
+      self.list.appendChild(h('div', { role: 'group', 'aria-label': group.label }, head.row, items));
+    });
+    if (!this.list.children.length) this.list.appendChild(h('p', { class: 'sheen-footnote sheen-secondary sheen-scope-empty', role: 'status', text: this.getAttribute('empty-label') || '' }));
+    // Drawing replaces every row, so the row a keyboard user just ticked gets its focus back.
+    if (focused != null) Array.prototype.forEach.call(this.list.querySelectorAll('input'), function (input) { if (input.value === focused) input.focus(); });
+  }
+}
+define('sheen-scope-picker', SheenScopePicker);
+
+// ---- 73-menu-button.js
+// <sheen-menu-button label="Export"></sheen-menu-button>
+//   A button with a menu. menu.items = [{id, label, disabled}]. Up and Down move and skip disabled items, Enter picks, Esc
+//   closes; focus goes back to the button. Fires "sheen-menu-select" {id}.
+class SheenMenuButton extends HTMLElement {
+  connectedCallback() {
+    if (this.menu) return;
+    var self = this, menuId = uid('menu');
+    this._items = this._items || [];
+    this.button = h('button', { type: 'button', class: 'sheen-button', 'aria-haspopup': 'menu', 'aria-expanded': 'false', 'aria-controls': menuId, text: this.getAttribute('label') || '', onclick: function () { if (self.menu.hidden) self.open(); else self.close(); } });
+    this.menu = h('div', { role: 'menu', id: menuId, class: 'sheen-menu sheen-glass', 'aria-label': this.getAttribute('label') || '' });
+    this.menu.hidden = true;
+    this.replaceChildren(this.button, this.menu);
+    this.button.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown') { e.preventDefault(); self.open(); }
+    });
+    this.menu.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); self.move(e.key === 'ArrowDown' ? 1 : -1); }
+      else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); document.activeElement.click(); }
+      else if (e.key === 'Escape') { e.preventDefault(); self.close(); }
+    });
+    this.draw();
+  }
+  static get observedAttributes() { return ['label']; }
+  attributeChangedCallback(name, was, now) {
+    if (!this.menu) return;
+    this.button.textContent = now || '';
+    this.menu.setAttribute('aria-label', now || '');
+  }
+  get items() { return this._items || []; }
+  set items(v) { this._items = Array.isArray(v) ? v : []; if (this.menu) this.draw(); }
+  rows() { return Array.prototype.slice.call(this.menu.querySelectorAll('[role="menuitem"]:not([aria-disabled="true"])')); }
+  draw() {
+    var self = this;
+    this.menu.replaceChildren();
+    this.items.forEach(function (item) {
+      self.menu.appendChild(h('button', { type: 'button', role: 'menuitem', tabindex: '-1', class: 'sheen-menu-item', 'aria-disabled': item.disabled ? 'true' : null, text: item.label, onclick: function () { if (!item.disabled) self.pick(item); } }));
+    });
+  }
+  open() {
+    this.menu.hidden = false;
+    this.button.setAttribute('aria-expanded', 'true');
+    this.menu.classList.remove('sheen-menu-flip');
+    var box = this.menu.getBoundingClientRect();
+    if (box.left < 0 || box.right > window.innerWidth) this.menu.classList.add('sheen-menu-flip');
+    var rows = this.rows();
+    if (rows.length) rows[0].focus();
+  }
+  close() {
+    this.menu.hidden = true;
+    this.button.setAttribute('aria-expanded', 'false');
+    this.button.focus();
+  }
+  move(by) {
+    var rows = this.rows(), at = rows.indexOf(document.activeElement);
+    if (rows.length) rows[(at + by + rows.length) % rows.length].focus();
+  }
+  pick(item) {
+    this.close();
+    emit(this, 'sheen-menu-select', { id: item.id });
+  }
+}
+define('sheen-menu-button', SheenMenuButton);
 
 // ---- 99-api.js
 // window.sheenElements: the version, the glyphs and a toast shortcut.

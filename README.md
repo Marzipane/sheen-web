@@ -163,6 +163,10 @@ Live stories for every element: `docs/elements.html` (open it from a local serve
 | `<sheen-transcript>` | text-based editing | `label`, `current`, `removed-label`, `follow`; `words`, `removeKind(kind)`, `toggleCut(indices)` | `sheen-seek` {time}, `sheen-edit` {removed, restored} | ← →, Shift to select, Delete, Enter |
 | `<sheen-node-graph>` | node graph | `label`, `connect-label`, `connected-label`, `remove-label`; `nodes`, `edges`, `order()` | `sheen-graphchange` {nodes, edges}, `sheen-nodeopen` {node} | arrows move, C then Enter connects, Delete |
 | `<sheen-tour>` | onboarding tour | `next-label`, `back-label`, `done-label`, `skip-label`, `step-label` ("@n of @all"); `steps`, `start()`, `stop()` | `sheen-tour-step` {index}, `sheen-tour-end` {completed} | Enter, Esc, Tab stays inside |
+| `<sheen-hover-card>` | facts and actions beside a link | `label`, `delay`, `attach(trigger)`; fires `sheen-hover-open`, `sheen-hover-close` |
+| `<sheen-side-panel>` | a panel on the end edge, no backdrop | `label`, `close-label`, `open()`, `close()`; fires `sheen-panel-close` |
+| `<sheen-scope-picker>` | chooses a rule, not a list | `groups`, `value`, `result`, the `*-label` words; fires `sheen-scope-change` |
+| `<sheen-menu-button>` | a button with a keyboard menu | `label`, `items`; fires `sheen-menu-select` |
 
 ```html
 <sheen-command-palette id="cmd" hotkey label="Command bar" placeholder="Type a command or search…"
