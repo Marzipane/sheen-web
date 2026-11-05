@@ -22,6 +22,8 @@ jobs:
         run: test "v$(node -p "require('./package.json').version")" = "${GITHUB_REF_NAME}"
       - run: node build.mjs --check
       - run: node scripts/check-flutter.mjs
+      - run: npm ci --no-audit --no-fund
+      - run: node --test tests/elements/
       - run: composer update --prefer-dist --no-interaction --no-progress
       - run: vendor/bin/phpunit
       - run: cd dist && zip -q ../sheen-web-${GITHUB_REF_NAME}.zip *

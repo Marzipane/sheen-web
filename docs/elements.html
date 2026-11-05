@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>sheen elements</title>
+<link rel="stylesheet" href="sheen.min.css">
+<style>
+  section{margin-block:28px}
+  h2{margin-block:0 10px}
+  .demo-row{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+</style>
+</head>
+<body class="sheen">
+<div class="sheen-aurora" aria-hidden="true"></div>
+<main class="sheen-container" style="padding-block:32px">
+  <header class="sheen-topbar sheen-glass">
+    <h1 class="sheen-topbar-title">sheen elements <span class="sheen-footnote sheen-secondary">0.3.0</span></h1>
+    <button class="sheen-button sheen-small" id="theme" type="button">Light / dark</button>
+    <button class="sheen-button sheen-small" id="dir" type="button">LTR / RTL</button>
+    <button class="sheen-search-trigger" id="openCmd" type="button"><sheen-glyph name="search"></sheen-glyph><span>Command palette</span><kbd class="sheen-kbd">⌘K</kbd></button>
+  </header>
+  <p class="sheen-lead sheen-secondary">Framework-free custom elements for app UIs, in <code>dist/sheen-elements.js</code>. They take every word from their attributes, mirror in right-to-left pages and follow light and dark.</p>
+
+  <section id="s-basics"><h2 class="sheen-title">Glyph, progress ring, badges</h2>
+    <div class="demo-row">
+      <sheen-glyph name="film" size="28"></sheen-glyph><sheen-glyph name="captions" size="28"></sheen-glyph><sheen-glyph name="wand" size="28"></sheen-glyph>
+      <sheen-progress-ring value="0.68" size="64" label="Rendering" show-value></sheen-progress-ring>
+      <sheen-progress-ring size="40" label="Waiting"></sheen-progress-ring>
+      <span class="sheen-badge sheen-ok">Done</span><span class="sheen-badge sheen-run">Running</span><span class="sheen-badge sheen-bad">Failed</span>
+      <kbd class="sheen-kbd">⌘</kbd><kbd class="sheen-kbd">K</kbd>
+      <label class="sheen-switch"><input type="checkbox" role="switch" checked> Notifications</label>
+    </div>
+  </section>
+
+  <section id="s-drop"><h2 class="sheen-title">Drop zone</h2>
+    <sheen-drop-zone label="Drop a video here" hint="or press Enter to choose a file" accept="video/*"></sheen-drop-zone>
+  </section>
+
+  <section id="s-video"><h2 class="sheen-title">Video, waveform, compare</h2>
+    <sheen-video id="video" keys duration="60" play-label="Play" pause-label="Pause" seek-label="Position" mute-label="Mute" unmute-label="Unmute"
+      src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"></sheen-video>
+    <sheen-waveform id="wave" duration="60" label="Audio position" progress="12" style="margin-block:12px"></sheen-waveform>
+    <sheen-compare before="https://picsum.photos/id/1015/900/500?grayscale" after="https://picsum.photos/id/1015/900/500" label="Compare before and after" before-label="Before" after-label="After"></sheen-compare>
+  </section>
+
+  <section id="s-edit"><h2 class="sheen-title">Timeline and transcript</h2>
+    <sheen-timeline id="tl" duration="60" playhead="14" label="Timeline" zoom-in-label="Zoom in" zoom-out-label="Zoom out" split-label="Split at the playhead"></sheen-timeline>
+    <sheen-transcript id="tr" label="Transcript" removed-label="cut" current="2.2" style="margin-block-start:12px"></sheen-transcript>
+    <div class="sheen-toolbar" style="margin-block-start:8px"><button class="sheen-button sheen-small" id="fillers" type="button">Remove all fillers</button><button class="sheen-button sheen-small" id="pauses" type="button">Remove all long pauses</button></div>
+  </section>
+
+  <section id="s-graph"><h2 class="sheen-title">Node graph</h2>
+    <sheen-node-graph id="graph" label="Pipeline" connect-label="Connect from @name: Tab to a node and press Enter" connected-label="Connected @from to @to" remove-label="Delete to remove"></sheen-node-graph>
+  </section>
+
+  <section id="s-app"><h2 class="sheen-title">App pieces</h2>
+    <div class="sheen-grid" style="--sheen-cols:3">
+      <div class="sheen-stat"><span class="sheen-stat-label">Videos made</span><span class="sheen-stat-value">128</span><span class="sheen-stat-note">this month</span></div>
+      <div class="sheen-panel sheen-glass sheen-glow"><div class="sheen-panel-head"><h3>Glass panel</h3><span class="sheen-badge sheen-ok">Ready</span></div><div class="sheen-progress" style="--sheen-progress:64%"><span></span></div></div>
+      <div class="sheen-panel"><div class="sheen-empty"><span class="sheen-empty-glyph"><sheen-glyph name="film" size="30"></sheen-glyph></span><p class="sheen-empty-title">No videos yet</p><p>Drop one in to start.</p></div></div>
+    </div>
+    <div class="sheen-chat" style="margin-block-start:16px;max-inline-size:520px"><div class="sheen-msg sheen-msg-user">Make 3 shorts with yellow captions</div><div class="sheen-msg sheen-msg-ai">Here is the plan: find 3 moments, make them vertical, add bold yellow captions.</div></div>
+    <div class="sheen-row" style="margin-block-start:16px"><div class="sheen-skeleton sheen-skeleton-circle"></div><div style="flex:1"><div class="sheen-skeleton sheen-skeleton-line"></div><div class="sheen-skeleton sheen-skeleton-line sheen-short"></div></div></div>
+    <p class="sheen-row" style="margin-block-start:16px"><button class="sheen-button sheen-glass-prominent" id="toastBtn" type="button">Show a toast</button><button class="sheen-button" id="tourBtn" type="button">Start the tour</button><button class="sheen-button" id="dialogBtn" type="button">Open a dialog</button></p>
+  </section>
+</main>
+<dialog class="sheen-dialog" id="dlg"><div class="sheen-dialog-head"><h2>Dialog</h2></div><div class="sheen-dialog-body"><input type="range" class="sheen-range" value="40"></div><div class="sheen-dialog-foot"><button class="sheen-button" type="button" onclick="this.closest('dialog').close()">Close</button></div></dialog>
+<sheen-command-palette id="cmd" hotkey label="Command palette" placeholder="Search or type a command…" empty="Nothing found" submit-label="Run “@q”"></sheen-command-palette>
+<sheen-toaster close-label="Dismiss"></sheen-toaster>
+<sheen-tour id="tour" next-label="Next" back-label="Back" done-label="Done" skip-label="Skip" step-label="@n of @all"></sheen-tour>
+<script src="sheen.min.js" defer></script>
+<script src="sheen-elements.min.js" defer></script>
+<script defer>
+addEventListener('DOMContentLoaded', () => {
+  const $ = (s) => document.querySelector(s), root = document.documentElement;
+  $('#theme').onclick = () => { root.dataset.theme = root.dataset.theme === 'light' ? 'dark' : 'light'; };
+  $('#dir').onclick = () => { root.dir = root.dir === 'rtl' ? 'ltr' : 'rtl'; $('#tl').render(); $('#graph').render(); $('#wave').draw(); };
+  $('#openCmd').onclick = () => $('#cmd').open();
+  $('#cmd').items = [
+    { group: 'Presets', label: 'Clean up recording', hint: 'remove pauses, even out the volume', glyph: 'wand' },
+    { group: 'Presets', label: 'Make shorts', hint: 'vertical clips with captions', glyph: 'phone' },
+    { group: 'Go to', label: 'Settings', glyph: 'sliders', shortcut: '⌘,' },
+    { group: 'Try a prompt', label: 'Write 5 title options and chapter markers', glyph: 'sparkle', disabled: true, reason: 'Needs an AI provider' },
+  ];
+  const peaks = Array.from({ length: 300 }, (_, i) => Math.abs(Math.sin(i / 7)) * (0.4 + 0.6 * Math.random()));
+  $('#wave').peaks = peaks;
+  $('#video').markers = [{ time: 12, label: 'Hook' }, { time: 40, label: 'Chapter 2' }];
+  $('#tl').tracks = [
+    { id: 'v', label: 'Video', kind: 'video', clips: [{ id: 'v1', start: 0, end: 22, label: 'Intro' }, { id: 'v2', start: 22, end: 60, label: 'Talk' }] },
+    { id: 'a', label: 'Audio', kind: 'audio', peaks, clips: [] },
+    { id: 'c', label: 'Captions', kind: 'captions', clips: [{ id: 'c1', start: 2, end: 9, label: 'So, here is the thing' }, { id: 'c2', start: 10, end: 18, label: 'captions matter' }] },
+    { id: 'o', label: 'Overlays', kind: 'overlay', clips: [{ id: 'o1', start: 0, end: 3, label: 'Title' }] },
+  ];
+  $('#tr').words = 'So um here is the thing captions uh matter more than you think'.split(' ').map((t, i) => ({
+    text: t, start: i * 0.6, end: i * 0.6 + 0.55, kind: ['um', 'uh'].includes(t) ? 'filler' : 'word' }));
+  $('#tr').words.splice(5, 0, { text: '1.4 s', start: 3, end: 4.4, kind: 'pause' });
+  $('#tr').words = $('#tr').words;
+  $('#fillers').onclick = () => $('#tr').removeKind('filler');
+  $('#pauses').onclick = () => $('#tr').removeKind('pause');
+  $('#graph').nodes = [
+    { id: 'a', label: 'Remove pauses', sub: 'FFmpeg Skill', glyph: 'scissors', x: 20, y: 30 },
+    { id: 'b', label: 'Even volume', sub: 'FFmpeg Skill', glyph: 'volume', x: 260, y: 110 },
+    { id: 'c', label: 'Export', sub: 'YouTube', glyph: 'export', x: 500, y: 40 }];
+  $('#graph').edges = [{ from: 'a', to: 'b' }, { from: 'b', to: 'c' }];
+  $('#toastBtn').onclick = () => sheenElements.toast({ title: 'Export finished', message: '3 files are ready', tone: 'success', action: { label: 'Open', onClick() {} } });
+  $('#dialogBtn').onclick = () => $('#dlg').showModal();
+  $('#tour').steps = [
+    { target: '#s-drop sheen-drop-zone', title: 'Start here', text: 'Drop a video, or pick the sample.' },
+    { target: '#openCmd', title: 'One box for everything', text: 'Press ⌘K and type what you want.' },
+    { target: '#s-edit sheen-transcript', title: 'Edit by text', text: 'Delete words to cut the video.' }];
+  $('#tourBtn').onclick = () => $('#tour').start();
+});
+</script>
+</body>
+</html>

@@ -16,7 +16,7 @@
 </style></head>
 <body class="sheen">
 <header class="sheen-container" style="padding-block:16px"><div class="sheen-glass" style="height:64px;border-radius:32px;display:flex;align-items:center;gap:8px;padding-inline:22px 10px">
-<b style="font-size:19px">sheen-web</b><span class="sheen-secondary sheen-footnote" style="margin-inline-start:10px">0.1.2</span>
+<b style="font-size:19px">sheen-web</b><span class="sheen-secondary sheen-footnote" style="margin-inline-start:10px">0.2.0</span>
 <span style="margin-inline-start:auto;display:flex;gap:8px"><a href="?dir=rtl" class="sheen-button sheen-small" onclick="document.documentElement.dir=document.documentElement.dir==='rtl'?'ltr':'rtl';return false">RTL / LTR</a>
 <a href="https://github.com/Marzipane/sheen-web" class="sheen-button sheen-glass-prominent sheen-small">GitHub</a>
 </span></div></header>
@@ -55,6 +55,12 @@ Search</button>
 <span class="sheen-card-eyebrow sheen-ellipsis" dir="auto">A tour operator</span> 
 <span class="sheen-card-title sheen-lines-2" dir="auto">Six days of old cities and coastlines</span>
 <span class="sheen-card-meta">6 days · Turkey</span> 
+<span class="sheen-included sheen-included-compact" role="list"><span class="sheen-included-item" role="listitem"  title="Tour leader" ><svg class="sheen-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Tour leader"><circle cx="12" cy="8.5" r="3.5"></circle><path d="M5 19.5c1.2-3.3 4-5 7-5s5.8 1.7 7 5"></path></svg>
+</span><span class="sheen-included-item" role="listitem"  title="Hotels" ><svg class="sheen-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Hotels"><path d="M3 18V7"></path><path d="M3 14h18v4"></path><path d="M21 14v-2.5A2.5 2.5 0 0 0 18.5 9H11v5"></path><circle cx="7" cy="11" r="1.6"></circle></svg>
+</span><span class="sheen-included-item" role="listitem"  title="Transport" ><svg class="sheen-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Transport"><path d="M5 16.5V12l2-5h10l2 5v4.5"></path><path d="M3.5 12h17v4.5h-17Z"></path><circle cx="7.5" cy="14.3" r=".8"></circle><circle cx="16.5" cy="14.3" r=".8"></circle><path d="M6 16.5v2"></path><path d="M18 16.5v2"></path></svg>
+</span><span class="sheen-included-item" role="listitem"  title="Sightseeing" ><svg class="sheen-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Sightseeing"><circle cx="12" cy="12" r="8.5"></circle><path d="m15.5 8.5-2 5-5 2 2-5Z"></path></svg>
+</span></span>
+ 
 <span class="sheen-price">from AED 3,001 <small>a person</small></span>
 <span class="sheen-card-deal"><s class="sheen-was-price" >AED 3,159</s>
  · <span class="sheen-deal-ends">until 31 Oct</span></span>
@@ -67,6 +73,7 @@ Search</button>
 <span class="sheen-card-eyebrow sheen-ellipsis" dir="auto">A ship</span> 
 <span class="sheen-card-title sheen-lines-2" dir="auto">Nine nights from Istanbul to Rome: islands, temples and harbours</span>
 <span class="sheen-card-meta">9 nights · from Istanbul</span> 
+ 
 <span class="sheen-price">Price on request </span>
  
 </span></a>
@@ -127,6 +134,45 @@ Search</button>
 <label for="f-b1221c83" class="sheen-field"><span>E-mail</span>
 <input id="f-b1221c83"  type="email" name="email" placeholder="you@example.com"></label>
 </div>
+<div class="sheen-picker" data-sheen-picker data-layout="menu"  data-popular="AED,USD,EUR"   data-label-popular="Popular"   data-label-all="All currencies" >
+<label for="p-0fd8f021" class="sheen-picker-field sheen-field">
+<span id="p-0fd8f021-l">Currency</span><select id="p-0fd8f021" name="currency" >
+<option value="AED" selected  data-badge="AED" data-label="UAE Dirham"   data-hint="د.إ"  >AED · UAE Dirham</option><option value="USD"   data-badge="USD" data-label="US Dollar"   data-hint="$"  >USD · US Dollar</option><option value="EUR"   data-badge="EUR" data-label="Euro"   data-hint="€"  >EUR · Euro</option><option value="GBP"   data-badge="GBP" data-label="British Pound"   data-hint="£"  >GBP · British Pound</option><option value="SAR"   data-badge="SAR" data-label="Saudi Riyal"   >SAR · Saudi Riyal</option><option value="INR"   data-badge="INR" data-label="Indian Rupee"   data-hint="₹"  >INR · Indian Rupee</option><option value="JPY"   data-badge="JPY" data-label="Japanese Yen"   data-hint="¥"  >JPY · Japanese Yen</option><option value="TRY"   data-badge="TRY" data-label="Turkish Lira"   data-hint="₺"  >TRY · Turkish Lira</option><option value="KWD"   data-badge="KWD" data-label="Kuwaiti Dinar"   >KWD · Kuwaiti Dinar</option></select>
+<button type="button" class="sheen-picker-trigger" id="p-0fd8f021-t" aria-haspopup="listbox" aria-expanded="false" aria-controls="p-0fd8f021-pop" aria-labelledby="p-0fd8f021-l p-0fd8f021-v"><span id="p-0fd8f021-v" >AED · UAE Dirham</span><svg class="sheen-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9.5 6 6 6-6"></path></svg>
+</button>
+</label>
+<template class="sheen-picker-template"><div class="sheen-picker-pop" id="p-0fd8f021-pop" role="dialog" aria-labelledby="p-0fd8f021-l" popover="manual" hidden>
+<div class="sheen-picker-title"><b>Currency</b></div>
+<label class="sheen-picker-search"><svg class="sheen-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5"></circle><path d="M16 16l4.5 4.5"></path></svg>
+<input type="text" role="combobox" aria-autocomplete="list" aria-expanded="true" aria-controls="p-0fd8f021-list" aria-label="Search currency or code" placeholder="Search currency or code" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done"></label><ul class="sheen-picker-list" id="p-0fd8f021-list" role="listbox" aria-labelledby="p-0fd8f021-l" tabindex="-1"></ul>
+<p class="sheen-picker-empty" role="status"  data-label="No currency matches “@q”"  hidden></p>
+</div></template>
+</div>
+<div><div class="sheen-picker" data-sheen-picker data-layout="sheet"   >
+<label for="p-e6de6e81" class="sheen-picker-pill sheen-glass">
+<svg class="sheen-icon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="5.5" y="3.5" width="13" height="17" rx="1.5"></rect><circle cx="12" cy="11" r="3.3"></circle><path d="M8.7 11h6.6"></path><path d="M9 16.5h6"></path></svg>
+<span id="p-e6de6e81-l" class="sheen-visually-hidden">Your passport</span>
+<select id="p-e6de6e81" name="passport" >
+<option value="" disabled selected>Choose your passport</option><option value="AE"    >United Arab Emirates</option><option value="SA"    >Saudi Arabia</option><option value="IN"    >India</option><option value="RU"    >Russia</option><option value="GB"    >United Kingdom</option><option value="US"    >United States</option><option value="EG"    >Egypt</option><option value="PK"    >Pakistan</option><option value="PH"    >Philippines</option><option value="TR"    >Türkiye</option><option value="DE"    >Germany</option><option value="FR"    >France</option><option value="CI"    >Côte d’Ivoire</option></select>
+<button type="button" class="sheen-picker-trigger" id="p-e6de6e81-t" aria-haspopup="listbox" aria-expanded="false" aria-controls="p-e6de6e81-pop" aria-labelledby="p-e6de6e81-l p-e6de6e81-v"><span id="p-e6de6e81-v"  class="sheen-picker-placeholder" >Choose your passport</span><svg class="sheen-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6 9.5 6 6 6-6"></path></svg>
+</button>
+</label>
+<template class="sheen-picker-template"><div class="sheen-picker-pop" id="p-e6de6e81-pop" role="dialog" aria-labelledby="p-e6de6e81-l" popover="manual" hidden>
+<div class="sheen-picker-title"><b>Your passport</b><button type="button" class="sheen-icon-button sheen-picker-close" aria-label="Close"><svg class="sheen-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m6.5 6.5 11 11"></path><path d="m17.5 6.5-11 11"></path></svg>
+</button></div>
+<label class="sheen-picker-search"><svg class="sheen-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5"></circle><path d="M16 16l4.5 4.5"></path></svg>
+<input type="text" role="combobox" aria-autocomplete="list" aria-expanded="true" aria-controls="p-e6de6e81-list" aria-label="Search country" placeholder="Search country" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done"></label><ul class="sheen-picker-list" id="p-e6de6e81-list" role="listbox" aria-labelledby="p-e6de6e81-l" tabindex="-1"></ul>
+<p class="sheen-picker-empty" role="status"  data-label="No country matches “@q”"  hidden></p>
+</div></template>
+</div>
+</div>
+<fieldset class="sheen-chip-choice"><legend class="">Document</legend>
+<div class="sheen-chip-row"><label class="sheen-chip"><input type="radio" name="kind" value="passport" checked >Passport</label>
+<label class="sheen-chip"><input type="radio" name="kind" value="visa"  >Visa</label>
+<label class="sheen-chip"><input type="radio" name="kind" value="infant"  >Infant’s proof</label>
+<label class="sheen-chip"><input type="radio" name="kind" value="other"  >Other</label>
+</div>
+</fieldset>
 <label class="sheen-check"><input type="checkbox"  name="terms" checked="checked"><span>I have read the cancellation terms</span></label>
 <ol class="sheen-steps"  aria-label="Booking state" >
 <li class="sheen-done" >Price asked</li> <li class=""  aria-current="step" >Price ready</li> <li class="" >Confirming</li> <li class="" >Confirmed</li> </ol>

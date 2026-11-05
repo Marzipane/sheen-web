@@ -1,12 +1,26 @@
 {
   "name": "@marzipane/sheen-web",
-  "version": "0.2.2",
-  "description": "sheen for the web: the glass design system of Flutter sheen as CSS custom properties, a small script and Blade components.",
+  "version": "0.3.0",
+  "description": "sheen for the web: the glass design system of Flutter sheen as CSS custom properties, a small script, Blade components and framework-free app elements.",
   "license": "MIT",
   "repository": "github:Marzipane/sheen-web",
   "style": "dist/sheen.css",
   "main": "dist/sheen.js",
-  "files": ["dist", "tokens", "icons"],
-  "scripts": {"build": "node build.mjs", "check": "node build.mjs --check && node scripts/check-flutter.mjs"},
-  "engines": {"node": ">=20"}
+  "files": [
+    "dist",
+    "tokens",
+    "icons"
+  ],
+  "scripts": {
+    "build": "node build.mjs",
+    "check": "node build.mjs --check && node scripts/check-flutter.mjs",
+    "test:elements": "node --test tests/elements/",
+    "test": "node build.mjs --check && node --test tests/elements/ && vendor/bin/phpunit"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "jsdom": "^26.1.0"
+  }
 }

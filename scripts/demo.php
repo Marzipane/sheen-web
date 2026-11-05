@@ -8,7 +8,7 @@ $app = Orchestra\Testbench\Foundation\Application::create(basePath: null, resolv
 });
 $html = $app['blade.compiler']->render(file_get_contents(__DIR__.'/../docs/demo.blade.php'), ['dir' => 'ltr']);
 file_put_contents(__DIR__.'/../docs/index.html', $html);
-foreach (['sheen.min.css', 'sheen.min.js'] as $f) {
+foreach (['sheen.min.css', 'sheen.min.js', 'sheen-elements.min.js'] as $f) {
     copy(__DIR__.'/../dist/'.$f, __DIR__.'/../docs/'.$f);
 }
 echo "docs/index.html written\n";
