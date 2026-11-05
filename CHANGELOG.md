@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.4.0
+
+Four elements for record-heavy apps. Additive: nothing that existed changes.
+
+- `<sheen-hover-card>`: facts and quick actions beside a link. Opens after a delay on hover, by focus and Space with no pointer, never on touch; stays while the pointer is over it; Esc closes it and returns focus.
+- `<sheen-side-panel>`: a panel on the end edge with no backdrop, so the page behind keeps its scroll, filters and selection.
+- `<sheen-scope-picker>`: chooses a rule, not a list: all, only these, or all except, with search and group checkboxes. A whole group is stored as the group, so a new member joins the rule.
+- `<sheen-menu-button>`: a button with a keyboard menu.
+
 ## 0.3.0
 
 App elements and app UI, for apps that are not Laravel sites (first user: Video Studio). Additive: nothing that

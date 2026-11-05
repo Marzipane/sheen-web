@@ -603,3 +603,24 @@ sheen-tour[hidden]{display:none}
 .sheen-tour-actions{gap:8px}
 @media (prefers-reduced-motion: reduce){.sheen-tour-spot,.sheen-toast{transition:none;animation:none}}
 @media (forced-colors: active){.sheen-tl-clip,.sheen-graph-node,.sheen-word[aria-selected="true"]{outline:1px solid CanvasText}}
+
+sheen-hover-card{position:fixed;z-index:1000;inline-size:min(320px,calc(100vw - 24px));padding:14px;border-radius:16px}
+sheen-hover-card[hidden]{display:none}
+sheen-side-panel{position:fixed;inset-block:0;inset-inline-end:0;z-index:900;display:flex;flex-direction:column;inline-size:min(440px,100vw);padding:16px;overflow:auto}
+sheen-side-panel[hidden]{display:none}
+.sheen-panel-close{align-self:flex-end}
+.sheen-panel-body{flex:1;min-block-size:0}
+sheen-scope-picker{display:flex;flex-direction:column;gap:10px}
+.sheen-scope-modes{display:flex;flex-wrap:wrap;gap:12px;margin:0;padding:0;border:0}
+.sheen-scope-modes legend{margin-block-end:6px;font-weight:700}
+.sheen-scope-mode,.sheen-scope-group,.sheen-scope-item{display:flex;align-items:center;gap:8px;min-block-size:32px}
+.sheen-scope-tools .sheen-input{flex:1;min-inline-size:0}
+.sheen-scope-list{display:flex;flex-direction:column;gap:6px;max-block-size:320px;overflow:auto}
+.sheen-scope-group{font-weight:700}
+.sheen-scope-items{padding-inline-start:24px}
+sheen-menu-button{position:relative;display:inline-block}
+.sheen-menu{position:absolute;inset-inline-end:0;z-index:950;min-inline-size:180px;margin-block-start:6px;padding:6px;border-radius:14px}
+.sheen-menu[hidden]{display:none}
+.sheen-menu-item{display:block;inline-size:100%;padding:8px 10px;border:0;border-radius:10px;background:none;color:var(--sheen-text);font:inherit;text-align:start;cursor:pointer}
+.sheen-menu-item:hover,.sheen-menu-item:focus-visible{background:var(--sheen-track)}
+.sheen-menu-item[aria-disabled="true"]{color:var(--sheen-text-tertiary);cursor:not-allowed}
