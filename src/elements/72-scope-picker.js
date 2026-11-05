@@ -15,9 +15,9 @@ class SheenScopePicker extends HTMLElement {
     this.radios = [['all', 'all-label'], ['only', 'chosen-label'], ['all_except', 'except-label']].map(function (m) {
       return h('label', { class: 'sheen-scope-mode' }, h('input', { type: 'radio', name: name, value: m[0], onchange: function () { self.setMode(m[0]); } }), self.getAttribute(m[1]) || '');
     });
-    this.search = h('input', { type: 'search', class: 'sheen-input', 'aria-label': this.getAttribute('search-label') || '', placeholder: this.getAttribute('search-label') || '', oninput: function (e) { self.query = e.target.value.trim().toLowerCase(); self.draw(); } });
+    this.search = h('input', { type: 'search', 'aria-label': this.getAttribute('search-label') || '', placeholder: this.getAttribute('search-label') || '', oninput: function (e) { self.query = e.target.value.trim().toLowerCase(); self.draw(); } });
     this.shown = h('button', { type: 'button', class: 'sheen-button sheen-small sheen-scope-shown', text: this.getAttribute('select-shown-label') || '', onclick: function () { self.selectShown(); } });
-    this.tools = h('div', { class: 'sheen-row sheen-scope-tools' }, this.search, this.shown);
+    this.tools = h('div', { class: 'sheen-row sheen-scope-tools' }, h('label', { class: 'sheen-field' }, this.search), this.shown);
     this.list = h('div', { class: 'sheen-scope-list' });
     this.status = h('p', { class: 'sheen-footnote sheen-secondary', role: 'status', text: this.getAttribute('result') || '' });
     this.replaceChildren(h('fieldset', { class: 'sheen-scope-modes' }, h('legend', { text: this.getAttribute('label') || '' }), this.radios[0], this.radios[1], this.radios[2]), this.tools, this.list, this.status);
