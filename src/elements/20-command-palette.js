@@ -34,6 +34,17 @@ class SheenCommandPalette extends HTMLElement {
     this.render();
   }
   disconnectedCallback() { document.removeEventListener('keydown', this.onHotkey); }
+  // Frameworks set attributes after the element is on the page: follow them.
+  static get observedAttributes() { return ['label', 'placeholder', 'empty']; }
+  attributeChangedCallback(name, was, now) {
+    if (!this.dialog) return;
+    if (name === 'label') {
+      this.input.setAttribute('aria-label', now || '');
+      this.list.setAttribute('aria-label', now || '');
+      this.dialog.setAttribute('aria-label', now || '');
+    } else if (name === 'placeholder') this.input.setAttribute('placeholder', now || '');
+    else this.render();
+  }
   get items() { return this._items || []; }
   set items(v) { this._items = Array.isArray(v) ? v : []; if (this.list) this.render(); }
   get value() { return this.input ? this.input.value : ''; }
