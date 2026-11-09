@@ -137,8 +137,8 @@ For apps that are not Laravel sites, `dist/sheen-elements.js` adds framework-fre
 stylesheet (no build step):
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Marzipane/sheen-web@v0.5.1/dist/sheen.min.css">
-<script src="https://cdn.jsdelivr.net/gh/Marzipane/sheen-web@v0.5.1/dist/sheen-elements.min.js" defer></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Marzipane/sheen-web@v0.6.0/dist/sheen.min.css">
+<script src="https://cdn.jsdelivr.net/gh/Marzipane/sheen-web@v0.6.0/dist/sheen-elements.min.js" defer></script>
 ```
 
 The rules every element follows:
@@ -166,7 +166,7 @@ Live stories for every element: `docs/elements.html` (open it from a local serve
 | `<sheen-hover-card>` | facts and actions beside a link | `label`, `delay` (ms, `0` for none); `attach(trigger)`, `detach()`, `open()`, `close()` | `sheen-hover-open` {trigger}, `sheen-hover-close` | on the trigger Space opens; Esc closes from anywhere while open; Tab out closes |
 | `<sheen-side-panel>` | a panel on the end edge, no backdrop | `label`, `close-label`; `open()`, `close()` | `sheen-panel-close` | Esc closes and returns focus to the first opener |
 | `<sheen-scope-picker>` | chooses a rule, not a list | `label`, `all-label`, `chosen-label`, `except-label`, `search-label`, `select-shown-label`, `empty-label`, `result`; `groups`, `value` (only the list its mode reads) | `sheen-scope-change` {mode, include, exclude} | Space ticks; focus stays on the ticked row |
-| `<sheen-menu-button>` | a button with a keyboard menu | `label`; `items` [{id, label, disabled}] | `sheen-menu-select` {id} | ↓ opens, ↑ ↓ move, Enter picks, Esc closes; a press outside or Tab out closes |
+| `<sheen-menu-button>` | a button with a keyboard menu | `label`, `glyph`; `items` [{id, label, disabled, hint, shortcut, danger}, {separator: true}, {heading}], `open()`, `close()` | `sheen-menu-select` {id} | ↓ opens, ↑ ↓ move, Enter picks, Esc closes; a press outside or Tab out closes |
 
 ```html
 <sheen-command-palette id="cmd" hotkey label="Command bar" placeholder="Type a command or search…"
@@ -196,6 +196,55 @@ Live stories for every element: `docs/elements.html` (open it from a local serve
 `toast({title, message, tone: 'info'|'success'|'warning'|'danger', timeout, action: {label, onClick}})`.
 `paintRange(input)` sets a slider's `--sheen-range-fill`; you rarely need it, because every
 `<input class="sheen-range">` on the page is painted by itself when it is added and while it moves.
+
+### List kit classes
+
+The parts a long list or table is built from (0.6.0). Layout and look only: the app keeps the filters, the selection and the
+work, and fills in its own words.
+
+```html
+<div class="sheen-list-kit">
+  <div class="sheen-views-row">
+    <div class="sheen-view-tabs" role="tablist">
+      <button class="sheen-view-tab" role="tab" aria-selected="true">All <small>10</small></button>
+      <button class="sheen-view-tab" role="tab" aria-selected="false">Active <small>9</small></button>
+    </div>
+    <div class="sheen-views-end"><button class="sheen-link-button">Save view</button><sheen-menu-button label="Views"></sheen-menu-button></div>
+  </div>
+  <div class="sheen-find-row" role="search">
+    <label class="sheen-control sheen-find"><input type="search" placeholder="Search"><kbd class="sheen-kbd">/</kbd></label>
+    <button class="sheen-control sheen-compact-glyph" aria-haspopup="dialog"><span>Filters</span><span class="sheen-control-count">2</span></button>
+  </div>
+  <div class="sheen-applied-row" aria-live="polite">
+    <span class="sheen-filter-chip"><span>Hub</span><b>North</b><button class="sheen-chip-remove" aria-label="Remove this filter">…</button></span>
+    <button class="sheen-link-button">Clear all</button>
+    <span class="sheen-result-count">4 results</span>
+  </div>
+</div>
+<div class="sheen-table-wrap">
+  <div class="sheen-bulk-bar" role="region" aria-label="Bulk actions">
+    <span class="sheen-bulk-count"><b>3</b> selected</span> <button class="sheen-link-button">Select all 10</button>
+    <span class="sheen-bulk-actions">…</span> <button class="sheen-link-button sheen-bulk-clear">Clear</button>
+  </div>
+  <table class="sheen-table">…<th aria-sort="ascending"><button class="sheen-sort-button">Name <svg class="sheen-sort-glyph">…</svg></button></th>…
+    <td class="sheen-pin-end"><sheen-menu-button glyph="more" label="Row actions"></sheen-menu-button></td></table>
+</div>
+```
+
+| Class | What it is |
+| --- | --- |
+| `.sheen-list-kit` | the column the three rows sit in; a container, so the rows fold at 760px of its own width |
+| `.sheen-views-row`, `.sheen-view-tabs`, `.sheen-view-tab` (`small` count), `.sheen-views-end` | quick filters as tabs with counts, saved views at the end |
+| `.sheen-find-row`, `.sheen-control`, `.sheen-find`, `.sheen-control-count`, `.sheen-compact-glyph` | one wide search and compact 36px controls; a compact control keeps only its glyph and count when narrow |
+| `.sheen-applied-row`, `.sheen-filter-chip`, `.sheen-chip-remove`, `.sheen-last-used`, `.sheen-result-count` | one removable chip per filter, Clear all and the count; narrow, chips scroll and the count stays |
+| `.sheen-link-button` | a text button for small steps: Save view, Clear all, Select all |
+| `.sheen-page-tabs` (with `.sheen-view-tab` links, `aria-current="page"`) | a module's page tab row |
+| `.sheen-cell-button` (`.sheen-strong`), `tr[tabindex]` | a cell value that opens or edits in place; a row the keyboard reaches |
+| `.sheen-filter-group`, `.sheen-filter-field`, `.sheen-filter-option`, `.sheen-filter-footer` | the filters inside a `<sheen-side-panel>`, with a sticky footer |
+| `.sheen-list-message`, `.sheen-list-message-actions` (`.sheen-danger` for an error) | nothing matches, or the results couldn't load |
+| `.sheen-sort-button`, `.sheen-sort-glyph` on `th[aria-sort]` | a sortable header; the arrow sits in the end padding |
+| `.sheen-pin-end`, `.sheen-truncate`, `tr[aria-selected="true"]` | the row-menu column pinned at the end edge, one-line cells, a ticked row |
+| `.sheen-bulk-bar`, `.sheen-bulk-count`, `.sheen-bulk-actions`, `.sheen-bulk-status` (`.sheen-danger`), `.sheen-bulk-clear`, `.sheen-bulk-spin` | the bar over the table header while rows are ticked, with progress and partial failure |
 
 ### App UI classes
 

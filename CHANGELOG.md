@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.6.0
+
+A list kit for long lists and tables. Additive: nothing that existed changes.
+
+- List kit classes: a views row (tabs with counts, saved views at the end), a find row (one wide search, compact controls, a
+  Filters control with a count), an applied row (removable chips, Clear all, the result count, last used), result messages
+  (nothing matches, couldn't load), filter groups and options for a side panel with a sticky footer, sortable headers whose arrow
+  sits in the end padding, a row-menu column pinned at the end edge, and a bulk bar with its count, actions, progress and partial
+  failure. `.sheen-list-kit` is a container: below 760px of its own width the tabs scroll, compact controls keep only their glyph
+  and count, and chips scroll with the count pinned. Logical sides only, so Arabic mirrors. The view tab look also serves a
+  module's page tab row: links in a `<nav class="sheen-page-tabs">` with `aria-current="page"`. `.sheen-table tr[tabindex]`
+  shows keyboard focus, and `.sheen-cell-button` (with `.sheen-strong`) is a value in a cell that opens or edits in place.
+- `<sheen-menu-button>` items take `hint` (a second line, for why an item is off or who can use it), `shortcut` (shown at the
+  end and set as `aria-keyshortcuts`) and `danger`, and the list takes `{separator: true}` and `{heading: 'Words'}` between items.
+  The arrows skip separators and headings. A plain item is still its label alone. `class="sheen-small"` on the element (or on a box around
+  it, such as an app's own wrapper) gives its button the small size; inside a bulk bar or at the end of a views row it is small already.
+- `<sheen-menu-button>`: the menu opens in the top layer (the popover API, `popover="manual"`), so no scrolling table or card
+  cuts it off, a glass (`backdrop-filter`) box around it no longer shifts it, and a sticky cell or bulk bar no longer paints over
+  it. Where the popover API is missing it is placed fixed on the page instead. It sits under its button, lines up with the
+  button's other edge near the screen edge (the left one in Arabic), follows its button on scroll and window resize, and closes
+  once its button scrolls out of the box it sits in or off the screen. A danger item never takes the first focus when the menu opens.
+- The bulk bar's spinner is `.sheen-bulk-spin`, with its own keyframes, so the progress ring's `.sheen-spin` turn is unchanged.
+- Tests: the new menu items and keys, the menu in the top layer inside a glass box and in a pinned cell under a bulk bar, its
+  placement in Arabic, resize and scroll-out, the first focus past a danger item, the progress ring's keyframes, every kit part in the built CSS, and the contrast of accent words on the chip, the selected
+  tab count and the bulk bar (WCAG AA in light and dark, computed from the tokens).
+
 ## 0.5.1
 
 A glyph option and contrast fixes. Nothing that existed is removed.

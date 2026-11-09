@@ -1,9 +1,15 @@
 // <sheen-menu-button label="Export"></sheen-menu-button>
 // <sheen-menu-button label="More actions" glyph="more"></sheen-menu-button>
-//   A button with a menu. With glyph, the button shows only that sheen glyph and label becomes its accessible name.
-//   menu.items = [{id, label, disabled}]. Up and Down move and skip disabled items, Enter picks, Esc
+//   A button with a menu. class="sheen-small" on the element makes its button the small size. With glyph, the button shows only that sheen glyph and label becomes its accessible name.
+//   menu.items = [{id, label, disabled, hint, shortcut, danger}], plus {separator: true} and {heading: 'Words'} between them.
+//   hint is a second line (why an item is off, who can do it); shortcut shows at the end. Up and Down move and skip
+//   disabled items, separators and headings, Enter picks, Esc
 //   closes; focus goes back to the button. A press outside or focus leaving closes it and leaves focus where it went.
-//   It stays on screen: it flips to the other inline edge, opens upward near the bottom, and scrolls when long.
+//   It stays on screen and above everything around it: it opens in the top layer (popover), so no scrolling box, glass
+//   (backdrop-filter) box or sticky cell can cut it off, shift it or paint over it; where the popover API is missing it is
+//   placed fixed instead. It sits under its button, lines up with the button's other edge near the screen edge, opens
+//   upward near the bottom, scrolls when long, follows its button on scroll and resize, and closes once its button
+//   scrolls out of the box it sits in. A danger item never takes the first focus.
 //   Fires "sheen-menu-select" {id}.
 class SheenMenuButton extends HTMLElement {
   connectedCallback() {
@@ -30,6 +36,15 @@ class SheenMenuButton extends HTMLElement {
       if (!self.menu.hidden && e.relatedTarget && !self.contains(e.relatedTarget)) self.hide();
     });
     this.onOutside = function (e) { if (!self.contains(e.target)) self.hide(); };
+    // A menu on the screen would stay put while the page moves under it, so it follows its button on any scroll but its own,
+    // and closes once the button has left the box that scrolled (or the screen).
+    this.onScroll = function (e) {
+      var t = e.target;
+      if (t && t.nodeType === 1 && self.menu.contains(t)) return;
+      if (self.outside(t && t.nodeType === 1 && t.contains(self) ? t.getBoundingClientRect() : { left: 0, top: 0, right: window.innerWidth, bottom: window.innerHeight })) return self.hide();
+      self.replace();
+    };
+    this.onResize = function () { self.replace(); };
     this.draw();
   }
   disconnectedCallback() { if (this.menu) this.hide(); }
@@ -54,25 +69,67 @@ class SheenMenuButton extends HTMLElement {
     var self = this;
     this.menu.replaceChildren();
     this.items.forEach(function (item) {
-      self.menu.appendChild(h('button', { type: 'button', role: 'menuitem', tabindex: '-1', class: 'sheen-menu-item', 'aria-disabled': item.disabled ? 'true' : null, text: item.label, onclick: function () { if (!item.disabled) self.pick(item); } }));
+      if (item.separator) { self.menu.appendChild(h('div', { role: 'separator', class: 'sheen-menu-separator' })); return; }
+      if (item.heading) { self.menu.appendChild(h('div', { role: 'presentation', class: 'sheen-menu-heading', text: item.heading })); return; }
+      var row = h('button', { type: 'button', role: 'menuitem', tabindex: '-1', class: 'sheen-menu-item' + (item.danger ? ' sheen-danger' : ''), 'aria-disabled': item.disabled ? 'true' : null, 'aria-keyshortcuts': item.shortcut || null, 'data-id': item.id, onclick: function () { if (!item.disabled) self.pick(item); } });
+      // A plain item is its label alone; a hint (why it is off, who can) goes under it, a shortcut at the end.
+      if (item.hint || item.shortcut) {
+        var words = h('span', { class: 'sheen-menu-words' }, h('span', { text: item.label }));
+        if (item.hint) words.appendChild(h('small', { class: 'sheen-menu-hint', text: item.hint }));
+        row.appendChild(words);
+        if (item.shortcut) row.appendChild(h('kbd', { class: 'sheen-kbd', text: item.shortcut }));
+      } else row.textContent = item.label;
+      self.menu.appendChild(row);
     });
   }
   open() {
     this.menu.hidden = false;
+    if (typeof this.menu.showPopover === 'function') { this.menu.setAttribute('popover', 'manual'); this.menu.showPopover(); }
     this.button.setAttribute('aria-expanded', 'true');
-    this.menu.classList.remove('sheen-menu-flip', 'sheen-menu-up');
-    var box = this.menu.getBoundingClientRect();
-    if (box.left < 0 || box.right > window.innerWidth) this.menu.classList.add('sheen-menu-flip');
-    if (box.bottom > window.innerHeight) this.menu.classList.add('sheen-menu-up');
+    this.replace();
     document.addEventListener('pointerdown', this.onOutside, true);
-    var rows = this.rows();
-    (rows.length ? rows[0] : this.menu).focus();
+    window.addEventListener('scroll', this.onScroll, true);
+    window.addEventListener('resize', this.onResize);
+    // The first item that is safe to land on: never a danger one, so Enter right after opening can't delete.
+    var first = this.rows().filter(function (row) { return !row.classList.contains('sheen-danger'); })[0];
+    (first || this.menu).focus();
+  }
+  replace() {
+    this.menu.classList.remove('sheen-menu-flip', 'sheen-menu-up');
+    this.place();
+  }
+  // Whether the button has wholly left this box.
+  outside(box) {
+    var b = this.button.getBoundingClientRect();
+    return b.bottom <= box.top || b.top >= box.bottom || b.right <= box.left || b.left >= box.right;
+  }
+  // The menu is placed from the screen (the top layer, or fixed), under the button at its start edge. It lines up with the
+  // button's end edge when it would leave the screen, and opens upward near the bottom.
+  place() {
+    var m = this.menu, s = m.style, b = this.button.getBoundingClientRect();
+    var rtl = isRtl(this);
+    s.position = 'fixed'; s.margin = '0'; s.right = 'auto'; s.bottom = 'auto';
+    s.left = (rtl ? b.right - m.offsetWidth : b.left) + 'px';
+    s.top = (b.bottom + 6) + 'px';
+    var box = m.getBoundingClientRect(), width = box.right - box.left, height = box.bottom - box.top;
+    if (box.left < 0 || box.right > window.innerWidth) {
+      m.classList.add('sheen-menu-flip');
+      s.left = (rtl ? b.left : b.right - width) + 'px';
+    }
+    if (box.bottom > window.innerHeight) {
+      m.classList.add('sheen-menu-up');
+      s.top = Math.max(0, b.top - height - 6) + 'px';
+    }
   }
   // Closes and leaves focus where it is: for a press outside or focus that has moved on.
   hide() {
+    // A removed menu has already left the top layer, and hiding it again would throw.
+    if (this.menu.hasAttribute('popover') && this.menu.isConnected && !this.menu.hidden) this.menu.hidePopover();
     this.menu.hidden = true;
     this.button.setAttribute('aria-expanded', 'false');
     document.removeEventListener('pointerdown', this.onOutside, true);
+    window.removeEventListener('scroll', this.onScroll, true);
+    window.removeEventListener('resize', this.onResize);
   }
   // Closes and gives focus back to the button: for Esc, a pick or the button itself.
   close() {
