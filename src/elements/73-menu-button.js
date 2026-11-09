@@ -1,5 +1,7 @@
 // <sheen-menu-button label="Export"></sheen-menu-button>
-//   A button with a menu. menu.items = [{id, label, disabled}]. Up and Down move and skip disabled items, Enter picks, Esc
+// <sheen-menu-button label="More actions" glyph="more"></sheen-menu-button>
+//   A button with a menu. With glyph, the button shows only that sheen glyph and label becomes its accessible name.
+//   menu.items = [{id, label, disabled}]. Up and Down move and skip disabled items, Enter picks, Esc
 //   closes; focus goes back to the button. A press outside or focus leaving closes it and leaves focus where it went.
 //   It stays on screen: it flips to the other inline edge, opens upward near the bottom, and scrolls when long.
 //   Fires "sheen-menu-select" {id}.
@@ -8,10 +10,11 @@ class SheenMenuButton extends HTMLElement {
     if (this.menu) return;
     var self = this, menuId = uid('menu');
     this._items = this._items || [];
-    this.button = h('button', { type: 'button', class: 'sheen-button', 'aria-haspopup': 'menu', 'aria-expanded': 'false', 'aria-controls': menuId, text: this.getAttribute('label') || '', onclick: function () { if (self.menu.hidden) self.open(); else self.close(); } });
+    this.button = h('button', { type: 'button', class: this.hasAttribute('glyph') ? 'sheen-icon-button' : 'sheen-button', 'aria-haspopup': 'menu', 'aria-expanded': 'false', 'aria-controls': menuId, onclick: function () { if (self.menu.hidden) self.open(); else self.close(); } });
     // tabindex -1: a menu with nothing to pick takes focus itself, so its keys still work.
     this.menu = h('div', { role: 'menu', id: menuId, tabindex: '-1', class: 'sheen-menu sheen-glass', 'aria-label': this.getAttribute('label') || '' });
     this.menu.hidden = true;
+    this.name(this.getAttribute('label') || '');
     this.replaceChildren(this.button, this.menu);
     this.button.addEventListener('keydown', function (e) {
       if (e.key === 'ArrowDown') { e.preventDefault(); self.open(); }
@@ -30,11 +33,19 @@ class SheenMenuButton extends HTMLElement {
     this.draw();
   }
   disconnectedCallback() { if (this.menu) this.hide(); }
-  static get observedAttributes() { return ['label']; }
+  static get observedAttributes() { return ['label', 'glyph']; }
   attributeChangedCallback(name, was, now) {
     if (!this.menu) return;
-    this.button.textContent = now || '';
-    this.menu.setAttribute('aria-label', now || '');
+    this.button.className = this.hasAttribute('glyph') ? 'sheen-icon-button' : 'sheen-button';
+    if (!this.hasAttribute('glyph')) this.button.removeAttribute('aria-label');
+    this.name(this.getAttribute('label') || '');
+  }
+  // The visible text, or for a glyph button the glyph and an accessible name.
+  name(label) {
+    var g = this.getAttribute('glyph');
+    if (g) { this.button.replaceChildren(glyph(g, 20)); this.button.setAttribute('aria-label', label); }
+    else this.button.textContent = label;
+    this.menu.setAttribute('aria-label', label);
   }
   get items() { return this._items || []; }
   set items(v) { this._items = Array.isArray(v) ? v : []; if (this.menu) this.draw(); }

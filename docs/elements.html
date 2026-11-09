@@ -15,7 +15,7 @@
 <div class="sheen-aurora" aria-hidden="true"></div>
 <main class="sheen-container" style="padding-block:32px">
   <header class="sheen-topbar sheen-glass">
-    <h1 class="sheen-topbar-title">sheen elements <span class="sheen-footnote sheen-secondary">0.5.0</span></h1>
+    <h1 class="sheen-topbar-title">sheen elements <span class="sheen-footnote sheen-secondary">0.5.1</span></h1>
     <button class="sheen-button sheen-small" id="theme" type="button">Light / dark</button>
     <button class="sheen-button sheen-small" id="dir" type="button">LTR / RTL</button>
     <button class="sheen-search-trigger" id="openCmd" type="button"><sheen-glyph name="search"></sheen-glyph><span>Command palette</span><kbd class="sheen-kbd">⌘K</kbd></button>
@@ -59,7 +59,7 @@
       <p class="demo-row">
         <a href="#s-records" id="recordLink">Record R-1001</a>
         <button class="sheen-button" id="panelBtn" type="button">Open the side panel</button>
-        <sheen-menu-button id="menuBtn" label="Export"></sheen-menu-button>
+        <sheen-menu-button id="menuBtn" label="Export"></sheen-menu-button> <sheen-menu-button id="moreBtn" label="More actions" glyph="more"></sheen-menu-button>
       </p>
       <p class="sheen-footnote sheen-secondary" id="recordLog" role="status"></p>
     </div>
@@ -135,6 +135,7 @@ addEventListener('DOMContentLoaded', () => {
   });
   $('#panelBtn').onclick = () => $('#panel').open();
   $('#menuBtn').items = [{ id: 'csv', label: 'CSV' }, { id: 'pdf', label: 'PDF', disabled: true }, { id: 'xlsx', label: 'XLSX' }];
+  $('#moreBtn').items = [{ id: 'history', label: 'View change history' }, { id: 'link', label: 'Copy link' }];
   $('#panelMenu').items = [{ id: 'next', label: 'Next record' }, { id: 'copy', label: 'Copy link' }];
   document.addEventListener('sheen-menu-select', (e) => log('Picked ' + e.detail.id));
   $('#scope').groups = [
