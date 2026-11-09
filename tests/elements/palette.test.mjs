@@ -55,3 +55,18 @@ test('the hotkey opens and closes it', () => {
   w.document.dispatchEvent(new w.KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true }));
   assert.equal(p.isOpen, false);
 });
+
+test('palette: words set after it is on the page take effect, as a framework binding sets them', () => {
+  const w = page('<sheen-command-palette></sheen-command-palette>');
+  const p = w.document.querySelector('sheen-command-palette');
+  p.setAttribute('label', 'Command menu');
+  p.setAttribute('placeholder', 'Type an action');
+  p.setAttribute('empty', 'Nothing found');
+  p.items = [];
+  p.value = 'zzz';
+  assert.equal(p.querySelector('dialog').getAttribute('aria-label'), 'Command menu');
+  assert.equal(p.querySelector('input').getAttribute('aria-label'), 'Command menu');
+  assert.equal(p.querySelector('[role="listbox"]').getAttribute('aria-label'), 'Command menu');
+  assert.equal(p.querySelector('input').getAttribute('placeholder'), 'Type an action');
+  assert.equal(p.querySelector('.sheen-cmd-empty').textContent, 'Nothing found');
+});

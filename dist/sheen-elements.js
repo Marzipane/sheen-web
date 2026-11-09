@@ -9,7 +9,7 @@ var GLYPHS = {"arrow-up":"<path d=\"M12 19V5.5\"></path><path d=\"m6 11 6-6 6 6\
 // - takes all of its words from attributes (already translated); it never renders text of its own;
 // - mirrors for dir="rtl" (positions use inset-inline-start, keys follow the reading direction);
 // - follows light/dark through the sheen tokens and stops motion under prefers-reduced-motion.
-var VERSION = '0.5.0';
+var VERSION = '0.5.1';
 
 function define(tag, cls) {
   if (!window.customElements.get(tag)) window.customElements.define(tag, cls);
@@ -285,6 +285,17 @@ class SheenCommandPalette extends HTMLElement {
     this.render();
   }
   disconnectedCallback() { document.removeEventListener('keydown', this.onHotkey); }
+  // Frameworks set attributes after the element is on the page: follow them.
+  static get observedAttributes() { return ['label', 'placeholder', 'empty']; }
+  attributeChangedCallback(name, was, now) {
+    if (!this.dialog) return;
+    if (name === 'label') {
+      this.input.setAttribute('aria-label', now || '');
+      this.list.setAttribute('aria-label', now || '');
+      this.dialog.setAttribute('aria-label', now || '');
+    } else if (name === 'placeholder') this.input.setAttribute('placeholder', now || '');
+    else this.render();
+  }
   get items() { return this._items || []; }
   set items(v) { this._items = Array.isArray(v) ? v : []; if (this.list) this.render(); }
   get value() { return this.input ? this.input.value : ''; }
@@ -1498,7 +1509,9 @@ define('sheen-scope-picker', SheenScopePicker);
 
 // ---- 73-menu-button.js
 // <sheen-menu-button label="Export"></sheen-menu-button>
-//   A button with a menu. menu.items = [{id, label, disabled}]. Up and Down move and skip disabled items, Enter picks, Esc
+// <sheen-menu-button label="More actions" glyph="more"></sheen-menu-button>
+//   A button with a menu. With glyph, the button shows only that sheen glyph and label becomes its accessible name.
+//   menu.items = [{id, label, disabled}]. Up and Down move and skip disabled items, Enter picks, Esc
 //   closes; focus goes back to the button. A press outside or focus leaving closes it and leaves focus where it went.
 //   It stays on screen: it flips to the other inline edge, opens upward near the bottom, and scrolls when long.
 //   Fires "sheen-menu-select" {id}.
@@ -1507,10 +1520,11 @@ class SheenMenuButton extends HTMLElement {
     if (this.menu) return;
     var self = this, menuId = uid('menu');
     this._items = this._items || [];
-    this.button = h('button', { type: 'button', class: 'sheen-button', 'aria-haspopup': 'menu', 'aria-expanded': 'false', 'aria-controls': menuId, text: this.getAttribute('label') || '', onclick: function () { if (self.menu.hidden) self.open(); else self.close(); } });
+    this.button = h('button', { type: 'button', class: this.hasAttribute('glyph') ? 'sheen-icon-button' : 'sheen-button', 'aria-haspopup': 'menu', 'aria-expanded': 'false', 'aria-controls': menuId, onclick: function () { if (self.menu.hidden) self.open(); else self.close(); } });
     // tabindex -1: a menu with nothing to pick takes focus itself, so its keys still work.
     this.menu = h('div', { role: 'menu', id: menuId, tabindex: '-1', class: 'sheen-menu sheen-glass', 'aria-label': this.getAttribute('label') || '' });
     this.menu.hidden = true;
+    this.name(this.getAttribute('label') || '');
     this.replaceChildren(this.button, this.menu);
     this.button.addEventListener('keydown', function (e) {
       if (e.key === 'ArrowDown') { e.preventDefault(); self.open(); }
@@ -1529,11 +1543,19 @@ class SheenMenuButton extends HTMLElement {
     this.draw();
   }
   disconnectedCallback() { if (this.menu) this.hide(); }
-  static get observedAttributes() { return ['label']; }
+  static get observedAttributes() { return ['label', 'glyph']; }
   attributeChangedCallback(name, was, now) {
     if (!this.menu) return;
-    this.button.textContent = now || '';
-    this.menu.setAttribute('aria-label', now || '');
+    this.button.className = this.hasAttribute('glyph') ? 'sheen-icon-button' : 'sheen-button';
+    if (!this.hasAttribute('glyph')) this.button.removeAttribute('aria-label');
+    this.name(this.getAttribute('label') || '');
+  }
+  // The visible text, or for a glyph button the glyph and an accessible name.
+  name(label) {
+    var g = this.getAttribute('glyph');
+    if (g) { this.button.replaceChildren(glyph(g, 20)); this.button.setAttribute('aria-label', label); }
+    else this.button.textContent = label;
+    this.menu.setAttribute('aria-label', label);
   }
   get items() { return this._items || []; }
   set items(v) { this._items = Array.isArray(v) ? v : []; if (this.menu) this.draw(); }

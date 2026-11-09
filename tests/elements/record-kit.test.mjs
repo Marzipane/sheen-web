@@ -315,6 +315,7 @@ test('hover card: placed again when its content changes size, and never taller t
   trigger.getBoundingClientRect = rect({ left: 100, top: 420, width: 80, height: 20 });
   sized(card, 300, 40);
   card.open();
+  assert.equal(seen.at(-1).el, card); // it watches the card itself, so a change of its content size places it again
   assert.equal(card.style.top, '448px');
   sized(card, 300, 560);
   seen.at(-1).cb([]);
@@ -447,10 +448,11 @@ test('scope picker: focus comes back to the row in the same group when one id si
   const p = w.document.querySelector('sheen-scope-picker');
   p.groups = [{ id: 'g:h', label: 'H', items: [{ id: 'x', label: 'X' }, { id: 'y', label: 'Y' }] }, { id: 'g:j', label: 'J', items: [{ id: 'x', label: 'X' }, { id: 'z', label: 'Z' }] }];
   p.value = { mode: 'only', include: [], exclude: [] };
-  const first = p.querySelectorAll('input[type=checkbox][value="x"]')[0];
-  first.focus();
-  first.click();
-  assert.equal(w.document.activeElement, p.querySelectorAll('input[type=checkbox][value="x"]')[0]);
+  // The row in the second group: without the group check, focus would land on the first match.
+  const second = p.querySelectorAll('input[type=checkbox][value="x"]')[1];
+  second.focus();
+  second.click();
+  assert.equal(w.document.activeElement, p.querySelectorAll('input[type=checkbox][value="x"]')[1]);
 });
 
 test('scope picker: Select all shown leaves out a group with nothing shown', () => {
@@ -506,8 +508,9 @@ test('menu button: a press outside closes it without taking focus', () => {
   m.querySelector('button').click();
   const out = w.document.getElementById('out');
   out.dispatchEvent(new w.Event('pointerdown', { bubbles: true }));
-  out.focus();
+  // Closed by the press itself, before focus moves (a press on a non-focusable area moves no focus at all).
   assert.equal(m.querySelector('[role="menu"]').hidden, true);
+  out.focus();
   assert.equal(m.querySelector('button').getAttribute('aria-expanded'), 'false');
   assert.equal(w.document.activeElement, out);
 });
@@ -569,4 +572,57 @@ test('hover card: a click on the trigger drops a pending open and closes the car
   card.open();
   trigger.click();
   assert.equal(card.hidden, true);
+});
+
+test('menu button: with glyph, the button shows the glyph and its label is the accessible name', () => {
+  const w = page('<sheen-menu-button label="More actions" glyph="more"></sheen-menu-button>');
+  const m = w.document.querySelector('sheen-menu-button');
+  const button = m.querySelector('button');
+  assert.equal(button.className, 'sheen-icon-button');
+  assert.equal(button.getAttribute('aria-label'), 'More actions');
+  assert.equal(button.textContent, '');
+  assert.ok(button.querySelector('svg.sheen-glyph[aria-hidden="true"]'));
+  assert.equal(m.querySelector('[role="menu"]').getAttribute('aria-label'), 'More actions');
+  m.setAttribute('label', 'Other');
+  assert.equal(button.getAttribute('aria-label'), 'Other');
+  m.removeAttribute('glyph');
+  assert.equal(button.className, 'sheen-button');
+  assert.equal(button.textContent, 'Other');
+  assert.equal(button.hasAttribute('aria-label'), false);
+});
+
+test('menu button: without glyph, the label is the button text', () => {
+  const { button } = menu();
+  assert.equal(button.className, 'sheen-button');
+  assert.equal(button.textContent, 'Export');
+  assert.equal(button.hasAttribute('aria-label'), false);
+});
+
+// WCAG contrast of the tone text drawn on its own tint, over every surface of each theme.
+function hex(h) { return [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16) / 255); }
+function mixed(a, b, p) { return a.map((v, i) => v * p + b[i] * (1 - p)); }
+function luminance(c) { const f = (v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4); const [r, g, b] = c.map(f); return 0.2126 * r + 0.7152 * g + 0.0722 * b; }
+function contrast(a, b) { const [x, y] = [luminance(a), luminance(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); }
+function tokens(block) { return Object.fromEntries([...block.matchAll(/--sheen-([a-z-]+):(#[0-9A-Fa-f]{6})/g)].map((m) => [m[1], m[2]])); }
+
+test('tone pills and badges reach WCAG AA (4.5:1) on their tint in light and dark', () => {
+  const light = tokens(css.match(/:root\[data-theme="light"\]\{[^}]*\}/)[0]);
+  const dark = tokens(css.match(/:root\[data-theme="dark"\]\{[^}]*\}/)[0]);
+  const rules = [['pill', 'success', 16], ['pill', 'warning', 16], ['pill', 'danger', 16], ['badge.sheen-ok', 'success', 14], ['badge.sheen-warn', 'warning', 14], ['badge.sheen-bad', 'danger', 14]];
+  for (const [cls, tone, tint] of rules) {
+    const sel = cls.startsWith('badge') ? `.sheen-${cls}` : `.sheen-pill.sheen-${tone}`;
+    const rule = css.match(new RegExp(sel.replace(/\./g, '\\.') + '\\{[^}]*\\}'))[0];
+    const share = Number(rule.match(new RegExp(`color:color-mix\\(in srgb,var\\(--sheen-${tone}\\) (\\d+)%,var\\(--sheen-text\\)\\)`))[1]) / 100;
+    for (const t of [light, dark]) {
+      for (const under of ['surface', 'background', 'surface-muted', 'sheet']) {
+        const back = mixed(hex(t[tone]), hex(t[under]), tint / 100);
+        const text = mixed(hex(t[tone]), hex(t.text), share);
+        assert.ok(contrast(text, back) >= 4.5, `${sel} on ${under}: ${contrast(text, back).toFixed(2)}`);
+      }
+    }
+  }
+});
+
+test('a table wrapper contains visually hidden text, so it never widens the page', () => {
+  assert.match(css, /\.sheen-table-wrap\{[^}]*overflow-x:auto[^}]*position:relative/);
 });

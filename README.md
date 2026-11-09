@@ -137,8 +137,8 @@ For apps that are not Laravel sites, `dist/sheen-elements.js` adds framework-fre
 stylesheet (no build step):
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Marzipane/sheen-web@v0.5.0/dist/sheen.min.css">
-<script src="https://cdn.jsdelivr.net/gh/Marzipane/sheen-web@v0.5.0/dist/sheen-elements.min.js" defer></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Marzipane/sheen-web@v0.5.1/dist/sheen.min.css">
+<script src="https://cdn.jsdelivr.net/gh/Marzipane/sheen-web@v0.5.1/dist/sheen-elements.min.js" defer></script>
 ```
 
 The rules every element follows:

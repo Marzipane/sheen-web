@@ -68,9 +68,9 @@
 .sheen-alert.sheen-danger{background:color-mix(in srgb,var(--sheen-danger) 14%,transparent);color:var(--sheen-text)}
 .sheen-alert.sheen-success{background:color-mix(in srgb,var(--sheen-success) 14%,transparent);color:var(--sheen-text)}
 .sheen-pill{display:inline-flex;align-items:center;height:26px;padding-inline:10px;border-radius:13px;font-size:13px;font-weight:700;background:var(--sheen-tonal,rgba(127,127,127,.14));color:var(--sheen-text-secondary)}
-.sheen-pill.sheen-success{background:color-mix(in srgb,var(--sheen-success) 16%,transparent);color:var(--sheen-success)}
-.sheen-pill.sheen-warning{background:color-mix(in srgb,var(--sheen-warning) 16%,transparent);color:var(--sheen-warning)}
-.sheen-pill.sheen-danger{background:color-mix(in srgb,var(--sheen-danger) 16%,transparent);color:var(--sheen-danger)}
+.sheen-pill.sheen-success{background:color-mix(in srgb,var(--sheen-success) 16%,transparent);color:color-mix(in srgb,var(--sheen-success) 80%,var(--sheen-text))}
+.sheen-pill.sheen-warning{background:color-mix(in srgb,var(--sheen-warning) 16%,transparent);color:color-mix(in srgb,var(--sheen-warning) 80%,var(--sheen-text))}
+.sheen-pill.sheen-danger{background:color-mix(in srgb,var(--sheen-danger) 16%,transparent);color:color-mix(in srgb,var(--sheen-danger) 80%,var(--sheen-text))}
 .sheen-steps{display:flex;gap:6px;list-style:none;margin:0;padding:0}
 .sheen-steps li{flex:1;padding-top:12px;border-top:3px solid var(--sheen-track);font-size:13px;color:var(--sheen-text-tertiary);font-weight:600}
 .sheen-steps li[aria-current],.sheen-steps li.sheen-done{border-color:var(--sheen-accent-text);color:var(--sheen-text)}

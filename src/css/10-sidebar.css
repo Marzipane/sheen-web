@@ -15,6 +15,12 @@
 :lang(ar) .sheen-sidebar-heading{letter-spacing:0}
 .sheen .sheen-sidebar-item{display:flex;align-items:center;gap:9px;padding:5px 8px;border-radius:9px;font-size:13px;color:var(--sheen-text);text-decoration:none;line-height:1.25}
 .sheen .sheen-sidebar-item:hover{background:var(--sheen-tonal)}
+/* The page you are on (aria-current="page"), and an item that leads nowhere yet (aria-disabled="true", no hover). */
+.sheen .sheen-sidebar-item[aria-current="page"]{background:color-mix(in srgb,var(--sheen-accent) 14%,transparent);color:color-mix(in srgb,var(--sheen-accent-text) 80%,var(--sheen-text));font-weight:600}
+.sheen-sidebar-item[aria-current="page"] .sheen-icon{color:var(--sheen-accent-text)}
+.sheen .sheen-sidebar-item[aria-disabled="true"]{color:var(--sheen-text-tertiary);cursor:default}
+.sheen .sheen-sidebar-item[aria-disabled="true"]:hover{background:none}
+.sheen-sidebar-item[aria-disabled="true"] .sheen-icon{color:var(--sheen-text-tertiary)}
 .sheen-sidebar-item .sheen-icon{color:var(--sheen-text-secondary)}
 .sheen-sidebar-foot{display:flex;flex-direction:column;gap:8px;padding:12px 16px;border-block-start:1px solid var(--sheen-separator);font-size:13px}
 .sheen-sidebar-foot>span{overflow-wrap:anywhere}
