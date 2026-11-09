@@ -9,11 +9,12 @@ A list kit for long lists and tables. Additive: nothing that existed changes.
   (nothing matches, couldn't load), filter groups and options for a side panel with a sticky footer, sortable headers whose arrow
   sits in the end padding, a row-menu column pinned at the end edge, and a bulk bar with its count, actions, progress and partial
   failure. `.sheen-list-kit` is a container: below 760px of its own width the tabs scroll, compact controls keep only their glyph
-  and count, and chips scroll with the count pinned. Logical sides only, so Arabic mirrors.
+  and count, and chips scroll with the count pinned. Logical sides only, so Arabic mirrors. The view tab look also serves a
+  module's page tab row: links in a `<nav>` with `aria-current="page"`.
 - `<sheen-menu-button>` items take `hint` (a second line, for why an item is off or who can use it), `shortcut` (shown at the
   end and set as `aria-keyshortcuts`) and `danger`, and the list takes `{separator: true}` and `{heading: 'Words'}` between items.
-  The arrows skip separators and headings. A plain item is still its label alone. `class="sheen-small"` on the element gives
-  its button the small size, as beside other small buttons in a bulk bar.
+  The arrows skip separators and headings. A plain item is still its label alone. `class="sheen-small"` on the element (or on a box around
+  it, such as an app's own wrapper) gives its button the small size; inside a bulk bar or at the end of a views row it is small already.
 - `<sheen-menu-button>`: the menu is placed on the page itself (fixed) under its button, so a scrolling table or card no longer
   cuts it off (a row menu in the last column). Near the screen edge it lines up with the button's other edge, and it follows
   its button when the page scrolls.

@@ -1,7 +1,7 @@
 /* Buttons, chips, tabs, fields, the stepper, checkboxes and choice rows (SheenChoice: a round mark, never chevrons). */
 .sheen-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;border-radius:24px;padding-inline:22px;font-size:16px;font-weight:600;white-space:nowrap;border:0;cursor:pointer;background:var(--sheen-tonal,rgba(127,127,127,.14));color:var(--sheen-text);text-decoration:none}
 .sheen-button.sheen-large{height:56px;border-radius:28px;padding-inline:28px;font-size:17px}
-.sheen-button.sheen-small,sheen-menu-button.sheen-small>.sheen-button{height:40px;border-radius:20px;padding-inline:16px;font-size:14.5px}
+.sheen-button.sheen-small,sheen-menu-button.sheen-small>.sheen-button,.sheen-small sheen-menu-button>.sheen-button,.sheen-bulk-bar sheen-menu-button>.sheen-button,.sheen-views-end sheen-menu-button>.sheen-button{height:40px;border-radius:20px;padding-inline:16px;font-size:14.5px}
 .sheen-button.sheen-glass-prominent{color:var(--sheen-on-accent)}
 .sheen-button.sheen-expand{width:100%}
 .sheen-button[disabled],.sheen-button[aria-disabled="true"]{opacity:.45;cursor:not-allowed}

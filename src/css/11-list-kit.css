@@ -4,14 +4,15 @@
    table while rows are ticked, and a pinned row-menu column. Layout and look only: the app keeps the state. */
 .sheen-list-kit{display:flex;flex-direction:column;gap:12px;container-type:inline-size;min-inline-size:0}
 
-/* views row: the main quick filters as tabs (they are the status filter), saved views at the end */
+/* views row: the main quick filters as tabs (they are the status filter), saved views at the end. The same tab look, as links
+   with aria-current="page" in a <nav>, is the page tab row of a module with several pages. */
 .sheen-views-row{display:flex;align-items:flex-end;gap:12px;border-block-end:1px solid var(--sheen-separator)}
 .sheen-view-tabs{display:flex;gap:4px;min-inline-size:0;overflow-x:auto;scrollbar-width:none}
-.sheen-view-tab{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border:0;border-block-end:2px solid transparent;margin-block-end:-1px;border-start-start-radius:8px;border-start-end-radius:8px;background:none;font:inherit;font-size:13.5px;font-weight:600;color:var(--sheen-text-secondary);white-space:nowrap;cursor:pointer}
+.sheen-view-tab{text-decoration:none;display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border:0;border-block-end:2px solid transparent;margin-block-end:-1px;border-start-start-radius:8px;border-start-end-radius:8px;background:none;font:inherit;font-size:13.5px;font-weight:600;color:var(--sheen-text-secondary);white-space:nowrap;cursor:pointer}
 .sheen-view-tab small{font-size:11px;padding:1px 6px;border-radius:8px;background:var(--sheen-track);color:var(--sheen-text-secondary);font-variant-numeric:tabular-nums}
 .sheen-view-tab:hover{color:var(--sheen-text);background:var(--sheen-tonal)}
 .sheen-view-tab:focus-visible{outline:2px solid var(--sheen-accent-text);outline-offset:-2px}
-.sheen-view-tab[aria-selected="true"]{color:var(--sheen-text);border-block-end-color:var(--sheen-accent)}
+.sheen-view-tab[aria-selected="true"],.sheen-view-tab[aria-current="page"]{color:var(--sheen-text);border-block-end-color:var(--sheen-accent)}
 .sheen-view-tab[aria-selected="true"] small{background:color-mix(in srgb,var(--sheen-accent) 10%,transparent);color:var(--sheen-accent-text)}
 .sheen-views-end{margin-inline-start:auto;display:flex;align-items:center;gap:4px;padding-block-end:6px}
 
