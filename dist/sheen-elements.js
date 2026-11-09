@@ -1167,7 +1167,8 @@ define('sheen-tour', SheenTour);
 //   Hover opens it after the delay, so moving across a table sends nothing; focus and Space open it with no pointer; a
 //   touch never does. It stays while the pointer is over it, and Esc closes it from anywhere while it is open (WCAG
 //   1.4.13), giving focus back to the trigger when focus was inside the card. It closes when the keyboard leaves it.
-//   It is placed again when its content changes size, and never grows taller than the window.
+//   It is placed again when its content changes size, and never grows taller than the window. A click on the trigger
+//   closes it and drops a pending open, so what the click opens gets the next Esc.
 //   Fires "sheen-hover-open" {trigger} just before it shows, which is when to load the facts, and "sheen-hover-close".
 var HOVER_LEAVE_MS = 200;
 var HOVER_DELAY_MS = 350;
@@ -1232,7 +1233,10 @@ class SheenHoverCard extends HTMLElement {
       }
     };
     this.onBlur = function (e) { self.focusLeft(e); };
+    // A click on the trigger chose the record: the card gives way to whatever the click opens.
+    this.onPress = function () { self.close(); };
     trigger.addEventListener('pointerenter', this.onEnter);
+    trigger.addEventListener('click', this.onPress);
     trigger.addEventListener('pointerleave', this.onLeave);
     trigger.addEventListener('keydown', this.onKey);
     trigger.addEventListener('focusout', this.onBlur);
@@ -1247,6 +1251,7 @@ class SheenHoverCard extends HTMLElement {
     this.trigger.removeEventListener('pointerleave', this.onLeave);
     this.trigger.removeEventListener('keydown', this.onKey);
     this.trigger.removeEventListener('focusout', this.onBlur);
+    this.trigger.removeEventListener('click', this.onPress);
     this.trigger.removeAttribute('aria-expanded');
     this.trigger.removeAttribute('aria-haspopup');
     this.trigger = null;

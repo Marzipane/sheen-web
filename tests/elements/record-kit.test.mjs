@@ -558,3 +558,15 @@ test('elements report the package version', () => {
   const w = page('');
   assert.equal(w.sheenElements.version, pkg.version);
 });
+
+test('hover card: a click on the trigger drops a pending open and closes the card, so the next Esc goes to what the click opened', async () => {
+  const { w, card, trigger } = hoverCard();
+  trigger.addEventListener('click', (e) => e.preventDefault());
+  trigger.dispatchEvent(new w.Event('pointerenter'));
+  trigger.click();
+  await tick(40);
+  assert.equal(card.hidden, true);
+  card.open();
+  trigger.click();
+  assert.equal(card.hidden, true);
+});

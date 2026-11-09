@@ -11,7 +11,7 @@ A sidebar shell and motion tokens. Additive: nothing that existed changes.
 
 Fixes to the 0.4.0 record kit, from its release review:
 
-- `<sheen-hover-card>`: Esc closes it from anywhere while it is open, giving focus back to the trigger only when focus was inside (WCAG 1.4.13). It closes when the keyboard leaves it. It is placed again when its content changes size, is never taller than the window and scrolls inside, and lands beside its trigger inside glass or transformed boxes. `attach()` leaves the old trigger clean and drops a pending open; moving the card in the page keeps its trigger. `delay="0"` means no delay.
+- `<sheen-hover-card>`: Esc closes it from anywhere while it is open, giving focus back to the trigger only when focus was inside (WCAG 1.4.13). It closes when the keyboard leaves it. It is placed again when its content changes size, is never taller than the window and scrolls inside, and lands beside its trigger inside glass or transformed boxes. `attach()` leaves the old trigger clean and drops a pending open; moving the card in the page keeps its trigger. `delay="0"` means no delay. A click on the trigger closes the card and drops a pending open, so what the click opens gets the next Esc.
 - `<sheen-side-panel>`: children added after it is on the page go into its body, whatever the loading order. Opened again from inside, it keeps the first opener.
 - `<sheen-menu-button>`: a press outside or focus leaving closes it, leaving focus where it went. Near the bottom it opens upward, and a long menu scrolls. A menu with nothing to pick still closes on Esc.
 - One Esc closes one layer: each element marks the Esc it handled, and the side panel ignores a marked one.
