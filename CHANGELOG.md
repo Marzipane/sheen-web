@@ -6,6 +6,7 @@ A glyph option and contrast fixes. Nothing that existed is removed.
 
 - `<sheen-menu-button glyph="more">`: the button shows only that sheen glyph, as a `.sheen-icon-button`, and `label` becomes its accessible name (and the menu's). Without `glyph` nothing changes.
 - `.sheen-pill.sheen-success|warning|danger` and `.sheen-badge.sheen-ok|warn|bad`: the text is the tone mixed 80% with `--sheen-text`, so it reaches WCAG AA (at least 4.5:1) on its own tint in light and dark; the tone alone was 3.9:1 in light. A test computes the contrast from the tokens.
+- `.sheen-sidebar-item[aria-current="page"]` marks the page you are on (accent tint and text); `.sheen-sidebar-item[aria-disabled="true"]` is an item that leads nowhere yet: tertiary text, no hover.
 - `.sheen-table-wrap` is `position: relative`, so `.sheen-visually-hidden` text inside a scrolling table stays inside it and can't widen a narrow page.
 - Tests: the scope picker's same-id-in-two-groups test ticks the row in the second group, the menu's press-outside test checks it closed before focus moves, and the hover card's resize test checks the card itself is watched. Each now fails with its fix removed.
 
