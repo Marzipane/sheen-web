@@ -10,7 +10,8 @@ A list kit for long lists and tables. Additive: nothing that existed changes.
   sits in the end padding, a row-menu column pinned at the end edge, and a bulk bar with its count, actions, progress and partial
   failure. `.sheen-list-kit` is a container: below 760px of its own width the tabs scroll, compact controls keep only their glyph
   and count, and chips scroll with the count pinned. Logical sides only, so Arabic mirrors. The view tab look also serves a
-  module's page tab row: links in a `<nav>` with `aria-current="page"`.
+  module's page tab row: links in a `<nav class="sheen-page-tabs">` with `aria-current="page"`. `.sheen-table tr[tabindex]`
+  shows keyboard focus, and `.sheen-cell-button` (with `.sheen-strong`) is a value in a cell that opens or edits in place.
 - `<sheen-menu-button>` items take `hint` (a second line, for why an item is off or who can use it), `shortcut` (shown at the
   end and set as `aria-keyshortcuts`) and `danger`, and the list takes `{separator: true}` and `{heading: 'Words'}` between items.
   The arrows skip separators and headings. A plain item is still its label alone. `class="sheen-small"` on the element (or on a box around

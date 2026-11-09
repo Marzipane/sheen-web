@@ -55,7 +55,7 @@ test('list kit: every part is in the built CSS and uses logical sides only', () 
   for (const part of ['.sheen-list-kit{', '.sheen-views-row{', '.sheen-view-tab{', '.sheen-view-tab[aria-selected="true"],.sheen-view-tab[aria-current="page"]{', '.sheen-find-row{',
     '.sheen-control{', '.sheen-find{', '.sheen-control-count{', '.sheen-link-button{', '.sheen-applied-row{', '.sheen-filter-chip{', '.sheen-chip-remove{',
     '.sheen-result-count{', '.sheen-filter-option{', '.sheen-filter-footer{', '.sheen-list-message{', '.sheen-sort-button{', '.sheen-sort-glyph{',
-    '.sheen-table .sheen-pin-end{', '.sheen-bulk-bar{', '.sheen-bulk-count{', '.sheen-bulk-status{', '.sheen-bulk-clear{', '.sheen-menu-hint{',
+    '.sheen-table .sheen-pin-end{', '.sheen-page-tabs{', '.sheen-table tr[tabindex]:focus-visible{', '.sheen-cell-button{', '.sheen-cell-button:focus-visible{', '.sheen-bulk-bar{', '.sheen-bulk-count{', '.sheen-bulk-status{', '.sheen-bulk-clear{', '.sheen-menu-hint{',
     '.sheen-menu-heading{', '.sheen-menu-separator{', '.sheen-menu-item.sheen-danger{', 'sheen-menu-button.sheen-small>.sheen-button,.sheen-small sheen-menu-button>.sheen-button,.sheen-bulk-bar sheen-menu-button>.sheen-button,.sheen-views-end sheen-menu-button>.sheen-button{']) {
     assert.ok(css.includes(part), part);
   }

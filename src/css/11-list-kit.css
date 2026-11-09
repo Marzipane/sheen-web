@@ -16,6 +16,9 @@
 .sheen-view-tab[aria-selected="true"] small{background:color-mix(in srgb,var(--sheen-accent) 10%,transparent);color:var(--sheen-accent-text)}
 .sheen-views-end{margin-inline-start:auto;display:flex;align-items:center;gap:4px;padding-block-end:6px}
 
+/* a module's page tab row (Users · Roles · …): view tabs as links in a <nav class="sheen-page-tabs"> */
+.sheen-page-tabs{display:flex;gap:4px;min-inline-size:0;overflow-x:auto;scrollbar-width:none;border-block-end:1px solid var(--sheen-separator)}
+
 /* find row: one wide search, then compact controls of the same height */
 .sheen-find-row{display:flex;align-items:center;gap:8px;min-inline-size:0}
 .sheen-control{block-size:36px;display:inline-flex;align-items:center;gap:7px;padding-inline:12px;border:0;border-radius:11px;background:var(--sheen-surface);box-shadow:inset 0 0 0 1px var(--sheen-separator);color:var(--sheen-text);font:inherit;font-size:13.5px;font-weight:600;line-height:1.2;white-space:nowrap;cursor:pointer}
@@ -75,6 +78,13 @@
 th[aria-sort="ascending"] .sheen-sort-glyph,th[aria-sort="descending"] .sheen-sort-glyph{opacity:1;color:var(--sheen-accent-text)}
 th[aria-sort="descending"] .sheen-sort-glyph{transform:rotate(180deg)}
 th[aria-sort="ascending"],th[aria-sort="descending"]{color:var(--sheen-text)}
+
+/* a row the keyboard can reach (tabindex), and a value in a cell that opens or edits in place */
+.sheen-table tr[tabindex]:focus-visible{outline:2px solid var(--sheen-accent-text);outline-offset:-2px}
+.sheen-cell-button{all:unset;cursor:pointer;max-inline-size:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sheen-cell-button:hover{text-decoration:underline}
+.sheen-cell-button:focus-visible{outline:2px solid var(--sheen-accent-text);outline-offset:2px}
+.sheen-cell-button.sheen-strong{font-weight:600}
 
 /* a table wider than its card scrolls inside it, with the row-menu column pinned at the end */
 .sheen-table .sheen-pin-end{position:sticky;inset-inline-end:0;z-index:1;inline-size:44px;padding-inline:4px;text-align:end;background:var(--sheen-surface)}
