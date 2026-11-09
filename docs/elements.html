@@ -15,7 +15,7 @@
 <div class="sheen-aurora" aria-hidden="true"></div>
 <main class="sheen-container" style="padding-block:32px">
   <header class="sheen-topbar sheen-glass">
-    <h1 class="sheen-topbar-title">sheen elements <span class="sheen-footnote sheen-secondary">0.3.0</span></h1>
+    <h1 class="sheen-topbar-title">sheen elements <span class="sheen-footnote sheen-secondary">0.5.0</span></h1>
     <button class="sheen-button sheen-small" id="theme" type="button">Light / dark</button>
     <button class="sheen-button sheen-small" id="dir" type="button">LTR / RTL</button>
     <button class="sheen-search-trigger" id="openCmd" type="button"><sheen-glyph name="search"></sheen-glyph><span>Command palette</span><kbd class="sheen-kbd">⌘K</kbd></button>
@@ -54,6 +54,22 @@
     <sheen-node-graph id="graph" label="Pipeline" connect-label="Connect from @name: Tab to a node and press Enter" connected-label="Connected @from to @to" remove-label="Delete to remove"></sheen-node-graph>
   </section>
 
+  <section id="s-records"><h2 class="sheen-title">Record kit: hover card, side panel, scope picker, menu button</h2>
+    <div class="sheen-panel sheen-glass">
+      <p class="demo-row">
+        <a href="#s-records" id="recordLink">Record R-1001</a>
+        <button class="sheen-button" id="panelBtn" type="button">Open the side panel</button>
+        <sheen-menu-button id="menuBtn" label="Export"></sheen-menu-button>
+      </p>
+      <p class="sheen-footnote sheen-secondary" id="recordLog" role="status"></p>
+    </div>
+    <sheen-hover-card id="card" label="Record details" delay="350">
+      <p><strong>R-1001</strong></p><p class="sheen-footnote sheen-secondary" id="cardFacts">Loading…</p>
+      <p class="demo-row"><button class="sheen-button sheen-small" type="button">Open</button></p>
+    </sheen-hover-card>
+    <sheen-scope-picker id="scope" style="margin-block-start:16px" label="Applies to" all-label="All" chosen-label="Only these" except-label="All except" search-label="Search" select-shown-label="Select all shown" empty-label="Nothing found"></sheen-scope-picker>
+  </section>
+
   <section id="s-app"><h2 class="sheen-title">App pieces</h2>
     <div class="sheen-grid" style="--sheen-cols:3">
       <div class="sheen-stat"><span class="sheen-stat-label">Videos made</span><span class="sheen-stat-value">128</span><span class="sheen-stat-note">this month</span></div>
@@ -68,6 +84,7 @@
 <dialog class="sheen-dialog" id="dlg"><div class="sheen-dialog-head"><h2>Dialog</h2></div><div class="sheen-dialog-body"><input type="range" class="sheen-range" value="40"></div><div class="sheen-dialog-foot"><button class="sheen-button" type="button" onclick="this.closest('dialog').close()">Close</button></div></dialog>
 <sheen-command-palette id="cmd" hotkey label="Command palette" placeholder="Search or type a command…" empty="Nothing found" submit-label="Run “@q”"></sheen-command-palette>
 <sheen-toaster close-label="Dismiss"></sheen-toaster>
+<sheen-side-panel id="panel" label="Record R-1001" close-label="Close"><h3>Record R-1001</h3><p>The page behind keeps its scroll and selection.</p><sheen-menu-button id="panelMenu" label="Actions"></sheen-menu-button></sheen-side-panel>
 <sheen-tour id="tour" next-label="Next" back-label="Back" done-label="Done" skip-label="Skip" step-label="@n of @all"></sheen-tour>
 <script src="sheen.min.js" defer></script>
 <script src="sheen-elements.min.js" defer></script>
@@ -110,6 +127,21 @@ addEventListener('DOMContentLoaded', () => {
     { target: '#openCmd', title: 'One box for everything', text: 'Press ⌘K and type what you want.' },
     { target: '#s-edit sheen-transcript', title: 'Edit by text', text: 'Delete words to cut the video.' }];
   $('#tourBtn').onclick = () => $('#tour').start();
+  const log = (t) => { $('#recordLog').textContent = t; };
+  $('#card').attach($('#recordLink'));
+  $('#card').addEventListener('sheen-hover-open', () => {
+    $('#cardFacts').textContent = 'Loading…';
+    setTimeout(() => { $('#cardFacts').textContent = 'Group A · Item 2 · 3 notes · last change today'; }, 300);
+  });
+  $('#panelBtn').onclick = () => $('#panel').open();
+  $('#menuBtn').items = [{ id: 'csv', label: 'CSV' }, { id: 'pdf', label: 'PDF', disabled: true }, { id: 'xlsx', label: 'XLSX' }];
+  $('#panelMenu').items = [{ id: 'next', label: 'Next record' }, { id: 'copy', label: 'Copy link' }];
+  document.addEventListener('sheen-menu-select', (e) => log('Picked ' + e.detail.id));
+  $('#scope').groups = [
+    { id: 'group:a', label: 'Group A', items: [{ id: 'item:1', label: 'Item 1' }, { id: 'item:2', label: 'Item 2' }, { id: 'item:3', label: 'Item 3' }] },
+    { id: 'group:b', label: 'Group B', items: [{ id: 'item:4', label: 'Item 4' }, { id: 'item:5', label: 'Item 5' }] }];
+  $('#scope').value = { mode: 'all_except', include: [], exclude: ['item:2'] };
+  $('#scope').addEventListener('sheen-scope-change', (e) => log(JSON.stringify(e.detail)));
 });
 </script>
 </body>

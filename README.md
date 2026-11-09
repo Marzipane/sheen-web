@@ -131,14 +131,14 @@ The field shows focus, and the words inside it never get a box of their own.
 
 Buttons and links keep their focus ring. With forced colors, the field or part gets a real outline.
 
-## App elements (0.3.0)
+## App elements (0.3.0, record kit 0.4.0)
 
 For apps that are not Laravel sites, `dist/sheen-elements.js` adds framework-free custom elements. Load it after the
 stylesheet (no build step):
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Marzipane/sheen-web@v0.3.0/dist/sheen.min.css">
-<script src="https://cdn.jsdelivr.net/gh/Marzipane/sheen-web@v0.3.0/dist/sheen-elements.min.js" defer></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Marzipane/sheen-web@v0.5.0/dist/sheen.min.css">
+<script src="https://cdn.jsdelivr.net/gh/Marzipane/sheen-web@v0.5.0/dist/sheen-elements.min.js" defer></script>
 ```
 
 The rules every element follows:
@@ -163,10 +163,10 @@ Live stories for every element: `docs/elements.html` (open it from a local serve
 | `<sheen-transcript>` | text-based editing | `label`, `current`, `removed-label`, `follow`; `words`, `removeKind(kind)`, `toggleCut(indices)` | `sheen-seek` {time}, `sheen-edit` {removed, restored} | ← →, Shift to select, Delete, Enter |
 | `<sheen-node-graph>` | node graph | `label`, `connect-label`, `connected-label`, `remove-label`; `nodes`, `edges`, `order()` | `sheen-graphchange` {nodes, edges}, `sheen-nodeopen` {node} | arrows move, C then Enter connects, Delete |
 | `<sheen-tour>` | onboarding tour | `next-label`, `back-label`, `done-label`, `skip-label`, `step-label` ("@n of @all"); `steps`, `start()`, `stop()` | `sheen-tour-step` {index}, `sheen-tour-end` {completed} | Enter, Esc, Tab stays inside |
-| `<sheen-hover-card>` | facts and actions beside a link | `label`, `delay`, `attach(trigger)`; fires `sheen-hover-open`, `sheen-hover-close` |
-| `<sheen-side-panel>` | a panel on the end edge, no backdrop | `label`, `close-label`, `open()`, `close()`; fires `sheen-panel-close` |
-| `<sheen-scope-picker>` | chooses a rule, not a list | `groups`, `value`, `result`, the `*-label` words; fires `sheen-scope-change` |
-| `<sheen-menu-button>` | a button with a keyboard menu | `label`, `items`; fires `sheen-menu-select` |
+| `<sheen-hover-card>` | facts and actions beside a link | `label`, `delay` (ms, `0` for none); `attach(trigger)`, `detach()`, `open()`, `close()` | `sheen-hover-open` {trigger}, `sheen-hover-close` | on the trigger Space opens; Esc closes from anywhere while open; Tab out closes |
+| `<sheen-side-panel>` | a panel on the end edge, no backdrop | `label`, `close-label`; `open()`, `close()` | `sheen-panel-close` | Esc closes and returns focus to the first opener |
+| `<sheen-scope-picker>` | chooses a rule, not a list | `label`, `all-label`, `chosen-label`, `except-label`, `search-label`, `select-shown-label`, `empty-label`, `result`; `groups`, `value` (only the list its mode reads) | `sheen-scope-change` {mode, include, exclude} | Space ticks; focus stays on the ticked row |
+| `<sheen-menu-button>` | a button with a keyboard menu | `label`; `items` [{id, label, disabled}] | `sheen-menu-select` {id} | ↓ opens, ↑ ↓ move, Enter picks, Esc closes; a press outside or Tab out closes |
 
 ```html
 <sheen-command-palette id="cmd" hotkey label="Command bar" placeholder="Type a command or search…"

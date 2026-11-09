@@ -4,7 +4,8 @@
 //   Chooses a rule, not a list. picker.groups = [{id, label, items: [{id, label}]}].
 //   picker.value = {mode: 'all'|'only'|'all_except', include: [ids], exclude: [ids]}. A whole group is stored as the
 //   group's id, so something added to that group later joins the rule. The page works out the result line and sets it.
-//   Fires "sheen-scope-change" with the value.
+//   A value carries only the list its mode reads (none for all); the picks of the other modes are kept inside, so
+//   switching back restores them. Fires "sheen-scope-change" with the value.
 class SheenScopePicker extends HTMLElement {
   connectedCallback() {
     if (this.list) return;
@@ -36,7 +37,7 @@ class SheenScopePicker extends HTMLElement {
   }
   get groups() { return this._groups || []; }
   set groups(v) { this._groups = Array.isArray(v) ? v : []; if (this.list) this.draw(); }
-  get value() { return this._value; }
+  get value() { return this.rule(); }
   set value(v) { this._value = { mode: v.mode, include: (v.include || []).slice(), exclude: (v.exclude || []).slice() }; if (this.list) this.draw(); }
   // In "only" the picks live in include, in "all except" in exclude.
   get picks() { return this._value.mode === 'only' ? this._value.include : this._value.exclude; }
@@ -47,7 +48,11 @@ class SheenScopePicker extends HTMLElement {
     this.draw();
     this.changed();
   }
-  changed() { emit(this, 'sheen-scope-change', { mode: this._value.mode, include: this._value.include.slice(), exclude: this._value.exclude.slice() }); }
+  rule() {
+    var v = this._value;
+    return { mode: v.mode, include: v.mode === 'only' ? v.include.slice() : [], exclude: v.mode === 'all_except' ? v.exclude.slice() : [] };
+  }
+  changed() { emit(this, 'sheen-scope-change', this.rule()); }
   visible(group) {
     var q = this.query;
     if (!q || group.label.toLowerCase().indexOf(q) >= 0) return group.items;
@@ -68,20 +73,21 @@ class SheenScopePicker extends HTMLElement {
   selectShown() {
     this.groups.forEach(function (group) {
       var shown = this.visible(group);
+      if (!shown.length) return; // a group with nothing on screen is never picked unseen
       if (shown.length === group.items.length) this.setGroup(group, true);
       else shown.forEach(function (i) { this.setItem(group, i, true); }, this);
     }, this);
     this.draw();
     this.changed();
   }
-  box(id, label, checked, change, cls) {
-    var input = h('input', { type: 'checkbox', value: id, onchange: change });
+  box(group, id, label, checked, change, cls) {
+    var input = h('input', { type: 'checkbox', value: id, 'data-group': group.id, onchange: change });
     input.checked = checked;
     return { input: input, row: h('label', { class: cls }, input, label) };
   }
   draw() {
     var self = this, mode = this._value.mode, choosing = mode !== 'all';
-    var focused = this.list.contains(document.activeElement) ? document.activeElement.value : null;
+    var a = document.activeElement, focused = this.list.contains(a) ? { value: a.value, group: a.getAttribute('data-group') } : null;
     this.radios.forEach(function (r) { var i = r.querySelector('input'); i.checked = i.value === mode; });
     this.tools.hidden = !choosing;
     this.list.hidden = !choosing;
@@ -91,18 +97,22 @@ class SheenScopePicker extends HTMLElement {
       var shown = self.visible(group);
       if (!shown.length) return;
       var count = group.items.filter(function (i) { return self.picked(group, i); }).length;
-      var head = self.box(group.id, group.label, count === group.items.length, function (e) { self.setGroup(group, e.target.checked); self.draw(); self.changed(); }, 'sheen-scope-group');
+      var head = self.box(group, group.id, group.label, count === group.items.length, function (e) { self.setGroup(group, e.target.checked); self.draw(); self.changed(); }, 'sheen-scope-group');
       head.input.indeterminate = count > 0 && count < group.items.length;
       var rows = shown.map(function (item) {
-        return self.box(item.id, item.label, self.picked(group, item), function (e) { self.setItem(group, item, e.target.checked); self.draw(); self.changed(); }, 'sheen-scope-item').row;
+        return self.box(group, item.id, item.label, self.picked(group, item), function (e) { self.setItem(group, item, e.target.checked); self.draw(); self.changed(); }, 'sheen-scope-item').row;
       });
       var items = h('div', { class: 'sheen-scope-items' });
       rows.forEach(function (row) { items.appendChild(row); });
       self.list.appendChild(h('div', { role: 'group', 'aria-label': group.label }, head.row, items));
     });
     if (!this.list.children.length) this.list.appendChild(h('p', { class: 'sheen-footnote sheen-secondary sheen-scope-empty', role: 'status', text: this.getAttribute('empty-label') || '' }));
-    // Drawing replaces every row, so the row a keyboard user just ticked gets its focus back.
-    if (focused != null) Array.prototype.forEach.call(this.list.querySelectorAll('input'), function (input) { if (input.value === focused) input.focus(); });
+    // Drawing replaces every row, so the row a keyboard user just ticked gets its focus back: the same id in the same
+    // group, since one id may sit in two groups.
+    if (focused) {
+      var back = Array.prototype.find.call(this.list.querySelectorAll('input'), function (input) { return input.value === focused.value && input.getAttribute('data-group') === focused.group; });
+      if (back) back.focus();
+    }
   }
 }
 define('sheen-scope-picker', SheenScopePicker);
