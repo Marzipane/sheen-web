@@ -61,7 +61,7 @@ test('list kit: every part is in the built CSS and uses logical sides only', () 
   }
   assert.match(css, /th\[aria-sort="descending"\] \.sheen-sort-glyph\{transform:rotate\(180deg\)\}/);
   assert.match(css, /@container \(max-width:760px\)\{[^@]*?\.sheen-applied-row\{flex-wrap:nowrap/);
-  assert.match(css, /@media \(prefers-reduced-motion:reduce\)\{\.sheen-spin\{animation:none\}\}/);
+  assert.match(css, /@media \(prefers-reduced-motion:reduce\)\{\.sheen-bulk-spin\{animation:none\}\}/);
 });
 
 test('list kit: the row-menu column stays pinned at the end edge, the left in Arabic', () => {
@@ -123,4 +123,115 @@ test('menu button: near the end edge it lines up with the button end, and it fol
   w.dispatchEvent(new w.Event('scroll'));
   assert.equal(list.hidden, false);
   assert.equal(list.style.top, '56px');
+});
+
+test('list kit: the bulk bar spinner has its own name, so the progress ring keeps its 270deg turn', () => {
+  assert.ok(css.includes('.sheen-bulk-spin{animation:sheen-bulk-spin 1s linear infinite}'));
+  assert.ok(css.includes('@keyframes sheen-bulk-spin{to{transform:rotate(360deg)}}'));
+  // the ring's keyframes are defined once, unchanged, and nothing else styles .sheen-spin
+  assert.deepEqual(css.match(/@keyframes sheen-spin\{[^}]*\}\}/g), ['@keyframes sheen-spin{to{transform:rotate(270deg)}}']);
+  assert.deepEqual(css.match(/(^|[},])\.sheen-spin\{[^}]*\}/g), null);
+  assert.ok(css.includes('sheen-progress-ring.sheen-spin svg{animation:sheen-spin 1s linear infinite}'));
+});
+
+// jsdom has no popover API: these give the page one that records what was asked of it.
+function withPopover(w) {
+  const calls = [];
+  w.HTMLElement.prototype.showPopover = function () { calls.push(['show', this.getAttribute('popover')]); this._open = true; };
+  w.HTMLElement.prototype.hidePopover = function () { calls.push(['hide']); this._open = false; };
+  return calls;
+}
+function opened(html, dir) {
+  const w = page(html, dir);
+  const calls = withPopover(w);
+  const m = w.document.querySelector('sheen-menu-button');
+  m.items = [{ id: 'open', label: 'Open' }];
+  const button = m.querySelector('button');
+  const list = m.querySelector('[role="menu"]');
+  button.getBoundingClientRect = () => ({ left: 100, right: 130, top: 50, bottom: 80, width: 30, height: 30 });
+  list.getBoundingClientRect = () => ({ left: 100, right: 280, top: 86, bottom: 200, width: 180, height: 114 });
+  return { w, m, calls, button, list };
+}
+
+test('menu button: inside a glass (backdrop-filter) box the menu opens in the top layer, placed from the screen', () => {
+  const { calls, button, list } = opened('<div class="sheen-glass" style="backdrop-filter:blur(12px)"><sheen-menu-button label="Row actions"></sheen-menu-button></div>');
+  button.click();
+  assert.deepEqual(calls, [['show', 'manual']]);
+  assert.equal(list.hidden, false);
+  // the browser's own popover border and text colour don't show through the menu's glass
+  assert.ok(css.includes('.sheen-menu[popover]{border:0;color:inherit}'));
+  assert.equal(list.style.left, '100px');
+  assert.equal(list.style.top, '86px');
+  button.click();
+  assert.deepEqual(calls.at(-1), ['hide']);
+  assert.equal(list.hidden, true);
+});
+
+test('menu button: in a pinned end cell under a bulk bar the menu opens in the top layer, above both', () => {
+  const { calls, button } = opened('<div class="sheen-bulk-bar"></div><table class="sheen-table"><tr><td class="sheen-pin-end"><sheen-menu-button label="Row actions"></sheen-menu-button></td></tr></table>');
+  button.click();
+  assert.deepEqual(calls, [['show', 'manual']]);
+});
+
+test('menu button: it is placed again when the window is resized', () => {
+  const { w, button, list } = opened('<sheen-menu-button label="Row actions"></sheen-menu-button>');
+  button.click();
+  button.getBoundingClientRect = () => ({ left: 100, right: 130, top: 150, bottom: 180, width: 30, height: 30 });
+  w.dispatchEvent(new w.Event('resize'));
+  assert.equal(list.style.top, '186px');
+  button.click();
+  button.getBoundingClientRect = () => ({ left: 100, right: 130, top: 250, bottom: 280, width: 30, height: 30 });
+  w.dispatchEvent(new w.Event('resize'));
+  assert.equal(list.style.top, '186px', 'a closed menu no longer follows');
+});
+
+test('menu button: it closes when its button scrolls out of the box it sits in, or off the screen', () => {
+  const { w, m, button, list } = opened('<div class="box" style="overflow:auto"><sheen-menu-button label="Row actions"></sheen-menu-button></div>');
+  const box = w.document.querySelector('.box');
+  box.getBoundingClientRect = () => ({ left: 0, right: 600, top: 40, bottom: 340, width: 600, height: 300 });
+  button.click();
+  button.getBoundingClientRect = () => ({ left: 100, right: 130, top: 60, bottom: 90, width: 30, height: 30 });
+  box.dispatchEvent(new w.Event('scroll'));
+  assert.equal(list.hidden, false, 'still inside its box');
+  button.getBoundingClientRect = () => ({ left: 100, right: 130, top: 5, bottom: 35, width: 30, height: 30 });
+  box.dispatchEvent(new w.Event('scroll'));
+  assert.equal(list.hidden, true);
+  assert.equal(m.querySelector('button').getAttribute('aria-expanded'), 'false');
+  button.getBoundingClientRect = () => ({ left: 100, right: 130, top: 60, bottom: 90, width: 30, height: 30 });
+  button.click();
+  button.getBoundingClientRect = () => ({ left: 100, right: 130, top: -60, bottom: -30, width: 30, height: 30 });
+  w.dispatchEvent(new w.Event('scroll'));
+  assert.equal(list.hidden, true, 'off the top of the screen');
+});
+
+test('menu button: in Arabic it lines up with the button\'s right edge, and with its left edge near the screen\'s left', () => {
+  const { button, list } = opened('<sheen-menu-button label="Row actions"></sheen-menu-button>', 'rtl');
+  Object.defineProperty(list, 'offsetWidth', { value: 180 });
+  button.getBoundingClientRect = () => ({ left: 400, right: 430, top: 50, bottom: 80, width: 30, height: 30 });
+  list.getBoundingClientRect = () => ({ left: 250, right: 430, top: 86, bottom: 200, width: 180, height: 114 });
+  button.click();
+  assert.equal(list.style.left, '250px');
+  assert.equal(list.classList.contains('sheen-menu-flip'), false);
+  button.click();
+  button.getBoundingClientRect = () => ({ left: 20, right: 50, top: 50, bottom: 80, width: 30, height: 30 });
+  list.getBoundingClientRect = () => ({ left: -130, right: 50, top: 86, bottom: 200, width: 180, height: 114 });
+  button.click();
+  assert.equal(list.classList.contains('sheen-menu-flip'), true);
+  assert.equal(list.style.left, '20px');
+});
+
+test('menu button: a danger item never takes the first focus', () => {
+  const w = page('<sheen-menu-button label="Row actions"></sheen-menu-button>');
+  const m = w.document.querySelector('sheen-menu-button');
+  const button = m.querySelector('button');
+  const list = m.querySelector('[role="menu"]');
+  m.items = [{ id: 'delete', label: 'Delete', danger: true }, { id: 'open', label: 'Open' }];
+  button.click();
+  assert.equal(w.document.activeElement.dataset.id, 'open');
+  key(w, w.document.activeElement, 'ArrowDown');
+  assert.equal(w.document.activeElement.dataset.id, 'delete', 'the arrows still reach it');
+  key(w, w.document.activeElement, 'Escape');
+  m.items = [{ id: 'delete', label: 'Delete', danger: true }];
+  button.click();
+  assert.equal(w.document.activeElement, list, 'only danger items: the menu itself has focus');
 });

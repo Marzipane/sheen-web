@@ -244,7 +244,7 @@ work, and fills in its own words.
 | `.sheen-list-message`, `.sheen-list-message-actions` (`.sheen-danger` for an error) | nothing matches, or the results couldn't load |
 | `.sheen-sort-button`, `.sheen-sort-glyph` on `th[aria-sort]` | a sortable header; the arrow sits in the end padding |
 | `.sheen-pin-end`, `.sheen-truncate`, `tr[aria-selected="true"]` | the row-menu column pinned at the end edge, one-line cells, a ticked row |
-| `.sheen-bulk-bar`, `.sheen-bulk-count`, `.sheen-bulk-actions`, `.sheen-bulk-status` (`.sheen-danger`), `.sheen-bulk-clear`, `.sheen-spin` | the bar over the table header while rows are ticked, with progress and partial failure |
+| `.sheen-bulk-bar`, `.sheen-bulk-count`, `.sheen-bulk-actions`, `.sheen-bulk-status` (`.sheen-danger`), `.sheen-bulk-clear`, `.sheen-bulk-spin` | the bar over the table header while rows are ticked, with progress and partial failure |
 
 ### App UI classes
 

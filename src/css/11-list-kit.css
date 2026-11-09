@@ -103,9 +103,10 @@ th[aria-sort="ascending"],th[aria-sort="descending"]{color:var(--sheen-text)}
 .sheen-bulk-status{display:inline-flex;align-items:center;gap:6px;font-weight:600}
 .sheen-bulk-status.sheen-danger{color:var(--sheen-danger)}
 .sheen-bulk-clear{margin-inline-start:auto}
-.sheen-spin{animation:sheen-spin 1s linear infinite}
-@keyframes sheen-spin{to{transform:rotate(360deg)}}
-@media (prefers-reduced-motion:reduce){.sheen-spin{animation:none}}
+/* the bar's own spinner glyph; the progress ring's .sheen-spin (09-elements) is a different turn and stays its own */
+.sheen-bulk-spin{animation:sheen-bulk-spin 1s linear infinite}
+@keyframes sheen-bulk-spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.sheen-bulk-spin{animation:none}}
 
 /* narrow: tabs scroll, the views and Filters controls keep only their glyph, chips scroll with the count pinned */
 @container (max-width:760px){

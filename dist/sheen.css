@@ -621,6 +621,7 @@ sheen-scope-picker{display:flex;flex-direction:column;gap:10px}
 .sheen-scope-items{padding-inline-start:24px}
 sheen-menu-button{position:relative;display:inline-block}
 .sheen-menu{position:absolute;inset-inline-start:0;z-index:950;min-inline-size:180px;max-block-size:min(320px,60vh);overflow:auto;margin-block-start:6px;padding:6px;border-radius:14px}
+.sheen-menu[popover]{border:0;color:inherit}
 .sheen-menu.sheen-menu-flip{inset-inline-start:auto;inset-inline-end:0}
 .sheen-menu.sheen-menu-up{inset-block-start:auto;inset-block-end:100%;margin-block:0 6px}
 .sheen-menu:focus-visible{outline:2px solid var(--sheen-accent);outline-offset:1px}
@@ -795,9 +796,10 @@ th[aria-sort="ascending"],th[aria-sort="descending"]{color:var(--sheen-text)}
 .sheen-bulk-status{display:inline-flex;align-items:center;gap:6px;font-weight:600}
 .sheen-bulk-status.sheen-danger{color:var(--sheen-danger)}
 .sheen-bulk-clear{margin-inline-start:auto}
-.sheen-spin{animation:sheen-spin 1s linear infinite}
-@keyframes sheen-spin{to{transform:rotate(360deg)}}
-@media (prefers-reduced-motion:reduce){.sheen-spin{animation:none}}
+/* the bar's own spinner glyph; the progress ring's .sheen-spin (09-elements) is a different turn and stays its own */
+.sheen-bulk-spin{animation:sheen-bulk-spin 1s linear infinite}
+@keyframes sheen-bulk-spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.sheen-bulk-spin{animation:none}}
 
 /* narrow: tabs scroll, the views and Filters controls keep only their glyph, chips scroll with the count pinned */
 @container (max-width:760px){
