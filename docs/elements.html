@@ -15,7 +15,7 @@
 <div class="sheen-aurora" aria-hidden="true"></div>
 <main class="sheen-container" style="padding-block:32px">
   <header class="sheen-topbar sheen-glass">
-    <h1 class="sheen-topbar-title">sheen elements <span class="sheen-footnote sheen-secondary">0.5.1</span></h1>
+    <h1 class="sheen-topbar-title">sheen elements <span class="sheen-footnote sheen-secondary">0.6.0</span></h1>
     <button class="sheen-button sheen-small" id="theme" type="button">Light / dark</button>
     <button class="sheen-button sheen-small" id="dir" type="button">LTR / RTL</button>
     <button class="sheen-search-trigger" id="openCmd" type="button"><sheen-glyph name="search"></sheen-glyph><span>Command palette</span><kbd class="sheen-kbd">⌘K</kbd></button>
@@ -68,6 +68,24 @@
       <p class="demo-row"><button class="sheen-button sheen-small" type="button">Open</button></p>
     </sheen-hover-card>
     <sheen-scope-picker id="scope" style="margin-block-start:16px" label="Applies to" all-label="All" chosen-label="Only these" except-label="All except" search-label="Search" select-shown-label="Select all shown" empty-label="Nothing found"></sheen-scope-picker>
+  </section>
+
+  <section id="s-list"><h2 class="sheen-title">List kit: views, filters, sort, bulk bar</h2>
+    <div class="sheen-list-kit">
+      <div class="sheen-views-row">
+        <div class="sheen-view-tabs" role="tablist" aria-label="Status"><button class="sheen-view-tab" role="tab" aria-selected="false" type="button">All <small>10</small></button><button class="sheen-view-tab" role="tab" aria-selected="true" type="button">Active <small>9</small></button><button class="sheen-view-tab" role="tab" aria-selected="false" type="button">Paused <small>1</small></button></div>
+        <div class="sheen-views-end"><button class="sheen-link-button" type="button">Save view</button><sheen-menu-button id="viewsBtn" label="Views"></sheen-menu-button></div>
+      </div>
+      <div class="sheen-find-row" role="search"><label class="sheen-control sheen-find"><sheen-glyph name="search" size="15"></sheen-glyph><input type="search" placeholder="Search" aria-label="Search"><kbd class="sheen-kbd">/</kbd></label><button class="sheen-control sheen-compact-glyph" type="button" aria-haspopup="dialog"><sheen-glyph name="sliders" size="15"></sheen-glyph><span>Filters</span><span class="sheen-control-count">2</span></button></div>
+      <div class="sheen-applied-row" aria-live="polite"><span class="sheen-filter-chip"><span>Hub</span><b>North</b><button class="sheen-chip-remove" type="button" aria-label="Remove this filter"><sheen-glyph name="close" size="12"></sheen-glyph></button></span><button class="sheen-link-button" type="button">Clear all</button><span class="sheen-result-count">4 results</span></div>
+    </div>
+    <div class="sheen-table-wrap" style="margin-block-start:12px">
+      <div class="sheen-bulk-bar" role="region" aria-label="Bulk actions"><span class="sheen-bulk-count"><b>2</b> selected</span><button class="sheen-link-button" type="button">Select all 4</button><span class="sheen-bulk-actions"><button class="sheen-button sheen-small" type="button">Export selected</button><sheen-menu-button class="sheen-small" label="More actions"></sheen-menu-button></span><button class="sheen-link-button sheen-bulk-clear" type="button">Clear <kbd class="sheen-kbd">Esc</kbd></button></div>
+      <table class="sheen-table"><thead><tr><th><input type="checkbox" aria-label="Select all"></th><th aria-sort="ascending"><button class="sheen-sort-button" type="button">Name <sheen-glyph class="sheen-sort-glyph" name="arrow-up" size="12"></sheen-glyph></button></th><th>Hub</th><th class="sheen-pin-end"><span class="sheen-visually-hidden">Actions</span></th></tr></thead>
+        <tbody><tr aria-selected="true"><td><input type="checkbox" checked aria-label="Select"></td><td>North</td><td>Central</td><td class="sheen-pin-end"><sheen-menu-button class="rowMenu" glyph="more" label="Row actions"></sheen-menu-button></td></tr>
+        <tr aria-selected="true"><td><input type="checkbox" checked aria-label="Select"></td><td>South</td><td>Central</td><td class="sheen-pin-end"><sheen-menu-button class="rowMenu" glyph="more" label="Row actions"></sheen-menu-button></td></tr></tbody></table>
+    </div>
+    <div class="sheen-list-message" style="margin-block-start:12px"><sheen-glyph name="search" size="28"></sheen-glyph><b>No results match these filters</b><p>Try removing a filter.</p><span class="sheen-list-message-actions"><button class="sheen-button sheen-small" type="button">Clear all</button></span></div>
   </section>
 
   <section id="s-app"><h2 class="sheen-title">App pieces</h2>
@@ -144,6 +162,12 @@ addEventListener('DOMContentLoaded', () => {
   $('#scope').value = { mode: 'all_except', include: [], exclude: ['item:2'] };
   $('#scope').addEventListener('sheen-scope-change', (e) => log(JSON.stringify(e.detail)));
 });
+</script>
+<script>
+  addEventListener('load', function () {
+    document.getElementById('viewsBtn').items = [{ heading: 'My views' }, { id: 'v1', label: 'Active', hint: 'Only me' }, { separator: true }, { id: 'save', label: 'Save current filters as a view' }];
+    document.querySelectorAll('.rowMenu').forEach(function (m) { m.items = [{ id: 'open', label: 'Open', shortcut: 'Enter' }, { id: 'edit', label: 'Edit', shortcut: 'E', disabled: true, hint: 'Needs edit rights' }, { separator: true }, { id: 'pause', label: 'Pause', danger: true }]; });
+  });
 </script>
 </body>
 </html>

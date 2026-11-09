@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.6.0
+
+A list kit for long lists and tables. Additive: nothing that existed changes.
+
+- List kit classes: a views row (tabs with counts, saved views at the end), a find row (one wide search, compact controls, a
+  Filters control with a count), an applied row (removable chips, Clear all, the result count, last used), result messages
+  (nothing matches, couldn't load), filter groups and options for a side panel with a sticky footer, sortable headers whose arrow
+  sits in the end padding, a row-menu column pinned at the end edge, and a bulk bar with its count, actions, progress and partial
+  failure. `.sheen-list-kit` is a container: below 760px of its own width the tabs scroll, compact controls keep only their glyph
+  and count, and chips scroll with the count pinned. Logical sides only, so Arabic mirrors.
+- `<sheen-menu-button>` items take `hint` (a second line, for why an item is off or who can use it), `shortcut` (shown at the
+  end and set as `aria-keyshortcuts`) and `danger`, and the list takes `{separator: true}` and `{heading: 'Words'}` between items.
+  The arrows skip separators and headings. A plain item is still its label alone. `class="sheen-small"` on the element gives
+  its button the small size, as beside other small buttons in a bulk bar.
+- `<sheen-menu-button>`: the menu is placed on the page itself (fixed) under its button, so a scrolling table or card no longer
+  cuts it off (a row menu in the last column). Near the screen edge it lines up with the button's other edge, and it follows
+  its button when the page scrolls.
+- Tests: the new menu items and keys, every kit part in the built CSS, and the contrast of accent words on the chip, the selected
+  tab count and the bulk bar (WCAG AA in light and dark, computed from the tokens).
+
 ## 0.5.1
 
 A glyph option and contrast fixes. Nothing that existed is removed.

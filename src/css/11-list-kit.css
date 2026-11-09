@@ -1,0 +1,105 @@
+/* List kit: the parts a long list or table is built from, for record-heavy apps.
+   Views row (tabs with counts, saved views at the end), find row (search, controls, Filters with a count), applied row
+   (removable chips, Clear all, the result count), result messages (none, error), sortable headers, a bulk bar over the
+   table while rows are ticked, and a pinned row-menu column. Layout and look only: the app keeps the state. */
+.sheen-list-kit{display:flex;flex-direction:column;gap:12px;container-type:inline-size;min-inline-size:0}
+
+/* views row: the main quick filters as tabs (they are the status filter), saved views at the end */
+.sheen-views-row{display:flex;align-items:flex-end;gap:12px;border-block-end:1px solid var(--sheen-separator)}
+.sheen-view-tabs{display:flex;gap:4px;min-inline-size:0;overflow-x:auto;scrollbar-width:none}
+.sheen-view-tab{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border:0;border-block-end:2px solid transparent;margin-block-end:-1px;border-start-start-radius:8px;border-start-end-radius:8px;background:none;font:inherit;font-size:13.5px;font-weight:600;color:var(--sheen-text-secondary);white-space:nowrap;cursor:pointer}
+.sheen-view-tab small{font-size:11px;padding:1px 6px;border-radius:8px;background:var(--sheen-track);color:var(--sheen-text-secondary);font-variant-numeric:tabular-nums}
+.sheen-view-tab:hover{color:var(--sheen-text);background:var(--sheen-tonal)}
+.sheen-view-tab:focus-visible{outline:2px solid var(--sheen-accent-text);outline-offset:-2px}
+.sheen-view-tab[aria-selected="true"]{color:var(--sheen-text);border-block-end-color:var(--sheen-accent)}
+.sheen-view-tab[aria-selected="true"] small{background:color-mix(in srgb,var(--sheen-accent) 10%,transparent);color:var(--sheen-accent-text)}
+.sheen-views-end{margin-inline-start:auto;display:flex;align-items:center;gap:4px;padding-block-end:6px}
+
+/* find row: one wide search, then compact controls of the same height */
+.sheen-find-row{display:flex;align-items:center;gap:8px;min-inline-size:0}
+.sheen-control{block-size:36px;display:inline-flex;align-items:center;gap:7px;padding-inline:12px;border:0;border-radius:11px;background:var(--sheen-surface);box-shadow:inset 0 0 0 1px var(--sheen-separator);color:var(--sheen-text);font:inherit;font-size:13.5px;font-weight:600;line-height:1.2;white-space:nowrap;cursor:pointer}
+.sheen-control:disabled{opacity:.45;cursor:not-allowed}
+.sheen-control:focus-visible,.sheen-control:focus-within{outline:none;box-shadow:inset 0 0 0 1.5px var(--sheen-accent-text),0 0 0 4px color-mix(in srgb,var(--sheen-accent) 16%,transparent)}
+.sheen-control[aria-expanded="true"]{box-shadow:inset 0 0 0 1.5px var(--sheen-accent-text),0 0 0 4px color-mix(in srgb,var(--sheen-accent) 16%,transparent)}
+.sheen-control .sheen-icon{inline-size:15px;block-size:15px;flex:none;color:var(--sheen-text-secondary)}
+.sheen-find{flex:1 1 auto;min-inline-size:0;cursor:text;font-weight:400}
+.sheen-find input{all:unset;flex:1;min-inline-size:0;color:var(--sheen-text)}
+.sheen-find input::placeholder{color:var(--sheen-text-tertiary)}
+.sheen-control-count{min-inline-size:18px;block-size:18px;border-radius:9px;padding-inline:5px;display:inline-grid;place-items:center;background:var(--sheen-accent);color:var(--sheen-on-accent);font-size:11px;font-weight:700;font-variant-numeric:tabular-nums}
+
+/* a text button for small steps beside the controls: Save view, Clear all, Select all */
+.sheen-link-button{display:inline-flex;align-items:center;gap:5px;block-size:30px;padding-inline:8px;border:0;border-radius:8px;background:none;font:inherit;font-size:13px;font-weight:600;color:var(--sheen-accent-text);cursor:pointer;white-space:nowrap}
+.sheen-link-button:hover{background:var(--sheen-tonal)}
+.sheen-link-button:focus-visible{outline:2px solid var(--sheen-accent-text);outline-offset:1px}
+
+/* applied row: one removable chip per filter (never repeated elsewhere), Clear all, the result count */
+.sheen-applied-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-block-size:30px}
+.sheen-filter-chip{display:inline-flex;align-items:center;gap:4px;block-size:30px;padding-inline:12px 4px;border-radius:15px;background:color-mix(in srgb,var(--sheen-accent) 9%,var(--sheen-surface));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--sheen-accent) 28%,transparent);font-size:13px;white-space:nowrap}
+.sheen-filter-chip>span{color:var(--sheen-text-secondary)}
+.sheen-filter-chip>b{font-weight:600;color:var(--sheen-accent-text)}
+.sheen-chip-remove{inline-size:22px;block-size:22px;flex:none;border:0;border-radius:11px;background:none;display:grid;place-items:center;color:var(--sheen-text-secondary);cursor:pointer}
+.sheen-chip-remove:hover{background:color-mix(in srgb,var(--sheen-accent) 16%,transparent)}
+.sheen-chip-remove:focus-visible{outline:2px solid var(--sheen-accent-text);outline-offset:1px}
+.sheen-chip-remove .sheen-icon{inline-size:12px;block-size:12px}
+.sheen-last-used{display:inline-flex;align-items:center;gap:6px;padding-inline-end:8px;border-inline-end:1px solid var(--sheen-separator);color:var(--sheen-text-secondary);font-size:12.5px}
+.sheen-result-count{margin-inline-start:auto;font-size:13px;font-weight:600;color:var(--sheen-text-secondary);font-variant-numeric:tabular-nums}
+
+/* a filter list inside a panel: groups, fields and checkable options */
+.sheen-filter-group h4{margin:18px 0 2px;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--sheen-text-tertiary)}
+.sheen-filter-field{display:flex;flex-direction:column;gap:6px;padding-block:10px;border-block-end:1px solid var(--sheen-separator);border-inline:0;border-block-start:0;margin:0;padding-inline:0;min-inline-size:0}
+.sheen-filter-group .sheen-filter-field:last-child{border-block-end:0}
+.sheen-filter-field legend{padding:0;font-size:13.5px;font-weight:600}
+.sheen-filter-option{display:flex;align-items:center;gap:10px;min-block-size:36px;padding:6px 10px;border-radius:10px;font-size:13.5px;cursor:pointer}
+.sheen-filter-option:hover{background:var(--sheen-tonal)}
+.sheen-filter-option input{inline-size:18px;block-size:18px;margin:0;accent-color:var(--sheen-accent);flex:none}
+.sheen-filter-option small{margin-inline-start:auto;color:var(--sheen-text-tertiary);font-size:12.5px;font-variant-numeric:tabular-nums}
+.sheen-filter-footer{position:sticky;inset-block-end:0;display:flex;align-items:center;justify-content:space-between;gap:10px;padding-block:12px;margin-block-start:12px;border-block-start:1px solid var(--sheen-separator);background:inherit}
+
+/* result messages: nothing matches (with a way out), or the results couldn't load (no count is shown then) */
+.sheen-list-message{display:flex;flex-direction:column;align-items:center;gap:8px;padding:32px 16px;text-align:center;border-radius:18px;background:var(--sheen-surface)}
+.sheen-list-message .sheen-icon{inline-size:28px;block-size:28px;color:var(--sheen-text-tertiary)}
+.sheen-list-message.sheen-danger .sheen-icon{color:var(--sheen-danger)}
+.sheen-list-message b{font-size:15px}
+.sheen-list-message p{margin:0;max-inline-size:420px;color:var(--sheen-text-secondary);font-size:13.5px}
+.sheen-list-message-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-block-start:4px}
+
+/* sortable headers: click to sort, again to reverse. The arrow sits in the end padding, so a sortable column is no wider */
+.sheen-table th:has(>.sheen-sort-button){padding:0}
+.sheen-sort-button{inline-size:100%;display:inline-flex;align-items:center;gap:4px;padding:10px 14px;border:0;background:none;font:inherit;color:inherit;text-align:start;cursor:pointer;white-space:nowrap}
+.sheen-table th.sheen-num .sheen-sort-button{justify-content:flex-end}
+.sheen-sort-button:hover{color:var(--sheen-text);background:var(--sheen-tonal)}
+.sheen-sort-button:focus-visible{outline:2px solid var(--sheen-accent-text);outline-offset:-2px}
+.sheen-sort-glyph{inline-size:12px;block-size:12px;margin-inline-end:-16px;opacity:0;transition:transform var(--sheen-motion-snappy),opacity var(--sheen-motion-fade-in)}
+.sheen-sort-button:hover .sheen-sort-glyph{opacity:.45}
+th[aria-sort="ascending"] .sheen-sort-glyph,th[aria-sort="descending"] .sheen-sort-glyph{opacity:1;color:var(--sheen-accent-text)}
+th[aria-sort="descending"] .sheen-sort-glyph{transform:rotate(180deg)}
+th[aria-sort="ascending"],th[aria-sort="descending"]{color:var(--sheen-text)}
+
+/* a table wider than its card scrolls inside it, with the row-menu column pinned at the end */
+.sheen-table .sheen-pin-end{position:sticky;inset-inline-end:0;z-index:1;inline-size:44px;padding-inline:4px;text-align:end;background:var(--sheen-surface)}
+/* the cell whose menu is open sits above the next rows' pinned cells */
+.sheen-table .sheen-pin-end:focus-within{z-index:2}
+.sheen-table tr[aria-selected="true"] td{background:color-mix(in srgb,var(--sheen-accent) 7%,var(--sheen-surface))}
+.sheen-table td.sheen-truncate{max-inline-size:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* bulk bar: over the table header while rows are ticked. The count, select all, at most two promoted actions, a menu
+   for the rest, and Clear. While it works it shows progress; when some failed it says how many and links to them. */
+.sheen-bulk-bar{position:sticky;inset-block-start:0;z-index:3;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 12px;background:color-mix(in srgb,var(--sheen-accent) 10%,var(--sheen-surface));border-block-end:1px solid var(--sheen-separator);font-size:13.5px}
+.sheen-bulk-bar[hidden]{display:none}
+.sheen-bulk-count{display:inline-flex;gap:5px;font-weight:600}
+.sheen-bulk-count b{color:var(--sheen-accent-text);font-variant-numeric:tabular-nums}
+.sheen-bulk-actions{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap}
+.sheen-bulk-status{display:inline-flex;align-items:center;gap:6px;font-weight:600}
+.sheen-bulk-status.sheen-danger{color:var(--sheen-danger)}
+.sheen-bulk-clear{margin-inline-start:auto}
+.sheen-spin{animation:sheen-spin 1s linear infinite}
+@keyframes sheen-spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.sheen-spin{animation:none}}
+
+/* narrow: tabs scroll, the views and Filters controls keep only their glyph, chips scroll with the count pinned */
+@container (max-width:760px){
+  .sheen-control.sheen-compact-glyph>span:not(.sheen-control-count),.sheen-find .sheen-kbd{display:none}
+  .sheen-control.sheen-compact-glyph{padding-inline:0;inline-size:36px;justify-content:center}
+  .sheen-applied-row{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+  .sheen-result-count{position:sticky;inset-inline-end:0;padding-inline-start:8px;background:var(--sheen-background)}
+}
