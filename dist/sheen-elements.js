@@ -9,7 +9,7 @@ var GLYPHS = {"arrow-up":"<path d=\"M12 19V5.5\"></path><path d=\"m6 11 6-6 6 6\
 // - takes all of its words from attributes (already translated); it never renders text of its own;
 // - mirrors for dir="rtl" (positions use inset-inline-start, keys follow the reading direction);
 // - follows light/dark through the sheen tokens and stops motion under prefers-reduced-motion.
-var VERSION = '0.4.0';
+var VERSION = '0.5.0';
 
 function define(tag, cls) {
   if (!window.customElements.get(tag)) window.customElements.define(tag, cls);
@@ -1165,15 +1165,25 @@ define('sheen-tour', SheenTour);
 // <sheen-hover-card label="Customer details" delay="350"> … </sheen-hover-card>
 //   A card of facts and quick actions beside a link. card.attach(trigger) joins it to one element at a time.
 //   Hover opens it after the delay, so moving across a table sends nothing; focus and Space open it with no pointer; a
-//   touch never does. It stays while the pointer is over it, and Esc closes it and returns focus (WCAG 1.4.13).
+//   touch never does. It stays while the pointer is over it, and Esc closes it from anywhere while it is open (WCAG
+//   1.4.13), giving focus back to the trigger when focus was inside the card. It closes when the keyboard leaves it.
+//   It is placed again when its content changes size, and never grows taller than the window. A click on the trigger
+//   closes it and drops a pending open, so what the click opens gets the next Esc.
 //   Fires "sheen-hover-open" {trigger} just before it shows, which is when to load the facts, and "sheen-hover-close".
 var HOVER_LEAVE_MS = 200;
+var HOVER_DELAY_MS = 350;
+var HOVER_GAP = 8;
+var HOVER_MARGIN = 12;
 
 class SheenHoverCard extends HTMLElement {
   connectedCallback() {
-    if (this.ready) return;
-    this.ready = true;
+    if (!this.wired) this.wire();
+    if (this.pending) { var t = this.pending; this.pending = null; this.attach(t); }
+  }
+  // Listeners on the card itself are added once, so moving the card in the page adds no second set.
+  wire() {
     var self = this;
+    this.wired = true;
     this.hidden = true;
     this.classList.add('sheen-glass');
     this.setAttribute('role', 'dialog');
@@ -1182,14 +1192,24 @@ class SheenHoverCard extends HTMLElement {
     this.tabIndex = -1;
     this.addEventListener('pointerenter', function () { window.clearTimeout(self.leaveTimer); });
     this.addEventListener('pointerleave', function () { self.leaveSoon(); });
-    this.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') { e.preventDefault(); self.close(); if (self.trigger) self.trigger.focus(); }
-    });
-    if (this.pending) { var t = this.pending; this.pending = null; this.attach(t); }
+    this.addEventListener('focusout', function (e) { self.focusLeft(e); });
+    // While open, Esc closes it wherever focus is. Capture runs before any layer the card sits in, and the handled
+    // key is marked, so one Esc closes only this card.
+    this.onDocKey = function (e) {
+      if (e.key !== 'Escape' || e.defaultPrevented || self.hidden) return;
+      e.preventDefault();
+      var inside = self.contains(document.activeElement);
+      self.close();
+      if (inside && self.trigger) self.trigger.focus();
+    };
   }
   static get observedAttributes() { return ['label']; }
   attributeChangedCallback(name, was, now) { this.setAttribute('aria-label', now || ''); }
-  get delay() { return parseInt(this.getAttribute('delay'), 10) || 350; }
+  get delay() {
+    var d = parseInt(this.getAttribute('delay'), 10);
+    return isNaN(d) || d < 0 ? HOVER_DELAY_MS : d;
+  }
+  get ready() { return this.isConnected && this.wired; }
   attach(trigger) {
     if (!this.ready) { this.pending = trigger; return; }
     var self = this;
@@ -1200,6 +1220,7 @@ class SheenHoverCard extends HTMLElement {
     this.onEnter = function (e) {
       if (e.pointerType === 'touch') return;
       window.clearTimeout(self.leaveTimer);
+      window.clearTimeout(self.openTimer);
       self.openTimer = window.setTimeout(function () { self.open(); }, self.delay);
     };
     this.onLeave = function () { window.clearTimeout(self.openTimer); self.leaveSoon(); };
@@ -1209,24 +1230,44 @@ class SheenHoverCard extends HTMLElement {
         self.open();
         var first = self.querySelector('a[href],button:not([disabled]),input,select,textarea');
         (first || self).focus();
-      } else if (e.key === 'Escape') self.close();
+      }
     };
+    this.onBlur = function (e) { self.focusLeft(e); };
+    // A click on the trigger chose the record: the card gives way to whatever the click opens.
+    this.onPress = function () { self.close(); };
     trigger.addEventListener('pointerenter', this.onEnter);
+    trigger.addEventListener('click', this.onPress);
     trigger.addEventListener('pointerleave', this.onLeave);
     trigger.addEventListener('keydown', this.onKey);
+    trigger.addEventListener('focusout', this.onBlur);
   }
+  // Leaves the old trigger as it found it: closed, no pending open, no popup attributes, no listeners.
   detach() {
+    window.clearTimeout(this.openTimer);
+    window.clearTimeout(this.leaveTimer);
     if (!this.trigger) return;
+    this.close();
     this.trigger.removeEventListener('pointerenter', this.onEnter);
     this.trigger.removeEventListener('pointerleave', this.onLeave);
     this.trigger.removeEventListener('keydown', this.onKey);
+    this.trigger.removeEventListener('focusout', this.onBlur);
+    this.trigger.removeEventListener('click', this.onPress);
+    this.trigger.removeAttribute('aria-expanded');
+    this.trigger.removeAttribute('aria-haspopup');
     this.trigger = null;
   }
+  // Moving the card in the page keeps its trigger: it is joined again when the card is back on the page.
   disconnectedCallback() {
-    window.clearTimeout(this.openTimer);
-    window.clearTimeout(this.leaveTimer);
+    var t = this.trigger;
     this.detach();
-    this.ready = false;
+    if (t) this.pending = t;
+  }
+  // Focus went somewhere that is neither the card nor its trigger: the keyboard has left, so the card closes.
+  focusLeft(e) {
+    var to = e.relatedTarget;
+    if (this.hidden || !to) return;
+    if (this.contains(to) || (this.trigger && this.trigger.contains(to))) return;
+    this.close();
   }
   leaveSoon() {
     var self = this;
@@ -1235,25 +1276,45 @@ class SheenHoverCard extends HTMLElement {
   }
   open() {
     if (!this.hidden) return;
+    var self = this;
     emit(this, 'sheen-hover-open', { trigger: this.trigger });
     this.hidden = false;
     if (this.trigger) this.trigger.setAttribute('aria-expanded', 'true');
+    document.addEventListener('keydown', this.onDocKey, true);
+    // The facts usually arrive after sheen-hover-open, so the card is placed again whenever its size changes.
+    if (window.ResizeObserver) {
+      this.sizeWatch = new window.ResizeObserver(function () { self.place(); });
+      this.sizeWatch.observe(this);
+    }
     this.place();
   }
   close() {
     window.clearTimeout(this.openTimer);
     if (this.hidden) return;
     this.hidden = true;
+    document.removeEventListener('keydown', this.onDocKey, true);
+    if (this.sizeWatch) { this.sizeWatch.disconnect(); this.sizeWatch = null; }
     if (this.trigger) this.trigger.setAttribute('aria-expanded', 'false');
     emit(this, 'sheen-hover-close', {});
   }
+  // Where a fixed card's top-start corner sits on screen when its top and start are 0. That is the window's corner,
+  // unless an ancestor holds fixed children itself (backdrop-filter on .sheen-glass, a transform, a filter).
+  origin(rtl) {
+    this.style.top = '0px';
+    this.style.insetInlineStart = '0px';
+    var b = this.getBoundingClientRect();
+    if (!b.width && !b.height) return { top: 0, start: 0 }; // no layout to measure: nothing to correct
+    return { top: b.top, start: rtl ? window.innerWidth - b.right : b.left };
+  }
   place() {
     if (!this.trigger) return;
-    var r = this.trigger.getBoundingClientRect(), W = window.innerWidth, H = window.innerHeight, gap = 8;
+    var r = this.trigger.getBoundingClientRect(), W = window.innerWidth, H = window.innerHeight;
     var w = this.offsetWidth || 300, hh = this.offsetHeight || 200, rtl = isRtl(this);
-    var start = rtl ? W - r.right : r.left, top = r.bottom + gap + hh < H ? r.bottom + gap : r.top - gap - hh;
-    this.style.top = clamp(top, 12, Math.max(12, H - hh - 12)) + 'px';
-    this.style.insetInlineStart = clamp(start, 12, Math.max(12, W - w - 12)) + 'px';
+    var start = rtl ? W - r.right : r.left;
+    var top = r.bottom + HOVER_GAP + hh < H ? r.bottom + HOVER_GAP : r.top - HOVER_GAP - hh;
+    var o = this.origin(rtl);
+    this.style.top = (clamp(top, HOVER_MARGIN, Math.max(HOVER_MARGIN, H - hh - HOVER_MARGIN)) - o.top) + 'px';
+    this.style.insetInlineStart = (clamp(start, HOVER_MARGIN, Math.max(HOVER_MARGIN, W - w - HOVER_MARGIN)) - o.start) + 'px';
   }
 }
 define('sheen-hover-card', SheenHoverCard);
@@ -1261,25 +1322,38 @@ define('sheen-hover-card', SheenHoverCard);
 // ---- 71-side-panel.js
 // <sheen-side-panel label="Booking" close-label="Close"> … </sheen-side-panel>
 //   A panel on the end edge (the left in Arabic) with no backdrop, so the page behind keeps its scroll, filters and
-//   selection. panel.open() and panel.close(). It takes focus when it opens, and Esc or the close button gives it back.
+//   selection. panel.open() and panel.close(). It takes focus when it opens, and Esc or the close button gives it back
+//   to what had focus before the first open(). Children added at any time go into its body, whatever the loading order.
 //   Fires "sheen-panel-close".
 class SheenSidePanel extends HTMLElement {
   connectedCallback() {
     if (this.body) return;
     var self = this;
     this.body = h('div', { class: 'sheen-panel-body' });
-    while (this.firstChild) this.body.appendChild(this.firstChild);
     this.closeButton = h('button', { type: 'button', class: 'sheen-button sheen-small sheen-panel-close', 'aria-label': this.getAttribute('close-label') || '', onclick: function () { self.close(); } }, glyph('close', 18));
+    this.adopt();
     this.appendChild(this.closeButton);
     this.appendChild(this.body);
+    // Children that arrive later (the parser after an early script, or a page filling it in) move into the body too.
+    if (window.MutationObserver) {
+      this.watch = new window.MutationObserver(function () { self.adopt(); });
+      this.watch.observe(this, { childList: true });
+    }
     this.classList.add('sheen-glass');
     this.setAttribute('role', 'dialog');
     this.setAttribute('aria-modal', 'false');
     this.setAttribute('aria-label', this.getAttribute('label') || '');
     this.tabIndex = -1;
     this.hidden = true;
+    // An inner layer (a menu, a hover card) that handled Esc marks it, so one Esc closes only that layer.
     this.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') { e.preventDefault(); self.close(); }
+      if (e.key === 'Escape' && !e.defaultPrevented) { e.preventDefault(); self.close(); }
+    });
+  }
+  adopt() {
+    var self = this;
+    Array.prototype.slice.call(this.childNodes).forEach(function (n) {
+      if (n !== self.closeButton && n !== self.body) self.body.appendChild(n);
     });
   }
   static get observedAttributes() { return ['label', 'close-label']; }
@@ -1288,7 +1362,8 @@ class SheenSidePanel extends HTMLElement {
     else if (this.closeButton) this.closeButton.setAttribute('aria-label', now || '');
   }
   open() {
-    this.opener = document.activeElement;
+    // Opened again from inside (a next-record button), it keeps the first opener.
+    if (this.hidden) this.opener = document.activeElement;
     this.hidden = false;
     this.focus();
   }
@@ -1308,7 +1383,8 @@ define('sheen-side-panel', SheenSidePanel);
 //   Chooses a rule, not a list. picker.groups = [{id, label, items: [{id, label}]}].
 //   picker.value = {mode: 'all'|'only'|'all_except', include: [ids], exclude: [ids]}. A whole group is stored as the
 //   group's id, so something added to that group later joins the rule. The page works out the result line and sets it.
-//   Fires "sheen-scope-change" with the value.
+//   A value carries only the list its mode reads (none for all); the picks of the other modes are kept inside, so
+//   switching back restores them. Fires "sheen-scope-change" with the value.
 class SheenScopePicker extends HTMLElement {
   connectedCallback() {
     if (this.list) return;
@@ -1340,7 +1416,7 @@ class SheenScopePicker extends HTMLElement {
   }
   get groups() { return this._groups || []; }
   set groups(v) { this._groups = Array.isArray(v) ? v : []; if (this.list) this.draw(); }
-  get value() { return this._value; }
+  get value() { return this.rule(); }
   set value(v) { this._value = { mode: v.mode, include: (v.include || []).slice(), exclude: (v.exclude || []).slice() }; if (this.list) this.draw(); }
   // In "only" the picks live in include, in "all except" in exclude.
   get picks() { return this._value.mode === 'only' ? this._value.include : this._value.exclude; }
@@ -1351,7 +1427,11 @@ class SheenScopePicker extends HTMLElement {
     this.draw();
     this.changed();
   }
-  changed() { emit(this, 'sheen-scope-change', { mode: this._value.mode, include: this._value.include.slice(), exclude: this._value.exclude.slice() }); }
+  rule() {
+    var v = this._value;
+    return { mode: v.mode, include: v.mode === 'only' ? v.include.slice() : [], exclude: v.mode === 'all_except' ? v.exclude.slice() : [] };
+  }
+  changed() { emit(this, 'sheen-scope-change', this.rule()); }
   visible(group) {
     var q = this.query;
     if (!q || group.label.toLowerCase().indexOf(q) >= 0) return group.items;
@@ -1372,20 +1452,21 @@ class SheenScopePicker extends HTMLElement {
   selectShown() {
     this.groups.forEach(function (group) {
       var shown = this.visible(group);
+      if (!shown.length) return; // a group with nothing on screen is never picked unseen
       if (shown.length === group.items.length) this.setGroup(group, true);
       else shown.forEach(function (i) { this.setItem(group, i, true); }, this);
     }, this);
     this.draw();
     this.changed();
   }
-  box(id, label, checked, change, cls) {
-    var input = h('input', { type: 'checkbox', value: id, onchange: change });
+  box(group, id, label, checked, change, cls) {
+    var input = h('input', { type: 'checkbox', value: id, 'data-group': group.id, onchange: change });
     input.checked = checked;
     return { input: input, row: h('label', { class: cls }, input, label) };
   }
   draw() {
     var self = this, mode = this._value.mode, choosing = mode !== 'all';
-    var focused = this.list.contains(document.activeElement) ? document.activeElement.value : null;
+    var a = document.activeElement, focused = this.list.contains(a) ? { value: a.value, group: a.getAttribute('data-group') } : null;
     this.radios.forEach(function (r) { var i = r.querySelector('input'); i.checked = i.value === mode; });
     this.tools.hidden = !choosing;
     this.list.hidden = !choosing;
@@ -1395,18 +1476,22 @@ class SheenScopePicker extends HTMLElement {
       var shown = self.visible(group);
       if (!shown.length) return;
       var count = group.items.filter(function (i) { return self.picked(group, i); }).length;
-      var head = self.box(group.id, group.label, count === group.items.length, function (e) { self.setGroup(group, e.target.checked); self.draw(); self.changed(); }, 'sheen-scope-group');
+      var head = self.box(group, group.id, group.label, count === group.items.length, function (e) { self.setGroup(group, e.target.checked); self.draw(); self.changed(); }, 'sheen-scope-group');
       head.input.indeterminate = count > 0 && count < group.items.length;
       var rows = shown.map(function (item) {
-        return self.box(item.id, item.label, self.picked(group, item), function (e) { self.setItem(group, item, e.target.checked); self.draw(); self.changed(); }, 'sheen-scope-item').row;
+        return self.box(group, item.id, item.label, self.picked(group, item), function (e) { self.setItem(group, item, e.target.checked); self.draw(); self.changed(); }, 'sheen-scope-item').row;
       });
       var items = h('div', { class: 'sheen-scope-items' });
       rows.forEach(function (row) { items.appendChild(row); });
       self.list.appendChild(h('div', { role: 'group', 'aria-label': group.label }, head.row, items));
     });
     if (!this.list.children.length) this.list.appendChild(h('p', { class: 'sheen-footnote sheen-secondary sheen-scope-empty', role: 'status', text: this.getAttribute('empty-label') || '' }));
-    // Drawing replaces every row, so the row a keyboard user just ticked gets its focus back.
-    if (focused != null) Array.prototype.forEach.call(this.list.querySelectorAll('input'), function (input) { if (input.value === focused) input.focus(); });
+    // Drawing replaces every row, so the row a keyboard user just ticked gets its focus back: the same id in the same
+    // group, since one id may sit in two groups.
+    if (focused) {
+      var back = Array.prototype.find.call(this.list.querySelectorAll('input'), function (input) { return input.value === focused.value && input.getAttribute('data-group') === focused.group; });
+      if (back) back.focus();
+    }
   }
 }
 define('sheen-scope-picker', SheenScopePicker);
@@ -1414,26 +1499,36 @@ define('sheen-scope-picker', SheenScopePicker);
 // ---- 73-menu-button.js
 // <sheen-menu-button label="Export"></sheen-menu-button>
 //   A button with a menu. menu.items = [{id, label, disabled}]. Up and Down move and skip disabled items, Enter picks, Esc
-//   closes; focus goes back to the button. Fires "sheen-menu-select" {id}.
+//   closes; focus goes back to the button. A press outside or focus leaving closes it and leaves focus where it went.
+//   It stays on screen: it flips to the other inline edge, opens upward near the bottom, and scrolls when long.
+//   Fires "sheen-menu-select" {id}.
 class SheenMenuButton extends HTMLElement {
   connectedCallback() {
     if (this.menu) return;
     var self = this, menuId = uid('menu');
     this._items = this._items || [];
     this.button = h('button', { type: 'button', class: 'sheen-button', 'aria-haspopup': 'menu', 'aria-expanded': 'false', 'aria-controls': menuId, text: this.getAttribute('label') || '', onclick: function () { if (self.menu.hidden) self.open(); else self.close(); } });
-    this.menu = h('div', { role: 'menu', id: menuId, class: 'sheen-menu sheen-glass', 'aria-label': this.getAttribute('label') || '' });
+    // tabindex -1: a menu with nothing to pick takes focus itself, so its keys still work.
+    this.menu = h('div', { role: 'menu', id: menuId, tabindex: '-1', class: 'sheen-menu sheen-glass', 'aria-label': this.getAttribute('label') || '' });
     this.menu.hidden = true;
     this.replaceChildren(this.button, this.menu);
     this.button.addEventListener('keydown', function (e) {
       if (e.key === 'ArrowDown') { e.preventDefault(); self.open(); }
+      else if (e.key === 'Escape' && !self.menu.hidden && !e.defaultPrevented) { e.preventDefault(); self.close(); }
     });
+    // A handled Esc is marked, so a panel or card around the menu stays open: one Esc closes one layer.
     this.menu.addEventListener('keydown', function (e) {
       if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); self.move(e.key === 'ArrowDown' ? 1 : -1); }
-      else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); document.activeElement.click(); }
-      else if (e.key === 'Escape') { e.preventDefault(); self.close(); }
+      else if ((e.key === 'Enter' || e.key === ' ') && e.target !== self.menu) { e.preventDefault(); e.target.click(); }
+      else if (e.key === 'Escape' && !e.defaultPrevented) { e.preventDefault(); self.close(); }
     });
+    this.addEventListener('focusout', function (e) {
+      if (!self.menu.hidden && e.relatedTarget && !self.contains(e.relatedTarget)) self.hide();
+    });
+    this.onOutside = function (e) { if (!self.contains(e.target)) self.hide(); };
     this.draw();
   }
+  disconnectedCallback() { if (this.menu) this.hide(); }
   static get observedAttributes() { return ['label']; }
   attributeChangedCallback(name, was, now) {
     if (!this.menu) return;
@@ -1453,15 +1548,23 @@ class SheenMenuButton extends HTMLElement {
   open() {
     this.menu.hidden = false;
     this.button.setAttribute('aria-expanded', 'true');
-    this.menu.classList.remove('sheen-menu-flip');
+    this.menu.classList.remove('sheen-menu-flip', 'sheen-menu-up');
     var box = this.menu.getBoundingClientRect();
     if (box.left < 0 || box.right > window.innerWidth) this.menu.classList.add('sheen-menu-flip');
+    if (box.bottom > window.innerHeight) this.menu.classList.add('sheen-menu-up');
+    document.addEventListener('pointerdown', this.onOutside, true);
     var rows = this.rows();
-    if (rows.length) rows[0].focus();
+    (rows.length ? rows[0] : this.menu).focus();
   }
-  close() {
+  // Closes and leaves focus where it is: for a press outside or focus that has moved on.
+  hide() {
     this.menu.hidden = true;
     this.button.setAttribute('aria-expanded', 'false');
+    document.removeEventListener('pointerdown', this.onOutside, true);
+  }
+  // Closes and gives focus back to the button: for Esc, a pick or the button itself.
+  close() {
+    this.hide();
     this.button.focus();
   }
   move(by) {

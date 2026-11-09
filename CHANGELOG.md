@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.5.0
+
+A sidebar shell and motion tokens. Additive: nothing that existed changes.
+
+- `.sheen-sidebar-shell`, `.sheen-sidebar` and its parts, `.sheen-app-main`, `.sheen-app-bar`, `.sheen-app-search`, `.sheen-app-tool`, `.sheen-app-content`: a labelled sidebar for record-heavy apps. Below 760px the sidebar sits on top.
+- `.sheen-auth-page`, `.sheen-auth-card`, `.sheen-form`, `.sheen-form-field`, `.sheen-input`, `.sheen-form-error`: a small centred sign-in page.
+- `.sheen-icon`, `.sheen-grow`.
+- `--sheen-motion-*`: durations, easing, springs as `linear()` and the press scale, from Flutter sheen's `tool/motion.json`, with a drift check. Under reduced motion every spring becomes a plain fade.
+
+Fixes to the 0.4.0 record kit, from its release review:
+
+- `<sheen-hover-card>`: Esc closes it from anywhere while it is open, giving focus back to the trigger only when focus was inside (WCAG 1.4.13). It closes when the keyboard leaves it. It is placed again when its content changes size, is never taller than the window and scrolls inside, and lands beside its trigger inside glass or transformed boxes. `attach()` leaves the old trigger clean and drops a pending open; moving the card in the page keeps its trigger. `delay="0"` means no delay. A click on the trigger closes the card and drops a pending open, so what the click opens gets the next Esc.
+- `<sheen-side-panel>`: children added after it is on the page go into its body, whatever the loading order. Opened again from inside, it keeps the first opener.
+- `<sheen-menu-button>`: a press outside or focus leaving closes it, leaving focus where it went. Near the bottom it opens upward, and a long menu scrolls. A menu with nothing to pick still closes on Esc.
+- One Esc closes one layer: each element marks the Esc it handled, and the side panel ignores a marked one.
+- `<sheen-scope-picker>`: focus comes back to the ticked row in its own group when one id sits in two groups. Select all shown leaves out a group with nothing shown. A value now carries only the list its mode reads (none for `all`); the other picks are kept inside, so switching back restores them.
+- Docs: stories for the four record-kit elements, the README pins v0.5.0 and its table has every column. Tests use neutral names.
+
 ## 0.4.0
 
 Four elements for record-heavy apps. Additive: nothing that existed changes.
