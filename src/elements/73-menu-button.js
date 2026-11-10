@@ -103,23 +103,13 @@ class SheenMenuButton extends HTMLElement {
     var b = this.button.getBoundingClientRect();
     return b.bottom <= box.top || b.top >= box.bottom || b.right <= box.left || b.left >= box.right;
   }
-  // The menu is placed from the screen (the top layer, or fixed), under the button at its start edge. It lines up with the
-  // button's end edge when it would leave the screen, and opens upward near the bottom.
+  // The menu is placed from the screen (the top layer, or fixed), under the button at its start edge, measured where
+  // nothing narrows it. It lines up with the button's end edge when it would leave the screen, and opens upward when it
+  // doesn't fit below and there is more room above.
   place() {
-    var m = this.menu, s = m.style, b = this.button.getBoundingClientRect();
-    var rtl = isRtl(this);
-    s.position = 'fixed'; s.margin = '0'; s.right = 'auto'; s.bottom = 'auto';
-    s.left = (rtl ? b.right - m.offsetWidth : b.left) + 'px';
-    s.top = (b.bottom + 6) + 'px';
-    var box = m.getBoundingClientRect(), width = box.right - box.left, height = box.bottom - box.top;
-    if (box.left < 0 || box.right > window.innerWidth) {
-      m.classList.add('sheen-menu-flip');
-      s.left = (rtl ? b.left : b.right - width) + 'px';
-    }
-    if (box.bottom > window.innerHeight) {
-      m.classList.add('sheen-menu-up');
-      s.top = Math.max(0, b.top - height - 6) + 'px';
-    }
+    var at = placeUnder(this.menu, this.button.getBoundingClientRect(), isRtl(this));
+    this.menu.classList.toggle('sheen-menu-flip', at.flip);
+    this.menu.classList.toggle('sheen-menu-up', at.up);
   }
   // Closes and leaves focus where it is: for a press outside or focus that has moved on.
   hide() {

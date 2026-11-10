@@ -54,6 +54,24 @@ function isRtl(el) {
   return (holder ? holder.getAttribute('dir') : document.documentElement.getAttribute('dir')) === 'rtl';
 }
 
+// Places a fixed (or top-layer) box under an anchor's rectangle: lined up with the anchor's start edge (or its end edge
+// with align 'end'), on the other edge when that would leave the screen, and above the anchor when it doesn't fit below
+// and there is more room above. A box with auto width shrinks to the room between its left and the screen's end, so it
+// is measured at 0,0 first, where nothing narrows it. Returns { flip, up } for the caller's classes.
+function placeUnder(box, a, rtl, align) {
+  var s = box.style, gap = 6, w = window.innerWidth, h = window.innerHeight;
+  s.position = 'fixed'; s.margin = '0'; s.right = 'auto'; s.bottom = 'auto'; s.left = '0px'; s.top = '0px';
+  var r = box.getBoundingClientRect(), width = r.right - r.left, height = r.bottom - r.top;
+  var atEnd = (align === 'end') !== rtl;   // lines up with the anchor's right edge
+  var left = atEnd ? a.right - width : a.left;
+  var flip = left < 0 || left + width > w;
+  if (flip) left = atEnd ? a.left : a.right - width;
+  var up = a.bottom + gap + height > h && a.top > h - a.bottom;
+  s.left = left + 'px';
+  s.top = (up ? Math.max(0, a.top - height - gap) : a.bottom + gap) + 'px';
+  return { flip: flip, up: up };
+}
+
 function reducedMotion() {
   return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 }
