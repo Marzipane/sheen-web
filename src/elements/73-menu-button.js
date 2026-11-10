@@ -63,7 +63,8 @@ class SheenMenuButton extends HTMLElement {
     this.button.className = this.getAttribute('variant') === 'control' ? 'sheen-control' : this.hasAttribute('glyph') ? 'sheen-icon-button' : 'sheen-button';
     this.button.classList.toggle('sheen-compact-glyph', this.hasAttribute('compact'));
   }
-  // The visible text, or for a glyph button the glyph and an accessible name. An icon or a chevron puts the words in a span.
+  // The visible text, or for a glyph button the glyph and an accessible name. An icon or a chevron puts the words in a span
+  // and names the button by its label, so it keeps a name when compact hides the words.
   name(label) {
     var g = this.getAttribute('glyph'), icon = this.getAttribute('icon');
     if (g) { this.button.replaceChildren(glyph(g, 20)); this.button.setAttribute('aria-label', label); }
@@ -71,6 +72,7 @@ class SheenMenuButton extends HTMLElement {
       var chev = this.hasAttribute('chevron') ? glyph('chevron-down', 16) : null;
       if (chev) chev.classList.add('sheen-control-chevron');
       this.button.replaceChildren.apply(this.button, [icon ? glyph(icon, 16) : null, h('span', { text: label }), chev].filter(Boolean));
+      this.button.setAttribute('aria-label', label);
     }
     else this.button.textContent = label;
     this.menu.setAttribute('aria-label', label);

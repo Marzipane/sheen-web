@@ -1,4 +1,4 @@
-// 0.7.0 values ported one to one from the app mockups' CSS (olamop.css: k-head, k-tabs, k-ctl, k-table, k-fpop, k-fview,
+// 0.7.0 values ported one to one from the app mockups' CSS (k-head, k-tabs, k-ctl, k-table, k-fpop, k-fview,
 // k-aitem, k-amore, k-drawer, k-fpanel, k-fdim, k-fopt, k-fbox, k-fcount, o-state, o-toast, k-fbarwrap buttons). Each
 // test names the rule it ports; where the mockup's rendered value differs from its own rule, the rendered value wins.
 import { test } from 'node:test';
@@ -78,7 +78,7 @@ test('k-fpf, k-fopt, k-fcount, k-fbox: options 1px apart under their label, coun
 });
 
 test('k-fbarwrap and k-fpanel small buttons: 34px, 13.5px', () => {
-  has(':is(.sheen-list-kit,.sheen-filter-footer,.sheen-list-message) .sheen-button.sheen-small{height:34px;border-radius:17px;padding-inline:16px;font-size:13.5px}');
+  has(':is(.sheen-list-kit,.sheen-filter-footer,.sheen-list-message) .sheen-button.sheen-small{block-size:34px;border-radius:17px;padding-inline:16px;font-size:13.5px}');
   assert.ok(min.includes(':is(.sheen-list-kit,.sheen-filter-footer,.sheen-list-message) .sheen-button.sheen-small{'));
 });
 
@@ -88,8 +88,9 @@ test('o-state: a 25px glyph, words at 15px on a 1.3 line, the title tracking -.0
   has('.sheen-status-title{margin:0;font-size:22px;line-height:1.2;font-weight:700;letter-spacing:-.022em;color:var(--sheen-text)}');
 });
 
-test('o-toast in Arabic: the top toast stays at the right edge, as the mockup keeps it', () => {
-  has('[dir="rtl"] sheen-toaster[position="top"]{inset-inline:var(--sheen-toaster-end,20px) auto}');
+test('o-toast in Arabic: the top toast keeps to the end edge (the left), logical as every sheen part; an app that wants the mockup\'s right edge sets it in its own CSS', () => {
+  has('sheen-toaster[position="top"]{inset-block:var(--sheen-toaster-top,20px) auto;inset-inline-end:var(--sheen-toaster-end,20px);');
+  assert.ok(!css.includes('[dir="rtl"] sheen-toaster'));
 });
 
 test('solid layers take each mockup layer\'s own fill and shadow', () => {
@@ -98,7 +99,7 @@ test('solid layers take each mockup layer\'s own fill and shadow', () => {
   has(normalized(':root .sheen-solid :is(.sheen-menu.sheen-glass,.sheen-cmd.sheen-glass){background:var(--sheen-surface);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 0 0 1px var(--sheen-separator),0 14px 34px rgba(16,20,30,.14),0 2px 6px rgba(16,20,30,.06)}'));
   // side panels (k-drawer): the sheet and a shadow toward the page, mirrored in Arabic
   has(normalized(':root .sheen-solid sheen-side-panel.sheen-glass,:root sheen-side-panel.sheen-solid.sheen-glass{background:var(--sheen-sheet);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:-20px 0 60px rgba(0,0,0,.12)}'));
-  has(normalized(':root [dir="rtl"] .sheen-solid sheen-side-panel.sheen-glass,:root .sheen-solid[dir="rtl"] sheen-side-panel.sheen-glass,:root[dir="rtl"] .sheen-solid sheen-side-panel.sheen-glass{box-shadow:20px 0 60px rgba(0,0,0,.12)}'));
+  has(normalized(':root .sheen-solid sheen-side-panel.sheen-glass:dir(rtl),:root sheen-side-panel.sheen-solid.sheen-glass:dir(rtl){box-shadow:20px 0 60px rgba(0,0,0,.12)}'));
   // toasts (o-toast): the sheet and a drop, no hairline
   has(normalized(':root .sheen-solid .sheen-toast.sheen-glass{background:var(--sheen-sheet);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 10px 30px rgba(0,0,0,.18)}'));
   // hover cards (k-rlcard): the sheet, hairline and a drop

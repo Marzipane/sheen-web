@@ -21,11 +21,14 @@ test('glyphs: the Flutter sheen filled icons draw as "<name>-fill", filled with 
 });
 
 test('key caps: the find row\'s "/" and the shortcuts in small menus are plain outlined caps', () => {
-  has('.sheen-find .sheen-kbd,' + DENSE + ' .sheen-menu-item .sheen-kbd{min-inline-size:20px;block-size:20px;padding-inline:5px;border-radius:6px;background:none;box-shadow:inset 0 0 0 1px var(--sheen-separator);color:var(--sheen-text-tertiary);font:600 11px/1 inherit}');
+  has('.sheen-find .sheen-kbd,' + DENSE + ' .sheen-menu-item .sheen-kbd,sheen-command-palette.sheen-small .sheen-kbd,.sheen-keys .sheen-kbd{min-inline-size:20px;block-size:20px;padding-inline:5px;border-radius:6px;background:none;box-shadow:inset 0 0 0 1px var(--sheen-separator);color:var(--sheen-text-tertiary);font:inherit;font-family:monospace;line-height:1}');
+  // the mockup's k-fkbd says font:600 11px/1 inherit, which browsers drop as invalid: its caps take the row's font
+  assert.ok(!css.includes('font:600 11px/1 inherit'));
 });
 
 test('the hidden attribute hides list kit parts, though they set their own display', () => {
-  has(':where(.sheen-find-row,.sheen-views-row,.sheen-applied-row,.sheen-control,.sheen-control-count,.sheen-link-button,.sheen-filter-chip,.sheen-list-message,.sheen-status)[hidden]{display:none!important}');
+  has(':where(.sheen-find-row,.sheen-views-row,.sheen-applied-row,.sheen-control,.sheen-control-count,.sheen-link-button,.sheen-filter-chip,.sheen-list-message,.sheen-status,')
+  has(')[hidden]{display:none!important}');
 });
 
 test('page tabs drawn as links keep the tab colours (the base link rule made them the text colour)', () => {
@@ -44,11 +47,11 @@ test('page tabs mark the current page by its line only; an app page title is 26p
 });
 
 test('a side panel with a heading keeps the Filters footer at its bottom edge', () => {
-  has('sheen-side-panel[heading] .sheen-panel-body{display:flex;flex-direction:column}');
-  has('sheen-side-panel[heading] .sheen-panel-body>.sheen-filter-footer{margin-block-start:auto}');
+  has('sheen-side-panel.sheen-headed .sheen-panel-body{display:flex;flex-direction:column}');
+  has('sheen-side-panel.sheen-headed .sheen-panel-body>:is(.sheen-filter-footer,.sheen-panel-foot){margin-block-start:auto}');
   // the body keeps no padding under the footer, so the footer's edge is the panel's (k-fpfoot sits under k-fpbody)
-  has('sheen-side-panel[heading] .sheen-panel-body:has(>.sheen-filter-footer){padding-block-end:0}');
-  has('sheen-side-panel[heading] .sheen-filter-footer{margin-inline:-20px;margin-block-end:0;padding:12px 20px 16px}');
+  has('sheen-side-panel.sheen-headed .sheen-panel-body:has(>.sheen-filter-footer){padding-block-end:0}');
+  has('sheen-side-panel.sheen-headed .sheen-filter-footer{margin-inline:-20px;margin-block-end:0;padding:12px 20px 16px}');
 });
 
 test('small tables: 16px checkboxes in the accent; a busy table is one solid placeholder block', () => {
@@ -92,7 +95,7 @@ function toaster(attrs) {
   return { w, t, runs, toast: t.querySelector('.sheen-toast') };
 }
 
-test('toaster at the top: a glyph in its tone, the action as a link, no close button; a press on it closes it', () => {
+test('toaster at the top: a glyph in its tone, the action as a link, a close button for keyboard users only; a press on it closes it', () => {
   const { w, t, runs, toast } = toaster('position="top" close-label="Close"');
   const mark = toast.firstElementChild;
   assert.ok(mark.classList.contains('sheen-toast-glyph'));
@@ -101,7 +104,7 @@ test('toaster at the top: a glyph in its tone, the action as a link, no close bu
   const action = toast.querySelector('button');
   assert.equal(action.className, 'sheen-link-button');
   assert.equal(action.textContent, 'Undo');
-  assert.equal(toast.querySelector('.sheen-toast-close'), null);
+  assert.ok(toast.querySelector('.sheen-toast-close').classList.contains('sheen-focus-only'));
   action.click();
   assert.deepEqual(runs, ['undo']);
   assert.equal(t.querySelector('.sheen-toast'), null);

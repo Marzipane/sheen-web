@@ -2,8 +2,9 @@
 
 ## 0.7.0
 
-The parts an app's list page needs, at the sizes of the app mockups they were ported from: control-look menu buttons with
-glyphs, solid layers, a modal side panel with a heading, a table card with a small table, a status block and a toaster at
+The parts an app's list page and its forms need, at the sizes of the app mockups they were ported from: control-look
+menu buttons with glyphs, solid layers, a modal side panel with a heading and a footer, a table card with a small table,
+a group row and a pager, dense form fields, a small command palette and shortcuts sheet, a status block and a toaster at
 the top. Focus rings now show for the keyboard only. Mostly additive; the fixes and the looks that change are listed last.
 
 - `<sheen-menu-button>`: `variant="control"` draws the button as the find row's 36px control (a 36px square with
@@ -16,41 +17,65 @@ the top. Focus rings now show for the keyboard only. Mostly additive; the fixes 
 - `.sheen-solid` on a layer or on any box around it (the page's body) draws menus, toasts, the command palette, side
   panels and hover cards opaque, each with its own fill and shadow, so rows and buttons under them never show through.
   Modal layers then dim the page with a plain shade instead of a blur. Glass stays the default.
-- `<sheen-side-panel>`: `heading` puts the title and a 34px close button on one row above the body, and keeps a Filters
-  footer on the panel's bottom edge; `modal` dims the page behind it (a press on the dim closes it), puts focus on the
-  first control and keeps Tab inside; `--sheen-panel-size` sets the width.
+- `<sheen-side-panel>`: `heading` puts the title and a 34px close button on one row above the body and keeps a footer
+  on the panel's bottom edge (an empty heading counts as none; the element marks a headed panel `sheen-headed`).
+  `modal` dims the page behind it (a press on the dim closes it), puts focus on the first control, keeps Tab inside
+  (one stop per radio group; hidden, disabled and `tabindex="-1"` controls skipped) and brings focus that lands outside
+  back in, unless another dialog or popover took it. Hiding an open panel by its attribute takes the dim away; moving it
+  keeps the dim. `--sheen-panel-size` sets the width.
 - List kit: `.sheen-control.sheen-on` tints the glyph and outline of a control whose filters are on, and in a narrow list
   kit a control with a count keeps its count; `.sheen-table-card` puts a table on an 18px surface card that still scrolls
   sideways; `.sheen-table.sheen-small` is the dense table (13.5px cells on one line up to 260px, a tinted 12px header row,
-  16px checkboxes) and `.sheen-wrap` wraps a table of long sentences; a table with `aria-busy="true"` draws as one
-  placeholder block; the find row's "/" is a plain outlined key cap; small buttons in the list kit, the Filters footer and
-  list messages are 34px. The Filters panel spaces its options 1px apart under their label and draws an outlined 18px box
-  with a tick, the same in light and dark.
+  16px checkboxes) and `.sheen-wrap` wraps a table of long sentences. A `tr.sheen-table-group` row of `th` names a group
+  of rows, with its `small` count as a pill; `.sheen-table-foot` puts the count at the start and a `.sheen-pager` at the
+  end, with 24px arrow buttons that mirror in Arabic. The Filters panel spaces its options 1px apart under their label
+  and draws an outlined 18px box with a tick, the same in light and dark.
+- Forms: `.sheen-form-field.sheen-small` is the dense field (a 13px label over a 38px box, a hint under it, a red ring
+  and hint with `aria-invalid="true"`), two to a row in `.sheen-fields.sheen-small`, with `.sheen-wide` across both.
+  `.sheen-select` around a `<select>` draws the field's chevron at the end edge. `.sheen-panel-foot` holds a side panel's
+  Cancel and main action on its bottom edge, each at least 128px, side by side or one under the other when narrow.
+  `.sheen-switch.sheen-large` is a 51 by 31 switch and `.sheen-switch-row` puts words and a switch on one row over a
+  hairline; the default switch keeps its size.
+- `<sheen-command-palette class="sheen-small">` is the 560px app palette with a 36px search field and 36px rows.
+  `.sheen-dialog.sheen-small` is a 720px sheet; `.sheen-shortcuts.sheen-small` lays shortcuts out in three columns of
+  `.sheen-keys` and words under `.sheen-shortcuts-head` headings (one column at 760px and under), with a
+  `.sheen-shortcuts-note` line.
 - `.sheen-status` (with `-glyph`, `-title`, `-actions` and the danger, warning and success tones) follows Flutter sheen's
   SheenStatusScreen: a glyph in a 72px circle of its tone, a title, words at 15px at most 34 characters wide and up to two
   actions stacked. `.sheen-page-title` is an app page's 26px title.
-- `<sheen-toaster position="top">` follows Flutter sheen's toast: under the app bar (`--sheen-toaster-top`), at the right
-  edge in either direction (`--sheen-toaster-end`, `--sheen-toaster-size`), the action as a link, no close button, and a
-  press on the toast closes it. A toast's `glyph` replaces the tone's dot in either position.
-- Glyphs: the filled Flutter sheen icons draw as `<name>-fill` (`check-circle-fill`), filled in the text colour.
-- Focus: a press marks `<html data-sheen-pointer>`; Tab, and arrow keys outside a text field, clear it. Nothing draws a
-  ring or a glow for a press; keyboard focus keeps one 2px ring. A text field inside a `.sheen-control` never draws its own
-  outline (the find row's search drew two rings in 0.6.0), and a control's 0.6.0 inset ring and 4px glow are gone.
+- `<sheen-toaster position="top">` follows Flutter sheen's toast: under the app bar (`--sheen-toaster-top`), at the end
+  edge (`--sheen-toaster-end`, `--sheen-toaster-size`), the action as a link, and a press on the toast closes it. Its
+  close button shows only while it has keyboard focus. A toast's `glyph` replaces the tone's dot in either position, and
+  Esc on any toast closes it.
+- Glyphs: the filled Flutter sheen icons draw as `<name>-fill` (`check-circle-fill`), filled in the text colour; `alert`
+  is a warning triangle.
+- Focus: a press marks `<html data-sheen-pointer>`; Tab, any key outside a text field but a lone modifier, and leaving
+  the window clear it. Nothing draws a ring or a glow for a press; keyboard focus keeps one 2px ring. A text field inside
+  a `.sheen-control` never draws its own outline (the find row's search drew two rings in 0.6.0), and a control's 0.6.0
+  inset ring and 4px glow are gone. A menu button with an icon or a chevron takes its label as its name, so a compact
+  one keeps a name. In forced colors the Filters checkboxes are the system's own.
 - Fixed: a menu near the screen's end came out narrow, wrapped its labels and could open upward with room below, because
   it was measured after it was placed. It is now measured where nothing narrows it, then lined up under its button, on
   the other edge when it would leave the screen, and above only when it doesn't fit below and there is more room above.
-  Two 0.5.0 placement tests now give the button's place instead of the menu's measured box, and assert the same flips.
-- Fixed: the hidden attribute hides list kit parts that set their own display; page tabs drawn as links keep the tab
-  colours instead of the base link rule's text colour.
+  A menu wider than the room on either side (a phone) keeps to the screen. Two 0.5.0 placement tests now give the
+  button's place instead of the menu's measured box, and assert the same flips.
+- Fixed: the hidden attribute hides the list kit, page and footer parts that set their own display (menu buttons, page
+  tabs, footers, the pager); page tabs drawn as links keep the tab colours instead of the base link rule's text colour.
 - Looks that change: an enabled menu item with a `hint` shows its label at weight 600 (a title over its description);
   page tabs have 24px each side and mark the current page by its 2px line only, drawn inside the row so a scrolling row
   never clips it; `.sheen-list-message.sheen-danger` keeps its title in the text colour and gets a danger ring (0.6.0
-  turned every word red); the Filters panel's options and boxes take the app mockups' spacing and look.
+  turned every word red); the Filters panel's options and boxes take the app mockups' spacing and look; a menu in a bulk
+  bar or at the end of a views row is the dense size (13.5px, 36px rows); a `.sheen-table` with `aria-busy="true"` draws
+  as one placeholder block; small buttons in the list kit, the Filters footer and list messages are 34px instead of 40px;
+  the find row's "/" key cap is a plain outline; a side panel draws no ring when a press gives it focus.
 - Tests: the new options, items and placement, with a Views control at the end edge in English and Arabic; the heading
   row, modal dim, focus and Tab cycle; the toaster at the top and at the bottom; filled glyphs; the pointer and keyboard
   focus state; every new rule in the built CSS with the values it ports, logical sides only; contrast from the tokens
   (WCAG AA in light and dark) for accent items, hints, the tinted header, ticked options, key caps, status words and
-  toasts, and 3:1 for the status glyphs and a tinted control's glyph.
+  toasts, and 3:1 for the status glyphs and a tinted control's glyph; the dense fields, the panel footer, the large
+  switch, the group row, the pager, the small palette and the shortcuts sheet; a radio group and a hidden input in the
+  Tab cycle, focus coming back into a modal panel, its dim when hidden or moved, an empty heading, the top toast by
+  keyboard, compact menu button names, forced colors and a menu on a phone.
 
 ## 0.6.0
 

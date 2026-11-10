@@ -57,12 +57,12 @@ test('side panel: without modal there is no dim and the page stays usable (0.4.0
   assert.equal(w.document.activeElement, p, 'the panel itself takes focus, as in 0.4.0');
 });
 
-test('side panel: a modal panel puts focus on its first control (the close button), and the panel draws no ring of its own', () => {
+test('side panel: a modal panel puts focus on its first control (the close button), and the panel draws no ring for a press', () => {
   const { w, p } = panel('modal heading="Filters"');
   p.open();
   assert.equal(w.document.activeElement, p.querySelector('.sheen-panel-close'));
   const css = readFileSync(new URL('../../dist/sheen.css', import.meta.url), 'utf8').replace(/\s+/g, ' ').replace(/\s*([{};:,])\s*/g, '$1');
-  assert.ok(css.includes('sheen-side-panel.sheen-glass:focus{outline:none}'));
+  assert.ok(css.includes('sheen-side-panel.sheen-glass:focus:not(:focus-visible){outline:none}'));
 });
 
 test('side panel: modal keeps Tab inside, from the last control to the first and back', () => {
@@ -92,7 +92,7 @@ test('side panel: a modal panel removed from the page takes its dim along', () =
 test('side panel: width, heading row and dim are in the built CSS', () => {
   assert.match(css, /sheen-side-panel\.sheen-glass\{[^}]*inline-size:min\(var\(--sheen-panel-size,440px\),100vw\)/);
   assert.match(css, /\.sheen-panel-dim\{position:fixed;inset:0;z-index:899;background:rgba\(0,0,0,\.18\)/);
-  for (const part of ['.sheen-panel-top{', '.sheen-panel-title{', 'sheen-side-panel[heading]{padding:0}', 'sheen-side-panel[heading] .sheen-panel-close{', 'sheen-side-panel[heading] .sheen-panel-body{']) assert.ok(css.includes(part), part);
+  for (const part of ['.sheen-panel-top{', '.sheen-panel-title{', 'sheen-side-panel.sheen-headed{padding:0}', 'sheen-side-panel.sheen-headed .sheen-panel-close{', 'sheen-side-panel.sheen-headed .sheen-panel-body{']) assert.ok(css.includes(part), part);
 });
 
 test('solid layers: .sheen-solid on a layer or any box around it makes menus, panels, toasts, cards and the palette opaque', () => {

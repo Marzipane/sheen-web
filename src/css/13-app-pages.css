@@ -4,13 +4,15 @@
    checkboxes, a busy table, the status block, a failed list message and the toaster at the top. Logical sides only. */
 
 /* the hidden attribute hides list kit parts, though they set their own display */
-:where(.sheen-find-row,.sheen-views-row,.sheen-applied-row,.sheen-control,.sheen-control-count,.sheen-link-button,.sheen-filter-chip,.sheen-list-message,.sheen-status)[hidden]{display:none!important}
+:where(.sheen-find-row,.sheen-views-row,.sheen-applied-row,.sheen-control,.sheen-control-count,.sheen-link-button,.sheen-filter-chip,.sheen-list-message,.sheen-status,sheen-menu-button,.sheen-views-end,.sheen-page-tabs,.sheen-filter-footer,.sheen-panel-foot,.sheen-status-actions,.sheen-table-foot,.sheen-pager)[hidden]{display:none!important}
 
 /* a page header's ••• keeps its white fill and hairline while its menu is open (k-head-b k-amore) */
 sheen-menu-button[glyph]>.sheen-control[aria-expanded="true"]{box-shadow:inset 0 0 0 1px var(--sheen-separator)}
 
-/* key caps: the find row's "/" and the shortcuts in small menus are plain outlined caps, not filled chips */
-.sheen-find .sheen-kbd,:is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item .sheen-kbd{min-inline-size:20px;block-size:20px;padding-inline:5px;border-radius:6px;background:none;box-shadow:inset 0 0 0 1px var(--sheen-separator);color:var(--sheen-text-tertiary);font:600 11px/1 inherit}
+/* key caps: the find row's "/" and the shortcuts in small menus are plain outlined caps, not filled chips, in their row's
+   size and weight in the browser's monospace (the mockups' own rule puts inherit inside the font shorthand, which browsers
+   drop, so their caps keep the row's size and the kbd element's monospace) */
+.sheen-find .sheen-kbd,:is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item .sheen-kbd,sheen-command-palette.sheen-small .sheen-kbd,.sheen-keys .sheen-kbd{min-inline-size:20px;block-size:20px;padding-inline:5px;border-radius:6px;background:none;box-shadow:inset 0 0 0 1px var(--sheen-separator);color:var(--sheen-text-tertiary);font:inherit;font-family:monospace;line-height:1}
 /* a text field focused with a pointer draws no ring anywhere; keyboard focus keeps the base ring */
 :root[data-sheen-pointer] :is(input,select,textarea):focus-visible{outline:none}
 
@@ -24,9 +26,9 @@ sheen-menu-button[glyph]>.sheen-control[aria-expanded="true"]{box-shadow:inset 0
 .sheen-page-title{margin:0;font-size:26px;font-weight:700;letter-spacing:-.02em}
 
 /* a side panel with a heading keeps the Filters footer on its bottom edge, however few the options */
-sheen-side-panel[heading] .sheen-panel-body{display:flex;flex-direction:column}
-sheen-side-panel[heading] .sheen-panel-body>.sheen-filter-footer{margin-block-start:auto}
-sheen-side-panel[heading] .sheen-panel-body:has(>.sheen-filter-footer){padding-block-end:0}
+sheen-side-panel.sheen-headed .sheen-panel-body{display:flex;flex-direction:column}
+sheen-side-panel.sheen-headed .sheen-panel-body>:is(.sheen-filter-footer,.sheen-panel-foot){margin-block-start:auto}
+sheen-side-panel.sheen-headed .sheen-panel-body:has(>.sheen-filter-footer){padding-block-end:0}
 
 /* small tables: 16px checkboxes in the accent; a busy table (aria-busy) is one solid placeholder block that breathes */
 .sheen-table.sheen-small input[type="checkbox"]{inline-size:16px;block-size:16px;accent-color:var(--sheen-accent)}
@@ -57,8 +59,8 @@ sheen-side-panel[heading] .sheen-panel-body:has(>.sheen-filter-footer){padding-b
 /* the toaster at the top (Flutter sheen's toast): under the app bar at the end edge (--sheen-toaster-top), a glyph in
    its tone's colour, the action as a link, no close button; a press on the toast closes it */
 sheen-toaster[position="top"]{inset-block:var(--sheen-toaster-top,20px) auto;inset-inline-end:var(--sheen-toaster-end,20px);inline-size:min(var(--sheen-toaster-size,400px),calc(100vw - 32px))}
-/* the app mockups keep the top toast at the right edge in Arabic too */
-[dir="rtl"] sheen-toaster[position="top"]{inset-inline:var(--sheen-toaster-end,20px) auto}
+/* a part only keyboard users meet (the top toast's close button): out of sight until it has focus */
+.sheen-focus-only:not(:focus){position:absolute;inline-size:1px;block-size:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 .sheen-toast-glyph{inline-size:18px;block-size:18px;flex:none;color:var(--sheen-accent-text)}
 .sheen-toast-success .sheen-toast-glyph{color:var(--sheen-success)}
 .sheen-toast-warning .sheen-toast-glyph{color:var(--sheen-warning)}
@@ -68,5 +70,5 @@ sheen-toaster[position="top"] .sheen-toast-text{font-size:14.5px;font-weight:600
 @media (prefers-reduced-motion: no-preference){sheen-toaster[position="top"] .sheen-toast{animation-name:sheen-toast-down}}
 @keyframes sheen-toast-down{from{opacity:0;transform:translateY(-12px)}}
 /* small buttons in the list kit, the Filters footer and a list message are 34px (the app mockups' find row and panel) */
-:is(.sheen-list-kit,.sheen-filter-footer,.sheen-list-message) .sheen-button.sheen-small{height:34px;border-radius:17px;padding-inline:16px;font-size:13.5px}
+:is(.sheen-list-kit,.sheen-filter-footer,.sheen-list-message) .sheen-button.sheen-small{block-size:34px;border-radius:17px;padding-inline:16px;font-size:13.5px}
 /* end 0.7.0 app pages */

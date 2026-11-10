@@ -67,6 +67,8 @@ function placeUnder(box, a, rtl, align) {
   var left = atEnd ? a.right - width : a.left;
   var flip = left < 0 || left + width > w;
   if (flip) left = atEnd ? a.left : a.right - width;
+  // Wider than the room on either side (a phone): it keeps to the screen.
+  left = clamp(left, 0, Math.max(0, w - width));
   var up = a.bottom + gap + height > h && a.top > h - a.bottom;
   s.left = left + 'px';
   s.top = (up ? Math.max(0, a.top - height - gap) : a.bottom + gap) + 'px';
@@ -118,12 +120,14 @@ function cssVar(el, name, fallback) {
 }
 
 // The last kind of input (0.7.0): a press marks <html data-sheen-pointer>, so the CSS draws no focus ring for it; Tab,
-// and arrow keys outside a text field, clear it, so keyboard focus keeps its one thin ring. Typing never changes it.
+// and any key outside a text field but a lone modifier, clear it, so keyboard focus keeps its one thin ring. Typing never
+// changes it. Leaving the window clears it too: Tab from the address bar comes back without a key the page hears.
 (function () {
   var root = document.documentElement, typing = 'input:not([type="checkbox"]):not([type="radio"]),textarea,select,[contenteditable]';
   document.addEventListener('pointerdown', function () { root.setAttribute('data-sheen-pointer', ''); }, true);
   document.addEventListener('keydown', function (e) {
     var t = e.target, inField = t && t.nodeType === 1 && t.matches(typing);
-    if (e.key === 'Tab' || (!inField && /^(Arrow|Home$|End$|Page)/.test(e.key))) root.removeAttribute('data-sheen-pointer');
+    if (e.key === 'Tab' || (!inField && !/^(Shift|Control|Alt|AltGraph|Meta|CapsLock|Fn|OS)$/.test(e.key))) root.removeAttribute('data-sheen-pointer');
   }, true);
+  window.addEventListener('blur', function () { root.removeAttribute('data-sheen-pointer'); });
 })();

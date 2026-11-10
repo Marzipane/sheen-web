@@ -151,6 +151,8 @@ th[aria-sort="ascending"],th[aria-sort="descending"]{color:var(--sheen-text)}
 .sheen-filter-option input[type="checkbox"]:checked{background:var(--sheen-accent);box-shadow:none}
 .sheen-filter-option input[type="checkbox"]:checked::after{content:"";inline-size:9px;block-size:5px;border-inline-start:2px solid var(--sheen-on-accent);border-block-end:2px solid var(--sheen-on-accent);transform:translateY(-1px) rotate(-45deg)}
 [dir="rtl"] .sheen-filter-option input[type="checkbox"]:checked::after{transform:translateY(-1px) rotate(45deg)}
+/* forced colors drop the drawn box's shadow and fill, so the system draws the checkbox */
+@media (forced-colors: active){.sheen-filter-option input[type="checkbox"]{appearance:auto;-webkit-appearance:auto;box-shadow:none}.sheen-filter-option input[type="checkbox"]:checked::after{content:none}}
 
 /* a table in a card: the surface with an 18px radius (a light shadow in light mode); with .sheen-table-wrap it still
    scrolls sideways and keeps the pinned ••• column. The small table is the dense app size with a tinted header row. */

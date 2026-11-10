@@ -143,16 +143,16 @@ sheen-hover-card.sheen-glass{display:block;position:fixed;z-index:1000;inline-si
 sheen-hover-card.sheen-glass[hidden]{display:none}
 sheen-side-panel.sheen-glass{position:fixed;inset-block:0;inset-inline-end:0;z-index:900;display:flex;flex-direction:column;inline-size:min(var(--sheen-panel-size,440px),100vw);padding:16px;overflow:auto}
 sheen-side-panel.sheen-glass[hidden]{display:none}
-sheen-side-panel.sheen-glass:focus{outline:none}
+sheen-side-panel.sheen-glass:focus:not(:focus-visible){outline:none}
 .sheen-panel-close{align-self:flex-end}
 .sheen-panel-body{flex:1;min-block-size:0}
 /* 0.7.0: the heading row (the title and a 34px close), and the dim behind a modal panel */
 .sheen-panel-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 20px 6px}
 .sheen-panel-title{margin:0;font-size:22px;line-height:1.2;font-weight:700;letter-spacing:-.022em;min-inline-size:0}
-sheen-side-panel[heading]{padding:0}
-sheen-side-panel[heading] .sheen-panel-close{align-self:center;flex:none;inline-size:34px;block-size:34px;padding:0;border-radius:17px;background:var(--sheen-track)}
-sheen-side-panel[heading] .sheen-panel-body{padding:0 20px 16px;overflow-y:auto}
-sheen-side-panel[heading] .sheen-filter-footer{margin-inline:-20px;margin-block-end:0;padding:12px 20px 16px}
+sheen-side-panel.sheen-headed{padding:0}
+sheen-side-panel.sheen-headed .sheen-panel-close{align-self:center;flex:none;inline-size:34px;block-size:34px;padding:0;border-radius:17px;background:var(--sheen-track)}
+sheen-side-panel.sheen-headed .sheen-panel-body{padding:0 20px 16px;overflow-y:auto}
+sheen-side-panel.sheen-headed .sheen-filter-footer{margin-inline:-20px;margin-block-end:0;padding:12px 20px 16px}
 .sheen-panel-dim{position:fixed;inset:0;z-index:899;background:rgba(0,0,0,.18)}
 sheen-scope-picker{display:flex;flex-direction:column;gap:10px}
 .sheen-scope-modes{display:flex;flex-wrap:wrap;gap:12px;margin:0;padding:0;border:0}

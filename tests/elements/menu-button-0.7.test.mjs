@@ -50,7 +50,7 @@ test('menu button: variant picks the look: the tonal button or the find row cont
   assert.equal(button.classList.contains('sheen-compact-glyph'), false);
 });
 
-test('menu button: icon puts a glyph before the label, chevron one after it; the label alone is the text', () => {
+test('menu button: icon puts a glyph before the label, chevron one after it; the label is the text and the name', () => {
   const { button } = made('label="Views" variant="control" icon="star" chevron');
   const [lead, words, chev] = button.children;
   assert.equal(lead.getAttribute('aria-hidden'), 'true');
@@ -60,7 +60,7 @@ test('menu button: icon puts a glyph before the label, chevron one after it; the
   assert.ok(chev.classList.contains('sheen-control-chevron'));
   assert.equal(chev.getAttribute('aria-hidden'), 'true');
   assert.equal(button.textContent, 'Views');
-  assert.equal(button.hasAttribute('aria-label'), false);
+  assert.equal(button.getAttribute('aria-label'), 'Views');
 });
 
 test('menu button: a glyph button in any variant is named by its label', () => {
