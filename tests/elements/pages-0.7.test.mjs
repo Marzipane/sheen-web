@@ -29,18 +29,18 @@ test('the hidden attribute hides list kit parts, though they set their own displ
 });
 
 test('page tabs drawn as links keep the tab colours (the base link rule made them the text colour)', () => {
-  has('.sheen-page-tabs .sheen-view-tab{color:var(--sheen-text-secondary)}');
+  has('.sheen-page-tabs .sheen-view-tab{margin-block-end:0;padding-inline:24px;color:var(--sheen-text-secondary)}');
   has('.sheen-page-tabs .sheen-view-tab:hover{color:var(--sheen-text)}');
-  has('.sheen-page-tabs .sheen-view-tab[aria-current="page"]{color:var(--sheen-accent-text)}');
+  has('.sheen-page-tabs .sheen-view-tab[aria-current="page"]{color:var(--sheen-text-secondary)}');
 });
 
-test('a glyph control whose menu is open takes the tonal fill, not the focus ring (a page header\'s •••)', () => {
-  has('sheen-menu-button[glyph]>.sheen-control[aria-expanded="true"]{background:var(--sheen-tonal);box-shadow:inset 0 0 0 1px var(--sheen-separator)}');
+test('a glyph control whose menu is open keeps its fill and hairline, no focus ring (a page header\'s •••)', () => {
+  has('sheen-menu-button[glyph]>.sheen-control[aria-expanded="true"]{box-shadow:inset 0 0 0 1px var(--sheen-separator)}');
 });
 
-test('page tabs show the current page in the accent; an app page title is 26px', () => {
-  has('.sheen-view-tab[aria-current="page"]{color:var(--sheen-accent-text)}');
-  has('.sheen-page-title{margin:0;font-size:26px;line-height:1.2;font-weight:700;letter-spacing:-.02em}');
+test('page tabs mark the current page by its line only; an app page title is 26px', () => {
+  has('.sheen-page-tabs{border-block-end:0;box-shadow:inset 0 -1px 0 var(--sheen-separator)}');
+  has('.sheen-page-title{margin:0;font-size:26px;font-weight:700;letter-spacing:-.02em}');
 });
 
 test('a side panel with a heading keeps the Filters footer at its bottom edge', () => {
@@ -49,10 +49,10 @@ test('a side panel with a heading keeps the Filters footer at its bottom edge', 
 });
 
 test('small tables: 16px checkboxes in the accent; a busy table is one solid placeholder block', () => {
-  has('.sheen-table.sheen-small input[type="checkbox"]{inline-size:16px;block-size:16px;margin:0;accent-color:var(--sheen-accent)}');
+  has('.sheen-table.sheen-small input[type="checkbox"]{inline-size:16px;block-size:16px;accent-color:var(--sheen-accent)}');
   // (the normalizer drops the space before ":is("; the min file below keeps the descendant combinator)
-  has('.sheen-table[aria-busy="true"]:is(th,td){color:transparent;background:var(--sheen-track);border-radius:7px}');
-  has('.sheen-table[aria-busy="true"]:is(th,td)>*{visibility:hidden}');
+  has('.sheen-table[aria-busy="true"]:is(th,td){color:transparent;background:var(--sheen-track);border-color:transparent;border-radius:7px}');
+  has('.sheen-table[aria-busy="true"]:is(th,td)>:not(input){visibility:hidden}');
   const min = readFileSync(new URL('../../dist/sheen.min.css', import.meta.url), 'utf8');
   assert.ok(min.includes('.sheen-table[aria-busy="true"] :is(th,td){'), 'cells of the busy table, not the table');
   assert.match(css, /@media \(prefers-reduced-motion:no-preference\)\{\.sheen-table\[aria-busy="true"\]\{animation:sheen-busy 1\.4s ease-in-out infinite\}\}/);
@@ -65,7 +65,7 @@ test('status block: a glyph in a 72px circle of its tone, a title, narrow words 
   has('.sheen-status.sheen-danger .sheen-status-glyph{background:color-mix(in srgb,var(--sheen-danger) 14%,transparent);color:var(--sheen-danger)}');
   has('.sheen-status.sheen-warning .sheen-status-glyph{background:color-mix(in srgb,var(--sheen-warning) 16%,transparent);color:var(--sheen-warning)}');
   has('.sheen-status:is(.sheen-danger,.sheen-warning,.sheen-success){color:var(--sheen-text-secondary)}');
-  has('.sheen-status p{margin:0;max-inline-size:34ch}');
+  has('.sheen-status p{margin:0;max-inline-size:34ch;font-size:15px;line-height:1.3}');
   has('.sheen-status-actions{display:flex;flex-direction:column;gap:8px;margin-block-start:8px;inline-size:min(100%,280px)}');
   has('.sheen-status-actions>*{inline-size:100%}');
 });
@@ -125,7 +125,7 @@ test('toaster at the top: placed under the app bar at the end edge, its glyph in
   has('.sheen-toast-danger .sheen-toast-glyph{color:var(--sheen-danger)}');
   has('sheen-toaster[position="top"] .sheen-toast-text{font-size:14.5px;font-weight:600}');
   const min = readFileSync(new URL('../../dist/sheen.min.css', import.meta.url), 'utf8');
-  assert.ok(min.includes(':root .sheen-solid :is(.sheen-menu.sheen-glass,.sheen-cmd.sheen-glass,.sheen-toast.sheen-glass,'), 'toasts are solid too');
+  assert.ok(min.includes(':root .sheen-solid .sheen-toast.sheen-glass{'), 'toasts are solid too');
 });
 
 // WCAG contrast from the tokens in the built CSS

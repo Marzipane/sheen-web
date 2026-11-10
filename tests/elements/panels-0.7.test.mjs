@@ -91,19 +91,13 @@ test('side panel: a modal panel removed from the page takes its dim along', () =
 
 test('side panel: width, heading row and dim are in the built CSS', () => {
   assert.match(css, /sheen-side-panel\.sheen-glass\{[^}]*inline-size:min\(var\(--sheen-panel-size,440px\),100vw\)/);
-  assert.match(css, /\.sheen-panel-dim\{position:fixed;inset:0;z-index:899;background:rgba\(5,7,11,\.18\)/);
+  assert.match(css, /\.sheen-panel-dim\{position:fixed;inset:0;z-index:899;background:rgba\(0,0,0,\.18\)/);
   for (const part of ['.sheen-panel-top{', '.sheen-panel-title{', 'sheen-side-panel[heading]{padding:0}', 'sheen-side-panel[heading] .sheen-panel-close{', 'sheen-side-panel[heading] .sheen-panel-body{']) assert.ok(css.includes(part), part);
 });
 
-test('solid layers: .sheen-solid on a layer or any box around it draws menus, panels, cards and the palette on the sheet', () => {
-  // beats the glass rules, the light theme's included: :root[data-theme="light"] .sheen-glass is (0,3,0).
-  // (this file's normalizer drops the space before ":is(", so the descendant combinator is checked in the min file below)
-  const layers = ':root .sheen-solid:is(.sheen-menu.sheen-glass,.sheen-cmd.sheen-glass,.sheen-toast.sheen-glass,sheen-side-panel.sheen-glass,sheen-hover-card.sheen-glass),:root:is(sheen-side-panel,sheen-hover-card).sheen-solid.sheen-glass';
-  assert.ok(css.includes(layers + '{background:var(--sheen-sheet);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 0 0 1px var(--sheen-separator),0 14px 34px rgba(16,20,30,.14),0 2px 6px rgba(16,20,30,.06)}'), 'solid fill');
-  assert.ok(css.includes(':root .sheen-solid:is(.sheen-menu.sheen-glass,.sheen-cmd.sheen-glass,.sheen-toast.sheen-glass,sheen-side-panel.sheen-glass,sheen-hover-card.sheen-glass)::after,:root:is(sheen-side-panel,sheen-hover-card).sheen-solid.sheen-glass::after{content:none}'), 'no glass rim');
-  // modal layers dim the page with a plain shade, no blur
-  assert.ok(css.includes('.sheen-solid:is(.sheen-cmd,.sheen-dialog)::backdrop{background:rgba(5,7,11,.22);-webkit-backdrop-filter:none;backdrop-filter:none}'));
-  // the shipped file keeps the descendant combinators: a box around the layer, not the layer itself
+test('solid layers: .sheen-solid on a layer or any box around it makes menus, panels, toasts, cards and the palette opaque', () => {
+  // the values per layer are in port-0.7.test.mjs; the shipped file keeps the descendant combinators (a box around the layer)
   const min = readFileSync(new URL('../../dist/sheen.min.css', import.meta.url), 'utf8');
-  for (const part of [':root .sheen-solid :is(.sheen-menu.sheen-glass', ':root :is(sheen-side-panel,sheen-hover-card).sheen-solid.sheen-glass', '.sheen-solid :is(.sheen-cmd,.sheen-dialog)::backdrop']) assert.ok(min.includes(part), part);
+  for (const part of [':root .sheen-solid :is(.sheen-menu.sheen-glass,.sheen-cmd.sheen-glass){', ':root .sheen-solid sheen-side-panel.sheen-glass,', ':root .sheen-solid .sheen-toast.sheen-glass{',
+    ':root .sheen-solid sheen-hover-card.sheen-glass,', '.sheen-solid :is(.sheen-cmd,.sheen-dialog)::backdrop{background:rgba(5,7,11,.22);-webkit-backdrop-filter:none;backdrop-filter:none}']) assert.ok(min.includes(part), part);
 });

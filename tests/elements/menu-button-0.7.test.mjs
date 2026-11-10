@@ -101,7 +101,7 @@ test('menu button: the new looks are in the built CSS', () => {
   assert.ok(css.includes('.sheen-menu-item:not([aria-disabled="true"]) .sheen-menu-words:has(>.sheen-menu-hint)>span:first-child{font-weight:600}'));
   // small menus are the dense app size, and their width can be set
   assert.match(css, /\.sheen-menu\{[^}]*min-inline-size:var\(--sheen-menu-min-size,180px\)/);
-  assert.match(css, /sheen-menu-button\.sheen-small \.sheen-menu,[^{]*\{[^}]*font-size:13\.5px;[^}]*min-inline-size:var\(--sheen-menu-min-size,240px\)/);
+  assert.match(css, /sheen-menu-button\.sheen-small \.sheen-menu,[^{]*\{[^}]*font-size:13\.5px;[^}]*min-inline-size:var\(--sheen-menu-min-size,250px\)/);
   assert.match(css, /@media \(prefers-reduced-motion:reduce\)\{[^}]*\.sheen-control-chevron\{transition:none\}/);
 });
 
@@ -123,8 +123,26 @@ test('menu button: accent items, hints, glyphs and danger items reach WCAG AA on
     }
     // the applied-filters control: accent words on its 8% tint
     const share = Number(css.match(/\.sheen-control\.sheen-on\{[^}]*background:color-mix\(in srgb,var\(--sheen-accent\) (\d+)%/)[1]) / 100;
-    const ratio = contrast(hex(t['accent-text']), mixed(hex(t.accent), hex(t.surface), share));
-    assert.ok(ratio >= 4.5, `control on (${name}): ${ratio.toFixed(2)}`);
+    const tint = mixed(hex(t.accent), hex(t.surface), share);
+    assert.ok(contrast(hex(t.text), tint) >= 4.5, `control on, its words (${name})`);
+    assert.ok(contrast(hex(t['accent-text']), tint) >= 3, `control on, its glyph (${name})`);
+  }
+});
+
+test('menu button: a Views control at the end edge keeps its 320px menu on screen, lined up with its end edge, in English and Arabic', () => {
+  for (const [dir, rect, left] of [['ltr', { left: 913, right: 1024 - 12 }, 1012 - 320], ['rtl', { left: 12, right: 123 }, 12]]) {
+    const w = page('<div class="sheen-views-end"><sheen-menu-button label="Views" variant="control" icon="star" chevron></sheen-menu-button></div>', dir);
+    const m = w.document.querySelector('sheen-menu-button');
+    m.items = [{ heading: 'Last used' }, { id: 'last', label: 'Your last filters', hint: 'Restored for each list', glyph: 'clock' }];
+    const button = m.querySelector('button'), list = m.querySelector('[role="menu"]');
+    button.getBoundingClientRect = () => ({ ...rect, top: 220, bottom: 256, width: rect.right - rect.left, height: 36 });
+    shrinking(w, list, { width: 320, height: 120 });
+    button.click();
+    assert.equal(list.style.left, left + 'px', dir);
+    const box = list.getBoundingClientRect();
+    assert.ok(box.left >= 0 && box.right <= w.innerWidth, `${dir}: on screen`);
+    assert.equal(box.right - box.left, 320, `${dir}: full width`);
+    assert.equal(list.style.top, '262px', `${dir}: under its button`);
   }
 });
 

@@ -6,30 +6,31 @@
 /* the hidden attribute hides list kit parts, though they set their own display */
 :where(.sheen-find-row,.sheen-views-row,.sheen-applied-row,.sheen-control,.sheen-control-count,.sheen-link-button,.sheen-filter-chip,.sheen-list-message,.sheen-status)[hidden]{display:none!important}
 
-/* a glyph control whose menu is open takes the tonal fill, not the focus ring (a page header's •••) */
-sheen-menu-button[glyph]>.sheen-control[aria-expanded="true"]{background:var(--sheen-tonal);box-shadow:inset 0 0 0 1px var(--sheen-separator)}
+/* a page header's ••• keeps its white fill and hairline while its menu is open (k-head-b k-amore) */
+sheen-menu-button[glyph]>.sheen-control[aria-expanded="true"]{box-shadow:inset 0 0 0 1px var(--sheen-separator)}
 
 /* key caps: the find row's "/" and the shortcuts in small menus are plain outlined caps, not filled chips */
 .sheen-find .sheen-kbd,:is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item .sheen-kbd{min-inline-size:20px;block-size:20px;padding-inline:5px;border-radius:6px;background:none;box-shadow:inset 0 0 0 1px var(--sheen-separator);color:var(--sheen-text-tertiary);font:600 11px/1 inherit}
 /* a text field focused with a pointer draws no ring anywhere; keyboard focus keeps the base ring */
 :root[data-sheen-pointer] :is(input,select,textarea):focus-visible{outline:none}
 
-/* a module's page tabs show the page you are on in the accent; an app page's title */
-.sheen-view-tab[aria-current="page"]{color:var(--sheen-accent-text)}
-/* page tabs drawn as links: the base ".sheen a" rule (color:inherit) would make every tab the text colour */
-.sheen-page-tabs .sheen-view-tab{color:var(--sheen-text-secondary)}
+/* a module's page tabs (the app mockups' k-tabs): secondary words with 24px each side; the page you are on is marked by
+   its 2px accent line only. The row's hairline is drawn inside it, so a scrolling row never clips the 2px line. Links
+   would take the text colour from the base ".sheen a" rule, so the colours are set here. An app page's title (k-head). */
+.sheen-page-tabs{border-block-end:0;box-shadow:inset 0 -1px 0 var(--sheen-separator)}
+.sheen-page-tabs .sheen-view-tab{margin-block-end:0;padding-inline:24px;color:var(--sheen-text-secondary)}
 .sheen-page-tabs .sheen-view-tab:hover{color:var(--sheen-text)}
-.sheen-page-tabs .sheen-view-tab[aria-current="page"]{color:var(--sheen-accent-text)}
-.sheen-page-title{margin:0;font-size:26px;line-height:1.2;font-weight:700;letter-spacing:-.02em}
+.sheen-page-tabs .sheen-view-tab[aria-current="page"]{color:var(--sheen-text-secondary)}
+.sheen-page-title{margin:0;font-size:26px;font-weight:700;letter-spacing:-.02em}
 
 /* a side panel with a heading keeps the Filters footer on its bottom edge, however few the options */
 sheen-side-panel[heading] .sheen-panel-body{display:flex;flex-direction:column}
 sheen-side-panel[heading] .sheen-panel-body>.sheen-filter-footer{margin-block-start:auto}
 
 /* small tables: 16px checkboxes in the accent; a busy table (aria-busy) is one solid placeholder block that breathes */
-.sheen-table.sheen-small input[type="checkbox"]{inline-size:16px;block-size:16px;margin:0;accent-color:var(--sheen-accent)}
-.sheen-table[aria-busy="true"] :is(th,td){color:transparent;background:var(--sheen-track);border-radius:7px}
-.sheen-table[aria-busy="true"] :is(th,td)>*{visibility:hidden}
+.sheen-table.sheen-small input[type="checkbox"]{inline-size:16px;block-size:16px;accent-color:var(--sheen-accent)}
+.sheen-table[aria-busy="true"] :is(th,td){color:transparent;background:var(--sheen-track);border-color:transparent;border-radius:7px}
+.sheen-table[aria-busy="true"] :is(th,td)>:not(input){visibility:hidden}
 @media (prefers-reduced-motion: no-preference){.sheen-table[aria-busy="true"]{animation:sheen-busy 1.4s ease-in-out infinite}}
 @keyframes sheen-busy{50%{opacity:.55}}
 
@@ -37,13 +38,13 @@ sheen-side-panel[heading] .sheen-panel-body>.sheen-filter-footer{margin-block-st
    a glyph in a 72px circle of its tone, a title, words at most 34 characters wide, up to two actions stacked */
 .sheen-status{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:48px 20px;margin-block:auto;color:var(--sheen-text-secondary)}
 .sheen-status-glyph{display:grid;place-items:center;inline-size:72px;block-size:72px;border-radius:50%;margin-block-end:6px;flex:none;background:var(--sheen-tonal);color:var(--sheen-accent-text)}
-.sheen-status-glyph>:is(svg,.sheen-icon,.sheen-glyph){inline-size:26px;block-size:26px}
+.sheen-status-glyph :is(svg,.sheen-icon){inline-size:25px;block-size:25px}
 .sheen-status.sheen-danger .sheen-status-glyph{background:color-mix(in srgb,var(--sheen-danger) 14%,transparent);color:var(--sheen-danger)}
 .sheen-status.sheen-warning .sheen-status-glyph{background:color-mix(in srgb,var(--sheen-warning) 16%,transparent);color:var(--sheen-warning)}
 .sheen-status.sheen-success .sheen-status-glyph{background:color-mix(in srgb,var(--sheen-success) 14%,transparent);color:var(--sheen-success)}
 .sheen-status:is(.sheen-danger,.sheen-warning,.sheen-success){color:var(--sheen-text-secondary)}
-.sheen-status-title{margin:0;font-size:22px;line-height:1.2;font-weight:700;letter-spacing:-.02em;color:var(--sheen-text)}
-.sheen-status p{margin:0;max-inline-size:34ch}
+.sheen-status-title{margin:0;font-size:22px;line-height:1.2;font-weight:700;letter-spacing:-.022em;color:var(--sheen-text)}
+.sheen-status p{margin:0;max-inline-size:34ch;font-size:15px;line-height:1.3}
 .sheen-status-actions{display:flex;flex-direction:column;gap:8px;margin-block-start:8px;inline-size:min(100%,280px)}
 .sheen-status-actions>*{inline-size:100%}
 .sheen-status small{color:var(--sheen-text-tertiary)}
@@ -55,6 +56,8 @@ sheen-side-panel[heading] .sheen-panel-body>.sheen-filter-footer{margin-block-st
 /* the toaster at the top (Flutter sheen's toast): under the app bar at the end edge (--sheen-toaster-top), a glyph in
    its tone's colour, the action as a link, no close button; a press on the toast closes it */
 sheen-toaster[position="top"]{inset-block:var(--sheen-toaster-top,20px) auto;inset-inline-end:var(--sheen-toaster-end,20px);inline-size:min(var(--sheen-toaster-size,400px),calc(100vw - 32px))}
+/* the app mockups keep the top toast at the right edge in Arabic too */
+[dir="rtl"] sheen-toaster[position="top"]{inset-inline:var(--sheen-toaster-end,20px) auto}
 .sheen-toast-glyph{inline-size:18px;block-size:18px;flex:none;color:var(--sheen-accent-text)}
 .sheen-toast-success .sheen-toast-glyph{color:var(--sheen-success)}
 .sheen-toast-warning .sheen-toast-glyph{color:var(--sheen-warning)}
@@ -63,4 +66,6 @@ sheen-toaster[position="top"] .sheen-toast{padding-block:12px;padding-inline:14p
 sheen-toaster[position="top"] .sheen-toast-text{font-size:14.5px;font-weight:600}
 @media (prefers-reduced-motion: no-preference){sheen-toaster[position="top"] .sheen-toast{animation-name:sheen-toast-down}}
 @keyframes sheen-toast-down{from{opacity:0;transform:translateY(-12px)}}
+/* small buttons in the list kit, the Filters footer and a list message are 34px (the app mockups' find row and panel) */
+:is(.sheen-list-kit,.sheen-filter-footer,.sheen-list-message) .sheen-button.sheen-small{height:34px;border-radius:17px;padding-inline:16px;font-size:13.5px}
 /* end 0.7.0 app pages */

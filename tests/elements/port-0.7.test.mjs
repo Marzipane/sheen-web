@@ -1,0 +1,100 @@
+// 0.7.0 values ported one to one from the app mockups' CSS (olamop.css: k-head, k-tabs, k-ctl, k-table, k-fpop, k-fview,
+// k-aitem, k-amore, k-drawer, k-fpanel, k-fdim, k-fopt, k-fbox, k-fcount, o-state, o-toast, k-fbarwrap buttons). Each
+// test names the rule it ports; where the mockup's rendered value differs from its own rule, the rendered value wins.
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+
+const css = readFileSync(new URL('../../dist/sheen.css', import.meta.url), 'utf8').replace(/\s+/g, ' ').replace(/\s*([{};:,])\s*/g, '$1');
+const min = readFileSync(new URL('../../dist/sheen.min.css', import.meta.url), 'utf8');
+const has = (part) => assert.ok(css.includes(part), part);
+const DENSE = ':is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button)';
+
+test('k-head h2: the page title is 26px bold, -.02em, on the page line height (39px)', () => {
+  has('.sheen-page-title{margin:0;font-size:26px;font-weight:700;letter-spacing:-.02em}');
+});
+
+test('k-tabs: page tabs are secondary words with 24px each side, the current one marked by its 2px accent line only', () => {
+  has('.sheen-page-tabs{border-block-end:0;box-shadow:inset 0 -1px 0 var(--sheen-separator)}');
+  has('.sheen-page-tabs .sheen-view-tab{margin-block-end:0;padding-inline:24px;color:var(--sheen-text-secondary)}');
+  has('.sheen-page-tabs .sheen-view-tab[aria-current="page"]{color:var(--sheen-text-secondary)}');
+  assert.ok(!css.includes('.sheen-view-tab[aria-current="page"]{color:var(--sheen-accent-text)}'));
+});
+
+test('k-ctl live state: a control with filters on tints its glyph, its words keep the text colour', () => {
+  has('.sheen-control.sheen-on:is(.sheen-glyph,.sheen-icon){color:var(--sheen-accent-text)}');
+  assert.ok(min.includes('.sheen-control.sheen-on :is(.sheen-glyph,.sheen-icon){color:var(--sheen-accent-text)}'));
+  assert.ok(!css.includes('.sheen-control.sheen-on>span:not(.sheen-control-count){color'));
+});
+
+test('k-ffilters compact: a control with a count keeps its padding and its count; only date and views shrink to 36px', () => {
+  assert.match(css, /@container \(max-width:760px\)\{[^@]*?\.sheen-control\.sheen-compact-glyph:has\(>\.sheen-control-count:not\(\[hidden\]\)\)\{inline-size:auto;padding-inline:12px\}/);
+});
+
+test('k-head-b k-amore: an open page header ••• keeps its white fill and hairline', () => {
+  has('sheen-menu-button[glyph]>.sheen-control[aria-expanded="true"]{box-shadow:inset 0 0 0 1px var(--sheen-separator)}');
+  assert.ok(!css.includes('sheen-menu-button[glyph]>.sheen-control[aria-expanded="true"]{background:var(--sheen-tonal)'));
+});
+
+test('k-amenu and k-fview: small menus are 250px to 320px wide; an item with a description lines its glyph up with the title', () => {
+  assert.match(css, /sheen-menu-button\.sheen-small \.sheen-menu,[^{]*\{font-size:13\.5px;min-inline-size:var\(--sheen-menu-min-size,250px\);max-inline-size:min\(var\(--sheen-menu-max-size,320px\),calc\(100vw - 16px\)\)/);
+  has(DENSE + ' .sheen-menu-item:not([aria-disabled="true"]):has(.sheen-menu-hint){align-items:flex-start}');
+  has(DENSE + ' .sheen-menu-item:not([aria-disabled="true"]):has(.sheen-menu-hint)>.sheen-glyph{margin-block-start:2px}');
+  has(DENSE + ' .sheen-menu-item:not([aria-disabled="true"]) .sheen-menu-hint{font-size:12px;font-weight:400}');
+});
+
+test('k-table: small cells stay on one line up to 260px with an ellipsis; .sheen-wrap wraps them (k-wrap); checkboxes keep their own margin', () => {
+  has('.sheen-table.sheen-small td{padding:10px 14px;border-block-end:0;border-block-start:1px solid var(--sheen-separator);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-inline-size:260px}');
+  has('.sheen-table.sheen-small.sheen-wrap:is(th,td){white-space:normal}');
+  has('.sheen-table.sheen-small.sheen-wrap td{max-inline-size:none;vertical-align:top;overflow-wrap:break-word}');
+  has('.sheen-table.sheen-small input[type="checkbox"]{inline-size:16px;block-size:16px;accent-color:var(--sheen-accent)}');
+});
+
+test('mk-loading: a busy table\'s cells lose their lines; their checkboxes stay', () => {
+  has('.sheen-table[aria-busy="true"]:is(th,td){color:transparent;background:var(--sheen-track);border-color:transparent;border-radius:7px}');
+  has('.sheen-table[aria-busy="true"]:is(th,td)>:not(input){visibility:hidden}');
+});
+
+test('k-fpanel and k-fdim: the panel title tracks -.022em; the dim is black at 18%', () => {
+  assert.match(css, /\.sheen-panel-title\{[^}]*font-size:22px;line-height:1\.2;font-weight:700;letter-spacing:-\.022em/);
+  has('.sheen-panel-dim{position:fixed;inset:0;z-index:899;background:rgba(0,0,0,.18)}');
+});
+
+test('k-fpf, k-fopt, k-fcount, k-fbox: options 1px apart under their label, counts at 500, an outlined 18px box', () => {
+  has('.sheen-filter-field{gap:1px;padding-block-start:0}');
+  has('.sheen-filter-field legend{padding-block-start:10px;margin-block-end:6px}');
+  has('.sheen-filter-option small{font-weight:500}');
+  has('.sheen-filter-option input[type="checkbox"]{appearance:none;-webkit-appearance:none;display:inline-grid;place-content:center;border-radius:5px;box-shadow:inset 0 0 0 1.5px var(--sheen-text-tertiary);cursor:pointer}');
+  has('.sheen-filter-option input[type="checkbox"]:checked{background:var(--sheen-accent);box-shadow:none}');
+  has('.sheen-filter-option input[type="checkbox"]:checked::after{content:"";inline-size:9px;block-size:5px;border-inline-start:2px solid var(--sheen-on-accent);border-block-end:2px solid var(--sheen-on-accent);transform:translateY(-1px) rotate(-45deg)}');
+  has('[dir="rtl"] .sheen-filter-option input[type="checkbox"]:checked::after{transform:translateY(-1px) rotate(45deg)}');
+});
+
+test('k-fbarwrap and k-fpanel small buttons: 34px, 13.5px', () => {
+  has(':is(.sheen-list-kit,.sheen-filter-footer,.sheen-list-message) .sheen-button.sheen-small{height:34px;border-radius:17px;padding-inline:16px;font-size:13.5px}');
+  assert.ok(min.includes(':is(.sheen-list-kit,.sheen-filter-footer,.sheen-list-message) .sheen-button.sheen-small{'));
+});
+
+test('o-state: a 25px glyph, words at 15px on a 1.3 line, the title tracking -.022em', () => {
+  has('.sheen-status-glyph :is(svg,.sheen-icon){inline-size:25px;block-size:25px}'.replace(' :is', ':is'));
+  has('.sheen-status p{margin:0;max-inline-size:34ch;font-size:15px;line-height:1.3}');
+  has('.sheen-status-title{margin:0;font-size:22px;line-height:1.2;font-weight:700;letter-spacing:-.022em;color:var(--sheen-text)}');
+});
+
+test('o-toast in Arabic: the top toast stays at the right edge, as the mockup keeps it', () => {
+  has('[dir="rtl"] sheen-toaster[position="top"]{inset-inline:var(--sheen-toaster-end,20px) auto}');
+});
+
+test('solid layers take each mockup layer\'s own fill and shadow', () => {
+  const normalized = (s) => s.replace(/\s+/g, ' ').replace(/\s*([{};:,])\s*/g, '$1');
+  // menus and the command palette (k-fpop, k-acmdk): surface, hairline and a soft drop
+  has(normalized(':root .sheen-solid :is(.sheen-menu.sheen-glass,.sheen-cmd.sheen-glass){background:var(--sheen-surface);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 0 0 1px var(--sheen-separator),0 14px 34px rgba(16,20,30,.14),0 2px 6px rgba(16,20,30,.06)}'));
+  // side panels (k-drawer): the sheet and a shadow toward the page, mirrored in Arabic
+  has(normalized(':root .sheen-solid sheen-side-panel.sheen-glass,:root sheen-side-panel.sheen-solid.sheen-glass{background:var(--sheen-sheet);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:-20px 0 60px rgba(0,0,0,.12)}'));
+  has(normalized(':root [dir="rtl"] .sheen-solid sheen-side-panel.sheen-glass,:root .sheen-solid[dir="rtl"] sheen-side-panel.sheen-glass,:root[dir="rtl"] .sheen-solid sheen-side-panel.sheen-glass{box-shadow:20px 0 60px rgba(0,0,0,.12)}'));
+  // toasts (o-toast): the sheet and a drop, no hairline
+  has(normalized(':root .sheen-solid .sheen-toast.sheen-glass{background:var(--sheen-sheet);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 10px 30px rgba(0,0,0,.18)}'));
+  // hover cards (k-rlcard): the sheet, hairline and a drop
+  has(normalized(':root .sheen-solid sheen-hover-card.sheen-glass,:root sheen-hover-card.sheen-solid.sheen-glass{background:var(--sheen-sheet);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 0 0 1px var(--sheen-separator),0 12px 32px rgba(0,0,0,.18)}'));
+  has(normalized(':root .sheen-solid :is(.sheen-menu,.sheen-cmd,.sheen-toast,sheen-side-panel,sheen-hover-card).sheen-glass::after,:root :is(sheen-side-panel,sheen-hover-card).sheen-solid.sheen-glass::after{content:none}'));
+});

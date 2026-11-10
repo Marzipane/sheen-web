@@ -148,12 +148,12 @@ sheen-side-panel.sheen-glass:focus{outline:none}
 .sheen-panel-body{flex:1;min-block-size:0}
 /* 0.7.0: the heading row (the title and a 34px close), and the dim behind a modal panel */
 .sheen-panel-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 20px 6px}
-.sheen-panel-title{margin:0;font-size:22px;line-height:1.2;font-weight:700;letter-spacing:-.02em;min-inline-size:0}
+.sheen-panel-title{margin:0;font-size:22px;line-height:1.2;font-weight:700;letter-spacing:-.022em;min-inline-size:0}
 sheen-side-panel[heading]{padding:0}
 sheen-side-panel[heading] .sheen-panel-close{align-self:center;flex:none;inline-size:34px;block-size:34px;padding:0;border-radius:17px;background:var(--sheen-track)}
 sheen-side-panel[heading] .sheen-panel-body{padding:0 20px 16px;overflow-y:auto}
 sheen-side-panel[heading] .sheen-filter-footer{margin-inline:-20px;margin-block-end:-16px;padding:12px 20px 16px}
-.sheen-panel-dim{position:fixed;inset:0;z-index:899;background:rgba(5,7,11,.18)}
+.sheen-panel-dim{position:fixed;inset:0;z-index:899;background:rgba(0,0,0,.18)}
 sheen-scope-picker{display:flex;flex-direction:column;gap:10px}
 .sheen-scope-modes{display:flex;flex-wrap:wrap;gap:12px;margin:0;padding:0;border:0}
 .sheen-scope-modes legend{margin-block-end:6px;font-weight:700}
@@ -188,8 +188,12 @@ sheen-menu-button{position:relative;display:inline-block}
 .sheen-menu-item[aria-disabled="true"]>.sheen-glyph,.sheen-menu-item.sheen-accent[aria-disabled="true"]{color:var(--sheen-text-tertiary)}
 .sheen-menu-item:not([aria-disabled="true"]) .sheen-menu-words:has(>.sheen-menu-hint)>span:first-child{font-weight:600}
 /* small menus (a small button, a bulk bar, the end of a views row) are the dense app size: 13.5px, 36px rows, a focus ring */
-sheen-menu-button.sheen-small .sheen-menu,.sheen-small sheen-menu-button .sheen-menu,.sheen-bulk-bar sheen-menu-button .sheen-menu,.sheen-views-end sheen-menu-button .sheen-menu{font-size:13.5px;min-inline-size:var(--sheen-menu-min-size,240px);max-inline-size:min(360px,calc(100vw - 16px));border-radius:16px}
+sheen-menu-button.sheen-small .sheen-menu,.sheen-small sheen-menu-button .sheen-menu,.sheen-bulk-bar sheen-menu-button .sheen-menu,.sheen-views-end sheen-menu-button .sheen-menu{font-size:13.5px;min-inline-size:var(--sheen-menu-min-size,250px);max-inline-size:min(var(--sheen-menu-max-size,320px),calc(100vw - 16px));border-radius:16px}
 :is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item{min-block-size:36px;padding:6px 10px;font-size:inherit}
 :is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item:hover{background:var(--sheen-tonal)}
 :is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item:focus-visible{background:none;outline:2px solid var(--sheen-accent-text);outline-offset:-2px}
 :is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item[aria-disabled="true"]:hover{background:none}
+/* an item with a description (k-fview): its glyph lines up with the title; the description is 12px at 400 */
+:is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item:not([aria-disabled="true"]):has(.sheen-menu-hint){align-items:flex-start}
+:is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item:not([aria-disabled="true"]):has(.sheen-menu-hint)>.sheen-glyph{margin-block-start:2px}
+:is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item:not([aria-disabled="true"]) .sheen-menu-hint{font-size:12px;font-weight:400}
