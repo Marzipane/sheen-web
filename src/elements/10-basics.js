@@ -109,16 +109,21 @@ class SheenToaster extends HTMLElement {
     while (this.querySelectorAll('.sheen-toast').length < max && this.queue.length) this.mount(this.queue.shift());
   }
   mount(item) {
-    var self = this, o = item.opts, tone = o.tone || 'info';
+    var self = this, o = item.opts, tone = o.tone || 'info', top = this.getAttribute('position') === 'top';
+    // A glyph (0.7.0) replaces the tone's dot. At the top, as Flutter sheen's toast: the action is a link, there is no
+    // close button, and a press on the toast closes it.
+    var mark = o.glyph ? glyph(o.glyph, 18) : h('span', { class: 'sheen-toast-dot', 'aria-hidden': 'true' });
+    if (o.glyph) mark.classList.add('sheen-toast-glyph');
     var node = h('div', { class: 'sheen-toast sheen-glass sheen-toast-' + tone, id: item.id, role: tone === 'danger' ? 'alert' : 'status' },
-      h('span', { class: 'sheen-toast-dot', 'aria-hidden': 'true' }),
+      mark,
       h('div', { class: 'sheen-toast-text' },
         o.title ? h('b', { text: o.title }) : null,
         o.message ? h('span', { class: 'sheen-secondary', text: o.message }) : null),
-      o.action ? h('button', { type: 'button', class: 'sheen-button sheen-small', text: o.action.label,
+      o.action ? h('button', { type: 'button', class: top ? 'sheen-link-button' : 'sheen-button sheen-small', text: o.action.label,
         onclick: function () { try { o.action.onClick(); } finally { self.dismiss(item.id); } } }) : null,
-      h('button', { type: 'button', class: 'sheen-icon-button sheen-toast-close', 'aria-label': this.getAttribute('close-label') || '',
+      top ? null : h('button', { type: 'button', class: 'sheen-icon-button sheen-toast-close', 'aria-label': this.getAttribute('close-label') || '',
         onclick: function () { self.dismiss(item.id); } }, glyph('close', 18)));
+    if (top) node.addEventListener('click', function (e) { if (!e.target.closest('button')) self.dismiss(item.id); });
     this.appendChild(node);
     var timeout = o.timeout == null ? 5000 : o.timeout;
     if (timeout > 0) {

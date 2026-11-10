@@ -32,12 +32,13 @@ function h(tag, attrs) {
 }
 
 // A sheen glyph (the Flutter sheen icons plus the media glyphs) as an inline SVG. Decorative unless label is given.
+// A Flutter sheen filled icon ("check-circle-fill") is filled with the text colour instead of stroked.
 function glyph(name, size, label) {
   var body = GLYPHS[name];
   if (!body) throw new Error('Unknown sheen glyph "' + name + '"');
   var t = document.createElement('template');
-  t.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
-    'stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + body + '</svg>';
+  t.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" ' + (FILLED[name] ? 'fill="currentColor" stroke="none">'
+    : 'fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">') + body + '</svg>';
   var svg = t.content.firstChild;
   var s = String(size || 20);
   svg.setAttribute('width', s);

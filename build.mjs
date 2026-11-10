@@ -47,12 +47,19 @@ const glyphs = {};
 for (const dir of ['icons/stroke', 'glyphs/media']) {
   for (const f of readdirSync(dir).filter((x) => x.endsWith('.svg')).sort()) glyphs[f.slice(0, -4)] = svgBody(readFileSync(dir + '/' + f, 'utf8'));
 }
+// 0.7.0: the filled Flutter sheen icons (icons/filled) as "<name>-fill"; glyph() draws them filled, not stroked
+const filled = {};
+for (const f of readdirSync('icons/filled').filter((x) => x.endsWith('.svg')).sort()) {
+  glyphs[f.slice(0, -4) + '-fill'] = svgBody(readFileSync('icons/filled/' + f, 'utf8'));
+  filled[f.slice(0, -4) + '-fill'] = 1;
+}
 const elementFiles = existsSync('src/elements') ? readdirSync('src/elements').filter((f) => f.endsWith('.js')).sort() : [];
 const elementsJs = `/*! sheen-web elements | MIT | https://github.com/Marzipane/sheen-web */
 (function () {
 'use strict';
 if (typeof window === 'undefined' || window.sheenElements) return;
 var GLYPHS = ${JSON.stringify(glyphs)};
+var FILLED = ${JSON.stringify(filled)};
 ` + elementFiles.map((f) => `// ---- ${f}\n` + readFileSync('src/elements/' + f, 'utf8')).join('\n') + `
 })();
 `;

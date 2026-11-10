@@ -1,7 +1,7 @@
-/* Solid layers (0.7.0): class="sheen-solid" on a layer or on any box around it (the page's body) draws menus, the
+/* Solid layers (0.7.0): class="sheen-solid" on a layer or on any box around it (the page's body) draws menus, toasts, the
    command palette, side panels and hover cards on the opaque sheet with a hairline and a shadow, so the buttons and rows
    under them never show through. Modal layers then dim the page with a plain shade, no blur.
    :root raises these rules above the glass ones, the light theme's included (:root[data-theme="light"] .sheen-glass). */
-:root .sheen-solid :is(.sheen-menu.sheen-glass,.sheen-cmd.sheen-glass,sheen-side-panel.sheen-glass,sheen-hover-card.sheen-glass),:root :is(sheen-side-panel,sheen-hover-card).sheen-solid.sheen-glass{background:var(--sheen-sheet);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 0 0 1px var(--sheen-separator),0 14px 34px rgba(16,20,30,.14),0 2px 6px rgba(16,20,30,.06)}
-:root .sheen-solid :is(.sheen-menu.sheen-glass,.sheen-cmd.sheen-glass,sheen-side-panel.sheen-glass,sheen-hover-card.sheen-glass)::after,:root :is(sheen-side-panel,sheen-hover-card).sheen-solid.sheen-glass::after{content:none}
+:root .sheen-solid :is(.sheen-menu.sheen-glass,.sheen-cmd.sheen-glass,.sheen-toast.sheen-glass,sheen-side-panel.sheen-glass,sheen-hover-card.sheen-glass),:root :is(sheen-side-panel,sheen-hover-card).sheen-solid.sheen-glass{background:var(--sheen-sheet);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 0 0 1px var(--sheen-separator),0 14px 34px rgba(16,20,30,.14),0 2px 6px rgba(16,20,30,.06)}
+:root .sheen-solid :is(.sheen-menu.sheen-glass,.sheen-cmd.sheen-glass,.sheen-toast.sheen-glass,sheen-side-panel.sheen-glass,sheen-hover-card.sheen-glass)::after,:root :is(sheen-side-panel,sheen-hover-card).sheen-solid.sheen-glass::after{content:none}
 .sheen-solid :is(.sheen-cmd,.sheen-dialog)::backdrop{background:rgba(5,7,11,.22);-webkit-backdrop-filter:none;backdrop-filter:none}
