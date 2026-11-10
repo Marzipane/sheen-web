@@ -29,6 +29,121 @@ function menuAt(rect, dir) {
   return { w, m, button, list };
 }
 
+function made(attrs, items = [{ id: 'open', label: 'Open' }], dir) {
+  const w = page(`<sheen-menu-button ${attrs}></sheen-menu-button>`, dir);
+  const m = w.document.querySelector('sheen-menu-button');
+  m.items = items;
+  return { w, m, button: m.querySelector('button'), list: m.querySelector('[role="menu"]') };
+}
+
+test('menu button: variant picks the look: the tonal button, the find row control, or a plain button', () => {
+  assert.equal(made('label="Export"').button.className, 'sheen-button');
+  assert.equal(made('label="Views" variant="control"').button.className, 'sheen-control');
+  assert.equal(made('label="More" glyph="more" variant="plain"').button.className, 'sheen-plain-button');
+  assert.equal(made('label="More" glyph="more"').button.className, 'sheen-icon-button', '0.5.1 glyph button unchanged');
+  const { m, button } = made('label="Views"');
+  m.setAttribute('variant', 'control');
+  assert.equal(button.className, 'sheen-control', 'follows a variant set later');
+  m.setAttribute('compact', '');
+  assert.ok(button.classList.contains('sheen-compact-glyph'));
+  m.removeAttribute('compact');
+  assert.equal(button.classList.contains('sheen-compact-glyph'), false);
+});
+
+test('menu button: icon puts a glyph before the label, chevron one after it; the label alone is the text', () => {
+  const { button } = made('label="Views" variant="control" icon="star" chevron');
+  const [lead, words, chev] = button.children;
+  assert.equal(lead.getAttribute('aria-hidden'), 'true');
+  assert.ok(lead.classList.contains('sheen-glyph'));
+  assert.equal(words.tagName, 'SPAN');
+  assert.equal(words.textContent, 'Views');
+  assert.ok(chev.classList.contains('sheen-control-chevron'));
+  assert.equal(chev.getAttribute('aria-hidden'), 'true');
+  assert.equal(button.textContent, 'Views');
+  assert.equal(button.hasAttribute('aria-label'), false);
+});
+
+test('menu button: a glyph button in any variant is named by its label', () => {
+  const { button } = made('label="More actions" glyph="more" variant="control"');
+  assert.equal(button.getAttribute('aria-label'), 'More actions');
+  assert.equal(button.textContent, '');
+});
+
+test('menu button: items take a glyph, an accent tone and a note at the end; a plain item stays its label', () => {
+  const { list } = made('label="Views"', [
+    { id: 'open', label: 'Open the record', glyph: 'eye', shortcut: 'Enter' },
+    { id: 'save', label: 'Save current filters as a view', hint: 'Name it', glyph: 'plus', accent: true },
+    { id: 'csv', label: 'CSV', note: 'UTF-8, Excel reads Arabic' },
+    { id: 'lock', label: 'Lock account', glyph: 'lock', disabled: true, danger: true, hint: 'Needs Super admin' },
+    { id: 'plain', label: 'Plain' },
+  ]);
+  const [open, save, csv, lock, plain] = list.querySelectorAll('[role="menuitem"]');
+  assert.equal(open.firstElementChild.tagName.toLowerCase(), 'svg');
+  assert.equal(open.firstElementChild.getAttribute('aria-hidden'), 'true');
+  assert.equal(open.textContent, 'Open the recordEnter');
+  assert.ok(save.classList.contains('sheen-accent'));
+  assert.equal(csv.querySelector('.sheen-menu-note').textContent, 'UTF-8, Excel reads Arabic');
+  assert.equal(csv.lastElementChild.className, 'sheen-menu-note', 'the note sits at the end');
+  assert.equal(lock.getAttribute('aria-disabled'), 'true');
+  assert.equal(plain.textContent, 'Plain');
+  assert.equal(plain.children.length, 0);
+});
+
+test('menu button: a text line says something about the menu, takes no focus and describes it', () => {
+  const { w, list, button } = made('label="Export"', [{ text: 'Current view · 7 rows' }, { id: 'csv', label: 'CSV' }, { id: 'pdf', label: 'PDF' }]);
+  const line = list.querySelector('.sheen-menu-text');
+  assert.equal(line.textContent, 'Current view · 7 rows');
+  assert.equal(line.hasAttribute('role'), false, 'plain words, not an item');
+  assert.equal(line.hasAttribute('tabindex'), false);
+  assert.ok(line.id);
+  assert.equal(list.getAttribute('aria-describedby'), line.id);
+  assert.equal(list.querySelectorAll('[role="menuitem"]').length, 2);
+  button.click();
+  assert.equal(w.document.activeElement.dataset.id, 'csv');
+  key(w, w.document.activeElement, 'ArrowUp');
+  assert.equal(w.document.activeElement.dataset.id, 'pdf', 'the arrows skip the line');
+});
+
+test('menu button: the new looks are in the built CSS', () => {
+  for (const part of ['.sheen-plain-button{', '.sheen-plain-button:hover,.sheen-plain-button[aria-expanded="true"]{', '.sheen-control-chevron{',
+    '[aria-expanded="true"]>.sheen-control-chevron{transform:rotate(180deg)}', '.sheen-menu-item>.sheen-glyph{', '.sheen-menu-item.sheen-accent,.sheen-menu-item.sheen-accent>.sheen-glyph{color:var(--sheen-accent-text)}', '.sheen-menu-item.sheen-danger>.sheen-glyph{color:var(--sheen-danger)}',
+    '.sheen-menu-note{', '.sheen-menu-text{', '.sheen-control.sheen-on{']) assert.ok(css.includes(part), part);
+  // a glyph button in the control or plain look is square; small plain is the 30px row button
+  assert.match(css, /sheen-menu-button\[glyph\]>:is\(\.sheen-control,\.sheen-plain-button\)\{[^}]*inline-size:36px/);
+  assert.match(css, /:is\(sheen-menu-button\.sheen-small,\.sheen-small sheen-menu-button\)\[glyph\]>\.sheen-plain-button\{[^}]*inline-size:30px;block-size:30px/);
+  // the chevron and words go in a narrow list kit, only the icon stays
+  assert.match(css, /@container \(max-width:760px\)\{[^@]*?\.sheen-control\.sheen-compact-glyph>\.sheen-control-chevron\{display:none\}/);
+  // an enabled item with a hint reads as a title over its description; an item with only a glyph keeps its weight
+  assert.ok(css.includes('.sheen-menu-item:not([aria-disabled="true"]) .sheen-menu-words:has(>.sheen-menu-hint)>span:first-child{font-weight:600}'));
+  // small menus are the dense app size, and their width can be set
+  assert.match(css, /\.sheen-menu\{[^}]*min-inline-size:var\(--sheen-menu-min-size,180px\)/);
+  assert.match(css, /sheen-menu-button\.sheen-small \.sheen-menu,[^{]*\{[^}]*font-size:13\.5px;[^}]*min-inline-size:var\(--sheen-menu-min-size,240px\)/);
+  assert.match(css, /@media \(prefers-reduced-motion:reduce\)\{[^}]*\.sheen-control-chevron\{transition:none\}/);
+});
+
+// WCAG contrast from the tokens in the built CSS
+function hex(h) { return [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16) / 255); }
+function mixed(a, b, p) { return a.map((v, i) => v * p + b[i] * (1 - p)); }
+function luminance(c) { const f = (v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4); const [r, g, b] = c.map(f); return 0.2126 * r + 0.7152 * g + 0.0722 * b; }
+function contrast(a, b) { const [x, y] = [luminance(a), luminance(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); }
+function tokens(block) { return Object.fromEntries([...block.matchAll(/--sheen-([a-z-]+):(#[0-9A-Fa-f]{6})/g)].map((m) => [m[1], m[2]])); }
+const themes = () => [['light', tokens(css.match(/:root\[data-theme="light"\]\{[^}]*\}/)[0])], ['dark', tokens(css.match(/:root\[data-theme="dark"\]\{[^}]*\}/)[0])]];
+
+test('menu button: accent items, notes, hints and the plain button reach WCAG AA on the menu sheet and the page, light and dark', () => {
+  for (const [name, t] of themes()) {
+    for (const [what, fg] of [['accent item', 'accent-text'], ['note and hint', 'text-tertiary'], ['plain button', 'text-secondary'], ['danger item', 'danger']]) {
+      for (const under of ['sheet', 'surface', 'background']) {
+        const ratio = contrast(hex(t[fg]), hex(t[under]));
+        assert.ok(ratio >= 4.5, `${what} on ${under} (${name}): ${ratio.toFixed(2)}`);
+      }
+    }
+    // the applied-filters control: accent words on its 8% tint
+    const share = Number(css.match(/\.sheen-control\.sheen-on\{[^}]*background:color-mix\(in srgb,var\(--sheen-accent\) (\d+)%/)[1]) / 100;
+    const ratio = contrast(hex(t['accent-text']), mixed(hex(t.accent), hex(t.surface), share));
+    assert.ok(ratio >= 4.5, `control on (${name}): ${ratio.toFixed(2)}`);
+  }
+});
+
 test('menu button: near the end edge the menu keeps its full width and lines up with the button end', () => {
   // jsdom's window is 1024 wide; the button sits 4px from the end edge
   const { button, list } = menuAt({ left: 990, right: 1020, top: 50, bottom: 80, width: 30, height: 30 });

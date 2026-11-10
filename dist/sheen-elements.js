@@ -1529,9 +1529,12 @@ define('sheen-scope-picker', SheenScopePicker);
 // <sheen-menu-button label="Export"></sheen-menu-button>
 // <sheen-menu-button label="More actions" glyph="more"></sheen-menu-button>
 //   A button with a menu. class="sheen-small" on the element makes its button the small size. With glyph, the button shows only that sheen glyph and label becomes its accessible name.
-//   menu.items = [{id, label, disabled, hint, shortcut, danger}], plus {separator: true} and {heading: 'Words'} between them.
-//   hint is a second line (why an item is off, who can do it); shortcut shows at the end. Up and Down move and skip
-//   disabled items, separators and headings, Enter picks, Esc
+//   variant="control" draws the button as a find-row control (36px, outlined), variant="plain" without a fill (a row •••);
+//   icon="star" puts a glyph before the label, chevron a chevron after it, compact keeps only the icon in a narrow list kit.
+//   menu.items = [{id, label, disabled, hint, shortcut, danger, glyph, accent, note}], plus {separator: true}, {heading: 'Words'}
+//   and {text: 'Words'} (a line of plain words that describes the menu) between them.
+//   hint is a second line (why an item is off, who can do it); note and shortcut show at the end; glyph before the label.
+//   Up and Down move and skip disabled items, separators, headings and text lines, Enter picks, Esc
 //   closes; focus goes back to the button. A press outside or focus leaving closes it and leaves focus where it went.
 //   It stays on screen and above everything around it: it opens in the top layer (popover), so no scrolling box, glass
 //   (backdrop-filter) box or sticky cell can cut it off, shift it or paint over it; where the popover API is missing it is
@@ -1544,7 +1547,8 @@ class SheenMenuButton extends HTMLElement {
     if (this.menu) return;
     var self = this, menuId = uid('menu');
     this._items = this._items || [];
-    this.button = h('button', { type: 'button', class: this.hasAttribute('glyph') ? 'sheen-icon-button' : 'sheen-button', 'aria-haspopup': 'menu', 'aria-expanded': 'false', 'aria-controls': menuId, onclick: function () { if (self.menu.hidden) self.open(); else self.close(); } });
+    this.button = h('button', { type: 'button', 'aria-haspopup': 'menu', 'aria-expanded': 'false', 'aria-controls': menuId, onclick: function () { if (self.menu.hidden) self.open(); else self.close(); } });
+    this.look();
     // tabindex -1: a menu with nothing to pick takes focus itself, so its keys still work.
     this.menu = h('div', { role: 'menu', id: menuId, tabindex: '-1', class: 'sheen-menu sheen-glass', 'aria-label': this.getAttribute('label') || '' });
     this.menu.hidden = true;
@@ -1576,17 +1580,28 @@ class SheenMenuButton extends HTMLElement {
     this.draw();
   }
   disconnectedCallback() { if (this.menu) this.hide(); }
-  static get observedAttributes() { return ['label', 'glyph']; }
+  static get observedAttributes() { return ['label', 'glyph', 'variant', 'icon', 'chevron', 'compact']; }
   attributeChangedCallback(name, was, now) {
     if (!this.menu) return;
-    this.button.className = this.hasAttribute('glyph') ? 'sheen-icon-button' : 'sheen-button';
+    this.look();
     if (!this.hasAttribute('glyph')) this.button.removeAttribute('aria-label');
     this.name(this.getAttribute('label') || '');
   }
-  // The visible text, or for a glyph button the glyph and an accessible name.
+  // The button's class from variant: the tonal button (or the 0.5.1 icon button with a glyph), the control, or plain.
+  look() {
+    var v = this.getAttribute('variant');
+    this.button.className = v === 'control' ? 'sheen-control' : v === 'plain' ? 'sheen-plain-button' : this.hasAttribute('glyph') ? 'sheen-icon-button' : 'sheen-button';
+    this.button.classList.toggle('sheen-compact-glyph', this.hasAttribute('compact'));
+  }
+  // The visible text, or for a glyph button the glyph and an accessible name. An icon or a chevron puts the words in a span.
   name(label) {
-    var g = this.getAttribute('glyph');
+    var g = this.getAttribute('glyph'), icon = this.getAttribute('icon');
     if (g) { this.button.replaceChildren(glyph(g, 20)); this.button.setAttribute('aria-label', label); }
+    else if (icon || this.hasAttribute('chevron')) {
+      var chev = this.hasAttribute('chevron') ? glyph('chevron-down', 16) : null;
+      if (chev) chev.classList.add('sheen-control-chevron');
+      this.button.replaceChildren.apply(this.button, [icon ? glyph(icon, 16) : null, h('span', { text: label }), chev].filter(Boolean));
+    }
     else this.button.textContent = label;
     this.menu.setAttribute('aria-label', label);
   }
@@ -1594,21 +1609,28 @@ class SheenMenuButton extends HTMLElement {
   set items(v) { this._items = Array.isArray(v) ? v : []; if (this.menu) this.draw(); }
   rows() { return Array.prototype.slice.call(this.menu.querySelectorAll('[role="menuitem"]:not([aria-disabled="true"])')); }
   draw() {
-    var self = this;
+    var self = this, described = [];
     this.menu.replaceChildren();
     this.items.forEach(function (item) {
       if (item.separator) { self.menu.appendChild(h('div', { role: 'separator', class: 'sheen-menu-separator' })); return; }
       if (item.heading) { self.menu.appendChild(h('div', { role: 'presentation', class: 'sheen-menu-heading', text: item.heading })); return; }
-      var row = h('button', { type: 'button', role: 'menuitem', tabindex: '-1', class: 'sheen-menu-item' + (item.danger ? ' sheen-danger' : ''), 'aria-disabled': item.disabled ? 'true' : null, 'aria-keyshortcuts': item.shortcut || null, 'data-id': item.id, onclick: function () { if (!item.disabled) self.pick(item); } });
-      // A plain item is its label alone; a hint (why it is off, who can) goes under it, a shortcut at the end.
-      if (item.hint || item.shortcut) {
+      // A text line is not an item: the menu names it as its description, so a screen reader says it on opening.
+      if (item.text) { var id = uid('menu-text'); described.push(id); self.menu.appendChild(h('div', { id: id, class: 'sheen-menu-text', text: item.text })); return; }
+      var row = h('button', { type: 'button', role: 'menuitem', tabindex: '-1', class: 'sheen-menu-item' + (item.danger ? ' sheen-danger' : '') + (item.accent ? ' sheen-accent' : ''), 'aria-disabled': item.disabled ? 'true' : null, 'aria-keyshortcuts': item.shortcut || null, 'data-id': item.id, onclick: function () { if (!item.disabled) self.pick(item); } });
+      // A plain item is its label alone; a glyph goes before it, a hint (why it is off, who can) under it, a note and a
+      // shortcut at the end.
+      if (item.hint || item.shortcut || item.glyph || item.note) {
+        if (item.glyph) row.appendChild(glyph(item.glyph, 16));
         var words = h('span', { class: 'sheen-menu-words' }, h('span', { text: item.label }));
         if (item.hint) words.appendChild(h('small', { class: 'sheen-menu-hint', text: item.hint }));
         row.appendChild(words);
+        if (item.note) row.appendChild(h('small', { class: 'sheen-menu-note', text: item.note }));
         if (item.shortcut) row.appendChild(h('kbd', { class: 'sheen-kbd', text: item.shortcut }));
       } else row.textContent = item.label;
       self.menu.appendChild(row);
     });
+    if (described.length) this.menu.setAttribute('aria-describedby', described.join(' '));
+    else this.menu.removeAttribute('aria-describedby');
   }
   open() {
     this.menu.hidden = false;

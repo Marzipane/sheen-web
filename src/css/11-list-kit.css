@@ -31,10 +31,29 @@
 .sheen-find input::placeholder{color:var(--sheen-text-tertiary)}
 .sheen-control-count{min-inline-size:18px;block-size:18px;border-radius:9px;padding-inline:5px;display:inline-grid;place-items:center;background:var(--sheen-accent);color:var(--sheen-on-accent);font-size:11px;font-weight:700;font-variant-numeric:tabular-nums}
 
+/* 0.7.0: a menu button in the control look (variant="control") and its glyphs, a chevron that turns while its menu is
+   open, and a control that shows its filters are on (the accent tint) */
+.sheen-control>.sheen-glyph{inline-size:15px;block-size:15px;flex:none;color:var(--sheen-text-secondary)}
+.sheen-control-chevron{transition:transform var(--sheen-motion-snappy)}
+[aria-expanded="true"]>.sheen-control-chevron{transform:rotate(180deg)}
+@media (prefers-reduced-motion:reduce){.sheen-control-chevron{transition:none}}
+.sheen-control.sheen-on{background:color-mix(in srgb,var(--sheen-accent) 8%,var(--sheen-surface));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--sheen-accent) 45%,transparent)}
+.sheen-control.sheen-on>.sheen-glyph,.sheen-control.sheen-on>.sheen-icon,.sheen-control.sheen-on>span:not(.sheen-control-count){color:var(--sheen-accent-text)}
+/* a button without a fill: a row's ••• (with glyph and sheen-small, 30px square); the tonal fill shows on hover and while open */
+.sheen-plain-button{display:inline-flex;align-items:center;justify-content:center;gap:6px;block-size:36px;padding-inline:10px;border:0;border-radius:9px;background:none;color:var(--sheen-text-secondary);font:inherit;font-size:13.5px;font-weight:600;white-space:nowrap;cursor:pointer}
+.sheen-plain-button:hover,.sheen-plain-button[aria-expanded="true"]{background:var(--sheen-tonal);color:var(--sheen-text)}
+.sheen-plain-button:focus-visible{outline:2px solid var(--sheen-accent-text);outline-offset:1px}
+.sheen-plain-button>.sheen-glyph{inline-size:18px;block-size:18px;flex:none}
+sheen-menu-button[glyph]>:is(.sheen-control,.sheen-plain-button){inline-size:36px;padding-inline:0;justify-content:center}
+:is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button)[glyph]>.sheen-plain-button{inline-size:30px;block-size:30px}
+/* a glyph beside the words on a tonal menu button (Export with its download glyph) */
+sheen-menu-button>.sheen-button>.sheen-glyph{inline-size:18px;block-size:18px;flex:none}
+
 /* a text button for small steps beside the controls: Save view, Clear all, Select all */
 .sheen-link-button{display:inline-flex;align-items:center;gap:5px;block-size:30px;padding-inline:8px;border:0;border-radius:8px;background:none;font:inherit;font-size:13px;font-weight:600;color:var(--sheen-accent-text);cursor:pointer;white-space:nowrap}
 .sheen-link-button:hover{background:var(--sheen-tonal)}
 .sheen-link-button:focus-visible{outline:2px solid var(--sheen-accent-text);outline-offset:1px}
+.sheen-link-button>:is(.sheen-icon,.sheen-glyph){inline-size:14px;block-size:14px;flex:none}
 
 /* applied row: one removable chip per filter (never repeated elsewhere), Clear all, the result count */
 .sheen-applied-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-block-size:30px}
@@ -112,6 +131,7 @@ th[aria-sort="ascending"],th[aria-sort="descending"]{color:var(--sheen-text)}
 @container (max-width:760px){
   .sheen-control.sheen-compact-glyph>span:not(.sheen-control-count),.sheen-find .sheen-kbd{display:none}
   .sheen-control.sheen-compact-glyph{padding-inline:0;inline-size:36px;justify-content:center}
+  .sheen-control.sheen-compact-glyph>.sheen-control-chevron{display:none}
   .sheen-applied-row{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
   .sheen-result-count{position:sticky;inset-inline-end:0;padding-inline-start:8px;background:var(--sheen-background)}
 }

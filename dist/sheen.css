@@ -620,7 +620,7 @@ sheen-scope-picker{display:flex;flex-direction:column;gap:10px}
 .sheen-scope-group{font-weight:700}
 .sheen-scope-items{padding-inline-start:24px}
 sheen-menu-button{position:relative;display:inline-block}
-.sheen-menu{position:absolute;inset-inline-start:0;z-index:950;min-inline-size:180px;max-block-size:min(320px,60vh);overflow:auto;margin-block-start:6px;padding:6px;border-radius:14px}
+.sheen-menu{position:absolute;inset-inline-start:0;z-index:950;min-inline-size:var(--sheen-menu-min-size,180px);max-block-size:min(320px,60vh);overflow:auto;margin-block-start:6px;padding:6px;border-radius:14px}
 .sheen-menu[popover]{border:0;color:inherit}
 .sheen-menu.sheen-menu-flip{inset-inline-start:auto;inset-inline-end:0}
 .sheen-menu.sheen-menu-up{inset-block-start:auto;inset-block-end:100%;margin-block:0 6px}
@@ -637,6 +637,22 @@ sheen-menu-button{position:relative;display:inline-block}
 .sheen-menu-item.sheen-danger[aria-disabled="true"]{color:var(--sheen-text-tertiary)}
 .sheen-menu-heading{padding:8px 10px 4px;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--sheen-text-tertiary)}
 .sheen-menu-separator{block-size:1px;margin:4px 6px;background:var(--sheen-separator)}
+/* 0.7.0: a glyph before the label (secondary, red on a danger item, faint when off), an accent item, a note at the end,
+   a line of plain words; an enabled item with a hint reads as a title over its description */
+.sheen-menu-item>.sheen-glyph{inline-size:16px;block-size:16px;flex:none;color:var(--sheen-text-secondary)}
+.sheen-menu-item.sheen-danger>.sheen-glyph{color:var(--sheen-danger)}
+.sheen-menu-item.sheen-accent,.sheen-menu-item.sheen-accent>.sheen-glyph{color:var(--sheen-accent-text)}
+.sheen-menu-item[aria-disabled="true"]>.sheen-glyph,.sheen-menu-item.sheen-accent[aria-disabled="true"]{color:var(--sheen-text-tertiary)}
+.sheen-menu-note{margin-inline-start:auto;flex:none;font-size:12px;font-weight:500;color:var(--sheen-text-tertiary);white-space:nowrap}
+.sheen-menu-note+.sheen-kbd{margin-inline-start:0}
+.sheen-menu-text{padding:6px 10px;font-size:12px;color:var(--sheen-text-tertiary)}
+.sheen-menu-item:not([aria-disabled="true"]) .sheen-menu-words:has(>.sheen-menu-hint)>span:first-child{font-weight:600}
+/* small menus (a small button, a bulk bar, the end of a views row) are the dense app size: 13.5px, 36px rows, a focus ring */
+sheen-menu-button.sheen-small .sheen-menu,.sheen-small sheen-menu-button .sheen-menu,.sheen-bulk-bar sheen-menu-button .sheen-menu,.sheen-views-end sheen-menu-button .sheen-menu{font-size:13.5px;min-inline-size:var(--sheen-menu-min-size,240px);max-inline-size:min(360px,calc(100vw - 16px));border-radius:16px}
+:is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item{min-block-size:36px;padding:6px 10px;font-size:inherit}
+:is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item:hover{background:var(--sheen-tonal)}
+:is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item:focus-visible{background:none;outline:2px solid var(--sheen-accent-text);outline-offset:-2px}
+:is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item[aria-disabled="true"]:hover{background:none}
 
 /* 10-sidebar.css */
 /* Sidebar shell (0.5.0): a labelled sidebar for record-heavy apps, where the icon rail of .sheen-shell is too narrow, and
@@ -724,10 +740,29 @@ sheen-menu-button{position:relative;display:inline-block}
 .sheen-find input::placeholder{color:var(--sheen-text-tertiary)}
 .sheen-control-count{min-inline-size:18px;block-size:18px;border-radius:9px;padding-inline:5px;display:inline-grid;place-items:center;background:var(--sheen-accent);color:var(--sheen-on-accent);font-size:11px;font-weight:700;font-variant-numeric:tabular-nums}
 
+/* 0.7.0: a menu button in the control look (variant="control") and its glyphs, a chevron that turns while its menu is
+   open, and a control that shows its filters are on (the accent tint) */
+.sheen-control>.sheen-glyph{inline-size:15px;block-size:15px;flex:none;color:var(--sheen-text-secondary)}
+.sheen-control-chevron{transition:transform var(--sheen-motion-snappy)}
+[aria-expanded="true"]>.sheen-control-chevron{transform:rotate(180deg)}
+@media (prefers-reduced-motion:reduce){.sheen-control-chevron{transition:none}}
+.sheen-control.sheen-on{background:color-mix(in srgb,var(--sheen-accent) 8%,var(--sheen-surface));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--sheen-accent) 45%,transparent)}
+.sheen-control.sheen-on>.sheen-glyph,.sheen-control.sheen-on>.sheen-icon,.sheen-control.sheen-on>span:not(.sheen-control-count){color:var(--sheen-accent-text)}
+/* a button without a fill: a row's ••• (with glyph and sheen-small, 30px square); the tonal fill shows on hover and while open */
+.sheen-plain-button{display:inline-flex;align-items:center;justify-content:center;gap:6px;block-size:36px;padding-inline:10px;border:0;border-radius:9px;background:none;color:var(--sheen-text-secondary);font:inherit;font-size:13.5px;font-weight:600;white-space:nowrap;cursor:pointer}
+.sheen-plain-button:hover,.sheen-plain-button[aria-expanded="true"]{background:var(--sheen-tonal);color:var(--sheen-text)}
+.sheen-plain-button:focus-visible{outline:2px solid var(--sheen-accent-text);outline-offset:1px}
+.sheen-plain-button>.sheen-glyph{inline-size:18px;block-size:18px;flex:none}
+sheen-menu-button[glyph]>:is(.sheen-control,.sheen-plain-button){inline-size:36px;padding-inline:0;justify-content:center}
+:is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button)[glyph]>.sheen-plain-button{inline-size:30px;block-size:30px}
+/* a glyph beside the words on a tonal menu button (Export with its download glyph) */
+sheen-menu-button>.sheen-button>.sheen-glyph{inline-size:18px;block-size:18px;flex:none}
+
 /* a text button for small steps beside the controls: Save view, Clear all, Select all */
 .sheen-link-button{display:inline-flex;align-items:center;gap:5px;block-size:30px;padding-inline:8px;border:0;border-radius:8px;background:none;font:inherit;font-size:13px;font-weight:600;color:var(--sheen-accent-text);cursor:pointer;white-space:nowrap}
 .sheen-link-button:hover{background:var(--sheen-tonal)}
 .sheen-link-button:focus-visible{outline:2px solid var(--sheen-accent-text);outline-offset:1px}
+.sheen-link-button>:is(.sheen-icon,.sheen-glyph){inline-size:14px;block-size:14px;flex:none}
 
 /* applied row: one removable chip per filter (never repeated elsewhere), Clear all, the result count */
 .sheen-applied-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-block-size:30px}
@@ -805,6 +840,7 @@ th[aria-sort="ascending"],th[aria-sort="descending"]{color:var(--sheen-text)}
 @container (max-width:760px){
   .sheen-control.sheen-compact-glyph>span:not(.sheen-control-count),.sheen-find .sheen-kbd{display:none}
   .sheen-control.sheen-compact-glyph{padding-inline:0;inline-size:36px;justify-content:center}
+  .sheen-control.sheen-compact-glyph>.sheen-control-chevron{display:none}
   .sheen-applied-row{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
   .sheen-result-count{position:sticky;inset-inline-end:0;padding-inline-start:8px;background:var(--sheen-background)}
 }
