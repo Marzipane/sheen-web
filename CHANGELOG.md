@@ -3,9 +3,10 @@
 ## 0.7.0
 
 The parts an app's list page and its forms need, at the sizes of the app mockups they were ported from: control-look
-menu buttons with glyphs, a page header, solid layers, a modal side panel with a heading and a footer, a table card with a small table,
-a group row and a pager, dense form fields, a small command palette and shortcuts sheet, a status block and a toaster at
-the top. Focus rings now show for the keyboard only. Mostly additive; the fixes and the looks that change are listed last.
+menu buttons with glyphs, a page header, solid layers, a modal side panel with a heading and a footer, a table card with
+a small table, a group row and a pager, dense form fields, a small command palette and shortcuts sheet, a status block
+and a toaster at the top. Focus rings now show only while the keyboard navigates, and text fields draw none. Mostly
+additive; the fixes, the looks that change and one change against an earlier owner choice are listed last.
 
 - `<sheen-menu-button>`: `variant="control"` draws the button as the find row's 36px control (a 36px square with
   `glyph`, for a page header's •••); `icon` puts a glyph before the label,
@@ -51,16 +52,16 @@ the top. Focus rings now show for the keyboard only. Mostly additive; the fixes 
   to a line of their own, still at the end edge.
 - `<sheen-toaster position="top">` follows Flutter sheen's toast: under the app bar (`--sheen-toaster-top`), at the end
   edge (`--sheen-toaster-end`, `--sheen-toaster-size`), the action as a link, and a press on the toast closes it. Its
-  close button shows only while it has keyboard focus. A toast's `glyph` replaces the tone's dot in either position, and
-  Esc on any toast closes it.
+  close button shows only while it has keyboard focus (`.sheen-focus-only`: out of sight until focused). A toast's
+  `glyph` replaces the tone's dot in either position, and Esc on any toast closes it.
 - Glyphs: the filled Flutter sheen icons draw as `<name>-fill` (`check-circle-fill`), filled in the text colour; `alert`
   is a warning triangle.
 - Focus: Tab or Shift+Tab marks `<html data-sheen-keyboard>`, and only then do buttons, links, tabs and menu items draw
   their one 2px ring; the next press clears it. A press, Esc, Enter, typing and arrows never bring a ring, so closing a
   panel with Esc leaves its opener plain; in a dense menu the item the arrows reach shows the hover fill. A text field
   never draws a ring, keyboard or not: its caret shows the focus (the find row's search drew two rings in 0.6.0). A
-  control's 0.6.0 inset ring and 4px glow are gone. A menu button with an icon or a chevron takes its label as its name, so a compact
-  one keeps a name. In forced colors the Filters checkboxes are the system's own.
+  control's 0.6.0 inset ring and 4px glow are gone. A menu button with an icon or a chevron takes its label as its
+  name, so a compact one keeps a name. In forced colors the Filters checkboxes are the system's own.
 - Fixed: a menu near the screen's end came out narrow, wrapped its labels and could open upward with room below, because
   it was measured after it was placed. It is now measured where nothing narrows it, then lined up under its button, on
   the other edge when it would leave the screen, and above only when it doesn't fit below and there is more room above.
@@ -83,17 +84,22 @@ the top. Focus rings now show for the keyboard only. Mostly additive; the fixes 
   as one placeholder block; small buttons in the list kit, the Filters footer and list messages are 34px instead of 40px;
   the find row's "/" key cap is a plain outline; a side panel draws no ring when a press gives it focus; an open control
   (its menu or panel open) takes the tonal fill instead of 0.6.0's accent ring and 4px glow, since only keyboard focus
-  draws a ring; a `.sheen-field` shows its focus by its caret and its label in the accent, without 0.1.4's line and glow
-  (forced colors still outline it).
+  draws a ring.
+- Changed against the owner's 0.1.4 choice, approved for 0.7.0: `.sheen-field` no longer draws its focus line and soft
+  glow. In 0.1.4 the owner chose to show a field's focus with that line and glow; under the 0.7.0 rule that text fields
+  draw no focus ring, the field shows focus by its caret and its label in the accent. Forced colors still outline it.
 - Tests: the new options, items and placement, with a Views control at the end edge in English and Arabic; the heading
   row, modal dim, focus and Tab cycle; the toaster at the top and at the bottom; filled glyphs; the pointer and keyboard
   focus state; every new rule in the built CSS with the values it ports, logical sides only; contrast from the tokens
   (WCAG AA in light and dark) for accent items, hints, the tinted header, ticked options, key caps, status words and
   toasts, and 3:1 for the status glyphs and a tinted control's glyph; the dense fields, the panel footer, the large
-  switch, the group row, the pager, the small palette and the shortcuts sheet, the page head; a radio group and a hidden input in the
-  Tab cycle, focus coming back into a modal panel, its dim when hidden or moved, an empty heading, the top toast by
-  keyboard, compact menu button names, forced colors and a menu on a phone; open and applied controls with no ring;
-  a footer that stays on the bottom edge of a panel longer than the window.
+  switch, the group row, the pager, the small palette, the shortcuts sheet and the page head; a radio group and a
+  hidden input in the Tab cycle, focus coming back into a modal panel, its dim when hidden or moved, an empty heading,
+  the top toast by keyboard, compact menu button names, forced colors and a menu on a phone; open and applied controls
+  with no ring; a footer that stays on the bottom edge of a panel longer than the window; the keyboard flag (only Tab
+  sets it; a press, Esc, typing and arrows never do), the find row on one line and a sidebar shell that never scrolls
+  the page. The dist PHP test now expects `.sheen-field` without its 0.1.4 glow.
+- Docs: `docs/app-page.html` shows a list page built from these parts, in English and Arabic, light and dark.
 
 ## 0.6.0
 
