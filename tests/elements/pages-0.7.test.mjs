@@ -46,6 +46,9 @@ test('page tabs mark the current page by its line only; an app page title is 26p
 test('a side panel with a heading keeps the Filters footer at its bottom edge', () => {
   has('sheen-side-panel[heading] .sheen-panel-body{display:flex;flex-direction:column}');
   has('sheen-side-panel[heading] .sheen-panel-body>.sheen-filter-footer{margin-block-start:auto}');
+  // the body keeps no padding under the footer, so the footer's edge is the panel's (k-fpfoot sits under k-fpbody)
+  has('sheen-side-panel[heading] .sheen-panel-body:has(>.sheen-filter-footer){padding-block-end:0}');
+  has('sheen-side-panel[heading] .sheen-filter-footer{margin-inline:-20px;margin-block-end:0;padding:12px 20px 16px}');
 });
 
 test('small tables: 16px checkboxes in the accent; a busy table is one solid placeholder block', () => {
