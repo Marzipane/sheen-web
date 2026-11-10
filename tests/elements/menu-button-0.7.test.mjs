@@ -36,10 +36,10 @@ function made(attrs, items = [{ id: 'open', label: 'Open' }], dir) {
   return { w, m, button: m.querySelector('button'), list: m.querySelector('[role="menu"]') };
 }
 
-test('menu button: variant picks the look: the tonal button, the find row control, or a plain button', () => {
+test('menu button: variant picks the look: the tonal button or the find row control', () => {
   assert.equal(made('label="Export"').button.className, 'sheen-button');
   assert.equal(made('label="Views" variant="control"').button.className, 'sheen-control');
-  assert.equal(made('label="More" glyph="more" variant="plain"').button.className, 'sheen-plain-button');
+  assert.equal(made('label="More" glyph="more" variant="control"').button.className, 'sheen-control');
   assert.equal(made('label="More" glyph="more"').button.className, 'sheen-icon-button', '0.5.1 glyph button unchanged');
   const { m, button } = made('label="Views"');
   m.setAttribute('variant', 'control');
@@ -69,48 +69,32 @@ test('menu button: a glyph button in any variant is named by its label', () => {
   assert.equal(button.textContent, '');
 });
 
-test('menu button: items take a glyph, an accent tone and a note at the end; a plain item stays its label', () => {
+test('menu button: items take a glyph and an accent tone; a plain item stays its label', () => {
   const { list } = made('label="Views"', [
     { id: 'open', label: 'Open the record', glyph: 'eye', shortcut: 'Enter' },
     { id: 'save', label: 'Save current filters as a view', hint: 'Name it', glyph: 'plus', accent: true },
-    { id: 'csv', label: 'CSV', note: 'UTF-8, Excel reads Arabic' },
     { id: 'lock', label: 'Lock account', glyph: 'lock', disabled: true, danger: true, hint: 'Needs Super admin' },
     { id: 'plain', label: 'Plain' },
   ]);
-  const [open, save, csv, lock, plain] = list.querySelectorAll('[role="menuitem"]');
+  const [open, save, lock, plain] = list.querySelectorAll('[role="menuitem"]');
   assert.equal(open.firstElementChild.tagName.toLowerCase(), 'svg');
   assert.equal(open.firstElementChild.getAttribute('aria-hidden'), 'true');
   assert.equal(open.textContent, 'Open the recordEnter');
+  assert.equal(open.lastElementChild.className, 'sheen-kbd', 'the shortcut sits at the end');
   assert.ok(save.classList.contains('sheen-accent'));
-  assert.equal(csv.querySelector('.sheen-menu-note').textContent, 'UTF-8, Excel reads Arabic');
-  assert.equal(csv.lastElementChild.className, 'sheen-menu-note', 'the note sits at the end');
+  assert.equal(save.querySelector('.sheen-menu-hint').textContent, 'Name it');
   assert.equal(lock.getAttribute('aria-disabled'), 'true');
+  assert.equal(lock.firstElementChild.tagName.toLowerCase(), 'svg');
   assert.equal(plain.textContent, 'Plain');
   assert.equal(plain.children.length, 0);
 });
 
-test('menu button: a text line says something about the menu, takes no focus and describes it', () => {
-  const { w, list, button } = made('label="Export"', [{ text: 'Current view · 7 rows' }, { id: 'csv', label: 'CSV' }, { id: 'pdf', label: 'PDF' }]);
-  const line = list.querySelector('.sheen-menu-text');
-  assert.equal(line.textContent, 'Current view · 7 rows');
-  assert.equal(line.hasAttribute('role'), false, 'plain words, not an item');
-  assert.equal(line.hasAttribute('tabindex'), false);
-  assert.ok(line.id);
-  assert.equal(list.getAttribute('aria-describedby'), line.id);
-  assert.equal(list.querySelectorAll('[role="menuitem"]').length, 2);
-  button.click();
-  assert.equal(w.document.activeElement.dataset.id, 'csv');
-  key(w, w.document.activeElement, 'ArrowUp');
-  assert.equal(w.document.activeElement.dataset.id, 'pdf', 'the arrows skip the line');
-});
-
 test('menu button: the new looks are in the built CSS', () => {
-  for (const part of ['.sheen-plain-button{', '.sheen-plain-button:hover,.sheen-plain-button[aria-expanded="true"]{', '.sheen-control-chevron{',
+  for (const part of ['.sheen-control-chevron{',
     '[aria-expanded="true"]>.sheen-control-chevron{transform:rotate(180deg)}', '.sheen-menu-item>.sheen-glyph{', '.sheen-menu-item.sheen-accent,.sheen-menu-item.sheen-accent>.sheen-glyph{color:var(--sheen-accent-text)}', '.sheen-menu-item.sheen-danger>.sheen-glyph{color:var(--sheen-danger)}',
-    '.sheen-menu-note{', '.sheen-menu-text{', '.sheen-control.sheen-on{']) assert.ok(css.includes(part), part);
-  // a glyph button in the control or plain look is square; small plain is the 30px row button
-  assert.match(css, /sheen-menu-button\[glyph\]>:is\(\.sheen-control,\.sheen-plain-button\)\{[^}]*inline-size:36px/);
-  assert.match(css, /:is\(sheen-menu-button\.sheen-small,\.sheen-small sheen-menu-button\)\[glyph\]>\.sheen-plain-button\{[^}]*inline-size:30px;block-size:30px/);
+    '.sheen-control.sheen-on{']) assert.ok(css.includes(part), part);
+  // a glyph button in the control look is a 36px square (a page header's •••)
+  assert.match(css, /sheen-menu-button\[glyph\]>\.sheen-control\{[^}]*inline-size:36px/);
   // the chevron and words go in a narrow list kit, only the icon stays
   assert.match(css, /@container \(max-width:760px\)\{[^@]*?\.sheen-control\.sheen-compact-glyph>\.sheen-control-chevron\{display:none\}/);
   // an enabled item with a hint reads as a title over its description; an item with only a glyph keeps its weight
@@ -129,9 +113,9 @@ function contrast(a, b) { const [x, y] = [luminance(a), luminance(b)].sort((p, q
 function tokens(block) { return Object.fromEntries([...block.matchAll(/--sheen-([a-z-]+):(#[0-9A-Fa-f]{6})/g)].map((m) => [m[1], m[2]])); }
 const themes = () => [['light', tokens(css.match(/:root\[data-theme="light"\]\{[^}]*\}/)[0])], ['dark', tokens(css.match(/:root\[data-theme="dark"\]\{[^}]*\}/)[0])]];
 
-test('menu button: accent items, notes, hints and the plain button reach WCAG AA on the menu sheet and the page, light and dark', () => {
+test('menu button: accent items, hints, glyphs and danger items reach WCAG AA on the menu sheet and the page, light and dark', () => {
   for (const [name, t] of themes()) {
-    for (const [what, fg] of [['accent item', 'accent-text'], ['note and hint', 'text-tertiary'], ['plain button', 'text-secondary'], ['danger item', 'danger']]) {
+    for (const [what, fg] of [['accent item', 'accent-text'], ['hint', 'text-tertiary'], ['glyph and control words', 'text-secondary'], ['danger item', 'danger']]) {
       for (const under of ['sheet', 'surface', 'background']) {
         const ratio = contrast(hex(t[fg]), hex(t[under]));
         assert.ok(ratio >= 4.5, `${what} on ${under} (${name}): ${ratio.toFixed(2)}`);

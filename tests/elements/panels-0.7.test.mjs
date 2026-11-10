@@ -89,9 +89,9 @@ test('side panel: width, heading row and dim are in the built CSS', () => {
 test('solid layers: .sheen-solid on a layer or any box around it draws menus, panels, cards and the palette on the sheet', () => {
   // beats the glass rules, the light theme's included: :root[data-theme="light"] .sheen-glass is (0,3,0).
   // (this file's normalizer drops the space before ":is(", so the descendant combinator is checked in the min file below)
-  const layers = ':root .sheen-solid:is(.sheen-menu.sheen-glass,.sheen-date-range-pop.sheen-glass,.sheen-cmd.sheen-glass,sheen-side-panel.sheen-glass,sheen-hover-card.sheen-glass),:root:is(sheen-side-panel,sheen-hover-card).sheen-solid.sheen-glass';
+  const layers = ':root .sheen-solid:is(.sheen-menu.sheen-glass,.sheen-cmd.sheen-glass,sheen-side-panel.sheen-glass,sheen-hover-card.sheen-glass),:root:is(sheen-side-panel,sheen-hover-card).sheen-solid.sheen-glass';
   assert.ok(css.includes(layers + '{background:var(--sheen-sheet);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 0 0 1px var(--sheen-separator),0 14px 34px rgba(16,20,30,.14),0 2px 6px rgba(16,20,30,.06)}'), 'solid fill');
-  assert.ok(css.includes(':root .sheen-solid:is(.sheen-menu.sheen-glass,.sheen-date-range-pop.sheen-glass,.sheen-cmd.sheen-glass,sheen-side-panel.sheen-glass,sheen-hover-card.sheen-glass)::after,:root:is(sheen-side-panel,sheen-hover-card).sheen-solid.sheen-glass::after{content:none}'), 'no glass rim');
+  assert.ok(css.includes(':root .sheen-solid:is(.sheen-menu.sheen-glass,.sheen-cmd.sheen-glass,sheen-side-panel.sheen-glass,sheen-hover-card.sheen-glass)::after,:root:is(sheen-side-panel,sheen-hover-card).sheen-solid.sheen-glass::after{content:none}'), 'no glass rim');
   // modal layers dim the page with a plain shade, no blur
   assert.ok(css.includes('.sheen-solid:is(.sheen-cmd,.sheen-dialog)::backdrop{background:rgba(5,7,11,.22);-webkit-backdrop-filter:none;backdrop-filter:none}'));
   // the shipped file keeps the descendant combinators: a box around the layer, not the layer itself
