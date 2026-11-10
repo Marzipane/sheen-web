@@ -106,3 +106,11 @@ test('solid layers take each mockup layer\'s own fill and shadow', () => {
   has(normalized(':root .sheen-solid sheen-hover-card.sheen-glass,:root sheen-hover-card.sheen-solid.sheen-glass{background:var(--sheen-sheet);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 0 0 1px var(--sheen-separator),0 12px 32px rgba(0,0,0,.18)}'));
   has(normalized(':root .sheen-solid :is(.sheen-menu,.sheen-cmd,.sheen-toast,sheen-side-panel,sheen-hover-card).sheen-glass::after,:root :is(sheen-side-panel,sheen-hover-card).sheen-solid.sheen-glass::after{content:none}'));
 });
+
+test('k-table th[aria-sort]: a sortable header in a small table leaves all its padding to the button', () => {
+  // the small table's 10px 14px cell padding has the same specificity as the 0.6.0 rule and comes later, so the small
+  // table says it again: a sortable header row is 56px as the mockup's, not 59px with padding on top of the button's
+  has('.sheen-table.sheen-small th:has(>.sheen-sort-button){padding:0}');
+  assert.ok(css.indexOf('.sheen-table.sheen-small th:has(>.sheen-sort-button){padding:0}') > css.indexOf('.sheen-table.sheen-small th{'));
+  assert.ok(min.includes('.sheen-table.sheen-small th:has(>.sheen-sort-button){padding:0}'));
+});

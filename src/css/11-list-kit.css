@@ -166,5 +166,8 @@ th[aria-sort="ascending"],th[aria-sort="descending"]{color:var(--sheen-text)}
 .sheen-table.sheen-small.sheen-wrap :is(th,td){white-space:normal}
 .sheen-table.sheen-small.sheen-wrap td{max-inline-size:none;vertical-align:top;overflow-wrap:break-word}
 .sheen-table.sheen-small .sheen-sort-button{padding:10px 14px}
+/* a sortable header leaves all its padding to its button, here too: the cell padding above would add 3px to the row
+   and the sides to the column (k-table th[aria-sort]) */
+.sheen-table.sheen-small th:has(>.sheen-sort-button){padding:0}
 .sheen-table.sheen-small .sheen-pin-end{padding-inline:4px}
 /* end 0.7.0 list kit */

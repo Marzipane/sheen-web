@@ -63,6 +63,8 @@ the top. Focus rings now show for the keyboard only. Mostly additive; the fixes 
   the other edge when it would leave the screen, and above only when it doesn't fit below and there is more room above.
   A menu wider than the room on either side (a phone) keeps to the screen. Two 0.5.0 placement tests now give the
   button's place instead of the menu's measured box, and assert the same flips.
+- Fixed: a sortable header in a `.sheen-table.sheen-small` took the cell's 10px 14px padding on top of its button's,
+  so the header row was 3px taller and a sortable column grew by the cell's side padding.
 - Fixed: the hidden attribute hides the list kit, page and footer parts that set their own display (menu buttons, page
   tabs, footers, the pager); page tabs drawn as links keep the tab colours instead of the base link rule's text colour.
 - Looks that change: an enabled menu item with a `hint` shows its label at weight 600 (a title over its description);
