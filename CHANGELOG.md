@@ -8,7 +8,7 @@ a group row and a pager, dense form fields, a small command palette and shortcut
 the top. Focus rings now show for the keyboard only. Mostly additive; the fixes and the looks that change are listed last.
 
 - `<sheen-menu-button>`: `variant="control"` draws the button as the find row's 36px control (a 36px square with
-  `glyph`, for a page header's •••, which keeps its white fill while open); `icon` puts a glyph before the label,
+  `glyph`, for a page header's •••); `icon` puts a glyph before the label,
   `chevron` a chevron after it that turns while the menu is open, and `compact` keeps only the icon inside a narrow
   `.sheen-list-kit`. Items take `glyph` (before the label: secondary, red on a danger item, faint when off) and `accent`.
   A small menu (`class="sheen-small"`, a bulk bar or the end of a views row) is the dense app size: 13.5px, 36px rows,
@@ -23,7 +23,7 @@ the top. Focus rings now show for the keyboard only. Mostly additive; the fixes 
   (one stop per radio group; hidden, disabled and `tabindex="-1"` controls skipped) and brings focus that lands outside
   back in, unless another dialog or popover took it. Hiding an open panel by its attribute takes the dim away; moving it
   keeps the dim. `--sheen-panel-size` sets the width.
-- List kit: `.sheen-control.sheen-on` tints the glyph and outline of a control whose filters are on, and in a narrow list
+- List kit: `.sheen-control.sheen-on` tints the fill and glyph of a control whose filters are on, and in a narrow list
   kit a control with a count keeps its count; `.sheen-table-card` puts a table on an 18px surface card that still scrolls
   sideways; `.sheen-table.sheen-small` is the dense table (13.5px cells on one line up to 260px, a tinted 12px header row,
   16px checkboxes) and `.sheen-wrap` wraps a table of long sentences. A `tr.sheen-table-group` row of `th` names a group
@@ -33,7 +33,9 @@ the top. Focus rings now show for the keyboard only. Mostly additive; the fixes 
 - Forms: `.sheen-form-field.sheen-small` is the dense field (a 13px label over a 38px box, a hint under it, a red ring
   and hint with `aria-invalid="true"`), two to a row in `.sheen-fields.sheen-small`, with `.sheen-wide` across both.
   `.sheen-select` around a `<select>` draws the field's chevron at the end edge. `.sheen-panel-foot` holds a side panel's
-  Cancel and main action on its bottom edge, each at least 128px, side by side or one under the other when narrow.
+  Cancel and main action on its bottom edge, each at least 128px, side by side or one under the other when narrow; in a
+  panel with a heading it sticks there while a long body scrolls under it. On a solid panel both footers take the
+  panel's sheet, so rows never show through them.
   `.sheen-switch.sheen-large` is a 51 by 31 switch and `.sheen-switch-row` puts words and a switch on one row over a
   hairline; the default switch keeps its size.
 - `<sheen-command-palette class="sheen-small">` is the 560px app palette with a 36px search field and 36px rows.
@@ -73,7 +75,9 @@ the top. Focus rings now show for the keyboard only. Mostly additive; the fixes 
   turned every word red); the Filters panel's options and boxes take the app mockups' spacing and look; a menu in a bulk
   bar or at the end of a views row is the dense size (13.5px, 36px rows); a `.sheen-table` with `aria-busy="true"` draws
   as one placeholder block; small buttons in the list kit, the Filters footer and list messages are 34px instead of 40px;
-  the find row's "/" key cap is a plain outline; a side panel draws no ring when a press gives it focus.
+  the find row's "/" key cap is a plain outline; a side panel draws no ring when a press gives it focus; an open control
+  (its menu or panel open) takes the tonal fill instead of 0.6.0's accent ring and 4px glow, since only keyboard focus
+  draws a ring.
 - Tests: the new options, items and placement, with a Views control at the end edge in English and Arabic; the heading
   row, modal dim, focus and Tab cycle; the toaster at the top and at the bottom; filled glyphs; the pointer and keyboard
   focus state; every new rule in the built CSS with the values it ports, logical sides only; contrast from the tokens
@@ -81,7 +85,8 @@ the top. Focus rings now show for the keyboard only. Mostly additive; the fixes 
   toasts, and 3:1 for the status glyphs and a tinted control's glyph; the dense fields, the panel footer, the large
   switch, the group row, the pager, the small palette and the shortcuts sheet, the page head; a radio group and a hidden input in the
   Tab cycle, focus coming back into a modal panel, its dim when hidden or moved, an empty heading, the top toast by
-  keyboard, compact menu button names, forced colors and a menu on a phone.
+  keyboard, compact menu button names, forced colors and a menu on a phone; open and applied controls with no ring;
+  a footer that stays on the bottom edge of a panel longer than the window.
 
 ## 0.6.0
 

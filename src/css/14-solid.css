@@ -6,6 +6,8 @@
 :root .sheen-solid :is(.sheen-menu.sheen-glass,.sheen-cmd.sheen-glass){background:var(--sheen-surface);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 0 0 1px var(--sheen-separator),0 14px 34px rgba(16,20,30,.14),0 2px 6px rgba(16,20,30,.06)}
 :root .sheen-solid sheen-side-panel.sheen-glass,:root sheen-side-panel.sheen-solid.sheen-glass{background:var(--sheen-sheet);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:-20px 0 60px rgba(0,0,0,.12)}
 :root .sheen-solid sheen-side-panel.sheen-glass:dir(rtl),:root sheen-side-panel.sheen-solid.sheen-glass:dir(rtl){box-shadow:20px 0 60px rgba(0,0,0,.12)}
+/* a side panel's footers stick over the rows that scroll under them, so on a solid panel they take its sheet too */
+:root .sheen-solid sheen-side-panel.sheen-glass .sheen-panel-body>:is(.sheen-filter-footer,.sheen-panel-foot),:root sheen-side-panel.sheen-solid.sheen-glass .sheen-panel-body>:is(.sheen-filter-footer,.sheen-panel-foot){background:var(--sheen-sheet)}
 :root .sheen-solid sheen-command-palette.sheen-small .sheen-cmd.sheen-glass{box-shadow:0 0 0 1px var(--sheen-separator),0 24px 60px rgba(16,20,30,.22)}
 :root .sheen-solid .sheen-toast.sheen-glass{background:var(--sheen-sheet);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 10px 30px rgba(0,0,0,.18)}
 :root .sheen-solid sheen-hover-card.sheen-glass,:root sheen-hover-card.sheen-solid.sheen-glass{background:var(--sheen-sheet);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 0 0 1px var(--sheen-separator),0 12px 32px rgba(0,0,0,.18)}

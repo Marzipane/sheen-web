@@ -244,7 +244,7 @@ work, and fills in its own words.
 | `.sheen-page-tabs` (with `.sheen-view-tab` links, `aria-current="page"`) | a module's page tab row |
 | `.sheen-cell-button` (`.sheen-strong`), `tr[tabindex]` | a cell value that opens or edits in place; a row the keyboard reaches |
 | `.sheen-filter-group`, `.sheen-filter-field`, `.sheen-filter-option`, `.sheen-filter-footer` | the filters inside a `<sheen-side-panel>`, with a sticky footer (on the bottom edge of a panel with `heading`); a ticked option is tinted |
-| `.sheen-control.sheen-on` | a control whose filters are on: its glyph and outline in the accent |
+| `.sheen-control.sheen-on` | a control whose filters are on: its fill tinted and its glyph in the accent (no ring; an open control takes the tonal fill) |
 | `.sheen-table-card`, `.sheen-table.sheen-small`, `.sheen-table[aria-busy="true"]` | a table on an 18px surface card (with `.sheen-table-wrap` it still scrolls sideways); the dense app table with a tinted header row and 16px checkboxes (`.sheen-wrap` for long sentences); a busy table drawn as one placeholder block |
 | `.sheen-list-message`, `.sheen-list-message-actions` (`.sheen-danger` for an error) | nothing matches, or the results couldn't load |
 | `.sheen-sort-button`, `.sheen-sort-glyph` on `th[aria-sort]` | a sortable header; the arrow sits in the end padding |
@@ -265,7 +265,7 @@ work, and fills in its own words.
 | `.sheen-kbd`, `.sheen-shortcuts`, `.sheen-shortcut` | keys and a shortcut cheat sheet |
 | `sheen-command-palette.sheen-small`, `.sheen-dialog.sheen-small`, `.sheen-shortcuts.sheen-small` (+ `-head`, `-note`), `.sheen-keys` | the 560px app palette; a 720px sheet with shortcuts in three columns (one when narrow) |
 | `.sheen-form-field.sheen-small`, `.sheen-fields.sheen-small`, `.sheen-wide`, `.sheen-select` | dense form fields two to a row (`.sheen-wide` across both) with a hint and an invalid state; a select drawn as a field |
-| `.sheen-panel-foot` | a side panel's Cancel and main action on its bottom edge, side by side or stacked when narrow |
+| `.sheen-panel-foot` | a side panel's Cancel and main action on its bottom edge, side by side or stacked when narrow; a long body scrolls under it |
 | `.sheen-switch.sheen-large`, `.sheen-switch-row` | a 51 by 31 switch; words and a switch on one row over a hairline |
 | `tr.sheen-table-group`, `.sheen-table-foot`, `.sheen-pager` | a table's group row with its count; the count and a pager under a table |
 | `.sheen-empty` (+ `-glyph`, `-title`, `-actions`) | empty states |

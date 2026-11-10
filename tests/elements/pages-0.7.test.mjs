@@ -37,8 +37,9 @@ test('page tabs drawn as links keep the tab colours (the base link rule made the
   has('.sheen-page-tabs .sheen-view-tab[aria-current="page"]{color:var(--sheen-text-secondary)}');
 });
 
-test('a glyph control whose menu is open keeps its fill and hairline, no focus ring (a page header\'s •••)', () => {
-  has('sheen-menu-button[glyph]>.sheen-control[aria-expanded="true"]{box-shadow:inset 0 0 0 1px var(--sheen-separator)}');
+test('a glyph control whose menu is open takes the tonal fill and keeps its hairline, no ring (a page header\'s •••)', () => {
+  has('.sheen-control[aria-expanded="true"]{background:var(--sheen-tonal)}');
+  assert.ok(!css.includes('sheen-menu-button[glyph]>.sheen-control[aria-expanded="true"]'));
 });
 
 test('page tabs mark the current page by its line only; an app page title is 26px', () => {

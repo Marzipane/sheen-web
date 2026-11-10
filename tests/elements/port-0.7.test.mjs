@@ -38,9 +38,9 @@ test('k-ctl: a control menu button\'s box carries the control\'s 13.5px, so it m
   assert.ok(!css.includes('sheen-menu-button[variant="control"]{font-size:13.5px}'), 'a glyph control (the page header •••) keeps the page font, as the mockup');
 });
 
-test('k-head-b k-amore: an open page header ••• keeps its white fill and hairline', () => {
-  has('sheen-menu-button[glyph]>.sheen-control[aria-expanded="true"]{box-shadow:inset 0 0 0 1px var(--sheen-separator)}');
-  assert.ok(!css.includes('sheen-menu-button[glyph]>.sheen-control[aria-expanded="true"]{background:var(--sheen-tonal)'));
+test('k-amore[aria-expanded]: an open page header ••• takes the tonal fill, as every open control (no ring: the mockups\' rings are annotations)', () => {
+  has('.sheen-control[aria-expanded="true"]{background:var(--sheen-tonal)}');
+  assert.ok(!css.includes('sheen-menu-button[glyph]>.sheen-control[aria-expanded="true"]'));
 });
 
 test('k-amenu and k-fview: small menus are 250px to 320px wide; an item with a description lines its glyph up with the title', () => {

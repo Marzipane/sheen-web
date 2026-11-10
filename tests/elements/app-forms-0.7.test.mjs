@@ -36,7 +36,15 @@ test('o-quick: a side panel footer holds Cancel and the main action on the panel
   has('.sheen-panel-foot{display:flex;flex-wrap:wrap;gap:10px;margin-block-start:auto;padding-block-start:14px}');
   has('.sheen-panel-foot>*{flex:1 0 128px}');
   has('sheen-side-panel.sheen-headed .sheen-panel-body>:is(.sheen-filter-footer,.sheen-panel-foot){margin-block-start:auto}'.replace(' .sheen-panel-body>:is', ' .sheen-panel-body>:is'));
-  has('sheen-side-panel.sheen-headed .sheen-panel-body:has(>.sheen-panel-foot){padding-block-end:20px}');
+});
+
+test('a long side panel keeps its footer on the bottom edge: the footer sticks to the end of the scrolling body, 20px under its buttons, opaque on a solid layer', () => {
+  // the body scrolls; the footer stays at its end edge with the 20px the body used to keep under it
+  has('sheen-side-panel.sheen-headed .sheen-panel-body>.sheen-panel-foot{position:sticky;inset-block-end:0;margin-inline:-20px;padding:14px 20px 20px;background:inherit}');
+  has('sheen-side-panel.sheen-headed .sheen-panel-body:has(>.sheen-panel-foot){padding-block-end:0}');
+  assert.ok(!css.includes('.sheen-panel-body:has(>.sheen-panel-foot){padding-block-end:20px}'));
+  // on a solid layer both footers take the panel's sheet, so rows scrolling under them never show through
+  has(':root .sheen-solid sheen-side-panel.sheen-glass .sheen-panel-body>:is(.sheen-filter-footer,.sheen-panel-foot),:root sheen-side-panel.sheen-solid.sheen-glass .sheen-panel-body>:is(.sheen-filter-footer,.sheen-panel-foot){background:var(--sheen-sheet)}');
 });
 
 test('o-switch and k-swrow: a 51 by 31 switch with a 27px knob, in a row with its words; the off track keeps 3:1', () => {
