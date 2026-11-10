@@ -135,3 +135,52 @@ th[aria-sort="ascending"],th[aria-sort="descending"]{color:var(--sheen-text)}
   .sheen-applied-row{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
   .sheen-result-count{position:sticky;inset-inline-end:0;padding-inline-start:8px;background:var(--sheen-background)}
 }
+
+/* 0.7.0 list kit */
+/* the Filters panel: a ticked option is tinted; "Show all" under a long list sits at the start; a switch row (words and a
+   sub line at the start, the switch at the end); a picker row (a control menu button across the field, the value at the
+   start, the chevron at the end) with the reason under it when it is off */
+.sheen-filter-option:has(input:checked){background:color-mix(in srgb,var(--sheen-accent) 10%,transparent);font-weight:600}
+.sheen-filter-field>.sheen-link-button{align-self:flex-start}
+.sheen-filter-switch{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:10px;font-size:13.5px;border-block-end:1px solid var(--sheen-separator);cursor:pointer}
+.sheen-filter-group .sheen-filter-switch:last-child{border-block-end:0}
+.sheen-filter-switch b{display:block;font-weight:600}
+.sheen-filter-switch small{display:block;font-size:12px;color:var(--sheen-text-tertiary)}
+.sheen-filter-field>sheen-menu-button{display:block}
+.sheen-filter-field>sheen-menu-button>.sheen-control{inline-size:100%;justify-content:space-between;font-weight:500}
+.sheen-filter-why{font-size:12px;color:var(--sheen-text-tertiary)}
+
+/* a table in a card: the surface with an 18px radius (a light shadow in light mode); with .sheen-table-wrap it still
+   scrolls sideways and keeps the pinned ••• column. The small table is the dense app size with a tinted header row. */
+.sheen-table-card{background:var(--sheen-surface);border-radius:18px}
+:root[data-theme="light"] .sheen-table-card{box-shadow:0 1px 2px rgba(16,20,30,.05),0 4px 14px rgba(16,20,30,.05)}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .sheen-table-card{box-shadow:0 1px 2px rgba(16,20,30,.05),0 4px 14px rgba(16,20,30,.05)}}
+.sheen-table.sheen-small{font-size:13.5px}
+.sheen-table.sheen-small th{font-size:12px;padding:10px 14px;background:color-mix(in srgb,var(--sheen-track) 35%,var(--sheen-surface));border-block-end:0;white-space:nowrap}
+.sheen-table.sheen-small td{padding:10px 14px;border-block-end:0;border-block-start:1px solid var(--sheen-separator)}
+.sheen-table.sheen-small .sheen-sort-button{padding:10px 14px}
+.sheen-table.sheen-small .sheen-pin-end{padding-inline:4px}
+
+/* a table's footer: how many rows show at the start, a pager at the end (its arrows mirror in Arabic) */
+.sheen-table-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;font-size:12.5px;color:var(--sheen-text-secondary);border-block-start:1px solid var(--sheen-separator)}
+.sheen-pager{display:inline-flex;align-items:center;gap:6px}
+.sheen-pager button{inline-size:28px;block-size:28px;display:inline-grid;place-items:center;padding:0;border:0;border-radius:8px;background:none;color:var(--sheen-text-secondary);cursor:pointer}
+.sheen-pager button:hover:not(:disabled){background:var(--sheen-tonal);color:var(--sheen-text)}
+.sheen-pager button:disabled{opacity:.45;cursor:not-allowed}
+.sheen-pager button:focus-visible{outline:2px solid var(--sheen-accent-text);outline-offset:1px}
+.sheen-pager :is(.sheen-icon,.sheen-glyph){inline-size:16px;block-size:16px}
+.sheen-pager b{font-weight:700;color:var(--sheen-text);font-variant-numeric:tabular-nums}
+[dir="rtl"] .sheen-pager svg{transform:scaleX(-1)}
+
+/* a small stat tile: the dense app size of .sheen-stat, on the surface with a light shadow in light mode */
+.sheen-stat.sheen-small{gap:4px;padding:14px 16px;border-radius:18px;background:var(--sheen-surface);box-shadow:none}
+:root[data-theme="light"] .sheen-stat.sheen-small{box-shadow:0 1px 2px rgba(16,20,30,.05),0 4px 14px rgba(16,20,30,.05)}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .sheen-stat.sheen-small{box-shadow:0 1px 2px rgba(16,20,30,.05),0 4px 14px rgba(16,20,30,.05)}}
+.sheen-stat.sheen-small .sheen-stat-label{font-size:13px;font-weight:400}
+.sheen-stat.sheen-small .sheen-stat-value{font-size:26px}
+.sheen-stat.sheen-small .sheen-stat-note{font-size:12.5px;font-weight:600}
+
+/* the bulk bar's buttons are 32px with 14px glyphs */
+.sheen-bulk-bar .sheen-button.sheen-small,.sheen-bulk-bar sheen-menu-button>.sheen-button{height:32px;border-radius:16px;padding-inline:12px;font-size:13px;gap:6px}
+.sheen-bulk-bar .sheen-button>:is(.sheen-glyph,.sheen-icon){inline-size:14px;block-size:14px}
+/* end 0.7.0 list kit */
