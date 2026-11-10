@@ -31,6 +31,13 @@ test('k-ffilters compact: a control with a count keeps its padding and its count
   assert.match(css, /@container \(max-width:760px\)\{[^@]*?\.sheen-control\.sheen-compact-glyph:has\(>\.sheen-control-count:not\(\[hidden\]\)\)\{inline-size:auto;padding-inline:12px\}/);
 });
 
+test('k-ctl: a control menu button\'s box carries the control\'s 13.5px, so it measures like the control it draws', () => {
+  // a definite height, as the mockup's 36px controls: a stretching flex row (a page header) never makes the box taller
+  has('sheen-menu-button[variant="control"]{display:inline-flex;block-size:36px}');
+  has('sheen-menu-button[variant="control"]:not([glyph]){font-size:13.5px}');
+  assert.ok(!css.includes('sheen-menu-button[variant="control"]{font-size:13.5px}'), 'a glyph control (the page header •••) keeps the page font, as the mockup');
+});
+
 test('k-head-b k-amore: an open page header ••• keeps its white fill and hairline', () => {
   has('sheen-menu-button[glyph]>.sheen-control[aria-expanded="true"]{box-shadow:inset 0 0 0 1px var(--sheen-separator)}');
   assert.ok(!css.includes('sheen-menu-button[glyph]>.sheen-control[aria-expanded="true"]{background:var(--sheen-tonal)'));
