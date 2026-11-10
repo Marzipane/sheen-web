@@ -137,8 +137,8 @@ For apps that are not Laravel sites, `dist/sheen-elements.js` adds framework-fre
 stylesheet (no build step):
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Marzipane/sheen-web@v0.6.0/dist/sheen.min.css">
-<script src="https://cdn.jsdelivr.net/gh/Marzipane/sheen-web@v0.6.0/dist/sheen-elements.min.js" defer></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Marzipane/sheen-web@v0.7.0/dist/sheen.min.css">
+<script src="https://cdn.jsdelivr.net/gh/Marzipane/sheen-web@v0.7.0/dist/sheen-elements.min.js" defer></script>
 ```
 
 The rules every element follows:
@@ -154,7 +154,7 @@ Live stories for every element: `docs/elements.html` (open it from a local serve
 | `<sheen-glyph>` | a sheen icon or media glyph | `name`, `size`, `label` (without it: decorative) | | |
 | `<sheen-progress-ring>` | round progress | `value` 0..1, `size`, `label`, `show-value`, `indeterminate` | | |
 | `<sheen-drop-zone>` | drop or choose files | `label`, `hint`, `accept`, `multiple`, `glyph`, `disabled` | `sheen-files` {files} | Enter, Space |
-| `<sheen-toaster>` | toast queue (aria-live) | `close-label`, `max`; `show(opts)`, `dismiss(id)` | | |
+| `<sheen-toaster>` | toast queue (aria-live) | `close-label`, `max`, `position="top"` (Flutter sheen's toast: under the app bar at the end edge, the action as a link, no close button, a press closes it; `--sheen-toaster-top`, `--sheen-toaster-end`, `--sheen-toaster-size`); `show(opts)` with `glyph` in place of the tone's dot, `dismiss(id)` | | |
 | `<sheen-command-palette>` | ⌘K command box | `label`, `placeholder`, `empty`, `submit-label` ("@q"), `hotkey`; `items`, `aside`, `open()`, `close()`, `value` | `sheen-select` {item, text}, `sheen-submit` {text}, `sheen-open`, `sheen-close` | ↑ ↓, Enter, Esc, ⌘K |
 | `<sheen-video>` | player with scrubber | `src`, `poster`, `keys`, `play-label`, `pause-label`, `seek-label`, `mute-label`, `unmute-label`; `markers`, `inPoint`, `outPoint`, `seek(t)`, `play()`, `pause()` | `sheen-time` {time}, `sheen-inout` {in, out} | Space/K, J, L, I, O; on the scrubber ← → Home End |
 | `<sheen-waveform>` | audio peaks as a seek slider | `duration`, `progress`, `label`; `peaks` | `sheen-seek` {time} | ← → (Shift: 1 s) |
@@ -164,9 +164,9 @@ Live stories for every element: `docs/elements.html` (open it from a local serve
 | `<sheen-node-graph>` | node graph | `label`, `connect-label`, `connected-label`, `remove-label`; `nodes`, `edges`, `order()` | `sheen-graphchange` {nodes, edges}, `sheen-nodeopen` {node} | arrows move, C then Enter connects, Delete |
 | `<sheen-tour>` | onboarding tour | `next-label`, `back-label`, `done-label`, `skip-label`, `step-label` ("@n of @all"); `steps`, `start()`, `stop()` | `sheen-tour-step` {index}, `sheen-tour-end` {completed} | Enter, Esc, Tab stays inside |
 | `<sheen-hover-card>` | facts and actions beside a link | `label`, `delay` (ms, `0` for none); `attach(trigger)`, `detach()`, `open()`, `close()` | `sheen-hover-open` {trigger}, `sheen-hover-close` | on the trigger Space opens; Esc closes from anywhere while open; Tab out closes |
-| `<sheen-side-panel>` | a panel on the end edge, no backdrop | `label`, `close-label`; `open()`, `close()` | `sheen-panel-close` | Esc closes and returns focus to the first opener |
+| `<sheen-side-panel>` | a panel on the end edge, no backdrop | `label`, `close-label`, `heading` (the title and the close button on one row), `modal` (the page dims, a press on the dim closes it), `--sheen-panel-size`; `open()`, `close()` | `sheen-panel-close` | Esc closes and returns focus to the first opener; with `modal`, Tab stays inside |
 | `<sheen-scope-picker>` | chooses a rule, not a list | `label`, `all-label`, `chosen-label`, `except-label`, `search-label`, `select-shown-label`, `empty-label`, `result`; `groups`, `value` (only the list its mode reads) | `sheen-scope-change` {mode, include, exclude} | Space ticks; focus stays on the ticked row |
-| `<sheen-menu-button>` | a button with a keyboard menu | `label`, `glyph`; `items` [{id, label, disabled, hint, shortcut, danger}, {separator: true}, {heading}], `open()`, `close()` | `sheen-menu-select` {id} | ↓ opens, ↑ ↓ move, Enter picks, Esc closes; a press outside or Tab out closes |
+| `<sheen-menu-button>` | a button with a keyboard menu | `label`, `glyph`, `variant="control"` (the find row's 36px control; square with a glyph), `icon` (a glyph before the label), `chevron`, `compact`, `class="sheen-small"` (the dense menu; `--sheen-menu-min-size`); `items` [{id, label, disabled, hint, shortcut, danger, glyph, accent}, {separator: true}, {heading}], `open()`, `close()` | `sheen-menu-select` {id} | ↓ opens, ↑ ↓ move, Enter picks, Esc closes; a press outside or Tab out closes |
 
 ```html
 <sheen-command-palette id="cmd" hotkey label="Command bar" placeholder="Type a command or search…"
@@ -191,6 +191,9 @@ Live stories for every element: `docs/elements.html` (open it from a local serve
                { id: 'a', label: 'Audio', kind: 'audio', peaks: [/* 0..1 */], clips: [] }];
 </script>
 ```
+
+Glyph names are the Flutter sheen icons, the media glyphs and, from 0.7.0, the filled Flutter sheen icons as
+`<name>-fill` (`check-circle-fill`), drawn filled in the text colour.
 
 `window.sheenElements` gives `version`, `glyph(name, size, label)`, `glyphNames()`, `fmtTime(seconds)` and
 `toast({title, message, tone: 'info'|'success'|'warning'|'danger', timeout, action: {label, onClick}})`.
@@ -240,7 +243,9 @@ work, and fills in its own words.
 | `.sheen-link-button` | a text button for small steps: Save view, Clear all, Select all |
 | `.sheen-page-tabs` (with `.sheen-view-tab` links, `aria-current="page"`) | a module's page tab row |
 | `.sheen-cell-button` (`.sheen-strong`), `tr[tabindex]` | a cell value that opens or edits in place; a row the keyboard reaches |
-| `.sheen-filter-group`, `.sheen-filter-field`, `.sheen-filter-option`, `.sheen-filter-footer` | the filters inside a `<sheen-side-panel>`, with a sticky footer |
+| `.sheen-filter-group`, `.sheen-filter-field`, `.sheen-filter-option`, `.sheen-filter-footer` | the filters inside a `<sheen-side-panel>`, with a sticky footer (on the bottom edge of a panel with `heading`); a ticked option is tinted |
+| `.sheen-control.sheen-on` | a control whose filters are on: the accent tint |
+| `.sheen-table-card`, `.sheen-table.sheen-small`, `.sheen-table[aria-busy="true"]` | a table on an 18px surface card (with `.sheen-table-wrap` it still scrolls sideways); the dense app table with a tinted header row and 16px checkboxes; a busy table drawn as one placeholder block |
 | `.sheen-list-message`, `.sheen-list-message-actions` (`.sheen-danger` for an error) | nothing matches, or the results couldn't load |
 | `.sheen-sort-button`, `.sheen-sort-glyph` on `th[aria-sort]` | a sortable header; the arrow sits in the end padding |
 | `.sheen-pin-end`, `.sheen-truncate`, `tr[aria-selected="true"]` | the row-menu column pinned at the end edge, one-line cells, a ticked row |
@@ -259,6 +264,9 @@ work, and fills in its own words.
 | `.sheen-switch`, `.sheen-range` | a switch around `<input type="checkbox" role="switch">`; a range slider (`--sheen-range-fill`) |
 | `.sheen-kbd`, `.sheen-shortcuts`, `.sheen-shortcut` | keys and a shortcut cheat sheet |
 | `.sheen-empty` (+ `-glyph`, `-title`, `-actions`) | empty states |
+| `.sheen-status` (+ `-glyph`, `-title`, `-actions`; `.sheen-danger`, `.sheen-warning`, `.sheen-success`) | Flutter sheen's SheenStatusScreen: a glyph in a 72px circle of its tone, a title, short words, up to two actions stacked; a page that is empty, failed, offline or closed to you |
+| `.sheen-page-title` | an app page's title (26px) |
+| `.sheen-solid` | on a layer or any box around it (the body): menus, toasts, the command palette, side panels and hover cards on the opaque sheet; modal layers dim with a plain shade |
 | `.sheen-skeleton-line`, `-block`, `-circle` | skeleton loaders (with `.sheen-skeleton`) |
 | `.sheen-stat` (+ `-label`, `-value`, `-note`), `.sheen-table`, `.sheen-badge` (`.sheen-ok`, `.sheen-warn`, `.sheen-bad`, `.sheen-run`), `.sheen-progress` | dashboards and job lists |
 | `.sheen-toolbar`, `.sheen-swatch`, `.sheen-small-icon` | rows of controls, colour swatches (`style="--sheen-swatch:#F97316"`), 36 px icon buttons |

@@ -609,6 +609,7 @@ sheen-hover-card.sheen-glass{display:block;position:fixed;z-index:1000;inline-si
 sheen-hover-card.sheen-glass[hidden]{display:none}
 sheen-side-panel.sheen-glass{position:fixed;inset-block:0;inset-inline-end:0;z-index:900;display:flex;flex-direction:column;inline-size:min(var(--sheen-panel-size,440px),100vw);padding:16px;overflow:auto}
 sheen-side-panel.sheen-glass[hidden]{display:none}
+sheen-side-panel.sheen-glass:focus{outline:none}
 .sheen-panel-close{align-self:flex-end}
 .sheen-panel-body{flex:1;min-block-size:0}
 /* 0.7.0: the heading row (the title and a 34px close), and the dim behind a modal panel */
@@ -868,6 +869,12 @@ th[aria-sort="ascending"],th[aria-sort="descending"]{color:var(--sheen-text)}
    the current page tab in the accent, a page title, the Filters footer on the panel's bottom edge, small-table
    checkboxes, a busy table, the status block, a failed list message and the toaster at the top. Logical sides only. */
 
+/* the hidden attribute hides list kit parts, though they set their own display */
+:where(.sheen-find-row,.sheen-views-row,.sheen-applied-row,.sheen-control,.sheen-control-count,.sheen-link-button,.sheen-filter-chip,.sheen-list-message,.sheen-status)[hidden]{display:none!important}
+
+/* a glyph control whose menu is open takes the tonal fill, not the focus ring (a page header's •••) */
+sheen-menu-button[glyph]>.sheen-control[aria-expanded="true"]{background:var(--sheen-tonal);box-shadow:inset 0 0 0 1px var(--sheen-separator)}
+
 /* key caps: the find row's "/" and the shortcuts in small menus are plain outlined caps, not filled chips */
 .sheen-find .sheen-kbd,:is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item .sheen-kbd{min-inline-size:20px;block-size:20px;padding-inline:5px;border-radius:6px;background:none;box-shadow:inset 0 0 0 1px var(--sheen-separator);color:var(--sheen-text-tertiary);font:600 11px/1 inherit}
 /* a small menu rings the item that has focus, also when it was opened with a pointer (the first safe item takes focus) */
@@ -875,6 +882,10 @@ th[aria-sort="ascending"],th[aria-sort="descending"]{color:var(--sheen-text)}
 
 /* a module's page tabs show the page you are on in the accent; an app page's title */
 .sheen-view-tab[aria-current="page"]{color:var(--sheen-accent-text)}
+/* page tabs drawn as links: the base ".sheen a" rule (color:inherit) would make every tab the text colour */
+.sheen-page-tabs .sheen-view-tab{color:var(--sheen-text-secondary)}
+.sheen-page-tabs .sheen-view-tab:hover{color:var(--sheen-text)}
+.sheen-page-tabs .sheen-view-tab[aria-current="page"]{color:var(--sheen-accent-text)}
 .sheen-page-title{margin:0;font-size:26px;line-height:1.2;font-weight:700;letter-spacing:-.02em}
 
 /* a side panel with a heading keeps the Filters footer on its bottom edge, however few the options */

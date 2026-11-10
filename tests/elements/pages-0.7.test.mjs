@@ -28,6 +28,20 @@ test('small menus ring the item that has focus, also when the menu was opened wi
   has(DENSE + ' .sheen-menu-item:focus{background:none;outline:2px solid var(--sheen-accent-text);outline-offset:-2px}');
 });
 
+test('the hidden attribute hides list kit parts, though they set their own display', () => {
+  has(':where(.sheen-find-row,.sheen-views-row,.sheen-applied-row,.sheen-control,.sheen-control-count,.sheen-link-button,.sheen-filter-chip,.sheen-list-message,.sheen-status)[hidden]{display:none!important}');
+});
+
+test('page tabs drawn as links keep the tab colours (the base link rule made them the text colour)', () => {
+  has('.sheen-page-tabs .sheen-view-tab{color:var(--sheen-text-secondary)}');
+  has('.sheen-page-tabs .sheen-view-tab:hover{color:var(--sheen-text)}');
+  has('.sheen-page-tabs .sheen-view-tab[aria-current="page"]{color:var(--sheen-accent-text)}');
+});
+
+test('a glyph control whose menu is open takes the tonal fill, not the focus ring (a page header\'s •••)', () => {
+  has('sheen-menu-button[glyph]>.sheen-control[aria-expanded="true"]{background:var(--sheen-tonal);box-shadow:inset 0 0 0 1px var(--sheen-separator)}');
+});
+
 test('page tabs show the current page in the accent; an app page title is 26px', () => {
   has('.sheen-view-tab[aria-current="page"]{color:var(--sheen-accent-text)}');
   has('.sheen-page-title{margin:0;font-size:26px;line-height:1.2;font-weight:700;letter-spacing:-.02em}');

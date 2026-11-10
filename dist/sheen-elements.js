@@ -10,7 +10,7 @@ var FILLED = {"bed-fill":1,"check-circle-fill":1,"compass-fill":1,"heart-fill":1
 // - takes all of its words from attributes (already translated); it never renders text of its own;
 // - mirrors for dir="rtl" (positions use inset-inline-start, keys follow the reading direction);
 // - follows light/dark through the sheen tokens and stops motion under prefers-reduced-motion.
-var VERSION = '0.6.0';
+var VERSION = '0.7.0';
 
 function define(tag, cls) {
   if (!window.customElements.get(tag)) window.customElements.define(tag, cls);
@@ -1426,7 +1426,9 @@ class SheenSidePanel extends HTMLElement {
       this.dim = h('div', { class: 'sheen-panel-dim', 'aria-hidden': 'true', onclick: function () { self.close(); } });
       this.parentNode.insertBefore(this.dim, this);
     }
-    this.focus();
+    // A modal panel puts focus on its first control (the close button); otherwise the panel itself takes it (0.4.0).
+    var first = this.hasAttribute('modal') ? this.focusables()[0] : null;
+    (first || this).focus();
   }
   close() {
     if (this.hidden) return;
@@ -1439,9 +1441,12 @@ class SheenSidePanel extends HTMLElement {
     if (this.dim) { this.dim.remove(); this.dim = null; }
   }
   // Tab from the last control goes to the first, Shift+Tab from the first to the last.
-  trap(e) {
-    var all = Array.prototype.slice.call(this.querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])'))
+  focusables() {
+    return Array.prototype.slice.call(this.querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])'))
       .filter(function (el) { return !el.disabled && !el.closest('[hidden]'); });
+  }
+  trap(e) {
+    var all = this.focusables();
     if (!all.length) return;
     var first = all[0], last = all[all.length - 1], at = document.activeElement;
     if (e.shiftKey && (at === first || at === this)) { e.preventDefault(); last.focus(); }

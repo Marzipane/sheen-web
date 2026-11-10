@@ -54,6 +54,15 @@ test('side panel: without modal there is no dim and the page stays usable (0.4.0
   p.open();
   assert.equal(p.getAttribute('aria-modal'), 'false');
   assert.equal(w.document.querySelector('.sheen-panel-dim'), null);
+  assert.equal(w.document.activeElement, p, 'the panel itself takes focus, as in 0.4.0');
+});
+
+test('side panel: a modal panel puts focus on its first control (the close button), and the panel draws no ring of its own', () => {
+  const { w, p } = panel('modal heading="Filters"');
+  p.open();
+  assert.equal(w.document.activeElement, p.querySelector('.sheen-panel-close'));
+  const css = readFileSync(new URL('../../dist/sheen.css', import.meta.url), 'utf8').replace(/\s+/g, ' ').replace(/\s*([{};:,])\s*/g, '$1');
+  assert.ok(css.includes('sheen-side-panel.sheen-glass:focus{outline:none}'));
 });
 
 test('side panel: modal keeps Tab inside, from the last control to the first and back', () => {
