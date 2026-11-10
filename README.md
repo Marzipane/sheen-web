@@ -125,11 +125,12 @@ radios.
 
 ### Focus on fields
 
-The field shows focus, and the words inside it never get a box of their own.
-- A `.sheen-field` gets a calm accent line, a soft glow and an accent label.
+A text field never draws a focus ring: its caret shows the focus, and the words inside it never get a box of their own.
+- A `.sheen-field` turns its label to the accent (0.7.0: without the line and glow it had before).
 - A part of a glass bar, `.sheen-segment` (a search bar's where, dates and guests), lights up as its own pill. A button that opens the part's picker takes `.sheen-segment-trigger`.
 
-Buttons and links keep their focus ring. With forced colors, the field or part gets a real outline.
+Buttons, links, tabs and menu items draw their thin focus ring only while the keyboard navigates: Tab or Shift+Tab marks
+`<html data-sheen-keyboard>`, and the next press clears it (0.7.0). With forced colors, the field or part gets a real outline.
 
 ## App elements (0.3.0, record kit 0.4.0)
 

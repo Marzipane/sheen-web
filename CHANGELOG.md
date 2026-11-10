@@ -55,16 +55,22 @@ the top. Focus rings now show for the keyboard only. Mostly additive; the fixes 
   Esc on any toast closes it.
 - Glyphs: the filled Flutter sheen icons draw as `<name>-fill` (`check-circle-fill`), filled in the text colour; `alert`
   is a warning triangle.
-- Focus: a press marks `<html data-sheen-pointer>`; Tab, any key outside a text field but a lone modifier, and leaving
-  the window clear it. Nothing draws a ring or a glow for a press; keyboard focus keeps one 2px ring. A text field inside
-  a `.sheen-control` never draws its own outline (the find row's search drew two rings in 0.6.0), and a control's 0.6.0
-  inset ring and 4px glow are gone. A menu button with an icon or a chevron takes its label as its name, so a compact
+- Focus: Tab or Shift+Tab marks `<html data-sheen-keyboard>`, and only then do buttons, links, tabs and menu items draw
+  their one 2px ring; the next press clears it. A press, Esc, Enter, typing and arrows never bring a ring, so closing a
+  panel with Esc leaves its opener plain; in a dense menu the item the arrows reach shows the hover fill. A text field
+  never draws a ring, keyboard or not: its caret shows the focus (the find row's search drew two rings in 0.6.0). A
+  control's 0.6.0 inset ring and 4px glow are gone. A menu button with an icon or a chevron takes its label as its name, so a compact
   one keeps a name. In forced colors the Filters checkboxes are the system's own.
 - Fixed: a menu near the screen's end came out narrow, wrapped its labels and could open upward with room below, because
   it was measured after it was placed. It is now measured where nothing narrows it, then lined up under its button, on
   the other edge when it would leave the screen, and above only when it doesn't fit below and there is more room above.
   A menu wider than the room on either side (a phone) keeps to the screen. Two 0.5.0 placement tests now give the
   button's place instead of the menu's measured box, and assert the same flips.
+- Fixed: in a find row, a views end kept the 6px it has under the views row's tabs, so a Views control there sat 3px
+  higher than Filters; a control inside an app's inline wrapper sits at the top of its line, never on its baseline.
+- Fixed: a long `.sheen-sidebar-shell` nav made the whole page scroll: the visually hidden words of its items belonged to
+  the page, not to the scrolling nav, and stretched the document (1224px in a 1000px window). The nav and the content
+  area now hold what is positioned inside them, and the shell is one row the window's height (`100dvh` where supported).
 - Fixed: a sortable header in a `.sheen-table.sheen-small` took the cell's 10px 14px padding on top of its button's,
   so the header row was 3px taller and a sortable column grew by the cell's side padding.
 - Fixed: the hidden attribute hides the list kit, page and footer parts that set their own display (menu buttons, page
@@ -77,7 +83,8 @@ the top. Focus rings now show for the keyboard only. Mostly additive; the fixes 
   as one placeholder block; small buttons in the list kit, the Filters footer and list messages are 34px instead of 40px;
   the find row's "/" key cap is a plain outline; a side panel draws no ring when a press gives it focus; an open control
   (its menu or panel open) takes the tonal fill instead of 0.6.0's accent ring and 4px glow, since only keyboard focus
-  draws a ring.
+  draws a ring; a `.sheen-field` shows its focus by its caret and its label in the accent, without 0.1.4's line and glow
+  (forced colors still outline it).
 - Tests: the new options, items and placement, with a Views control at the end edge in English and Arabic; the heading
   row, modal dim, focus and Tab cycle; the toaster at the top and at the bottom; filled glyphs; the pointer and keyboard
   focus state; every new rule in the built CSS with the values it ports, logical sides only; contrast from the tokens

@@ -5,11 +5,13 @@
    .sheen-auth-page        centres one .sheen-auth-card; a form inside it uses .sheen-form-field and .sheen-input   */
 .sheen-icon{inline-size:16px;block-size:16px;flex:none}
 .sheen-grow{flex:1}
-.sheen-sidebar-shell{block-size:100vh;display:grid;grid-template-columns:248px minmax(0,1fr)}
+/* one row the window's height (0.7.0): a long nav scrolls inside the sidebar and the content on its own, never the page;
+   both hold what is positioned inside them, so a visually hidden word deep in a long nav never stretches the page */
+.sheen-sidebar-shell{block-size:100vh;block-size:100dvh;display:grid;grid-template-columns:248px minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
 .sheen-sidebar{background:var(--sheen-surface);border-inline-end:1px solid var(--sheen-separator);display:flex;flex-direction:column;min-block-size:0}
 .sheen-sidebar-brand{display:flex;align-items:center;gap:10px;padding:18px 18px 12px;font-weight:700;font-size:16px}
 .sheen-sidebar-logo{inline-size:32px;block-size:32px;border-radius:10px;background:var(--sheen-accent);color:var(--sheen-on-accent);display:grid;place-items:center}
-.sheen-sidebar-nav{flex:1;min-block-size:0;overflow-y:auto;padding:4px 10px 12px;display:flex;flex-direction:column;gap:1px}
+.sheen-sidebar-nav{position:relative;flex:1;min-block-size:0;overflow-y:auto;padding:4px 10px 12px;display:flex;flex-direction:column;gap:1px}
 .sheen-sidebar-group{display:flex;flex-direction:column;gap:1px;padding-block-end:6px}
 .sheen-sidebar-heading{margin:10px 8px 4px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--sheen-text-secondary)}
 :lang(ar) .sheen-sidebar-heading{letter-spacing:0}
@@ -32,7 +34,7 @@
 .sheen-app-tool{all:unset;cursor:pointer;padding:8px 10px;border-radius:10px;font-size:13px;color:var(--sheen-text)}
 .sheen-app-tool:hover{background:var(--sheen-tonal)}
 .sheen-app-tool:focus-visible,.sheen .sheen-sidebar-item:focus-visible,.sheen-input:focus-visible{outline:2px solid var(--sheen-accent);outline-offset:1px}
-.sheen-app-content{flex:1;min-block-size:0;overflow:auto;padding:20px 24px 24px;display:flex;flex-direction:column;gap:16px}
+.sheen-app-content{position:relative;flex:1;min-block-size:0;overflow:auto;padding:20px 24px 24px;display:flex;flex-direction:column;gap:16px}
 @media (max-width:760px){
 .sheen-sidebar-shell{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr)}
 .sheen-sidebar{border-inline-end:0;border-block-end:1px solid var(--sheen-separator);max-block-size:40vh}

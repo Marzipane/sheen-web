@@ -101,9 +101,8 @@
 .sheen-tabs [aria-current],.sheen-tabs [aria-selected="true"]{background:var(--sheen-surface);color:var(--sheen-text)}
 .sheen-field{display:flex;flex-direction:column;gap:2px;padding:10px 16px;border-radius:16px;box-shadow:inset 0 0 0 1px var(--sheen-separator);min-width:0;background:var(--sheen-surface)}
 .sheen-field{transition:box-shadow .15s}
-/* Focus is shown by the field, never as a box around its words (0.1.4): a calm line and a soft glow, the label in the
-   accent. The glow needs color-mix; without it the line alone shows. */
-.sheen-field:focus-within{box-shadow:inset 0 0 0 1.5px var(--sheen-accent-text);box-shadow:inset 0 0 0 1.5px var(--sheen-accent-text),0 0 0 4px color-mix(in srgb,var(--sheen-accent) 24%,transparent)}
+/* Focus is never a box around a field's words (0.1.4). Since 0.7.0 a text field draws no ring at all, so the field shows
+   its focus by its caret and its label in the accent (forced colors still outline it, in 06-access). */
 .sheen-field:focus-within>span:first-child{color:var(--sheen-accent-text)}
 .sheen :is(.sheen-field,.sheen-segment,.sheen-picker-pill,.sheen-control) :is(input,select,textarea,.sheen-segment-trigger,.sheen-picker-trigger):focus-visible{outline:none}
 /* A part of a glass bar (a search bar's where, dates, guests): the part being filled lights up as its own pill. Its
@@ -672,11 +671,13 @@ sheen-menu-button.sheen-small .sheen-menu,.sheen-small sheen-menu-button .sheen-
    .sheen-auth-page        centres one .sheen-auth-card; a form inside it uses .sheen-form-field and .sheen-input   */
 .sheen-icon{inline-size:16px;block-size:16px;flex:none}
 .sheen-grow{flex:1}
-.sheen-sidebar-shell{block-size:100vh;display:grid;grid-template-columns:248px minmax(0,1fr)}
+/* one row the window's height (0.7.0): a long nav scrolls inside the sidebar and the content on its own, never the page;
+   both hold what is positioned inside them, so a visually hidden word deep in a long nav never stretches the page */
+.sheen-sidebar-shell{block-size:100vh;block-size:100dvh;display:grid;grid-template-columns:248px minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
 .sheen-sidebar{background:var(--sheen-surface);border-inline-end:1px solid var(--sheen-separator);display:flex;flex-direction:column;min-block-size:0}
 .sheen-sidebar-brand{display:flex;align-items:center;gap:10px;padding:18px 18px 12px;font-weight:700;font-size:16px}
 .sheen-sidebar-logo{inline-size:32px;block-size:32px;border-radius:10px;background:var(--sheen-accent);color:var(--sheen-on-accent);display:grid;place-items:center}
-.sheen-sidebar-nav{flex:1;min-block-size:0;overflow-y:auto;padding:4px 10px 12px;display:flex;flex-direction:column;gap:1px}
+.sheen-sidebar-nav{position:relative;flex:1;min-block-size:0;overflow-y:auto;padding:4px 10px 12px;display:flex;flex-direction:column;gap:1px}
 .sheen-sidebar-group{display:flex;flex-direction:column;gap:1px;padding-block-end:6px}
 .sheen-sidebar-heading{margin:10px 8px 4px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--sheen-text-secondary)}
 :lang(ar) .sheen-sidebar-heading{letter-spacing:0}
@@ -699,7 +700,7 @@ sheen-menu-button.sheen-small .sheen-menu,.sheen-small sheen-menu-button .sheen-
 .sheen-app-tool{all:unset;cursor:pointer;padding:8px 10px;border-radius:10px;font-size:13px;color:var(--sheen-text)}
 .sheen-app-tool:hover{background:var(--sheen-tonal)}
 .sheen-app-tool:focus-visible,.sheen .sheen-sidebar-item:focus-visible,.sheen-input:focus-visible{outline:2px solid var(--sheen-accent);outline-offset:1px}
-.sheen-app-content{flex:1;min-block-size:0;overflow:auto;padding:20px 24px 24px;display:flex;flex-direction:column;gap:16px}
+.sheen-app-content{position:relative;flex:1;min-block-size:0;overflow:auto;padding:20px 24px 24px;display:flex;flex-direction:column;gap:16px}
 @media (max-width:760px){
 .sheen-sidebar-shell{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr)}
 .sheen-sidebar{border-inline-end:0;border-block-end:1px solid var(--sheen-separator);max-block-size:40vh}
@@ -734,6 +735,8 @@ sheen-menu-button.sheen-small .sheen-menu,.sheen-small sheen-menu-button .sheen-
 .sheen-view-tab[aria-selected="true"],.sheen-view-tab[aria-current="page"]{color:var(--sheen-text);border-block-end-color:var(--sheen-accent)}
 .sheen-view-tab[aria-selected="true"] small{background:color-mix(in srgb,var(--sheen-accent) 10%,transparent);color:var(--sheen-accent-text)}
 .sheen-views-end{margin-inline-start:auto;display:flex;align-items:center;gap:4px;padding-block-end:6px}
+/* in a find row the views end is one more control: its 6px are for the views row's tabs, and here they would lift it */
+.sheen-find-row .sheen-views-end{padding-block-end:0}
 
 /* a module's page tab row (Users · Roles · …): view tabs as links in a <nav class="sheen-page-tabs"> */
 .sheen-page-tabs{display:flex;gap:4px;min-inline-size:0;overflow-x:auto;scrollbar-width:none;border-block-end:1px solid var(--sheen-separator)}
@@ -742,10 +745,9 @@ sheen-menu-button.sheen-small .sheen-menu,.sheen-small sheen-menu-button .sheen-
 .sheen-find-row{display:flex;align-items:center;gap:8px;min-inline-size:0}
 .sheen-control{block-size:36px;display:inline-flex;align-items:center;gap:7px;padding-inline:12px;border:0;border-radius:11px;background:var(--sheen-surface);box-shadow:inset 0 0 0 1px var(--sheen-separator);color:var(--sheen-text);font:inherit;font-size:13.5px;font-weight:600;line-height:1.2;white-space:nowrap;cursor:pointer}
 .sheen-control:disabled{opacity:.45;cursor:not-allowed}
-/* focus (0.7.0): a control button keeps the base keyboard ring (:focus-visible); a control holding a text field shows the
-   same thin ring for keyboard focus only, never for a press (data-sheen-pointer), and its field draws none of its own */
-.sheen-control:has(:is(input,select,textarea):focus-visible){outline:2px solid var(--sheen-accent-text);outline-offset:2px}
-:root[data-sheen-pointer] .sheen-control:has(:is(input,select,textarea):focus-visible){outline:none}
+/* a control inside an inline wrapper (an app's component) sits at the top of its line, so no baseline gap moves it off
+   the row; a control holding a text field draws no ring, as no text field does (0.7.0) */
+.sheen-control,sheen-menu-button[variant="control"]{vertical-align:top}
 /* an open control (its menu or panel open) takes the tonal fill and keeps its hairline (0.7.0: no accent ring or glow;
    the app mockups' rings are annotations, and only keyboard focus draws a ring) */
 .sheen-control[aria-expanded="true"]{background:var(--sheen-tonal)}
@@ -907,8 +909,13 @@ th[aria-sort="ascending"],th[aria-sort="descending"]{color:var(--sheen-text)}
    size and weight in the browser's monospace (the mockups' own rule puts inherit inside the font shorthand, which browsers
    drop, so their caps keep the row's size and the kbd element's monospace) */
 .sheen-find .sheen-kbd,:is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item .sheen-kbd,sheen-command-palette.sheen-small .sheen-kbd,.sheen-keys .sheen-kbd{min-inline-size:20px;block-size:20px;padding-inline:5px;border-radius:6px;background:none;box-shadow:inset 0 0 0 1px var(--sheen-separator);color:var(--sheen-text-tertiary);font:inherit;font-family:monospace;line-height:1}
-/* a text field focused with a pointer draws no ring anywhere; keyboard focus keeps the base ring */
-:root[data-sheen-pointer] :is(input,select,textarea):focus-visible{outline:none}
+/* focus (0.7.0): a ring only while the keyboard navigates. Tab or Shift+Tab marks <html data-sheen-keyboard> and the next
+   press clears it, so a press, Esc, Enter, typing and arrows never bring a ring back; in a dense menu the item the arrows
+   reach shows the hover fill instead. A text field never draws a ring: its caret shows the focus. */
+:root:not([data-sheen-keyboard]) .sheen :focus-visible,:root:not([data-sheen-keyboard]) .sheen:focus-visible{outline:none!important}
+:root:not([data-sheen-keyboard]) :is(.sheen-choice:has(input:focus-visible),.sheen-chip:has(>input:focus-visible)){outline:none}
+:root:not([data-sheen-keyboard]) :is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item:focus-visible{background:var(--sheen-tonal)}
+.sheen :is(input:not([type="checkbox"],[type="radio"],[type="range"],[type="button"],[type="submit"],[type="reset"],[type="file"],[type="color"],[type="image"]),select,textarea):focus-visible{outline:none!important}
 
 /* a module's page tabs (the app mockups' k-tabs): secondary words with 24px each side; the page you are on is marked by
    its 2px accent line only. The row's hairline is drawn inside it, so a scrolling row never clips the 2px line. Links

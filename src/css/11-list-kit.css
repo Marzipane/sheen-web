@@ -15,6 +15,8 @@
 .sheen-view-tab[aria-selected="true"],.sheen-view-tab[aria-current="page"]{color:var(--sheen-text);border-block-end-color:var(--sheen-accent)}
 .sheen-view-tab[aria-selected="true"] small{background:color-mix(in srgb,var(--sheen-accent) 10%,transparent);color:var(--sheen-accent-text)}
 .sheen-views-end{margin-inline-start:auto;display:flex;align-items:center;gap:4px;padding-block-end:6px}
+/* in a find row the views end is one more control: its 6px are for the views row's tabs, and here they would lift it */
+.sheen-find-row .sheen-views-end{padding-block-end:0}
 
 /* a module's page tab row (Users · Roles · …): view tabs as links in a <nav class="sheen-page-tabs"> */
 .sheen-page-tabs{display:flex;gap:4px;min-inline-size:0;overflow-x:auto;scrollbar-width:none;border-block-end:1px solid var(--sheen-separator)}
@@ -23,10 +25,9 @@
 .sheen-find-row{display:flex;align-items:center;gap:8px;min-inline-size:0}
 .sheen-control{block-size:36px;display:inline-flex;align-items:center;gap:7px;padding-inline:12px;border:0;border-radius:11px;background:var(--sheen-surface);box-shadow:inset 0 0 0 1px var(--sheen-separator);color:var(--sheen-text);font:inherit;font-size:13.5px;font-weight:600;line-height:1.2;white-space:nowrap;cursor:pointer}
 .sheen-control:disabled{opacity:.45;cursor:not-allowed}
-/* focus (0.7.0): a control button keeps the base keyboard ring (:focus-visible); a control holding a text field shows the
-   same thin ring for keyboard focus only, never for a press (data-sheen-pointer), and its field draws none of its own */
-.sheen-control:has(:is(input,select,textarea):focus-visible){outline:2px solid var(--sheen-accent-text);outline-offset:2px}
-:root[data-sheen-pointer] .sheen-control:has(:is(input,select,textarea):focus-visible){outline:none}
+/* a control inside an inline wrapper (an app's component) sits at the top of its line, so no baseline gap moves it off
+   the row; a control holding a text field draws no ring, as no text field does (0.7.0) */
+.sheen-control,sheen-menu-button[variant="control"]{vertical-align:top}
 /* an open control (its menu or panel open) takes the tonal fill and keeps its hairline (0.7.0: no accent ring or glow;
    the app mockups' rings are annotations, and only keyboard focus draws a ring) */
 .sheen-control[aria-expanded="true"]{background:var(--sheen-tonal)}

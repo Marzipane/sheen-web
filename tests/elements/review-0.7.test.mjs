@@ -88,23 +88,14 @@ test('forced colors: the Filters checkboxes fall back to the system checkbox', (
   has('@media (forced-colors:active){.sheen-filter-option input[type="checkbox"]{appearance:auto;-webkit-appearance:auto;box-shadow:none}.sheen-filter-option input[type="checkbox"]:checked::after{content:none}}');
 });
 
-test('keyboard state: any key outside a text field means keyboard use; a lone modifier does not', () => {
+test('keyboard state: a lone modifier or a shortcut key on the page is not navigation; only Tab is', () => {
   const w = page('<input id="q">');
-  const root = w.document.documentElement, q = w.document.getElementById('q');
-  q.dispatchEvent(new w.MouseEvent('pointerdown', { bubbles: true }));
-  key(w, w.document.body, 'Shift');
-  assert.equal(root.hasAttribute('data-sheen-pointer'), true, 'Shift alone');
-  key(w, w.document.body, '/');
-  assert.equal(root.hasAttribute('data-sheen-pointer'), false, 'a shortcut key on the page');
-});
-
-test('keyboard state: leaving the window clears a press, so Tab back from the address bar shows the ring', () => {
-  const w = page('<button id="b">B</button>');
   const root = w.document.documentElement;
-  w.document.getElementById('b').dispatchEvent(new w.MouseEvent('pointerdown', { bubbles: true }));
-  assert.equal(root.hasAttribute('data-sheen-pointer'), true);
-  w.dispatchEvent(new w.Event('blur'));
-  assert.equal(root.hasAttribute('data-sheen-pointer'), false);
+  key(w, w.document.body, 'Shift');
+  key(w, w.document.body, '/');
+  assert.equal(root.hasAttribute('data-sheen-keyboard'), false);
+  key(w, w.document.body, 'Tab', { shiftKey: true });
+  assert.equal(root.hasAttribute('data-sheen-keyboard'), true);
 });
 
 test('placement: a menu wider than the room on both sides stays on screen', () => {

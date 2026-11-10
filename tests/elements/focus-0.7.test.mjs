@@ -1,5 +1,5 @@
-// 0.7.0 focus: no ring and no glow on pointer focus; one thin ring for keyboard focus only; a text field inside a
-// control never draws its own outline. The page knows the last kind of input from data-sheen-pointer on <html>.
+// 0.7.0 focus: a ring only while the keyboard navigates (Tab or Shift+Tab marks <html data-sheen-keyboard>, the next press
+// clears it); a text field never draws one, inside a control or not; nothing glows.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { page, key } from './setup.mjs';
@@ -10,20 +10,19 @@ const has = (part) => assert.ok(css.includes(part), part);
 const min = readFileSync(new URL('../../dist/sheen.min.css', import.meta.url), 'utf8');
 const DENSE = ':is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button)';
 
-test('a press marks the page as pointer-driven; Tab, and arrows outside a text field, mark it keyboard-driven', () => {
+test('Tab marks keyboard navigation and a press clears it; typing, moving the caret and arrows on a button never mark it', () => {
   const w = page('<label class="sheen-control sheen-find"><input type="search" id="q"></label><button id="b" type="button">B</button>');
   const root = w.document.documentElement, q = w.document.getElementById('q'), b = w.document.getElementById('b');
-  assert.equal(root.hasAttribute('data-sheen-pointer'), false, 'keyboard until the first press');
+  assert.equal(root.hasAttribute('data-sheen-keyboard'), false, 'no ring until the first Tab');
   q.dispatchEvent(new w.MouseEvent('pointerdown', { bubbles: true }));
-  assert.equal(root.hasAttribute('data-sheen-pointer'), true);
   key(w, q, 'a');
   key(w, q, 'ArrowLeft');
-  assert.equal(root.hasAttribute('data-sheen-pointer'), true, 'typing and moving the caret keep the pointer state');
   key(w, b, 'ArrowDown');
-  assert.equal(root.hasAttribute('data-sheen-pointer'), false, 'arrows on a button or a menu item are keyboard use');
-  b.dispatchEvent(new w.MouseEvent('pointerdown', { bubbles: true }));
+  assert.equal(root.hasAttribute('data-sheen-keyboard'), false, 'typing, the caret and arrows');
   key(w, q, 'Tab');
-  assert.equal(root.hasAttribute('data-sheen-pointer'), false, 'Tab is keyboard use');
+  assert.equal(root.hasAttribute('data-sheen-keyboard'), true, 'Tab');
+  b.dispatchEvent(new w.MouseEvent('pointerdown', { bubbles: true }));
+  assert.equal(root.hasAttribute('data-sheen-keyboard'), false, 'the next press');
 });
 
 test('a text field inside a control draws no outline of its own, and the control no glow', () => {
@@ -34,17 +33,13 @@ test('a text field inside a control draws no outline of its own, and the control
   assert.ok(!/\.sheen-control:focus-visible[^{]*\{[^}]*box-shadow/.test(css), 'no glow on a focused control');
 });
 
-test('a control holding a text field shows one thin ring for keyboard focus only', () => {
-  has('.sheen-control:has(:is(input,select,textarea):focus-visible){outline:2px solid var(--sheen-accent-text);outline-offset:2px}');
-  has(':root[data-sheen-pointer] .sheen-control:has(:is(input,select,textarea):focus-visible){outline:none}');
+test('a control holding a text field draws no ring, keyboard or not: no text field does', () => {
+  assert.ok(!css.includes('.sheen-control:has(:is(input,select,textarea):focus-visible){outline'));
+  assert.ok(min.includes('.sheen :is(input:not([type="checkbox"],[type="radio"],[type="range"],[type="button"],[type="submit"],[type="reset"],[type="file"],[type="color"],[type="image"]),select,textarea):focus-visible{outline:none!important}'));
 });
 
-test('text fields focused with a pointer draw no ring anywhere', () => {
-  has(':root[data-sheen-pointer]:is(input,select,textarea):focus-visible{outline:none}');
-  assert.ok(min.includes(':root[data-sheen-pointer] :is(input,select,textarea):focus-visible{outline:none}'));
-});
-
-test('menus ring an item for keyboard focus only; opening one with a pointer rings nothing', () => {
+test('menus ring an item only while the keyboard navigates; arrows after a press show the hover fill', () => {
   assert.ok(!css.includes(DENSE + ' .sheen-menu-item:focus{'), 'the 0.7.0 draft ring on any focus is gone');
   has(DENSE + ' .sheen-menu-item:focus-visible{background:none;outline:2px solid var(--sheen-accent-text);outline-offset:-2px}');
+  assert.ok(min.includes(':root:not([data-sheen-keyboard]) ' + DENSE + ' .sheen-menu-item:focus-visible{background:var(--sheen-tonal)}'));
 });

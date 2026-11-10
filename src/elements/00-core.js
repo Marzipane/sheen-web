@@ -119,15 +119,11 @@ function cssVar(el, name, fallback) {
   return v || fallback;
 }
 
-// The last kind of input (0.7.0): a press marks <html data-sheen-pointer>, so the CSS draws no focus ring for it; Tab,
-// and any key outside a text field but a lone modifier, clear it, so keyboard focus keeps its one thin ring. Typing never
-// changes it. Leaving the window clears it too: Tab from the address bar comes back without a key the page hears.
+// Keyboard navigation (0.7.0): Tab or Shift+Tab marks <html data-sheen-keyboard>, and only then do buttons, links, tabs
+// and menu items draw their thin focus ring; the next press clears it. Esc, Enter, letters and arrows never set it, so
+// closing a panel with Esc or typing in a field brings no ring back. A text field never draws one: its caret shows focus.
 (function () {
-  var root = document.documentElement, typing = 'input:not([type="checkbox"]):not([type="radio"]),textarea,select,[contenteditable]';
-  document.addEventListener('pointerdown', function () { root.setAttribute('data-sheen-pointer', ''); }, true);
-  document.addEventListener('keydown', function (e) {
-    var t = e.target, inField = t && t.nodeType === 1 && t.matches(typing);
-    if (e.key === 'Tab' || (!inField && !/^(Shift|Control|Alt|AltGraph|Meta|CapsLock|Fn|OS)$/.test(e.key))) root.removeAttribute('data-sheen-pointer');
-  }, true);
-  window.addEventListener('blur', function () { root.removeAttribute('data-sheen-pointer'); });
+  var root = document.documentElement;
+  document.addEventListener('keydown', function (e) { if (e.key === 'Tab') root.setAttribute('data-sheen-keyboard', ''); }, true);
+  document.addEventListener('pointerdown', function () { root.removeAttribute('data-sheen-keyboard'); }, true);
 })();
