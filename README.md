@@ -244,8 +244,8 @@ work, and fills in its own words.
 | `.sheen-page-tabs` (with `.sheen-view-tab` links, `aria-current="page"`) | a module's page tab row |
 | `.sheen-cell-button` (`.sheen-strong`), `tr[tabindex]` | a cell value that opens or edits in place; a row the keyboard reaches |
 | `.sheen-filter-group`, `.sheen-filter-field`, `.sheen-filter-option`, `.sheen-filter-footer` | the filters inside a `<sheen-side-panel>`, with a sticky footer (on the bottom edge of a panel with `heading`); a ticked option is tinted |
-| `.sheen-control.sheen-on` | a control whose filters are on: the accent tint |
-| `.sheen-table-card`, `.sheen-table.sheen-small`, `.sheen-table[aria-busy="true"]` | a table on an 18px surface card (with `.sheen-table-wrap` it still scrolls sideways); the dense app table with a tinted header row and 16px checkboxes; a busy table drawn as one placeholder block |
+| `.sheen-control.sheen-on` | a control whose filters are on: its glyph and outline in the accent |
+| `.sheen-table-card`, `.sheen-table.sheen-small`, `.sheen-table[aria-busy="true"]` | a table on an 18px surface card (with `.sheen-table-wrap` it still scrolls sideways); the dense app table with a tinted header row and 16px checkboxes (`.sheen-wrap` for long sentences); a busy table drawn as one placeholder block |
 | `.sheen-list-message`, `.sheen-list-message-actions` (`.sheen-danger` for an error) | nothing matches, or the results couldn't load |
 | `.sheen-sort-button`, `.sheen-sort-glyph` on `th[aria-sort]` | a sortable header; the arrow sits in the end padding |
 | `.sheen-pin-end`, `.sheen-truncate`, `tr[aria-selected="true"]` | the row-menu column pinned at the end edge, one-line cells, a ticked row |
