@@ -54,6 +54,10 @@ additive; the fixes, the looks that change and one change against an earlier own
   edge (`--sheen-toaster-end`, `--sheen-toaster-size`), the action as a link, and a press on the toast closes it. Its
   close button shows only while it has keyboard focus (`.sheen-focus-only`: out of sight until focused). A toast's
   `glyph` replaces the tone's dot in either position, and Esc on any toast closes it.
+- Tokens: `--sheen-size-app-bar` (60px, `size.appBar` in `tokens.json`, web only) is the block size of
+  `.sheen-app-bar`, so an app places a top toaster under its bar from tokens alone:
+  `--sheen-toaster-top: calc(var(--sheen-size-app-bar) + var(--sheen-space-m))`, `--sheen-toaster-end:
+  var(--sheen-space-xxl)`. Number tokens with two-word keys take kebab-case names.
 - Glyphs: the filled Flutter sheen icons draw as `<name>-fill` (`check-circle-fill`), filled in the text colour; `alert`
   is a warning triangle.
 - Focus: Tab or Shift+Tab marks `<html data-sheen-keyboard>`, and only then do buttons, links, tabs and menu items draw

@@ -291,7 +291,9 @@ work, and fills in its own words.
 | `accentText` | `--sheen-accent-text` | `#6AA8FF` | `#0A5FE0` |
 
 …and `surfaceMuted`, `track`, `separator`, `textSecondary`, `textTertiary`, `onAccent`, `success`, `warning`, `danger`,
-`rating`, `sheet`, `dealFill`, `tonal`; spacing `--sheen-space-*`, radii `--sheen-radius-*`. Change the accent by
+`rating`, `sheet`, `dealFill`, `tonal`; spacing `--sheen-space-*`, radii `--sheen-radius-*`, and the app bar's block
+size `--sheen-size-app-bar` (60px; web only). A top toaster under the app bar takes
+`--sheen-toaster-top: calc(var(--sheen-size-app-bar) + var(--sheen-space-m))`. Change the accent by
 setting `--sheen-accent` and `--sheen-accent-text`.
 
 ## Develop

@@ -27,7 +27,7 @@
 .sheen-sidebar-foot{display:flex;flex-direction:column;gap:8px;padding:12px 16px;border-block-start:1px solid var(--sheen-separator);font-size:13px}
 .sheen-sidebar-foot>span{overflow-wrap:anywhere}
 .sheen-app-main{display:flex;flex-direction:column;min-inline-size:0;min-block-size:0}
-.sheen-app-bar{block-size:60px;flex:none;display:flex;align-items:center;gap:12px;padding-inline:24px;border-block-end:1px solid var(--sheen-separator)}
+.sheen-app-bar{block-size:var(--sheen-size-app-bar);flex:none;display:flex;align-items:center;gap:12px;padding-inline:24px;border-block-end:1px solid var(--sheen-separator)}
 .sheen-app-search{flex:0 1 460px;block-size:38px;border-radius:12px;background:var(--sheen-tonal);display:flex;align-items:center;gap:8px;padding-inline:12px;color:var(--sheen-text-secondary)}
 .sheen-app-search input{all:unset;flex:1;min-inline-size:0;font-size:14px;color:var(--sheen-text)}
 .sheen-app-search input::placeholder{color:var(--sheen-text-secondary);opacity:1}
