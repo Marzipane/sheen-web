@@ -11,8 +11,8 @@ sheen-menu-button[glyph]>.sheen-control[aria-expanded="true"]{background:var(--s
 
 /* key caps: the find row's "/" and the shortcuts in small menus are plain outlined caps, not filled chips */
 .sheen-find .sheen-kbd,:is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item .sheen-kbd{min-inline-size:20px;block-size:20px;padding-inline:5px;border-radius:6px;background:none;box-shadow:inset 0 0 0 1px var(--sheen-separator);color:var(--sheen-text-tertiary);font:600 11px/1 inherit}
-/* a small menu rings the item that has focus, also when it was opened with a pointer (the first safe item takes focus) */
-:is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item:focus{background:none;outline:2px solid var(--sheen-accent-text);outline-offset:-2px}
+/* a text field focused with a pointer draws no ring anywhere; keyboard focus keeps the base ring */
+:root[data-sheen-pointer] :is(input,select,textarea):focus-visible{outline:none}
 
 /* a module's page tabs show the page you are on in the accent; an app page's title */
 .sheen-view-tab[aria-current="page"]{color:var(--sheen-accent-text)}

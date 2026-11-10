@@ -124,6 +124,17 @@ function cssVar(el, name, fallback) {
   return v || fallback;
 }
 
+// The last kind of input (0.7.0): a press marks <html data-sheen-pointer>, so the CSS draws no focus ring for it; Tab,
+// and arrow keys outside a text field, clear it, so keyboard focus keeps its one thin ring. Typing never changes it.
+(function () {
+  var root = document.documentElement, typing = 'input:not([type="checkbox"]):not([type="radio"]),textarea,select,[contenteditable]';
+  document.addEventListener('pointerdown', function () { root.setAttribute('data-sheen-pointer', ''); }, true);
+  document.addEventListener('keydown', function (e) {
+    var t = e.target, inField = t && t.nodeType === 1 && t.matches(typing);
+    if (e.key === 'Tab' || (!inField && /^(Arrow|Home$|End$|Page)/.test(e.key))) root.removeAttribute('data-sheen-pointer');
+  }, true);
+})();
+
 // ---- 10-basics.js
 // <sheen-glyph name="play" size="20" label="Play">
 //   A sheen glyph. Without label it is decorative (aria-hidden); with label it is an image with that name.

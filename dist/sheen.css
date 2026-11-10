@@ -105,7 +105,7 @@
    accent. The glow needs color-mix; without it the line alone shows. */
 .sheen-field:focus-within{box-shadow:inset 0 0 0 1.5px var(--sheen-accent-text);box-shadow:inset 0 0 0 1.5px var(--sheen-accent-text),0 0 0 4px color-mix(in srgb,var(--sheen-accent) 24%,transparent)}
 .sheen-field:focus-within>span:first-child{color:var(--sheen-accent-text)}
-.sheen :is(.sheen-field,.sheen-segment,.sheen-picker-pill) :is(input,select,textarea,.sheen-segment-trigger,.sheen-picker-trigger):focus-visible{outline:none}
+.sheen :is(.sheen-field,.sheen-segment,.sheen-picker-pill,.sheen-control) :is(input,select,textarea,.sheen-segment-trigger,.sheen-picker-trigger):focus-visible{outline:none}
 /* A part of a glass bar (a search bar's where, dates, guests): the part being filled lights up as its own pill. Its
    opener (a button that opens a calendar) takes .sheen-segment-trigger; what opens from it keeps its own focus ring. */
 .sheen-segment{border-radius:999px;transition:background-color .15s,box-shadow .15s}
@@ -738,7 +738,10 @@ sheen-menu-button.sheen-small .sheen-menu,.sheen-small sheen-menu-button .sheen-
 .sheen-find-row{display:flex;align-items:center;gap:8px;min-inline-size:0}
 .sheen-control{block-size:36px;display:inline-flex;align-items:center;gap:7px;padding-inline:12px;border:0;border-radius:11px;background:var(--sheen-surface);box-shadow:inset 0 0 0 1px var(--sheen-separator);color:var(--sheen-text);font:inherit;font-size:13.5px;font-weight:600;line-height:1.2;white-space:nowrap;cursor:pointer}
 .sheen-control:disabled{opacity:.45;cursor:not-allowed}
-.sheen-control:focus-visible,.sheen-control:focus-within{outline:none;box-shadow:inset 0 0 0 1.5px var(--sheen-accent-text),0 0 0 4px color-mix(in srgb,var(--sheen-accent) 16%,transparent)}
+/* focus (0.7.0): a control button keeps the base keyboard ring (:focus-visible); a control holding a text field shows the
+   same thin ring for keyboard focus only, never for a press (data-sheen-pointer), and its field draws none of its own */
+.sheen-control:has(:is(input,select,textarea):focus-visible){outline:2px solid var(--sheen-accent-text);outline-offset:2px}
+:root[data-sheen-pointer] .sheen-control:has(:is(input,select,textarea):focus-visible){outline:none}
 .sheen-control[aria-expanded="true"]{box-shadow:inset 0 0 0 1.5px var(--sheen-accent-text),0 0 0 4px color-mix(in srgb,var(--sheen-accent) 16%,transparent)}
 .sheen-control .sheen-icon{inline-size:15px;block-size:15px;flex:none;color:var(--sheen-text-secondary)}
 .sheen-find{flex:1 1 auto;min-inline-size:0;cursor:text;font-weight:400}
@@ -877,8 +880,8 @@ sheen-menu-button[glyph]>.sheen-control[aria-expanded="true"]{background:var(--s
 
 /* key caps: the find row's "/" and the shortcuts in small menus are plain outlined caps, not filled chips */
 .sheen-find .sheen-kbd,:is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item .sheen-kbd{min-inline-size:20px;block-size:20px;padding-inline:5px;border-radius:6px;background:none;box-shadow:inset 0 0 0 1px var(--sheen-separator);color:var(--sheen-text-tertiary);font:600 11px/1 inherit}
-/* a small menu rings the item that has focus, also when it was opened with a pointer (the first safe item takes focus) */
-:is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item:focus{background:none;outline:2px solid var(--sheen-accent-text);outline-offset:-2px}
+/* a text field focused with a pointer draws no ring anywhere; keyboard focus keeps the base ring */
+:root[data-sheen-pointer] :is(input,select,textarea):focus-visible{outline:none}
 
 /* a module's page tabs show the page you are on in the accent; an app page's title */
 .sheen-view-tab[aria-current="page"]{color:var(--sheen-accent-text)}

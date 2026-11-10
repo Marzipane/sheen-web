@@ -24,10 +24,6 @@ test('key caps: the find row\'s "/" and the shortcuts in small menus are plain o
   has('.sheen-find .sheen-kbd,' + DENSE + ' .sheen-menu-item .sheen-kbd{min-inline-size:20px;block-size:20px;padding-inline:5px;border-radius:6px;background:none;box-shadow:inset 0 0 0 1px var(--sheen-separator);color:var(--sheen-text-tertiary);font:600 11px/1 inherit}');
 });
 
-test('small menus ring the item that has focus, also when the menu was opened with a pointer', () => {
-  has(DENSE + ' .sheen-menu-item:focus{background:none;outline:2px solid var(--sheen-accent-text);outline-offset:-2px}');
-});
-
 test('the hidden attribute hides list kit parts, though they set their own display', () => {
   has(':where(.sheen-find-row,.sheen-views-row,.sheen-applied-row,.sheen-control,.sheen-control-count,.sheen-link-button,.sheen-filter-chip,.sheen-list-message,.sheen-status)[hidden]{display:none!important}');
 });

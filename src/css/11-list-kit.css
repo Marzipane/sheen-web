@@ -23,7 +23,10 @@
 .sheen-find-row{display:flex;align-items:center;gap:8px;min-inline-size:0}
 .sheen-control{block-size:36px;display:inline-flex;align-items:center;gap:7px;padding-inline:12px;border:0;border-radius:11px;background:var(--sheen-surface);box-shadow:inset 0 0 0 1px var(--sheen-separator);color:var(--sheen-text);font:inherit;font-size:13.5px;font-weight:600;line-height:1.2;white-space:nowrap;cursor:pointer}
 .sheen-control:disabled{opacity:.45;cursor:not-allowed}
-.sheen-control:focus-visible,.sheen-control:focus-within{outline:none;box-shadow:inset 0 0 0 1.5px var(--sheen-accent-text),0 0 0 4px color-mix(in srgb,var(--sheen-accent) 16%,transparent)}
+/* focus (0.7.0): a control button keeps the base keyboard ring (:focus-visible); a control holding a text field shows the
+   same thin ring for keyboard focus only, never for a press (data-sheen-pointer), and its field draws none of its own */
+.sheen-control:has(:is(input,select,textarea):focus-visible){outline:2px solid var(--sheen-accent-text);outline-offset:2px}
+:root[data-sheen-pointer] .sheen-control:has(:is(input,select,textarea):focus-visible){outline:none}
 .sheen-control[aria-expanded="true"]{box-shadow:inset 0 0 0 1.5px var(--sheen-accent-text),0 0 0 4px color-mix(in srgb,var(--sheen-accent) 16%,transparent)}
 .sheen-control .sheen-icon{inline-size:15px;block-size:15px;flex:none;color:var(--sheen-text-secondary)}
 .sheen-find{flex:1 1 auto;min-inline-size:0;cursor:text;font-weight:400}
