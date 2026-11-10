@@ -271,6 +271,7 @@ work, and fills in its own words.
 | `.sheen-empty` (+ `-glyph`, `-title`, `-actions`) | empty states |
 | `.sheen-status` (+ `-glyph`, `-title`, `-actions`; `.sheen-danger`, `.sheen-warning`, `.sheen-success`) | Flutter sheen's SheenStatusScreen: a glyph in a 72px circle of its tone, a title, short words, up to two actions stacked; a page that is empty, failed, offline or closed to you |
 | `.sheen-page-title` | an app page's title (26px) |
+| `.sheen-page-head` (+ `-text`, `-actions`), `.sheen-page-crumbs`, `.sheen-page-subtitle` | an app page's header: crumbs, the title and a line with room for a pill, the actions at the end edge on the bottom line (under the words when narrow) |
 | `.sheen-solid` | on a layer or any box around it (the body): menus, toasts, the command palette, side panels and hover cards on the opaque sheet; modal layers dim with a plain shade |
 | `.sheen-skeleton-line`, `-block`, `-circle` | skeleton loaders (with `.sheen-skeleton`) |
 | `.sheen-stat` (+ `-label`, `-value`, `-note`), `.sheen-table`, `.sheen-badge` (`.sheen-ok`, `.sheen-warn`, `.sheen-bad`, `.sheen-run`), `.sheen-progress` | dashboards and job lists |

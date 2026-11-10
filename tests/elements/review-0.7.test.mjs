@@ -126,7 +126,7 @@ test('mirroring: the top toaster follows the page direction; a solid panel\'s sh
 });
 
 test('hidden wins over the display of the new parts too', () => {
-  has(':where(.sheen-find-row,.sheen-views-row,.sheen-applied-row,.sheen-control,.sheen-control-count,.sheen-link-button,.sheen-filter-chip,.sheen-list-message,.sheen-status,sheen-menu-button,.sheen-views-end,.sheen-page-tabs,.sheen-filter-footer,.sheen-panel-foot,.sheen-status-actions,.sheen-table-foot,.sheen-pager)[hidden]{display:none!important}');
+  has(':where(.sheen-find-row,.sheen-views-row,.sheen-applied-row,.sheen-control,.sheen-control-count,.sheen-link-button,.sheen-filter-chip,.sheen-list-message,.sheen-status,sheen-menu-button,.sheen-views-end,.sheen-page-tabs,.sheen-filter-footer,.sheen-panel-foot,.sheen-status-actions,.sheen-table-foot,.sheen-pager,.sheen-page-head,.sheen-page-head-text,.sheen-page-head-actions)[hidden]{display:none!important}');
 });
 
 test('logical sizes: small buttons in the list kit use block-size', () => {

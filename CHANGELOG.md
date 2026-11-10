@@ -3,7 +3,7 @@
 ## 0.7.0
 
 The parts an app's list page and its forms need, at the sizes of the app mockups they were ported from: control-look
-menu buttons with glyphs, solid layers, a modal side panel with a heading and a footer, a table card with a small table,
+menu buttons with glyphs, a page header, solid layers, a modal side panel with a heading and a footer, a table card with a small table,
 a group row and a pager, dense form fields, a small command palette and shortcuts sheet, a status block and a toaster at
 the top. Focus rings now show for the keyboard only. Mostly additive; the fixes and the looks that change are listed last.
 
@@ -43,6 +43,10 @@ the top. Focus rings now show for the keyboard only. Mostly additive; the fixes 
 - `.sheen-status` (with `-glyph`, `-title`, `-actions` and the danger, warning and success tones) follows Flutter sheen's
   SheenStatusScreen: a glyph in a 72px circle of its tone, a title, words at 15px at most 34 characters wide and up to two
   actions stacked. `.sheen-page-title` is an app page's 26px title.
+- `.sheen-page-head` is an app page's header: `.sheen-page-head-text` holds `.sheen-page-crumbs` (12.5px), the
+  `.sheen-page-title` and a 14px `.sheen-page-subtitle` with room for a `.sheen-pill` beside it, and
+  `.sheen-page-head-actions` sits at the end edge on the bottom line. The words keep 320px; under that the actions move
+  to a line of their own, still at the end edge.
 - `<sheen-toaster position="top">` follows Flutter sheen's toast: under the app bar (`--sheen-toaster-top`), at the end
   edge (`--sheen-toaster-end`, `--sheen-toaster-size`), the action as a link, and a press on the toast closes it. Its
   close button shows only while it has keyboard focus. A toast's `glyph` replaces the tone's dot in either position, and
@@ -73,7 +77,7 @@ the top. Focus rings now show for the keyboard only. Mostly additive; the fixes 
   focus state; every new rule in the built CSS with the values it ports, logical sides only; contrast from the tokens
   (WCAG AA in light and dark) for accent items, hints, the tinted header, ticked options, key caps, status words and
   toasts, and 3:1 for the status glyphs and a tinted control's glyph; the dense fields, the panel footer, the large
-  switch, the group row, the pager, the small palette and the shortcuts sheet; a radio group and a hidden input in the
+  switch, the group row, the pager, the small palette and the shortcuts sheet, the page head; a radio group and a hidden input in the
   Tab cycle, focus coming back into a modal panel, its dim when hidden or moved, an empty heading, the top toast by
   keyboard, compact menu button names, forced colors and a menu on a phone.
 

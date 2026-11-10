@@ -12,11 +12,6 @@
   .demo-side{background:var(--sheen-surface);border-inline-end:1px solid var(--sheen-separator)}
   .demo-bar{block-size:60px;border-block-end:1px solid var(--sheen-separator)}
   .demo-content{display:flex;flex-direction:column;gap:16px;padding:20px 24px 24px;min-block-size:calc(100dvh - 61px)}
-  .demo-head{display:flex;align-items:flex-end;gap:16px}
-  .demo-head-t{flex:1;min-inline-size:0;display:flex;flex-direction:column;gap:4px}
-  .demo-crumbs{font-size:12.5px;color:var(--sheen-text-tertiary)}
-  .demo-head-t p{margin:0;font-size:14px;color:var(--sheen-text-secondary)}
-  .demo-head-b{display:flex;gap:8px;align-items:center}
   .demo-compact .sheen-list-kit{max-inline-size:600px}
 </style>
 </head>
@@ -26,9 +21,9 @@
   <div>
     <div class="demo-bar" aria-hidden="true"></div>
     <main class="demo-content" id="content">
-      <div class="demo-head">
-        <div class="demo-head-t"><span class="demo-crumbs" data-w="crumbs"></span><h1 class="sheen-page-title" data-w="title"></h1><p data-w="count"></p></div>
-        <div class="demo-head-b">
+      <div class="sheen-page-head">
+        <div class="sheen-page-head-text"><span class="sheen-page-crumbs" data-w="crumbs"></span><h1 class="sheen-page-title" data-w="title"></h1><p class="sheen-page-subtitle" data-w="count"></p></div>
+        <div class="sheen-page-head-actions">
           <button class="sheen-button sheen-small" type="button" data-w="add"></button>
           <sheen-menu-button id="more" class="sheen-small" variant="control" glyph="more"></sheen-menu-button>
         </div>
