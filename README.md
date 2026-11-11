@@ -141,8 +141,8 @@ For apps that are not Laravel sites, `dist/sheen-elements.js` adds framework-fre
 stylesheet (no build step):
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Marzipane/sheen-web@v0.7.0/dist/sheen.min.css">
-<script src="https://cdn.jsdelivr.net/gh/Marzipane/sheen-web@v0.7.0/dist/sheen-elements.min.js" defer></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Marzipane/sheen-web@v0.7.1/dist/sheen.min.css">
+<script src="https://cdn.jsdelivr.net/gh/Marzipane/sheen-web@v0.7.1/dist/sheen-elements.min.js" defer></script>
 ```
 
 The rules every element follows:
@@ -260,7 +260,8 @@ work, and fills in its own words.
 | Class | Use |
 | --- | --- |
 | `.sheen-shell`, `.sheen-rail`, `.sheen-rail-item`, `.sheen-main`, `.sheen-topbar`, `.sheen-search-trigger` | an app shell: a navigation rail (a bottom bar on phones), a glass top bar, a ⌘K button |
-| `.sheen-sidebar-shell`, `.sheen-sidebar`, `.sheen-sidebar-nav`, `.sheen-sidebar-item`, `.sheen-app-main`, `.sheen-app-bar`, `.sheen-app-content` | an app shell with a labelled sidebar, for record-heavy apps; on top below 760px |
+| `.sheen-sidebar-shell`, `.sheen-sidebar`, `.sheen-sidebar-nav`, `.sheen-sidebar-item`, `.sheen-app-main`, `.sheen-app-bar`, `.sheen-app-content` | an app shell with a labelled sidebar, for record-heavy apps; under 760px the sidebar is a drawer from the start edge |
+| `.sheen-nav-button` (`aria-controls` = the sidebar's id, `aria-expanded`, `aria-label`) | in `.sheen-app-bar`, under 760px: opens the sidebar as a drawer; Esc, the dim or a link closes it and focus goes back to the button (0.7.1) |
 | `.sheen-auth-page`, `.sheen-auth-card`, `.sheen-form-field`, `.sheen-input`, `.sheen-form-error` | a small centred sign-in page |
 | `.sheen-panel` (+ `.sheen-glass`), `.sheen-panel-head`, `.sheen-glow` | glass panels with a soft accent glow on hover and focus |
 | `.sheen-aurora` | a fixed, slowly moving gradient behind the page (`--sheen-aurora-a/b/c` set its colours) |

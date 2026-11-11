@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.7.1
+
+The sidebar shell under 760px: a drawer instead of a sidebar stacked over the page.
+
+- Under 760px `.sheen-sidebar` leaves the page and opens as a drawer from the start edge (the left; the right in
+  Arabic), `min(300px, 86vw)` wide, over a dim, so the page starts under the app bar. A `.sheen-nav-button` in the
+  `.sheen-app-bar` opens it: its `aria-controls` names the sidebar's id, and it shows only under 760px. Opening puts
+  focus on the drawer's first link and makes the rest of the shell inert, so Tab stays in the drawer; Esc, a press on
+  the dim or on a link, or the button again closes it, and focus goes back to the button. Growing past 760px closes it.
+- A closed drawer draws nothing: it is out of sight with no shadow and out of the Tab order.
+- Looks that change: under 760px the sidebar no longer sits on top of the page (0.5.0 put it there, up to 40% of the
+  window high). An app adds the button to its bar; without one, the sidebar stays out of reach under 760px.
+- Tests: the drawer's rules in the built CSS; opening, Esc, a link, the dim and the button again, with focus and inert, in
+  the elements; in a browser at 600, 480 and 375px, in English and Arabic, a closed drawer that leaves the start edge to
+  the page, an open one on that edge that keeps Tab, and at 1280px the button hidden and the sidebar beside the page.
+
 ## 0.7.0
 
 The parts an app's list page and its forms need, at the sizes of the app mockups they were ported from: control-look

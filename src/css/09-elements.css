@@ -159,6 +159,8 @@ sheen-side-panel.sheen-headed .sheen-filter-footer{margin-inline:-20px;margin-bl
 .sheen-panel-dim{position:fixed;inset:0;z-index:899;background:rgba(0,0,0,.18)}
 /* forced colors drop the panel's shadow and its dim's colour: an edge toward the page, and a dim in the text colour */
 @media (forced-colors: active){sheen-side-panel.sheen-glass{border-inline-start:1px solid CanvasText}.sheen-panel-dim{forced-color-adjust:none;background:color-mix(in srgb,CanvasText 30%,transparent)}}
+/* the sidebar drawer under 760px (0.7.1): an open one casts the side panel's shadow toward the page and dims it the same */
+@media (max-width:760px){.sheen-sidebar-shell[data-nav-open] .sheen-sidebar{box-shadow:20px 0 60px rgba(0,0,0,.12)}.sheen-sidebar-shell[data-nav-open] .sheen-sidebar:dir(rtl){box-shadow:-20px 0 60px rgba(0,0,0,.12)}.sheen-sidebar-shell[data-nav-open]::after{content:"";position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.18)}}
 sheen-scope-picker{display:flex;flex-direction:column;gap:10px}
 .sheen-scope-modes{display:flex;flex-wrap:wrap;gap:12px;margin:0;padding:0;border:0}
 .sheen-scope-modes legend{margin-block-end:6px;font-weight:700}
