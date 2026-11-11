@@ -143,6 +143,8 @@ sheen-hover-card.sheen-glass{display:block;position:fixed;z-index:1000;inline-si
 sheen-hover-card.sheen-glass[hidden]{display:none}
 sheen-side-panel.sheen-glass{position:fixed;inset-block:0;inset-inline-end:0;z-index:900;display:flex;flex-direction:column;inline-size:min(var(--sheen-panel-size,440px),100vw);padding:16px;overflow:auto}
 sheen-side-panel.sheen-glass[hidden]{display:none}
+/* size="small" is the 400px panel of an app's filters and editors (0.7.0); --sheen-panel-size still wins */
+sheen-side-panel[size="small"]{--sheen-panel-size:400px}
 sheen-side-panel.sheen-glass:focus:not(:focus-visible){outline:none}
 .sheen-panel-close{align-self:flex-end}
 .sheen-panel-body{flex:1;min-block-size:0}
@@ -193,7 +195,7 @@ sheen-menu-button.sheen-small .sheen-menu,.sheen-small sheen-menu-button .sheen-
 :is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item:hover{background:var(--sheen-tonal)}
 :is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item:focus-visible{background:none;outline:2px solid var(--sheen-accent-text);outline-offset:-2px}
 :is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item[aria-disabled="true"]:hover{background:none}
-/* an item with a description (k-fview): its glyph lines up with the title; the description is 12px at 400 */
+/* an item with a description: its glyph lines up with the title; the description is 12px at 400 */
 :is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item:not([aria-disabled="true"]):has(.sheen-menu-hint){align-items:flex-start}
 :is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item:not([aria-disabled="true"]):has(.sheen-menu-hint)>.sheen-glyph{margin-block-start:2px}
 :is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item:not([aria-disabled="true"]) .sheen-menu-hint{font-size:12px;font-weight:400}

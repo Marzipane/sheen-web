@@ -17,6 +17,8 @@
 .sheen-views-end{margin-inline-start:auto;display:flex;align-items:center;gap:4px;padding-block-end:6px}
 /* in a find row the views end is one more control: its 6px are for the views row's tabs, and here they would lift it */
 .sheen-find-row .sheen-views-end{padding-block-end:0}
+/* a menu button at the end of a views or find row (Views) opens a menu 320px to 360px wide */
+.sheen-views-end sheen-menu-button{--sheen-menu-min-size:320px;--sheen-menu-max-size:360px}
 
 /* a module's page tab row (Users · Roles · …): view tabs as links in a <nav class="sheen-page-tabs"> */
 .sheen-page-tabs{display:flex;gap:4px;min-inline-size:0;overflow-x:auto;scrollbar-width:none;border-block-end:1px solid var(--sheen-separator)}
@@ -144,7 +146,7 @@ th[aria-sort="ascending"],th[aria-sort="descending"]{color:var(--sheen-text)}
 }
 
 /* 0.7.0 list kit */
-/* the Filters panel (the app mockups' k-fpf, k-fopt, k-fcount, k-fbox): options 1px apart, 6px under their label and 10px
+/* the Filters panel: options 1px apart, 6px under their label and 10px
    under the line above; a ticked option is tinted; counts at 500; an outlined 18px box with a drawn tick, in both themes */
 .sheen-filter-field{gap:1px;padding-block-start:0}
 .sheen-filter-field legend{padding-block-start:10px;margin-block-end:6px}
@@ -165,12 +167,12 @@ th[aria-sort="ascending"],th[aria-sort="descending"]{color:var(--sheen-text)}
 .sheen-table.sheen-small{font-size:13.5px}
 .sheen-table.sheen-small th{font-size:12px;padding:10px 14px;background:color-mix(in srgb,var(--sheen-track) 35%,var(--sheen-surface));border-block-end:0;white-space:nowrap}
 .sheen-table.sheen-small td{padding:10px 14px;border-block-end:0;border-block-start:1px solid var(--sheen-separator);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-inline-size:260px}
-/* .sheen-wrap (k-wrap): a table of long sentences wraps its headers and cells at spaces and lines them up at the top */
+/* .sheen-wrap: a table of long sentences wraps its headers and cells at spaces and lines them up at the top */
 .sheen-table.sheen-small.sheen-wrap :is(th,td){white-space:normal}
 .sheen-table.sheen-small.sheen-wrap td{max-inline-size:none;vertical-align:top;overflow-wrap:break-word}
 .sheen-table.sheen-small .sheen-sort-button{padding:10px 14px}
 /* a sortable header leaves all its padding to its button, here too: the cell padding above would add 3px to the row
-   and the sides to the column (k-table th[aria-sort]) */
+   and the sides to the column */
 .sheen-table.sheen-small th:has(>.sheen-sort-button){padding:0}
 .sheen-table.sheen-small .sheen-pin-end{padding-inline:4px}
 /* end 0.7.0 list kit */

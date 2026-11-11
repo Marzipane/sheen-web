@@ -27,19 +27,19 @@ test('Tab marks keyboard navigation and a press clears it; typing, moving the ca
 
 test('a text field inside a control draws no outline of its own, and the control no glow', () => {
   // (the normalizer drops the space before ":is("; the min file keeps the descendant combinators)
-  has('.sheen:is(.sheen-field,.sheen-segment,.sheen-picker-pill,.sheen-control):is(input,select,textarea,.sheen-segment-trigger,.sheen-picker-trigger):focus-visible{outline:none}');
-  assert.ok(min.includes('.sheen :is(.sheen-field,.sheen-segment,.sheen-picker-pill,.sheen-control) :is(input,select,textarea,'));
+  has('.sheen:is(.sheen-field,.sheen-segment,.sheen-picker-pill,.sheen-control):is(input,textarea,.sheen-segment-trigger,.sheen-picker-trigger):focus-visible{outline:none}');
+  assert.ok(min.includes('.sheen :is(.sheen-field,.sheen-segment,.sheen-picker-pill,.sheen-control) :is(input,textarea,'));
   assert.ok(!css.includes('.sheen-control:focus-within'), 'no ring or glow on any focus inside a control');
   assert.ok(!/\.sheen-control:focus-visible[^{]*\{[^}]*box-shadow/.test(css), 'no glow on a focused control');
 });
 
 test('a control holding a text field draws no ring, keyboard or not: no text field does', () => {
   assert.ok(!css.includes('.sheen-control:has(:is(input,select,textarea):focus-visible){outline'));
-  assert.ok(min.includes('.sheen :is(input:not([type="checkbox"],[type="radio"],[type="range"],[type="button"],[type="submit"],[type="reset"],[type="file"],[type="color"],[type="image"]),select,textarea):focus-visible{outline:none!important}'));
+  assert.ok(min.includes('.sheen :is(input:not([type="checkbox"],[type="radio"],[type="range"],[type="button"],[type="submit"],[type="reset"],[type="file"],[type="color"],[type="image"]),textarea):focus-visible{outline:none!important}'));
 });
 
 test('menus ring an item only while the keyboard navigates; arrows after a press show the hover fill', () => {
   assert.ok(!css.includes(DENSE + ' .sheen-menu-item:focus{'), 'the 0.7.0 draft ring on any focus is gone');
   has(DENSE + ' .sheen-menu-item:focus-visible{background:none;outline:2px solid var(--sheen-accent-text);outline-offset:-2px}');
-  assert.ok(min.includes(':root:not([data-sheen-keyboard]) ' + DENSE + ' .sheen-menu-item:focus-visible{background:var(--sheen-tonal)}'));
+  assert.ok(min.includes(':root[data-sheen-focus]:not([data-sheen-keyboard]) ' + DENSE + ' .sheen-menu-item:focus-visible{background:var(--sheen-tonal)}'));
 });

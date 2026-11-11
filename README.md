@@ -126,11 +126,14 @@ radios.
 ### Focus on fields
 
 A text field never draws a focus ring: its caret shows the focus, and the words inside it never get a box of their own.
+A select has no caret, so it rings after Tab like a button.
 - A `.sheen-field` turns its label to the accent (0.7.0: without the line and glow it had before).
 - A part of a glass bar, `.sheen-segment` (a search bar's where, dates and guests), lights up as its own pill. A button that opens the part's picker takes `.sheen-segment-trigger`.
 
-Buttons, links, tabs and menu items draw their thin focus ring only while the keyboard navigates: Tab or Shift+Tab marks
-`<html data-sheen-keyboard>`, and the next press clears it (0.7.0). With forced colors, the field or part gets a real outline.
+Buttons, links, tabs, selects and menu items draw their thin focus ring only while the keyboard navigates: Tab or
+Shift+Tab marks `<html data-sheen-keyboard>`, and the next press clears it (0.7.0). sheen.js and the elements both set
+this up and mark the page `<html data-sheen-focus>`; a page with neither keeps the browser's own `:focus-visible` rings.
+With forced colors, the field or part gets a real outline.
 
 ## App elements (0.3.0, record kit 0.4.0)
 
@@ -165,7 +168,7 @@ Live stories for every element: `docs/elements.html` (open it from a local serve
 | `<sheen-node-graph>` | node graph | `label`, `connect-label`, `connected-label`, `remove-label`; `nodes`, `edges`, `order()` | `sheen-graphchange` {nodes, edges}, `sheen-nodeopen` {node} | arrows move, C then Enter connects, Delete |
 | `<sheen-tour>` | onboarding tour | `next-label`, `back-label`, `done-label`, `skip-label`, `step-label` ("@n of @all"); `steps`, `start()`, `stop()` | `sheen-tour-step` {index}, `sheen-tour-end` {completed} | Enter, Esc, Tab stays inside |
 | `<sheen-hover-card>` | facts and actions beside a link | `label`, `delay` (ms, `0` for none); `attach(trigger)`, `detach()`, `open()`, `close()` | `sheen-hover-open` {trigger}, `sheen-hover-close` | on the trigger Space opens; Esc closes from anywhere while open; Tab out closes |
-| `<sheen-side-panel>` | a panel on the end edge, no backdrop | `label`, `close-label`, `heading` (the title and the close button on one row; the element marks the panel `sheen-headed`), `modal` (the page dims, a press on the dim closes it), `--sheen-panel-size`; `open()`, `close()` | `sheen-panel-close` | Esc closes and returns focus to the first opener; with `modal`, Tab stays inside and focus that lands outside comes back |
+| `<sheen-side-panel>` | a panel on the end edge, no backdrop | `label`, `close-label`, `heading` (the title and the close button on one row; the element marks the panel `sheen-headed`), `size="small"` (400px, for filters and editors), `modal` (the page dims, a press on the dim closes it), `--sheen-panel-size`; `open()`, `close()` | `sheen-panel-close` | Esc closes and returns focus to the first opener; with `modal`, Tab stays inside and focus that lands outside comes back |
 | `<sheen-scope-picker>` | chooses a rule, not a list | `label`, `all-label`, `chosen-label`, `except-label`, `search-label`, `select-shown-label`, `empty-label`, `result`; `groups`, `value` (only the list its mode reads) | `sheen-scope-change` {mode, include, exclude} | Space ticks; focus stays on the ticked row |
 | `<sheen-menu-button>` | a button with a keyboard menu | `label`, `glyph`, `variant="control"` (the find row's 36px control; square with a glyph), `icon` (a glyph before the label), `chevron`, `compact`, `class="sheen-small"` (the dense menu; `--sheen-menu-min-size`); `items` [{id, label, disabled, hint, shortcut, danger, glyph, accent}, {separator: true}, {heading}], `open()`, `close()` | `sheen-menu-select` {id} | ↓ opens, ↑ ↓ move, Enter picks, Esc closes; a press outside or Tab out closes |
 

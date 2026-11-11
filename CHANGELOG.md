@@ -13,7 +13,8 @@ additive; the fixes, the looks that change and one change against an earlier own
   `chevron` a chevron after it that turns while the menu is open, and `compact` keeps only the icon inside a narrow
   `.sheen-list-kit`. Items take `glyph` (before the label: secondary, red on a danger item, faint when off) and `accent`.
   A small menu (`class="sheen-small"`, a bulk bar or the end of a views row) is the dense app size: 13.5px, 36px rows,
-  250px to 320px wide (`--sheen-menu-min-size`, `--sheen-menu-max-size`), plain outlined key caps; an item with a
+  250px to 320px wide (`--sheen-menu-min-size`, `--sheen-menu-max-size`; 320px to 360px at the end of a views or find
+  row), plain outlined key caps; an item with a
   description lines its glyph up with its title and shows the description at 12px.
 - `.sheen-solid` on a layer or on any box around it (the page's body) draws menus, toasts, the command palette, side
   panels and hover cards opaque, each with its own fill and shadow, so rows and buttons under them never show through.
@@ -23,7 +24,8 @@ additive; the fixes, the looks that change and one change against an earlier own
   `modal` dims the page behind it (a press on the dim closes it), puts focus on the first control, keeps Tab inside
   (one stop per radio group; hidden, disabled and `tabindex="-1"` controls skipped) and brings focus that lands outside
   back in, unless another dialog or popover took it. Hiding an open panel by its attribute takes the dim away; moving it
-  keeps the dim. `--sheen-panel-size` sets the width.
+  keeps the dim. `size="small"` makes the panel 400px wide, for filters and editors; `--sheen-panel-size` sets any
+  other width (440px by default).
 - List kit: `.sheen-control.sheen-on` tints the fill and glyph of a control whose filters are on, and in a narrow list
   kit a control with a count keeps its count; `.sheen-table-card` puts a table on an 18px surface card that still scrolls
   sideways; `.sheen-table.sheen-small` is the dense table (13.5px cells on one line up to 260px, a tinted 12px header row,
@@ -33,7 +35,8 @@ additive; the fixes, the looks that change and one change against an earlier own
   and draws an outlined 18px box with a tick, the same in light and dark.
 - Forms: `.sheen-form-field.sheen-small` is the dense field (a 13px label over a 38px box, a hint under it, a red ring
   and hint with `aria-invalid="true"`), two to a row in `.sheen-fields.sheen-small`, with `.sheen-wide` across both.
-  `.sheen-select` around a `<select>` draws the field's chevron at the end edge. `.sheen-panel-foot` holds a side panel's
+  `.sheen-select` around a `<select>` draws the field's chevron at the end edge. In forced colors the dense field keeps
+  a 1px border (2px when invalid) and the chevron shows in the text colour. `.sheen-panel-foot` holds a side panel's
   Cancel and main action on its bottom edge, each at least 128px, side by side or one under the other when narrow; in a
   panel with a heading it sticks there while a long body scrolls under it. On a solid panel both footers take the
   panel's sheet, so rows never show through them.
@@ -60,10 +63,12 @@ additive; the fixes, the looks that change and one change against an earlier own
   var(--sheen-space-xxl)`. Number tokens with two-word keys take kebab-case names.
 - Glyphs: the filled Flutter sheen icons draw as `<name>-fill` (`check-circle-fill`), filled in the text colour; `alert`
   is a warning triangle.
-- Focus: Tab or Shift+Tab marks `<html data-sheen-keyboard>`, and only then do buttons, links, tabs and menu items draw
-  their one 2px ring; the next press clears it. A press, Esc, Enter, typing and arrows never bring a ring, so closing a
-  panel with Esc leaves its opener plain; in a dense menu the item the arrows reach shows the hover fill. A text field
-  never draws a ring, keyboard or not: its caret shows the focus (the find row's search drew two rings in 0.6.0). A
+- Focus: on a page that loads sheen.js or the elements (they mark `<html data-sheen-focus>`), Tab or Shift+Tab marks
+  `<html data-sheen-keyboard>`, and only then do buttons, links, tabs, selects and menu items draw their one 2px ring;
+  the next press clears it. A press, Esc, Enter, typing and arrows never bring a ring, so closing a panel with Esc leaves
+  its opener plain; in a dense menu the item the arrows reach shows the hover fill. A page with neither script keeps the
+  browser's own `:focus-visible` rings. A text input or textarea never draws a ring, keyboard or not: its caret shows the
+  focus (the find row's search drew two rings in 0.6.0); a select has no caret, so it rings after Tab. A
   control's 0.6.0 inset ring and 4px glow are gone. A menu button with an icon or a chevron takes its label as its
   name, so a compact one keeps a name. In forced colors the Filters checkboxes are the system's own.
 - Fixed: a menu near the screen's end came out narrow, wrapped its labels and could open upward with room below, because
@@ -101,9 +106,10 @@ additive; the fixes, the looks that change and one change against an earlier own
   hidden input in the Tab cycle, focus coming back into a modal panel, its dim when hidden or moved, an empty heading,
   the top toast by keyboard, compact menu button names, forced colors and a menu on a phone; open and applied controls
   with no ring; a footer that stays on the bottom edge of a panel longer than the window; the keyboard flag (only Tab
-  sets it; a press, Esc, typing and arrows never do), the find row on one line and a sidebar shell that never scrolls
-  the page. The dist PHP test now expects `.sheen-field` without its 0.1.4 glow.
-- Docs: `docs/app-page.html` shows a list page built from these parts, in English and Arabic, light and dark.
+  sets it; a press, Esc, typing and arrows never do), on a page with sheen.js alone too, and selects ringing after Tab;
+  dense fields in forced colors; the find row on one line and a sidebar shell that never scrolls the page. The dist PHP test now expects `.sheen-field` without its 0.1.4 glow.
+- Docs: `docs/app-page.html` shows a list page built from these parts with neutral sample words, in English and Arabic,
+  light and dark.
 
 ## 0.6.0
 

@@ -33,7 +33,7 @@
         <div class="sheen-find-row" role="search">
           <label class="sheen-control sheen-find"><sheen-glyph name="search" size="15"></sheen-glyph><input type="search" id="q"><kbd class="sheen-kbd">/</kbd></label>
           <button class="sheen-control sheen-compact-glyph" id="filters" type="button" aria-haspopup="dialog"><sheen-glyph name="sliders" size="15"></sheen-glyph><span data-w="filters"></span><span class="sheen-control-count" hidden>1</span></button>
-          <div class="sheen-views-end" style="padding:0"><button class="sheen-link-button" id="save" type="button" hidden><sheen-glyph name="plus" size="14"></sheen-glyph><span data-w="save"></span></button><sheen-menu-button id="views" class="sheen-small" variant="control" icon="star" chevron compact style="--sheen-menu-min-size:320px"></sheen-menu-button></div>
+          <div class="sheen-views-end" style="padding:0"><button class="sheen-link-button" id="save" type="button" hidden><sheen-glyph name="plus" size="14"></sheen-glyph><span data-w="save"></span></button><sheen-menu-button id="views" class="sheen-small" variant="control" icon="star" chevron compact></sheen-menu-button></div>
         </div>
         <div class="sheen-applied-row" id="applied" hidden><span class="sheen-filter-chip"><span data-w="from"></span><b data-w="client"></b><button class="sheen-chip-remove" type="button" aria-label="×"><sheen-glyph name="close" size="12"></sheen-glyph></button></span><button class="sheen-link-button" type="button" data-w="clear"></button></div>
       </div>
@@ -46,7 +46,7 @@
     </main>
   </div>
 </div>
-<sheen-side-panel id="panel" modal style="--sheen-panel-size:400px">
+<sheen-side-panel id="panel" modal size="small">
   <div class="sheen-filter-group" id="groups"></div>
   <div class="sheen-filter-footer"><button class="sheen-link-button" type="button" data-w="clear"></button><button class="sheen-button sheen-small sheen-glass-prominent" type="button" data-w="show"></button></div>
 </sheen-side-panel>
@@ -55,24 +55,24 @@
 <script>
 // Sample words in English and Arabic for this demo only. ?state=normal|more|views|panel|one|compact|empty|error|ferror|loading|toast &lang=en|ar &theme=light|dark
 const W = {
-  en: { crumbs: 'Settings › Lists', title: 'Reason codes', count: '12 codes', add: 'Add code', more: 'More actions', filters: 'Filters', views: 'Views', save: 'Save view',
-    tabs: ['Reasons', 'Templates', 'Absence', 'Calls'], search: 'Code or reason', cols: ['Code', 'Reason (EN)', 'Reason (AR)', 'From', 'Fault', 'Fee', 'Comment', 'Offer a move'],
-    history: 'View change history', link: 'Copy link to this page', keys: 'Keyboard shortcuts', lastUsed: 'Last used', lastItem: 'Your last filters', lastHint: 'Restored for each list',
-    mine: 'My views', mineItem: 'Open this week', mineHint: 'Only me', saveCurrent: 'Save current filters as a view', saveHint: 'Name it; share it with a role if you like',
-    manage: 'Manage views', manageHint: 'Rename, share or delete', from: 'From', fault: 'Fault', client: 'Client', team: 'Team', company: 'Company', outside: 'Outside', clear: 'Clear all',
-    show: 'Show 7 results', emptyTitle: 'Nothing matches', emptyText: 'Clear the filters or try other words.', errorTitle: "Couldn't load this page",
-    errorText: 'Something went wrong on our side. Your data is safe. Try again in a moment.', tryAgain: 'Try again', ref: 'Error 503 · ref 7F3K-2Q',
-    ferrorTitle: "Couldn't load results", ferrorText: 'Your filters are kept. Check the connection and try again.', retry: 'Retry', toast: 'Filters cleared · showing all 12', undo: 'Undo', perTier: 'Per tier', waived: 'Waived',
-    rows: [['Change of plans', 'Plans changed'], ['Booked by mistake', 'Booked twice'], ['Found another option', 'Cheaper elsewhere'], ['Price higher than expected', 'Too dear'], ['Not home at that time', 'Away'], ['Wrong service', 'Wrong kind'], ['Wrong address', 'Wrong place'], ['Payment problem', 'Card declined']] },
-  ar: { crumbs: 'الإعدادات › القوائم', title: 'رموز الأسباب', count: '12 رمزًا', add: 'أضف رمزًا', more: 'إجراءات أخرى', filters: 'الفلاتر', views: 'طرق العرض', save: 'حفظ طريقة العرض',
-    tabs: ['الأسباب', 'القوالب', 'الغياب', 'المكالمات'], search: 'الرمز أو السبب', cols: ['الرمز', 'السبب (EN)', 'السبب (AR)', 'من', 'المسؤولية', 'الرسوم', 'تعليق', 'عرض النقل'],
-    history: 'عرض سجل التغييرات', link: 'نسخ رابط هذه الصفحة', keys: 'اختصارات لوحة المفاتيح', lastUsed: 'آخر استخدام', lastItem: 'فلاترك الأخيرة', lastHint: 'تُستعاد لكل قائمة',
-    mine: 'طرق العرض الخاصة بي', mineItem: 'المفتوح هذا الأسبوع', mineHint: 'لي فقط', saveCurrent: 'احفظ الفلاتر الحالية كطريقة عرض', saveHint: 'سمّها وشاركها مع دور إن أردت',
-    manage: 'إدارة طرق العرض', manageHint: 'إعادة التسمية أو المشاركة أو الحذف', from: 'من', fault: 'المسؤولية', client: 'العميل', team: 'الفريق', company: 'الشركة', outside: 'خارجي', clear: 'مسح الكل',
-    show: 'اعرض 7 نتائج', emptyTitle: 'لا شيء مطابق', emptyText: 'امسح الفلاتر أو جرّب كلمات أخرى.', errorTitle: 'تعذّر تحميل هذه الصفحة',
-    errorText: 'حدث خطأ من جهتنا. بياناتك آمنة. حاول مجددًا بعد قليل.', tryAgain: 'حاول مجددًا', ref: 'خطأ 503 · مرجع 7F3K-2Q',
-    ferrorTitle: 'تعذّر تحميل النتائج', ferrorText: 'فلاترك محفوظة. تحقّق من الاتصال وحاول مجددًا.', retry: 'إعادة المحاولة', toast: 'مُسحت الفلاتر · تُعرض كل الـ 12', undo: 'تراجع', perTier: 'حسب الشريحة', waived: 'معفاة',
-    rows: [['تغيّر الخطط', 'تغيّرت الخطط'], ['حجز بالخطأ', 'حجز مكرر'], ['خيار آخر', 'أرخص في مكان آخر'], ['السعر أعلى', 'غالٍ'], ['لست في المنزل', 'غائب'], ['خدمة خاطئة', 'نوع خاطئ'], ['عنوان خاطئ', 'مكان خاطئ'], ['مشكلة في الدفع', 'رُفضت البطاقة']] },
+  en: { crumbs: 'Settings › Lists', title: 'Sample tags', count: '12 tags', add: 'Add tag', more: 'More actions', filters: 'Filters', views: 'Views', save: 'Save view',
+    tabs: ['Tags', 'Groups', 'Colours', 'Archive'], search: 'Code or name', cols: ['Code', 'Name (EN)', 'Name (AR)', 'Source', 'Owner', 'Plan', 'Pinned', 'Visible'],
+    history: 'Change history', link: 'Copy link', keys: 'Keyboard shortcuts', lastUsed: 'Last used', lastItem: 'Last filters', lastHint: 'Kept for this list',
+    mine: 'My views', mineItem: 'This week', mineHint: 'Only me', saveCurrent: 'Save these filters as a view', saveHint: 'Give it a name',
+    manage: 'Manage views', manageHint: 'Rename or delete', from: 'Source', fault: 'Owner', client: 'Import', team: 'Manual', company: 'Shared', outside: 'Other', clear: 'Clear all',
+    show: 'Show 7 results', emptyTitle: 'Nothing matches', emptyText: 'Try other filters.', errorTitle: "The page didn't load",
+    errorText: 'Try again in a moment.', tryAgain: 'Try again', ref: 'Error 503 · ref 7F3K-2Q',
+    ferrorTitle: "The results didn't load", ferrorText: 'Check the connection and try again.', retry: 'Retry', toast: 'Filters cleared', undo: 'Undo', perTier: 'Standard', waived: 'Free',
+    rows: [['Red'], ['Blue'], ['Green'], ['Yellow'], ['Purple'], ['Orange'], ['Grey'], ['Black']] },
+  ar: { crumbs: 'الإعدادات › القوائم', title: 'وسوم تجريبية', count: '12 وسمًا', add: 'أضف وسمًا', more: 'إجراءات أخرى', filters: 'الفلاتر', views: 'طرق العرض', save: 'حفظ طريقة العرض',
+    tabs: ['الوسوم', 'المجموعات', 'الألوان', 'الأرشيف'], search: 'الرمز أو الاسم', cols: ['الرمز', 'الاسم (EN)', 'الاسم (AR)', 'المصدر', 'المالك', 'الخطة', 'مثبّت', 'ظاهر'],
+    history: 'سجل التغييرات', link: 'نسخ الرابط', keys: 'اختصارات لوحة المفاتيح', lastUsed: 'آخر استخدام', lastItem: 'آخر فلاتر', lastHint: 'محفوظة لهذه القائمة',
+    mine: 'طرق العرض الخاصة بي', mineItem: 'هذا الأسبوع', mineHint: 'لي فقط', saveCurrent: 'احفظ هذه الفلاتر كطريقة عرض', saveHint: 'سمّها',
+    manage: 'إدارة طرق العرض', manageHint: 'إعادة التسمية أو الحذف', from: 'المصدر', fault: 'المالك', client: 'استيراد', team: 'يدوي', company: 'مشترك', outside: 'آخر', clear: 'مسح الكل',
+    show: 'اعرض 7 نتائج', emptyTitle: 'لا شيء مطابق', emptyText: 'جرّب فلاتر أخرى.', errorTitle: 'لم تُحمّل الصفحة',
+    errorText: 'حاول مجددًا بعد قليل.', tryAgain: 'حاول مجددًا', ref: 'خطأ 503 · مرجع 7F3K-2Q',
+    ferrorTitle: 'لم تُحمّل النتائج', ferrorText: 'تحقّق من الاتصال وحاول مجددًا.', retry: 'إعادة المحاولة', toast: 'مُسحت الفلاتر', undo: 'تراجع', perTier: 'قياسي', waived: 'مجاني',
+    rows: [['أحمر'], ['أزرق'], ['أخضر'], ['أصفر'], ['بنفسجي'], ['برتقالي'], ['رمادي'], ['أسود']] },
 };
 const P = new URLSearchParams(location.search), lang = P.get('lang') === 'ar' ? 'ar' : 'en', state = P.get('state') || 'normal', t = W[lang];
 const root = document.documentElement, $ = (s) => document.querySelector(s);

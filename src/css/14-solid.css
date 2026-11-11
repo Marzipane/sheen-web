@@ -1,6 +1,6 @@
 /* Solid layers (0.7.0): class="sheen-solid" on a layer or on any box around it (the page's body) draws menus, toasts, the
-   command palette, side panels and hover cards opaque, each with its own fill and shadow from the app mockups (k-fpop,
-   k-acmdk, o-toast, k-drawer, k-rlcard), so the buttons and rows under them never show through. Modal layers then dim
+   command palette, side panels and hover cards opaque, each with its own fill and shadow from the app mockups,
+   so the buttons and rows under them never show through. Modal layers then dim
    the page with a plain shade, no blur.
    :root raises these rules above the glass ones, the light theme's included (:root[data-theme="light"] .sheen-glass). */
 :root .sheen-solid :is(.sheen-menu.sheen-glass,.sheen-cmd.sheen-glass){background:var(--sheen-surface);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 0 0 1px var(--sheen-separator),0 14px 34px rgba(16,20,30,.14),0 2px 6px rgba(16,20,30,.06)}

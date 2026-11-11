@@ -24,7 +24,7 @@
 /* Focus is never a box around a field's words (0.1.4). Since 0.7.0 a text field draws no ring at all, so the field shows
    its focus by its caret and its label in the accent (forced colors still outline it, in 06-access). */
 .sheen-field:focus-within>span:first-child{color:var(--sheen-accent-text)}
-.sheen :is(.sheen-field,.sheen-segment,.sheen-picker-pill,.sheen-control) :is(input,select,textarea,.sheen-segment-trigger,.sheen-picker-trigger):focus-visible{outline:none}
+.sheen :is(.sheen-field,.sheen-segment,.sheen-picker-pill,.sheen-control) :is(input,textarea,.sheen-segment-trigger,.sheen-picker-trigger):focus-visible{outline:none}
 /* A part of a glass bar (a search bar's where, dates, guests): the part being filled lights up as its own pill. Its
    opener (a button that opens a calendar) takes .sheen-segment-trigger; what opens from it keeps its own focus ring. */
 .sheen-segment{border-radius:999px;transition:background-color .15s,box-shadow .15s}

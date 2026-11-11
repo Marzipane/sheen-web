@@ -1,8 +1,8 @@
 /* 0.7.0 app forms */
-/* Dense forms and sheets of an app page, ported from the app mockups (k-field, k-form, k-swrow, o-switch, o-quick,
-   k-tfoot, k-acmdk, k-akeysheet, k-akeygrid). Logical sides only, so Arabic mirrors. */
+/* Dense forms and sheets of an app page, ported from the app mockups: fields, a select, a side panel footer, a large
+   switch, a table's group row and foot, the small palette and the shortcuts sheet. Logical sides only, so Arabic mirrors. */
 
-/* a dense field (k-field): a 13px label at 500 over a 38px box, an 11px radius, 14px words; a hint under it; a ring and
+/* a dense field: a 13px label at 500 over a 38px box, an 11px radius, 14px words; a hint under it; a ring and
    a red hint when the input is invalid. Two to a row in .sheen-fields.sheen-small, 12px by 16px apart. */
 .sheen-form-field.sheen-small{gap:5px;font-size:13px}
 .sheen-form-field.sheen-small>span:first-child{font-weight:500;color:var(--sheen-text-secondary)}
@@ -15,12 +15,12 @@
 .sheen-fields.sheen-small{gap:12px 16px}
 .sheen-fields>.sheen-wide{grid-column:1/-1}
 
-/* a select drawn as a field (the k-field picker): its value and an 18px chevron in one box, the chevron at the end edge */
+/* a select drawn as a field: its value and an 18px chevron in one box, the chevron at the end edge */
 .sheen-select{position:relative;display:flex}
 .sheen-select>select{appearance:none;-webkit-appearance:none;inline-size:100%;padding-inline-end:38px;cursor:pointer}
 .sheen-select::after{content:"";position:absolute;inset-inline-end:12px;inset-block-start:50%;inline-size:18px;block-size:18px;margin-block-start:-9px;background:var(--sheen-text-tertiary);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9.5 6 6 6-6'/%3E%3C/svg%3E") center/18px no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9.5 6 6 6-6'/%3E%3C/svg%3E") center/18px no-repeat;pointer-events:none}
 
-/* a side panel's footer (o-quick): Cancel and the main action share the row on the panel's bottom edge, each at least
+/* a side panel's footer: Cancel and the main action share the row on the panel's bottom edge, each at least
    128px and growing alike (equal when both labels fit in 128px), one under the other when the row is too narrow. In a
    panel with a heading it sticks to the end of the scrolling body, so a body longer than the window scrolls under it
    and the buttons stay 20px above the panel's bottom edge. */
@@ -29,7 +29,7 @@
 sheen-side-panel.sheen-headed .sheen-panel-body:has(>.sheen-panel-foot){padding-block-end:0}
 sheen-side-panel.sheen-headed .sheen-panel-body>.sheen-panel-foot{position:sticky;inset-block-end:0;margin-inline:-20px;padding:14px 20px 20px;background:inherit}
 
-/* a 51 by 31 switch with a 27px knob (o-switch), and a switch row (k-swrow): the words at the start, the switch at the
+/* a 51 by 31 switch with a 27px knob, and a switch row: the words at the start, the switch at the
    end, a hairline under them. The off track keeps the 0.3.0 colour, 3:1 against the panel. */
 .sheen-switch.sheen-large input{inline-size:51px;block-size:31px;border-radius:16px}
 .sheen-switch.sheen-large input::after{inset-block-start:2px;inset-inline-start:2px;inline-size:27px;block-size:27px;border-radius:14px;box-shadow:0 2px 6px rgba(0,0,0,.2)}
@@ -40,7 +40,7 @@ sheen-side-panel.sheen-headed .sheen-panel-body>.sheen-panel-foot{position:stick
 .sheen-table tr.sheen-table-group>th{padding:14px 14px 6px;font-size:13px;font-weight:700;color:var(--sheen-text);text-align:start;background:none;border-block-start:1px solid var(--sheen-separator)}
 .sheen-table tr.sheen-table-group small{margin-inline-start:6px;padding:1px 6px;border-radius:8px;background:var(--sheen-track);color:var(--sheen-text-secondary);font-size:11px;font-weight:600;font-variant-numeric:tabular-nums}
 
-/* a table's footer (k-tfoot): the count at the start, a pager at the end; 18px arrows 6px apart that mirror in Arabic.
+/* a table's footer: the count at the start, a pager at the end; 18px arrows 6px apart that mirror in Arabic.
    The arrows are 24px buttons: a bare 18px glyph is under the 24px target WCAG 2.5.8 asks for. */
 .sheen-table-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;font-size:12.5px;color:var(--sheen-text-secondary);border-block-start:1px solid var(--sheen-separator)}
 .sheen-pager{display:inline-flex;align-items:center;gap:6px}
@@ -51,7 +51,7 @@ sheen-side-panel.sheen-headed .sheen-panel-body>.sheen-panel-foot{position:stick
 .sheen-pager b{font-weight:700;color:var(--sheen-text);font-variant-numeric:tabular-nums}
 [dir="rtl"] .sheen-pager svg{transform:scaleX(-1)}
 
-/* the small command palette (k-acmdk): a 560px box, a 36px search field, 36px rows with 18px glyphs, plain key caps */
+/* the small command palette: a 560px box, a 36px search field, 36px rows with 18px glyphs, plain key caps */
 sheen-command-palette.sheen-small .sheen-cmd{inline-size:min(560px,calc(100vw - 32px));padding:10px;gap:10px;border-radius:20px;margin-block-start:14vh}
 sheen-command-palette.sheen-small .sheen-cmd-head{block-size:36px;padding:0 12px;gap:7px;border:0;border-radius:11px;box-shadow:inset 0 0 0 1px var(--sheen-separator);font-size:13.5px}
 sheen-command-palette.sheen-small .sheen-cmd-head>.sheen-glyph{inline-size:15px;block-size:15px}
@@ -62,7 +62,7 @@ sheen-command-palette.sheen-small .sheen-cmd-row{min-block-size:36px;padding:6px
 sheen-command-palette.sheen-small .sheen-cmd-row .sheen-glyph{inline-size:18px;block-size:18px;color:inherit}
 sheen-command-palette.sheen-small .sheen-cmd-row[aria-selected="true"]{background:var(--sheen-tonal)}
 
-/* a small dialog (k-akeysheet), and shortcuts in three columns of keys and words (k-akeygrid); one column when narrow */
+/* a small dialog, and shortcuts in three columns of keys and words; one column when narrow */
 .sheen-dialog.sheen-small{display:flex;flex-direction:column;gap:10px;inline-size:min(720px,calc(100vw - 32px));padding:20px;border-radius:20px;background:var(--sheen-surface);box-shadow:0 0 0 1px var(--sheen-separator),0 24px 60px rgba(16,20,30,.22)}
 .sheen-dialog.sheen-small:not([open]){display:none}
 .sheen-dialog.sheen-small .sheen-dialog-head{padding:18px 20px 6px;justify-content:space-between}
@@ -76,4 +76,7 @@ sheen-command-palette.sheen-small .sheen-cmd-row[aria-selected="true"]{backgroun
 .sheen-keys{display:inline-flex;gap:3px}
 .sheen-shortcuts-note{margin:0;font-size:12px;color:var(--sheen-text-tertiary)}
 @media (max-width:760px){.sheen-shortcuts.sheen-small{grid-template-columns:1fr}}
+/* forced colors drop the dense field's inset edge and paint the chevron's mask in the page colour: the field takes a real
+   border (2px when invalid) and the chevron the text colour */
+@media (forced-colors: active){.sheen-form-field.sheen-small .sheen-input{border:1px solid CanvasText}.sheen-form-field.sheen-small .sheen-input[aria-invalid="true"]{border-width:2px}.sheen-select::after{background:CanvasText;forced-color-adjust:none}}
 /* end 0.7.0 app forms */

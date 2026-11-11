@@ -104,7 +104,7 @@
 /* Focus is never a box around a field's words (0.1.4). Since 0.7.0 a text field draws no ring at all, so the field shows
    its focus by its caret and its label in the accent (forced colors still outline it, in 06-access). */
 .sheen-field:focus-within>span:first-child{color:var(--sheen-accent-text)}
-.sheen :is(.sheen-field,.sheen-segment,.sheen-picker-pill,.sheen-control) :is(input,select,textarea,.sheen-segment-trigger,.sheen-picker-trigger):focus-visible{outline:none}
+.sheen :is(.sheen-field,.sheen-segment,.sheen-picker-pill,.sheen-control) :is(input,textarea,.sheen-segment-trigger,.sheen-picker-trigger):focus-visible{outline:none}
 /* A part of a glass bar (a search bar's where, dates, guests): the part being filled lights up as its own pill. Its
    opener (a button that opens a calendar) takes .sheen-segment-trigger; what opens from it keeps its own focus ring. */
 .sheen-segment{border-radius:999px;transition:background-color .15s,box-shadow .15s}
@@ -608,6 +608,8 @@ sheen-hover-card.sheen-glass{display:block;position:fixed;z-index:1000;inline-si
 sheen-hover-card.sheen-glass[hidden]{display:none}
 sheen-side-panel.sheen-glass{position:fixed;inset-block:0;inset-inline-end:0;z-index:900;display:flex;flex-direction:column;inline-size:min(var(--sheen-panel-size,440px),100vw);padding:16px;overflow:auto}
 sheen-side-panel.sheen-glass[hidden]{display:none}
+/* size="small" is the 400px panel of an app's filters and editors (0.7.0); --sheen-panel-size still wins */
+sheen-side-panel[size="small"]{--sheen-panel-size:400px}
 sheen-side-panel.sheen-glass:focus:not(:focus-visible){outline:none}
 .sheen-panel-close{align-self:flex-end}
 .sheen-panel-body{flex:1;min-block-size:0}
@@ -658,7 +660,7 @@ sheen-menu-button.sheen-small .sheen-menu,.sheen-small sheen-menu-button .sheen-
 :is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item:hover{background:var(--sheen-tonal)}
 :is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item:focus-visible{background:none;outline:2px solid var(--sheen-accent-text);outline-offset:-2px}
 :is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item[aria-disabled="true"]:hover{background:none}
-/* an item with a description (k-fview): its glyph lines up with the title; the description is 12px at 400 */
+/* an item with a description: its glyph lines up with the title; the description is 12px at 400 */
 :is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item:not([aria-disabled="true"]):has(.sheen-menu-hint){align-items:flex-start}
 :is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item:not([aria-disabled="true"]):has(.sheen-menu-hint)>.sheen-glyph{margin-block-start:2px}
 :is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item:not([aria-disabled="true"]) .sheen-menu-hint{font-size:12px;font-weight:400}
@@ -737,6 +739,8 @@ sheen-menu-button.sheen-small .sheen-menu,.sheen-small sheen-menu-button .sheen-
 .sheen-views-end{margin-inline-start:auto;display:flex;align-items:center;gap:4px;padding-block-end:6px}
 /* in a find row the views end is one more control: its 6px are for the views row's tabs, and here they would lift it */
 .sheen-find-row .sheen-views-end{padding-block-end:0}
+/* a menu button at the end of a views or find row (Views) opens a menu 320px to 360px wide */
+.sheen-views-end sheen-menu-button{--sheen-menu-min-size:320px;--sheen-menu-max-size:360px}
 
 /* a module's page tab row (Users · Roles · …): view tabs as links in a <nav class="sheen-page-tabs"> */
 .sheen-page-tabs{display:flex;gap:4px;min-inline-size:0;overflow-x:auto;scrollbar-width:none;border-block-end:1px solid var(--sheen-separator)}
@@ -864,7 +868,7 @@ th[aria-sort="ascending"],th[aria-sort="descending"]{color:var(--sheen-text)}
 }
 
 /* 0.7.0 list kit */
-/* the Filters panel (the app mockups' k-fpf, k-fopt, k-fcount, k-fbox): options 1px apart, 6px under their label and 10px
+/* the Filters panel: options 1px apart, 6px under their label and 10px
    under the line above; a ticked option is tinted; counts at 500; an outlined 18px box with a drawn tick, in both themes */
 .sheen-filter-field{gap:1px;padding-block-start:0}
 .sheen-filter-field legend{padding-block-start:10px;margin-block-end:6px}
@@ -885,12 +889,12 @@ th[aria-sort="ascending"],th[aria-sort="descending"]{color:var(--sheen-text)}
 .sheen-table.sheen-small{font-size:13.5px}
 .sheen-table.sheen-small th{font-size:12px;padding:10px 14px;background:color-mix(in srgb,var(--sheen-track) 35%,var(--sheen-surface));border-block-end:0;white-space:nowrap}
 .sheen-table.sheen-small td{padding:10px 14px;border-block-end:0;border-block-start:1px solid var(--sheen-separator);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-inline-size:260px}
-/* .sheen-wrap (k-wrap): a table of long sentences wraps its headers and cells at spaces and lines them up at the top */
+/* .sheen-wrap: a table of long sentences wraps its headers and cells at spaces and lines them up at the top */
 .sheen-table.sheen-small.sheen-wrap :is(th,td){white-space:normal}
 .sheen-table.sheen-small.sheen-wrap td{max-inline-size:none;vertical-align:top;overflow-wrap:break-word}
 .sheen-table.sheen-small .sheen-sort-button{padding:10px 14px}
 /* a sortable header leaves all its padding to its button, here too: the cell padding above would add 3px to the row
-   and the sides to the column (k-table th[aria-sort]) */
+   and the sides to the column */
 .sheen-table.sheen-small th:has(>.sheen-sort-button){padding:0}
 .sheen-table.sheen-small .sheen-pin-end{padding-inline:4px}
 /* end 0.7.0 list kit */
@@ -909,23 +913,25 @@ th[aria-sort="ascending"],th[aria-sort="descending"]{color:var(--sheen-text)}
    size and weight in the browser's monospace (the mockups' own rule puts inherit inside the font shorthand, which browsers
    drop, so their caps keep the row's size and the kbd element's monospace) */
 .sheen-find .sheen-kbd,:is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item .sheen-kbd,sheen-command-palette.sheen-small .sheen-kbd,.sheen-keys .sheen-kbd{min-inline-size:20px;block-size:20px;padding-inline:5px;border-radius:6px;background:none;box-shadow:inset 0 0 0 1px var(--sheen-separator);color:var(--sheen-text-tertiary);font:inherit;font-family:monospace;line-height:1}
-/* focus (0.7.0): a ring only while the keyboard navigates. Tab or Shift+Tab marks <html data-sheen-keyboard> and the next
-   press clears it, so a press, Esc, Enter, typing and arrows never bring a ring back; in a dense menu the item the arrows
-   reach shows the hover fill instead. A text field never draws a ring: its caret shows the focus. */
-:root:not([data-sheen-keyboard]) .sheen :focus-visible,:root:not([data-sheen-keyboard]) .sheen:focus-visible{outline:none!important}
-:root:not([data-sheen-keyboard]) :is(.sheen-choice:has(input:focus-visible),.sheen-chip:has(>input:focus-visible)){outline:none}
-:root:not([data-sheen-keyboard]) :is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item:focus-visible{background:var(--sheen-tonal)}
-.sheen :is(input:not([type="checkbox"],[type="radio"],[type="range"],[type="button"],[type="submit"],[type="reset"],[type="file"],[type="color"],[type="image"]),select,textarea):focus-visible{outline:none!important}
+/* focus (0.7.0): a ring only while the keyboard navigates. On a page sheen.js or the elements marked <html
+   data-sheen-focus>, Tab or Shift+Tab marks <html data-sheen-keyboard> and the next press clears it, so a press, Esc,
+   Enter, typing and arrows never bring a ring back; in a dense menu the item the arrows reach shows the hover fill
+   instead. A page with neither script keeps the browser's own :focus-visible rings. A text input or textarea never
+   draws a ring (its caret shows the focus); a select has no caret, so it rings after Tab like a button. */
+:root[data-sheen-focus]:not([data-sheen-keyboard]) .sheen :focus-visible,:root[data-sheen-focus]:not([data-sheen-keyboard]) .sheen:focus-visible{outline:none!important}
+:root[data-sheen-focus]:not([data-sheen-keyboard]) :is(.sheen-choice:has(input:focus-visible),.sheen-chip:has(>input:focus-visible)){outline:none}
+:root[data-sheen-focus]:not([data-sheen-keyboard]) :is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item:focus-visible{background:var(--sheen-tonal)}
+.sheen :is(input:not([type="checkbox"],[type="radio"],[type="range"],[type="button"],[type="submit"],[type="reset"],[type="file"],[type="color"],[type="image"]),textarea):focus-visible{outline:none!important}
 
-/* a module's page tabs (the app mockups' k-tabs): secondary words with 24px each side; the page you are on is marked by
+/* a module's page tabs: secondary words with 24px each side; the page you are on is marked by
    its 2px accent line only. The row's hairline is drawn inside it, so a scrolling row never clips the 2px line. Links
-   would take the text colour from the base ".sheen a" rule, so the colours are set here. An app page's title (k-head). */
+   would take the text colour from the base ".sheen a" rule, so the colours are set here. An app page's title. */
 .sheen-page-tabs{border-block-end:0;box-shadow:inset 0 -1px 0 var(--sheen-separator)}
 .sheen-page-tabs .sheen-view-tab{margin-block-end:0;padding-inline:24px;color:var(--sheen-text-secondary)}
 .sheen-page-tabs .sheen-view-tab:hover{color:var(--sheen-text)}
 .sheen-page-tabs .sheen-view-tab[aria-current="page"]{color:var(--sheen-text-secondary)}
 .sheen-page-title{margin:0;font-size:26px;font-weight:700;letter-spacing:-.02em}
-/* an app page's header (k-head, k-head-t, k-head-b, k-crumbs): the crumbs at 12.5px, the 26px title and a 14px secondary
+/* an app page's header: the crumbs at 12.5px, the 26px title and a 14px secondary
    line with room for a pill beside it, then the actions at the end edge on the bottom line. The mockups set no narrow
    layout: the words keep 320px, and under that the actions move to a line of their own, still at the end edge. */
 .sheen-page-head{display:flex;flex-wrap:wrap;align-items:flex-end;gap:16px}
@@ -985,8 +991,8 @@ sheen-toaster[position="top"] .sheen-toast-text{font-size:14.5px;font-weight:600
 
 /* 14-solid.css */
 /* Solid layers (0.7.0): class="sheen-solid" on a layer or on any box around it (the page's body) draws menus, toasts, the
-   command palette, side panels and hover cards opaque, each with its own fill and shadow from the app mockups (k-fpop,
-   k-acmdk, o-toast, k-drawer, k-rlcard), so the buttons and rows under them never show through. Modal layers then dim
+   command palette, side panels and hover cards opaque, each with its own fill and shadow from the app mockups,
+   so the buttons and rows under them never show through. Modal layers then dim
    the page with a plain shade, no blur.
    :root raises these rules above the glass ones, the light theme's included (:root[data-theme="light"] .sheen-glass). */
 :root .sheen-solid :is(.sheen-menu.sheen-glass,.sheen-cmd.sheen-glass){background:var(--sheen-surface);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:0 0 0 1px var(--sheen-separator),0 14px 34px rgba(16,20,30,.14),0 2px 6px rgba(16,20,30,.06)}
@@ -1002,10 +1008,10 @@ sheen-toaster[position="top"] .sheen-toast-text{font-size:14.5px;font-weight:600
 
 /* 15-app-forms.css */
 /* 0.7.0 app forms */
-/* Dense forms and sheets of an app page, ported from the app mockups (k-field, k-form, k-swrow, o-switch, o-quick,
-   k-tfoot, k-acmdk, k-akeysheet, k-akeygrid). Logical sides only, so Arabic mirrors. */
+/* Dense forms and sheets of an app page, ported from the app mockups: fields, a select, a side panel footer, a large
+   switch, a table's group row and foot, the small palette and the shortcuts sheet. Logical sides only, so Arabic mirrors. */
 
-/* a dense field (k-field): a 13px label at 500 over a 38px box, an 11px radius, 14px words; a hint under it; a ring and
+/* a dense field: a 13px label at 500 over a 38px box, an 11px radius, 14px words; a hint under it; a ring and
    a red hint when the input is invalid. Two to a row in .sheen-fields.sheen-small, 12px by 16px apart. */
 .sheen-form-field.sheen-small{gap:5px;font-size:13px}
 .sheen-form-field.sheen-small>span:first-child{font-weight:500;color:var(--sheen-text-secondary)}
@@ -1018,12 +1024,12 @@ sheen-toaster[position="top"] .sheen-toast-text{font-size:14.5px;font-weight:600
 .sheen-fields.sheen-small{gap:12px 16px}
 .sheen-fields>.sheen-wide{grid-column:1/-1}
 
-/* a select drawn as a field (the k-field picker): its value and an 18px chevron in one box, the chevron at the end edge */
+/* a select drawn as a field: its value and an 18px chevron in one box, the chevron at the end edge */
 .sheen-select{position:relative;display:flex}
 .sheen-select>select{appearance:none;-webkit-appearance:none;inline-size:100%;padding-inline-end:38px;cursor:pointer}
 .sheen-select::after{content:"";position:absolute;inset-inline-end:12px;inset-block-start:50%;inline-size:18px;block-size:18px;margin-block-start:-9px;background:var(--sheen-text-tertiary);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9.5 6 6 6-6'/%3E%3C/svg%3E") center/18px no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9.5 6 6 6-6'/%3E%3C/svg%3E") center/18px no-repeat;pointer-events:none}
 
-/* a side panel's footer (o-quick): Cancel and the main action share the row on the panel's bottom edge, each at least
+/* a side panel's footer: Cancel and the main action share the row on the panel's bottom edge, each at least
    128px and growing alike (equal when both labels fit in 128px), one under the other when the row is too narrow. In a
    panel with a heading it sticks to the end of the scrolling body, so a body longer than the window scrolls under it
    and the buttons stay 20px above the panel's bottom edge. */
@@ -1032,7 +1038,7 @@ sheen-toaster[position="top"] .sheen-toast-text{font-size:14.5px;font-weight:600
 sheen-side-panel.sheen-headed .sheen-panel-body:has(>.sheen-panel-foot){padding-block-end:0}
 sheen-side-panel.sheen-headed .sheen-panel-body>.sheen-panel-foot{position:sticky;inset-block-end:0;margin-inline:-20px;padding:14px 20px 20px;background:inherit}
 
-/* a 51 by 31 switch with a 27px knob (o-switch), and a switch row (k-swrow): the words at the start, the switch at the
+/* a 51 by 31 switch with a 27px knob, and a switch row: the words at the start, the switch at the
    end, a hairline under them. The off track keeps the 0.3.0 colour, 3:1 against the panel. */
 .sheen-switch.sheen-large input{inline-size:51px;block-size:31px;border-radius:16px}
 .sheen-switch.sheen-large input::after{inset-block-start:2px;inset-inline-start:2px;inline-size:27px;block-size:27px;border-radius:14px;box-shadow:0 2px 6px rgba(0,0,0,.2)}
@@ -1043,7 +1049,7 @@ sheen-side-panel.sheen-headed .sheen-panel-body>.sheen-panel-foot{position:stick
 .sheen-table tr.sheen-table-group>th{padding:14px 14px 6px;font-size:13px;font-weight:700;color:var(--sheen-text);text-align:start;background:none;border-block-start:1px solid var(--sheen-separator)}
 .sheen-table tr.sheen-table-group small{margin-inline-start:6px;padding:1px 6px;border-radius:8px;background:var(--sheen-track);color:var(--sheen-text-secondary);font-size:11px;font-weight:600;font-variant-numeric:tabular-nums}
 
-/* a table's footer (k-tfoot): the count at the start, a pager at the end; 18px arrows 6px apart that mirror in Arabic.
+/* a table's footer: the count at the start, a pager at the end; 18px arrows 6px apart that mirror in Arabic.
    The arrows are 24px buttons: a bare 18px glyph is under the 24px target WCAG 2.5.8 asks for. */
 .sheen-table-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;font-size:12.5px;color:var(--sheen-text-secondary);border-block-start:1px solid var(--sheen-separator)}
 .sheen-pager{display:inline-flex;align-items:center;gap:6px}
@@ -1054,7 +1060,7 @@ sheen-side-panel.sheen-headed .sheen-panel-body>.sheen-panel-foot{position:stick
 .sheen-pager b{font-weight:700;color:var(--sheen-text);font-variant-numeric:tabular-nums}
 [dir="rtl"] .sheen-pager svg{transform:scaleX(-1)}
 
-/* the small command palette (k-acmdk): a 560px box, a 36px search field, 36px rows with 18px glyphs, plain key caps */
+/* the small command palette: a 560px box, a 36px search field, 36px rows with 18px glyphs, plain key caps */
 sheen-command-palette.sheen-small .sheen-cmd{inline-size:min(560px,calc(100vw - 32px));padding:10px;gap:10px;border-radius:20px;margin-block-start:14vh}
 sheen-command-palette.sheen-small .sheen-cmd-head{block-size:36px;padding:0 12px;gap:7px;border:0;border-radius:11px;box-shadow:inset 0 0 0 1px var(--sheen-separator);font-size:13.5px}
 sheen-command-palette.sheen-small .sheen-cmd-head>.sheen-glyph{inline-size:15px;block-size:15px}
@@ -1065,7 +1071,7 @@ sheen-command-palette.sheen-small .sheen-cmd-row{min-block-size:36px;padding:6px
 sheen-command-palette.sheen-small .sheen-cmd-row .sheen-glyph{inline-size:18px;block-size:18px;color:inherit}
 sheen-command-palette.sheen-small .sheen-cmd-row[aria-selected="true"]{background:var(--sheen-tonal)}
 
-/* a small dialog (k-akeysheet), and shortcuts in three columns of keys and words (k-akeygrid); one column when narrow */
+/* a small dialog, and shortcuts in three columns of keys and words; one column when narrow */
 .sheen-dialog.sheen-small{display:flex;flex-direction:column;gap:10px;inline-size:min(720px,calc(100vw - 32px));padding:20px;border-radius:20px;background:var(--sheen-surface);box-shadow:0 0 0 1px var(--sheen-separator),0 24px 60px rgba(16,20,30,.22)}
 .sheen-dialog.sheen-small:not([open]){display:none}
 .sheen-dialog.sheen-small .sheen-dialog-head{padding:18px 20px 6px;justify-content:space-between}
@@ -1079,4 +1085,7 @@ sheen-command-palette.sheen-small .sheen-cmd-row[aria-selected="true"]{backgroun
 .sheen-keys{display:inline-flex;gap:3px}
 .sheen-shortcuts-note{margin:0;font-size:12px;color:var(--sheen-text-tertiary)}
 @media (max-width:760px){.sheen-shortcuts.sheen-small{grid-template-columns:1fr}}
+/* forced colors drop the dense field's inset edge and paint the chevron's mask in the page colour: the field takes a real
+   border (2px when invalid) and the chevron the text colour */
+@media (forced-colors: active){.sheen-form-field.sheen-small .sheen-input{border:1px solid CanvasText}.sheen-form-field.sheen-small .sheen-input[aria-invalid="true"]{border-width:2px}.sheen-select::after{background:CanvasText;forced-color-adjust:none}}
 /* end 0.7.0 app forms */

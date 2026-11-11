@@ -11,23 +11,25 @@
    size and weight in the browser's monospace (the mockups' own rule puts inherit inside the font shorthand, which browsers
    drop, so their caps keep the row's size and the kbd element's monospace) */
 .sheen-find .sheen-kbd,:is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item .sheen-kbd,sheen-command-palette.sheen-small .sheen-kbd,.sheen-keys .sheen-kbd{min-inline-size:20px;block-size:20px;padding-inline:5px;border-radius:6px;background:none;box-shadow:inset 0 0 0 1px var(--sheen-separator);color:var(--sheen-text-tertiary);font:inherit;font-family:monospace;line-height:1}
-/* focus (0.7.0): a ring only while the keyboard navigates. Tab or Shift+Tab marks <html data-sheen-keyboard> and the next
-   press clears it, so a press, Esc, Enter, typing and arrows never bring a ring back; in a dense menu the item the arrows
-   reach shows the hover fill instead. A text field never draws a ring: its caret shows the focus. */
-:root:not([data-sheen-keyboard]) .sheen :focus-visible,:root:not([data-sheen-keyboard]) .sheen:focus-visible{outline:none!important}
-:root:not([data-sheen-keyboard]) :is(.sheen-choice:has(input:focus-visible),.sheen-chip:has(>input:focus-visible)){outline:none}
-:root:not([data-sheen-keyboard]) :is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item:focus-visible{background:var(--sheen-tonal)}
-.sheen :is(input:not([type="checkbox"],[type="radio"],[type="range"],[type="button"],[type="submit"],[type="reset"],[type="file"],[type="color"],[type="image"]),select,textarea):focus-visible{outline:none!important}
+/* focus (0.7.0): a ring only while the keyboard navigates. On a page sheen.js or the elements marked <html
+   data-sheen-focus>, Tab or Shift+Tab marks <html data-sheen-keyboard> and the next press clears it, so a press, Esc,
+   Enter, typing and arrows never bring a ring back; in a dense menu the item the arrows reach shows the hover fill
+   instead. A page with neither script keeps the browser's own :focus-visible rings. A text input or textarea never
+   draws a ring (its caret shows the focus); a select has no caret, so it rings after Tab like a button. */
+:root[data-sheen-focus]:not([data-sheen-keyboard]) .sheen :focus-visible,:root[data-sheen-focus]:not([data-sheen-keyboard]) .sheen:focus-visible{outline:none!important}
+:root[data-sheen-focus]:not([data-sheen-keyboard]) :is(.sheen-choice:has(input:focus-visible),.sheen-chip:has(>input:focus-visible)){outline:none}
+:root[data-sheen-focus]:not([data-sheen-keyboard]) :is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item:focus-visible{background:var(--sheen-tonal)}
+.sheen :is(input:not([type="checkbox"],[type="radio"],[type="range"],[type="button"],[type="submit"],[type="reset"],[type="file"],[type="color"],[type="image"]),textarea):focus-visible{outline:none!important}
 
-/* a module's page tabs (the app mockups' k-tabs): secondary words with 24px each side; the page you are on is marked by
+/* a module's page tabs: secondary words with 24px each side; the page you are on is marked by
    its 2px accent line only. The row's hairline is drawn inside it, so a scrolling row never clips the 2px line. Links
-   would take the text colour from the base ".sheen a" rule, so the colours are set here. An app page's title (k-head). */
+   would take the text colour from the base ".sheen a" rule, so the colours are set here. An app page's title. */
 .sheen-page-tabs{border-block-end:0;box-shadow:inset 0 -1px 0 var(--sheen-separator)}
 .sheen-page-tabs .sheen-view-tab{margin-block-end:0;padding-inline:24px;color:var(--sheen-text-secondary)}
 .sheen-page-tabs .sheen-view-tab:hover{color:var(--sheen-text)}
 .sheen-page-tabs .sheen-view-tab[aria-current="page"]{color:var(--sheen-text-secondary)}
 .sheen-page-title{margin:0;font-size:26px;font-weight:700;letter-spacing:-.02em}
-/* an app page's header (k-head, k-head-t, k-head-b, k-crumbs): the crumbs at 12.5px, the 26px title and a 14px secondary
+/* an app page's header: the crumbs at 12.5px, the 26px title and a 14px secondary
    line with room for a pill beside it, then the actions at the end edge on the bottom line. The mockups set no narrow
    layout: the words keep 320px, and under that the actions move to a line of their own, still at the end edge. */
 .sheen-page-head{display:flex;flex-wrap:wrap;align-items:flex-end;gap:16px}

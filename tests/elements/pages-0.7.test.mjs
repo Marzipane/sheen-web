@@ -22,7 +22,7 @@ test('glyphs: the Flutter sheen filled icons draw as "<name>-fill", filled with 
 
 test('key caps: the find row\'s "/" and the shortcuts in small menus are plain outlined caps', () => {
   has('.sheen-find .sheen-kbd,' + DENSE + ' .sheen-menu-item .sheen-kbd,sheen-command-palette.sheen-small .sheen-kbd,.sheen-keys .sheen-kbd{min-inline-size:20px;block-size:20px;padding-inline:5px;border-radius:6px;background:none;box-shadow:inset 0 0 0 1px var(--sheen-separator);color:var(--sheen-text-tertiary);font:inherit;font-family:monospace;line-height:1}');
-  // the mockup's k-fkbd says font:600 11px/1 inherit, which browsers drop as invalid: its caps take the row's font
+  // the mockups' key cap rule says font:600 11px/1 inherit, which browsers drop as invalid: its caps take the row's font
   assert.ok(!css.includes('font:600 11px/1 inherit'));
 });
 
@@ -50,7 +50,7 @@ test('page tabs mark the current page by its line only; an app page title is 26p
 test('a side panel with a heading keeps the Filters footer at its bottom edge', () => {
   has('sheen-side-panel.sheen-headed .sheen-panel-body{display:flex;flex-direction:column}');
   has('sheen-side-panel.sheen-headed .sheen-panel-body>:is(.sheen-filter-footer,.sheen-panel-foot){margin-block-start:auto}');
-  // the body keeps no padding under the footer, so the footer's edge is the panel's (k-fpfoot sits under k-fpbody)
+  // the body keeps no padding under the footer, so the footer's edge is the panel's (the mockups' footer sits under the body)
   has('sheen-side-panel.sheen-headed .sheen-panel-body:has(>.sheen-filter-footer){padding-block-end:0}');
   has('sheen-side-panel.sheen-headed .sheen-filter-footer{margin-inline:-20px;margin-block-end:0;padding:12px 20px 16px}');
 });

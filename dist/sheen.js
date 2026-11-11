@@ -9,6 +9,16 @@
 // - Stepper: <div class="sheen-stepper" data-sheen-stepper> with an <input type="number" min max> and two buttons
 //   data-sheen-step="-1" / "1". The buttons disable at the bounds; the input fires "input" and "change".
 // - Picker: <x-sheen::picker> (see below). sheenWeb.initPickers() sets up pickers added after the page loaded.
+// - Focus (0.7.0): Tab or Shift+Tab marks <html data-sheen-keyboard>, and only then do buttons, links, tabs and menu items
+//   draw their thin ring; the next press clears it. The page is marked <html data-sheen-focus> once, by this file or by
+//   the elements, whichever loads first; a page with neither keeps the browser's own :focus-visible rings.
+(function () {
+  var root = document.documentElement;
+  if (root.hasAttribute('data-sheen-focus')) return;
+  root.setAttribute('data-sheen-focus', '');
+  document.addEventListener('keydown', function (e) { if (e.key === 'Tab') root.setAttribute('data-sheen-keyboard', ''); }, true);
+  document.addEventListener('pointerdown', function () { root.removeAttribute('data-sheen-keyboard'); }, true);
+})();
 (function () {
   'use strict';
   if (typeof document === 'undefined' || window.sheenWeb) return;

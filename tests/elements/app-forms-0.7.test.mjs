@@ -1,5 +1,6 @@
-// 0.7.0 app forms and sheets, ported one to one from the app mockups' CSS (k-field, k-form, k-swrow, o-switch, o-quick,
-// k-tfoot, k-acmdk, k-akeysheet, k-akeygrid, k-fkbd) and the computed styles of their rendered states.
+// 0.7.0 app forms and sheets, ported one to one from the app mockups' CSS and the computed styles of their rendered states:
+// the dense field and its grid, a select, the large switch and its row, the panel footer, the table foot, the small palette,
+// the shortcuts sheet and its key caps.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { page } from './setup.mjs';
@@ -10,7 +11,7 @@ const min = readFileSync(new URL('../../dist/sheen.min.css', import.meta.url), '
 const has = (part) => assert.ok(css.includes(part), part);
 const hasMin = (part) => assert.ok(min.includes(part), part);
 
-test('k-field: a dense field is a 13px label at 500 over a 38px box with an 11px radius and 14px words', () => {
+test('a dense field is a 13px label at 500 over a 38px box with an 11px radius and 14px words', () => {
   has('.sheen-form-field.sheen-small{gap:5px;font-size:13px}');
   has('.sheen-form-field.sheen-small>span:first-child{font-weight:500;color:var(--sheen-text-secondary)}');
   has('.sheen-form-field.sheen-small .sheen-input{block-size:38px;padding:6px 12px;border:0;border-radius:11px;background:var(--sheen-background);box-shadow:inset 0 0 0 1px var(--sheen-separator);font-size:14px}');
@@ -21,18 +22,18 @@ test('k-field: a dense field is a 13px label at 500 over a 38px box with an 11px
   has('.sheen-form-field.sheen-small:has(.sheen-input[aria-invalid="true"])>small{color:var(--sheen-danger)}');
 });
 
-test('k-form: dense fields sit two to a row, 12px by 16px apart; a wide one takes the row', () => {
+test('dense fields sit two to a row, 12px by 16px apart; a wide one takes the row', () => {
   has('.sheen-fields.sheen-small{gap:12px 16px}');
   has('.sheen-fields>.sheen-wide{grid-column:1/-1}');
 });
 
-test('k-field picker: a select shows its value and an 18px chevron in the same box, the chevron at the end edge', () => {
+test('a select drawn as a field shows its value and an 18px chevron in the same box, the chevron at the end edge', () => {
   has('.sheen-select{position:relative;display:flex}');
   has('.sheen-select>select{appearance:none;-webkit-appearance:none;inline-size:100%;padding-inline-end:38px;cursor:pointer}');
   assert.match(css, /\.sheen-select::after\{content:"";position:absolute;inset-inline-end:12px;inset-block-start:50%;inline-size:18px;block-size:18px;margin-block-start:-9px;background:var\(--sheen-text-tertiary\);-webkit-mask:url\("data:image\/svg\+xml,[^"]+"\) center\/18px no-repeat;mask:url\("data:image\/svg\+xml,[^"]+"\) center\/18px no-repeat;pointer-events:none\}/);
 });
 
-test('o-quick: a side panel footer holds Cancel and the main action on the panel\'s bottom edge, growing alike from 128px and wrapping when narrow', () => {
+test('a side panel footer holds Cancel and the main action on the panel\'s bottom edge, growing alike from 128px and wrapping when narrow', () => {
   has('.sheen-panel-foot{display:flex;flex-wrap:wrap;gap:10px;margin-block-start:auto;padding-block-start:14px}');
   has('.sheen-panel-foot>*{flex:1 0 128px}');
   has('sheen-side-panel.sheen-headed .sheen-panel-body>:is(.sheen-filter-footer,.sheen-panel-foot){margin-block-start:auto}'.replace(' .sheen-panel-body>:is', ' .sheen-panel-body>:is'));
@@ -47,7 +48,7 @@ test('a long side panel keeps its footer on the bottom edge: the footer sticks t
   has(':root .sheen-solid sheen-side-panel.sheen-glass .sheen-panel-body>:is(.sheen-filter-footer,.sheen-panel-foot),:root sheen-side-panel.sheen-solid.sheen-glass .sheen-panel-body>:is(.sheen-filter-footer,.sheen-panel-foot){background:var(--sheen-sheet)}');
 });
 
-test('o-switch and k-swrow: a 51 by 31 switch with a 27px knob, in a row with its words; the off track keeps 3:1', () => {
+test('a 51 by 31 switch with a 27px knob, in a row with its words; the off track keeps 3:1', () => {
   has('.sheen-switch.sheen-large input{inline-size:51px;block-size:31px;border-radius:16px}');
   has('.sheen-switch.sheen-large input::after{inset-block-start:2px;inset-inline-start:2px;inline-size:27px;block-size:27px;border-radius:14px;box-shadow:0 2px 6px rgba(0,0,0,.2)}');
   has('.sheen-switch.sheen-large input:checked::after{inset-inline-start:22px}');
@@ -61,7 +62,7 @@ test('a table group row: the group\'s name over its rows, with its count as a pi
   has('.sheen-table tr.sheen-table-group small{margin-inline-start:6px;padding:1px 6px;border-radius:8px;background:var(--sheen-track);color:var(--sheen-text-secondary);font-size:11px;font-weight:600;font-variant-numeric:tabular-nums}');
 });
 
-test('k-tfoot: a table footer with the count at the start and a pager at the end; 18px arrows 6px apart that mirror in Arabic', () => {
+test('a table footer with the count at the start and a pager at the end; 18px arrows 6px apart that mirror in Arabic', () => {
   has('.sheen-table-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;font-size:12.5px;color:var(--sheen-text-secondary);border-block-start:1px solid var(--sheen-separator)}');
   has('.sheen-pager{display:inline-flex;align-items:center;gap:6px}');
   // 24px buttons: the mockup draws bare 18px glyphs; a button keeps the 24px target WCAG 2.5.8 asks for
@@ -71,7 +72,7 @@ test('k-tfoot: a table footer with the count at the start and a pager at the end
   hasMin('[dir="rtl"] .sheen-pager svg{transform:scaleX(-1)}');
 });
 
-test('k-acmdk: the small command palette is a 560px box with a 36px search field, 36px rows, 18px glyphs and plain key caps', () => {
+test('the small command palette is a 560px box with a 36px search field, 36px rows, 18px glyphs and plain key caps', () => {
   has('sheen-command-palette.sheen-small .sheen-cmd{inline-size:min(560px,calc(100vw - 32px));padding:10px;gap:10px;border-radius:20px;margin-block-start:14vh}');
   has('sheen-command-palette.sheen-small .sheen-cmd-head{block-size:36px;padding:0 12px;gap:7px;border:0;border-radius:11px;box-shadow:inset 0 0 0 1px var(--sheen-separator);font-size:13.5px}');
   has('sheen-command-palette.sheen-small .sheen-cmd-head>.sheen-glyph{inline-size:15px;block-size:15px}');
@@ -85,7 +86,7 @@ test('k-acmdk: the small command palette is a 560px box with a 36px search field
   hasMin(':root .sheen-solid sheen-command-palette.sheen-small .sheen-cmd.sheen-glass{box-shadow:0 0 0 1px var(--sheen-separator),0 24px 60px rgba(16,20,30,.22)}');
 });
 
-test('k-akeysheet: a small dialog 720px wide; the shortcuts in three columns of keys and words, one column when narrow', () => {
+test('a small dialog 720px wide; the shortcuts in three columns of keys and words, one column when narrow', () => {
   has('.sheen-dialog.sheen-small{display:flex;flex-direction:column;gap:10px;inline-size:min(720px,calc(100vw - 32px));padding:20px;border-radius:20px;background:var(--sheen-surface);box-shadow:0 0 0 1px var(--sheen-separator),0 24px 60px rgba(16,20,30,.22)}');
   has('.sheen-dialog.sheen-small:not([open]){display:none}');
   has('.sheen-dialog.sheen-small .sheen-dialog-head{padding:18px 20px 6px;justify-content:space-between}');
@@ -100,7 +101,7 @@ test('k-akeysheet: a small dialog 720px wide; the shortcuts in three columns of 
   assert.match(css, /@media \(max-width:760px\)\{\.sheen-shortcuts\.sheen-small\{grid-template-columns:1fr\}\}/);
 });
 
-test('o-alert: a warning triangle glyph for error states', () => {
+test('alert: a warning triangle glyph for error states', () => {
   const w = page('');
   assert.ok(w.sheenElements.glyphNames().includes('alert'));
   const svg = w.sheenElements.glyph('alert', 25);
