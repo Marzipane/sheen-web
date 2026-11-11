@@ -1,5 +1,40 @@
 # Changelog
 
+## 0.7.1
+
+An opt-in drawer for the sidebar shell under 760px, and three fixes to 0.7.0: less motion, forced colors after a press,
+and a Views menu width that an app can set. An app that adds no nav button sees no change in its layout.
+
+- A shell whose `.sheen-app-bar` holds a `.sheen-nav-button` turns its sidebar into a drawer under 760px. The drawer
+  opens from the start edge (the left; the right in Arabic), `min(300px, 86vw)` wide, over a dim, so the page starts
+  under the app bar. The button's `aria-controls` names the sidebar's id, and the button shows only under 760px. Opening
+  puts focus on the drawer's first link and makes the rest of the shell inert, so Tab stays in the drawer. Esc, a press
+  on the dim or on a link, or the button again closes it, and focus goes back to the button. Growing past 760px closes
+  it. sheen.js and the elements carry the same drawer code; a page that loads both sets it up once.
+- A shell without the button keeps 0.7.0's layout under 760px: the sidebar stacks over the page, up to 40% of the window
+  high. A browser without `:has()` keeps that layout too.
+- A closed drawer draws nothing: it is out of sight with no shadow and out of the Tab order. It hides once it has slid
+  out, after `--sheen-motion-snappy-duration`. Each motion spring now gives its duration alone as
+  `--sheen-motion-<spring>-duration`, next to `--sheen-motion-<spring>` (duration and easing).
+- Fixed: with less motion, 0.7.0 gave every element a .01ms transition of every property, so a change eased for a moment
+  and a part that was just shown refused focus until it ended (the drawer's links). With less motion nothing transitions
+  now; animations still end at once as before.
+- Fixed: with forced colors, a press took the system outline away from a select or a picker inside a `.sheen-field` or
+  `.sheen-control`, from a picker's pill, and from a dense menu item that the arrows reached after the press. 0.7.0
+  applied its rules that hide a ring after a press with forced colors too. With forced colors those rules stand aside
+  now, so the outline marks focus after a press too. An open drawer's dim takes the side panel dim's forced colour.
+- The Views menu width (320px to 360px for a menu button at the end of a views or find row) now sits at no specificity,
+  like `sheen-small` on a side panel. An app's class rule on the menu button or an inline `--sheen-menu-min-size` or
+  `--sheen-menu-max-size` wins over it; a value set on an ancestor of the button does not.
+- Tests, in jsdom and on the built CSS:
+  - the drawer's rules, the stack a shell without the button keeps, the hide delay from the token, and the
+    forced-colors rules for both dims and for the press;
+  - opening, Esc, a link, the dim and the button again, with focus and inert, with the elements, with sheen.js alone and
+    with both;
+  - a button outside its shell, which opens nothing;
+  - the same drawer code in both scripts;
+  - the Views width rule at no specificity.
+
 ## 0.7.0
 
 The parts an app's list page and its forms need, at the sizes of the app mockups they were ported from: control-look
@@ -25,7 +60,8 @@ additive; the fixes, the looks that change and one change against an earlier own
   (one stop per radio group; hidden, disabled and `tabindex="-1"` controls skipped) and brings focus that lands outside
   back in, unless another dialog or popover took it. Hiding an open panel by its attribute takes the dim away; moving it
   keeps the dim. `class="sheen-small"` makes the panel 400px wide, for filters and editors (menu buttons inside take
-  the dense size); `--sheen-panel-size` sets any other width and always wins (440px by default). With forced colors
+  the dense size); `--sheen-panel-size` sets any other width (440px by default): a class rule on the panel or an inline
+  value wins over `sheen-small`, a value set on an ancestor does not. With forced colors
   the panel keeps an edge toward the page and a modal panel's dim stays visible.
 - List kit: `.sheen-control.sheen-on` tints the fill and glyph of a control whose filters are on, and in a narrow list
   kit a control with a count keeps its count; `.sheen-table-card` puts a table on an 18px surface card that still scrolls

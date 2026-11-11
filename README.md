@@ -125,15 +125,21 @@ radios.
 
 ### Focus on fields
 
-A text field never draws a focus ring: its caret shows the focus, and the words inside it never get a box of their own.
-A select has no caret, so it rings after Tab like a button.
-- A `.sheen-field` turns its label to the accent (0.7.0: without the line and glow it had before).
+A text input or textarea never draws a focus ring, keyboard or not: its caret shows the focus, and the words inside a
+field never get a box of their own.
+- A select on its own has no caret, so it rings after Tab like a button.
+- Inside a `.sheen-field` or `.sheen-control`, a select or a picker button draws no box of its own: the field rings
+  around it after Tab. A `.sheen-field` also turns its label to the accent while it has focus (0.7.0: without the line
+  and glow it had before).
+- A picker's glass pill rings after Tab only, never on a press or while its list is open; an open picker takes the
+  tonal fill, as an open control does.
 - A part of a glass bar, `.sheen-segment` (a search bar's where, dates and guests), lights up as its own pill. A button that opens the part's picker takes `.sheen-segment-trigger`.
 
 Buttons, links, tabs, selects and menu items draw their thin focus ring only while the keyboard navigates: Tab or
 Shift+Tab marks `<html data-sheen-keyboard>`, and the next press clears it (0.7.0). sheen.js and the elements both set
 this up and mark the page `<html data-sheen-focus>`; a page with neither keeps the browser's own `:focus-visible` rings.
-With forced colors, the field or part gets a real outline.
+With forced colors, the system outline marks focus after a press too: on a field or part, and on the dense menu item
+the arrows reach (0.7.1).
 
 ## App elements (0.3.0, record kit 0.4.0)
 
@@ -141,8 +147,8 @@ For apps that are not Laravel sites, `dist/sheen-elements.js` adds framework-fre
 stylesheet (no build step):
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Marzipane/sheen-web@v0.7.0/dist/sheen.min.css">
-<script src="https://cdn.jsdelivr.net/gh/Marzipane/sheen-web@v0.7.0/dist/sheen-elements.min.js" defer></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Marzipane/sheen-web@v0.7.1/dist/sheen.min.css">
+<script src="https://cdn.jsdelivr.net/gh/Marzipane/sheen-web@v0.7.1/dist/sheen-elements.min.js" defer></script>
 ```
 
 The rules every element follows:
@@ -170,7 +176,7 @@ Live stories for every element: `docs/elements.html` (open it from a local serve
 | `<sheen-hover-card>` | facts and actions beside a link | `label`, `delay` (ms, `0` for none); `attach(trigger)`, `detach()`, `open()`, `close()` | `sheen-hover-open` {trigger}, `sheen-hover-close` | on the trigger Space opens; Esc closes from anywhere while open; Tab out closes |
 | `<sheen-side-panel>` | a panel on the end edge; with `modal` it dims the page behind it | `label`, `close-label`, `heading` (the title and the close button on one row; the element marks the panel `sheen-headed`), `class="sheen-small"` (400px, for filters and editors), `modal` (the page dims, a press on the dim closes it), `--sheen-panel-size`; `open()`, `close()` | `sheen-panel-close` | Esc closes and returns focus to the first opener; with `modal`, Tab stays inside and focus that lands outside comes back |
 | `<sheen-scope-picker>` | chooses a rule, not a list | `label`, `all-label`, `chosen-label`, `except-label`, `search-label`, `select-shown-label`, `empty-label`, `result`; `groups`, `value` (only the list its mode reads) | `sheen-scope-change` {mode, include, exclude} | Space ticks; focus stays on the ticked row |
-| `<sheen-menu-button>` | a button with a keyboard menu | `label`, `glyph`, `variant="control"` (the find row's 36px control; square with a glyph), `icon` (a glyph before the label), `chevron`, `compact`, `class="sheen-small"` (the dense menu; `--sheen-menu-min-size`); `items` [{id, label, disabled, hint, shortcut, danger, glyph, accent}, {separator: true}, {heading}], `open()`, `close()` | `sheen-menu-select` {id} | ↓ opens, ↑ ↓ move, Enter picks, Esc closes; a press outside or Tab out closes |
+| `<sheen-menu-button>` | a button with a keyboard menu | `label`, `glyph`, `variant="control"` (the find row's 36px control; square with a glyph), `icon` (a glyph before the label), `chevron`, `compact`, `class="sheen-small"` (the dense menu; `--sheen-menu-min-size`, `--sheen-menu-max-size`); `items` [{id, label, disabled, hint, shortcut, danger, glyph, accent}, {separator: true}, {heading}], `open()`, `close()` | `sheen-menu-select` {id} | ↓ opens, ↑ ↓ move, Enter picks, Esc closes; a press outside or Tab out closes |
 
 ```html
 <sheen-command-palette id="cmd" hotkey label="Command bar" placeholder="Type a command or search…"
@@ -241,7 +247,7 @@ work, and fills in its own words.
 | Class | What it is |
 | --- | --- |
 | `.sheen-list-kit` | the column the three rows sit in; a container, so the rows fold at 760px of its own width |
-| `.sheen-views-row`, `.sheen-view-tabs`, `.sheen-view-tab` (`small` count), `.sheen-views-end` | quick filters as tabs with counts, saved views at the end (a menu button there opens 320px to 360px wide) |
+| `.sheen-views-row`, `.sheen-view-tabs`, `.sheen-view-tab` (`small` count), `.sheen-views-end` | quick filters as tabs with counts, saved views at the end (a menu button there opens 320px to 360px wide; a class rule on that button or an inline `--sheen-menu-min-size` or `--sheen-menu-max-size` wins) |
 | `.sheen-find-row`, `.sheen-control`, `.sheen-find`, `.sheen-control-count`, `.sheen-compact-glyph` | one wide search and compact 36px controls; a compact control keeps only its glyph and count when narrow |
 | `.sheen-applied-row`, `.sheen-filter-chip`, `.sheen-chip-remove`, `.sheen-last-used`, `.sheen-result-count` | one removable chip per filter, Clear all and the count; narrow, chips scroll and the count stays |
 | `.sheen-link-button` | a text button for small steps: Save view, Clear all, Select all |
@@ -260,7 +266,8 @@ work, and fills in its own words.
 | Class | Use |
 | --- | --- |
 | `.sheen-shell`, `.sheen-rail`, `.sheen-rail-item`, `.sheen-main`, `.sheen-topbar`, `.sheen-search-trigger` | an app shell: a navigation rail (a bottom bar on phones), a glass top bar, a ⌘K button |
-| `.sheen-sidebar-shell`, `.sheen-sidebar`, `.sheen-sidebar-nav`, `.sheen-sidebar-item`, `.sheen-app-main`, `.sheen-app-bar`, `.sheen-app-content` | an app shell with a labelled sidebar, for record-heavy apps; on top below 760px |
+| `.sheen-sidebar-shell`, `.sheen-sidebar`, `.sheen-sidebar-nav`, `.sheen-sidebar-item`, `.sheen-app-main`, `.sheen-app-bar`, `.sheen-app-content` | an app shell with a labelled sidebar, for record-heavy apps; under 760px the sidebar stacks over the page, or opens as a drawer from the start edge when the shell's bar holds a `.sheen-nav-button` |
+| `.sheen-nav-button` (`aria-controls` = the sidebar's id, `aria-expanded`, `aria-label`) | in the shell's `.sheen-app-bar`, under 760px: opens the sidebar as a drawer; Esc, the dim or a link closes it and focus goes back to the button. Needs sheen.js or the elements; either one works (0.7.1) |
 | `.sheen-auth-page`, `.sheen-auth-card`, `.sheen-form-field`, `.sheen-input`, `.sheen-form-error` | a small centred sign-in page |
 | `.sheen-panel` (+ `.sheen-glass`), `.sheen-panel-head`, `.sheen-glow` | glass panels with a soft accent glow on hover and focus |
 | `.sheen-aurora` | a fixed, slowly moving gradient behind the page (`--sheen-aurora-a/b/c` set its colours) |
@@ -295,7 +302,8 @@ work, and fills in its own words.
 
 …and `surfaceMuted`, `track`, `separator`, `textSecondary`, `textTertiary`, `onAccent`, `success`, `warning`, `danger`,
 `rating`, `sheet`, `dealFill`, `tonal`; spacing `--sheen-space-*`, radii `--sheen-radius-*`, and the app bar's block
-size `--sheen-size-app-bar` (60px; web only). A top toaster under the app bar takes
+size `--sheen-size-app-bar` (60px; web only). Motion springs are `--sheen-motion-*` (duration and easing), each with
+its duration alone as `--sheen-motion-*-duration` (0.7.1), for a delay that waits out a transition. A top toaster under the app bar takes
 `--sheen-toaster-top: calc(var(--sheen-size-app-bar) + var(--sheen-space-m))`. Change the accent by
 setting `--sheen-accent` and `--sheen-accent-text`.
 

@@ -1,6 +1,6 @@
 {
   "name": "@marzipane/sheen-web",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "sheen for the web: the glass design system of Flutter sheen as CSS custom properties, a small script, Blade components and framework-free app elements.",
   "license": "MIT",
   "repository": "github:Marzipane/sheen-web",

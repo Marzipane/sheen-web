@@ -143,8 +143,9 @@ sheen-hover-card.sheen-glass{display:block;position:fixed;z-index:1000;inline-si
 sheen-hover-card.sheen-glass[hidden]{display:none}
 sheen-side-panel.sheen-glass{position:fixed;inset-block:0;inset-inline-end:0;z-index:900;display:flex;flex-direction:column;inline-size:min(var(--sheen-panel-size,440px),100vw);padding:16px;overflow:auto}
 sheen-side-panel.sheen-glass[hidden]{display:none}
-/* class="sheen-small" is the 400px panel of an app's filters and editors (0.7.0), at no specificity, so an app's own
-   --sheen-panel-size always wins; menu buttons inside it take the dense size, as inside any .sheen-small box */
+/* class="sheen-small" is the 400px panel of an app's filters and editors (0.7.0), at no specificity: an app's class rule
+   on the panel or an inline --sheen-panel-size wins over it; a value set on an ancestor does not, since this rule sets it
+   on the panel itself. Menu buttons inside it take the dense size, as inside any .sheen-small box. */
 :where(sheen-side-panel.sheen-small){--sheen-panel-size:400px}
 sheen-side-panel.sheen-glass:focus:not(:focus-visible){outline:none}
 .sheen-panel-close{align-self:flex-end}
@@ -157,8 +158,11 @@ sheen-side-panel.sheen-headed .sheen-panel-close{align-self:center;flex:none;inl
 sheen-side-panel.sheen-headed .sheen-panel-body{padding:0 20px 16px;overflow-y:auto}
 sheen-side-panel.sheen-headed .sheen-filter-footer{margin-inline:-20px;margin-block-end:0;padding:12px 20px 16px}
 .sheen-panel-dim{position:fixed;inset:0;z-index:899;background:rgba(0,0,0,.18)}
-/* forced colors drop the panel's shadow and its dim's colour: an edge toward the page, and a dim in the text colour */
-@media (forced-colors: active){sheen-side-panel.sheen-glass{border-inline-start:1px solid CanvasText}.sheen-panel-dim{forced-color-adjust:none;background:color-mix(in srgb,CanvasText 30%,transparent)}}
+/* the sidebar drawer under 760px (0.7.1): an open one casts the side panel's shadow toward the page and dims it the same */
+@media (max-width:760px){.sheen-sidebar-shell[data-nav-open] .sheen-sidebar{box-shadow:20px 0 60px rgba(0,0,0,.12)}.sheen-sidebar-shell[data-nav-open] .sheen-sidebar:dir(rtl){box-shadow:-20px 0 60px rgba(0,0,0,.12)}.sheen-sidebar-shell[data-nav-open]::after{content:"";position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.18)}}
+/* forced colors drop the panel's shadow and its dim's colour: an edge toward the page, and a dim in the text colour; the
+   open sidebar drawer's dim takes the same (0.7.1), after the drawer's own dim so this one wins */
+@media (forced-colors: active){sheen-side-panel.sheen-glass{border-inline-start:1px solid CanvasText}.sheen-panel-dim,.sheen-sidebar-shell[data-nav-open]::after{forced-color-adjust:none;background:color-mix(in srgb,CanvasText 30%,transparent)}}
 sheen-scope-picker{display:flex;flex-direction:column;gap:10px}
 .sheen-scope-modes{display:flex;flex-wrap:wrap;gap:12px;margin:0;padding:0;border:0}
 .sheen-scope-modes legend{margin-block-end:6px;font-weight:700}

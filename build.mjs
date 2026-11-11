@@ -10,14 +10,16 @@ const kebab = (s) => s.replace(/[A-Z]/g, (c) => '-' + c.toLowerCase());
 const colorVars = (set) => Object.entries(set).map(([k, v]) => `--sheen-${kebab(k)}:${v};`).join('');
 const numVars = (group, set) => Object.entries(set).map(([k, v]) => `--sheen-${group}-${kebab(k)}:${v}px;`).join('');
 
+// each spring also gives its duration alone, --sheen-motion-<spring>-duration (0.7.1), for a delay that waits out its
+// transition (the sidebar drawer hides once it has slid out)
 const motionVars = ({ springs, durationsMs, easing, pressScale }) =>
-  Object.entries(springs).map(([k, v]) => `--sheen-motion-${k}:${v.durationMs}ms ${v.linear};`).join('') +
+  Object.entries(springs).map(([k, v]) => `--sheen-motion-${k}:${v.durationMs}ms ${v.linear};--sheen-motion-${k}-duration:${v.durationMs}ms;`).join('') +
   Object.entries(durationsMs).map(([k, v]) => `--sheen-motion-${kebab(k)}:${v}ms;`).join('') +
   Object.entries(easing).map(([k, v]) => `--sheen-motion-${kebab(k)}:${v};`).join('') +
   `--sheen-motion-press-scale:${pressScale};`;
 // Less motion: every spring becomes the plain cross-fade time and a pressed element stays its size.
 const reducedMotionVars = ({ springs, durationsMs }) =>
-  Object.keys(springs).map((k) => `--sheen-motion-${k}:${durationsMs.reducedFade}ms linear;`).join('') + '--sheen-motion-press-scale:1;';
+  Object.keys(springs).map((k) => `--sheen-motion-${k}:${durationsMs.reducedFade}ms linear;--sheen-motion-${k}-duration:${durationsMs.reducedFade}ms;`).join('') + '--sheen-motion-press-scale:1;';
 
 const tokenCss = `/* sheen-web tokens, generated from tokens/tokens.json (Flutter sheen ${tokens.flutterVersion}) */
 :root{${colorVars(tokens.color.light)}${numVars('space', tokens.space)}${numVars('radius', tokens.radius)}${numVars('width', tokens.width)}${numVars('size', tokens.size)}${motionVars(tokens.motion)}color-scheme:light}

@@ -16,15 +16,17 @@
    Enter, typing and arrows never bring a ring back; in a dense menu the item the arrows reach shows the hover fill
    instead. A page with neither script keeps the browser's own :focus-visible rings. A text input or textarea never
    draws a ring (its caret shows the focus); a select has no caret, so it rings after Tab like a button (inside a field or
-   control, the field rings). */
-:root[data-sheen-focus]:not([data-sheen-keyboard]) .sheen :focus-visible,:root[data-sheen-focus]:not([data-sheen-keyboard]) .sheen:focus-visible{outline:none!important}
+   control, the field rings). With forced colors these press rules stand aside (0.7.1): the system outline marks focus
+   after a press too, the dense menu item the arrows reach included. */
+@media not (forced-colors: active){:root[data-sheen-focus]:not([data-sheen-keyboard]) .sheen :focus-visible,:root[data-sheen-focus]:not([data-sheen-keyboard]) .sheen:focus-visible{outline:none!important}
 :root[data-sheen-focus]:not([data-sheen-keyboard]) :is(.sheen-choice:has(input:focus-visible),.sheen-chip:has(>input:focus-visible)){outline:none}
-:root[data-sheen-focus]:not([data-sheen-keyboard]) :is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item:focus-visible{background:var(--sheen-tonal)}
+:root[data-sheen-focus]:not([data-sheen-keyboard]) :is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item:focus-visible{background:var(--sheen-tonal)}}
 .sheen :is(input:not([type="checkbox"],[type="radio"],[type="range"],[type="button"],[type="submit"],[type="reset"],[type="file"],[type="color"],[type="image"]),textarea):focus-visible{outline:none!important}
 /* inside a field or a control, a select or a picker button never draws a box of its own (0.1.4): the field or control
    rings around it, after Tab, like every other ring */
 :is(.sheen-field,.sheen-control):has(:is(select,.sheen-picker-trigger):focus-visible){outline:2px solid var(--sheen-accent-text);outline-offset:2px}
-:root[data-sheen-focus]:not([data-sheen-keyboard]) :is(.sheen-field,.sheen-control):has(:is(select,.sheen-picker-trigger):focus-visible){outline:none}
+/* forced colors keep their own outline on a focused field (06-access), after a press too */
+@media not (forced-colors: active){:root[data-sheen-focus]:not([data-sheen-keyboard]) :is(.sheen-field,.sheen-control):has(:is(select,.sheen-picker-trigger):focus-visible){outline:none}}
 
 /* a module's page tabs: secondary words with 24px each side; the page you are on is marked by
    its 2px accent line only. The row's hairline is drawn inside it, so a scrolling row never clips the 2px line. Links

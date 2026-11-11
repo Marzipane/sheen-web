@@ -12,6 +12,8 @@
 // - Focus (0.7.0): Tab or Shift+Tab marks <html data-sheen-keyboard>, and only then do buttons, links, tabs and menu items
 //   draw their thin ring; the next press clears it. The page is marked <html data-sheen-focus> once, by this file or by
 //   the elements, whichever loads first; a page with neither keeps the browser's own :focus-visible rings.
+// - Sidebar drawer (0.7.1): a .sheen-nav-button in a .sheen-sidebar-shell's bar opens the sidebar as a drawer under
+//   760px; the same code as in the elements, set up once by whichever loads first.
 (function () {
   if (typeof document === 'undefined') return;
   var root = document.documentElement;
@@ -19,6 +21,45 @@
   root.setAttribute('data-sheen-focus', '');
   document.addEventListener('keydown', function (e) { if (e.key === 'Tab') root.setAttribute('data-sheen-keyboard', ''); }, true);
   document.addEventListener('pointerdown', function () { root.removeAttribute('data-sheen-keyboard'); }, true);
+})();
+// The sidebar as a drawer under 760px (0.7.1): a .sheen-nav-button inside a .sheen-sidebar-shell opens the .sheen-sidebar
+// its aria-controls names, by data-nav-open on the shell, and puts focus on its first link. Esc, a press outside the
+// drawer or on one of its links, or the button again closes it, and focus goes back to the button. While it is open the
+// rest of the shell is inert, so Tab stays in it. The CSS makes a drawer only of a shell that holds its button and hides
+// a closed drawer and the button above 760px; growing past 760px closes it. sheen.js and the elements carry this same
+// code: whichever loads first marks <html data-sheen-drawer> and sets it up, the other finds it marked and adds nothing.
+(function () {
+  if (typeof document === 'undefined') return;
+  var root = document.documentElement;
+  if (root.hasAttribute('data-sheen-drawer')) return;
+  root.setAttribute('data-sheen-drawer', '');
+  var narrow = window.matchMedia ? window.matchMedia('(max-width:760px)') : null, open = null;
+  function drawer(button) {
+    var side = document.getElementById(button.getAttribute('aria-controls') || ''), shell = side && side.closest('.sheen-sidebar-shell');
+    return shell && shell.contains(button) ? { button: button, side: side, shell: shell } : null;
+  }
+  function set(d, on, quiet) {
+    d.shell.toggleAttribute('data-nav-open', on);
+    d.button.setAttribute('aria-expanded', on ? 'true' : 'false');
+    var page = d.shell.querySelector('.sheen-app-main');
+    if (page) page.toggleAttribute('inert', on);
+    open = on ? d : null;
+    if (quiet) return;
+    if (on) (d.side.querySelector('a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"])') || d.side).focus();
+    else d.button.focus();
+  }
+  document.addEventListener('click', function (e) {
+    var t = e.target, b = t && t.nodeType === 1 && t.closest('.sheen-nav-button');
+    if (b) { var d = drawer(b); if (d) set(d, !d.shell.hasAttribute('data-nav-open')); return; }
+    if (open && (!open.side.contains(t) || (t.nodeType === 1 && t.closest('a[href]')))) set(open, false);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && open && !e.defaultPrevented) { e.preventDefault(); set(open, false); }
+  });
+  if (narrow) {
+    var grown = function () { if (!narrow.matches && open) set(open, false, true); };
+    if (narrow.addEventListener) narrow.addEventListener('change', grown); else if (narrow.addListener) narrow.addListener(grown);
+  }
 })();
 (function () {
   'use strict';

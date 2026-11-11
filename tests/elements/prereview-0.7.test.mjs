@@ -57,7 +57,7 @@ test('the close button of a toast gives focus back too', () => {
 });
 
 test('forced colors: a side panel keeps an edge toward the page and a modal one\'s dim stays visible', () => {
-  has('@media (forced-colors:active){sheen-side-panel.sheen-glass{border-inline-start:1px solid CanvasText}.sheen-panel-dim{forced-color-adjust:none;background:color-mix(in srgb,CanvasText 30%,transparent)}}');
+  has('@media (forced-colors:active){sheen-side-panel.sheen-glass{border-inline-start:1px solid CanvasText}.sheen-panel-dim,.sheen-sidebar-shell[data-nav-open]::after{forced-color-adjust:none;background:color-mix(in srgb,CanvasText 30%,transparent)}}');
 });
 
 test('placement reads the direction from the box itself: placeUnder(box, anchor) takes no flag', () => {
