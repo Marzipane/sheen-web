@@ -46,8 +46,8 @@ test('rings are taken away only on a page a script marked: without one, keyboard
 
 test('a select rings after Tab like a button: only text inputs and textareas never draw a ring', () => {
   has('.sheen :is(input:not([type="checkbox"],[type="radio"],[type="range"],[type="button"],[type="submit"],[type="reset"],[type="file"],[type="color"],[type="image"]),textarea):focus-visible{outline:none!important}');
-  has('.sheen :is(.sheen-field,.sheen-segment,.sheen-picker-pill,.sheen-control) :is(input,textarea,.sheen-segment-trigger,.sheen-picker-trigger):focus-visible{outline:none}');
-  for (const r of min.split('}').filter((r) => /focus-visible\{outline:none/.test(r))) assert.doesNotMatch(r, /select/, r);
+  // inside a field or control the field rings instead (prereview-0.7); no other rule takes a select's ring away
+  for (const r of min.split('}').filter((r) => /focus-visible\{outline:none/.test(r) && !r.includes('.sheen-field,.sheen-segment'))) assert.doesNotMatch(r, /select/, r);
 });
 
 test('forced colors: a dense field and its select keep a 1px edge, an invalid one a 2px edge, and the chevron shows', () => {
@@ -62,8 +62,8 @@ test('rules that had no test: the pinned end column, a link button\'s glyph, the
   assert.match(min, /\.sheen-status small\{[^}]+\}/);
 });
 
-test('placement takes no mode: placeUnder(box, anchor, rtl) lines a box up under its anchor', () => {
-  assert.match(read('dist/sheen-elements.js'), /function placeUnder\(box, a, rtl\) \{/);
+test('placement takes no mode: placeUnder(box, anchor) lines a box up under its anchor', () => {
+  assert.match(read('dist/sheen-elements.js'), /function placeUnder\(box, a\) \{/);
 });
 
 test('the sources, the built files, the demo and the tests describe parts in their own words, not by private mockup classes', () => {
@@ -83,10 +83,10 @@ test('the demo page speaks in neutral sample words', () => {
     assert.ok(!demo.includes(word), word);
 });
 
-test('a side panel takes size="small" for the 400px filter and edit panels, so an app sets no width; 440px stays the default', () => {
-  has('sheen-side-panel[size="small"]{--sheen-panel-size:400px}');
+test('a side panel takes class="sheen-small" for the 400px filter and edit panels, so an app sets no width; 440px stays the default', () => {
+  has(':where(sheen-side-panel.sheen-small){--sheen-panel-size:400px}');
   assert.match(min, /sheen-side-panel\.sheen-glass\{[^}]*inline-size:min\(var\(--sheen-panel-size,440px\),100vw\)/);
-  assert.match(read('dist/sheen-elements.js'), /size="small" makes it 400px wide/);
+  assert.match(read('dist/sheen-elements.js'), /class="sheen-small" makes it 400px wide/);
 });
 
 test('a menu button at the end of a views or find row opens a menu 320px to 360px wide, from the kit itself', () => {

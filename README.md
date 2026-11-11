@@ -168,7 +168,7 @@ Live stories for every element: `docs/elements.html` (open it from a local serve
 | `<sheen-node-graph>` | node graph | `label`, `connect-label`, `connected-label`, `remove-label`; `nodes`, `edges`, `order()` | `sheen-graphchange` {nodes, edges}, `sheen-nodeopen` {node} | arrows move, C then Enter connects, Delete |
 | `<sheen-tour>` | onboarding tour | `next-label`, `back-label`, `done-label`, `skip-label`, `step-label` ("@n of @all"); `steps`, `start()`, `stop()` | `sheen-tour-step` {index}, `sheen-tour-end` {completed} | Enter, Esc, Tab stays inside |
 | `<sheen-hover-card>` | facts and actions beside a link | `label`, `delay` (ms, `0` for none); `attach(trigger)`, `detach()`, `open()`, `close()` | `sheen-hover-open` {trigger}, `sheen-hover-close` | on the trigger Space opens; Esc closes from anywhere while open; Tab out closes |
-| `<sheen-side-panel>` | a panel on the end edge, no backdrop | `label`, `close-label`, `heading` (the title and the close button on one row; the element marks the panel `sheen-headed`), `size="small"` (400px, for filters and editors), `modal` (the page dims, a press on the dim closes it), `--sheen-panel-size`; `open()`, `close()` | `sheen-panel-close` | Esc closes and returns focus to the first opener; with `modal`, Tab stays inside and focus that lands outside comes back |
+| `<sheen-side-panel>` | a panel on the end edge; with `modal` it dims the page behind it | `label`, `close-label`, `heading` (the title and the close button on one row; the element marks the panel `sheen-headed`), `class="sheen-small"` (400px, for filters and editors), `modal` (the page dims, a press on the dim closes it), `--sheen-panel-size`; `open()`, `close()` | `sheen-panel-close` | Esc closes and returns focus to the first opener; with `modal`, Tab stays inside and focus that lands outside comes back |
 | `<sheen-scope-picker>` | chooses a rule, not a list | `label`, `all-label`, `chosen-label`, `except-label`, `search-label`, `select-shown-label`, `empty-label`, `result`; `groups`, `value` (only the list its mode reads) | `sheen-scope-change` {mode, include, exclude} | Space ticks; focus stays on the ticked row |
 | `<sheen-menu-button>` | a button with a keyboard menu | `label`, `glyph`, `variant="control"` (the find row's 36px control; square with a glyph), `icon` (a glyph before the label), `chevron`, `compact`, `class="sheen-small"` (the dense menu; `--sheen-menu-min-size`); `items` [{id, label, disabled, hint, shortcut, danger, glyph, accent}, {separator: true}, {heading}], `open()`, `close()` | `sheen-menu-select` {id} | ↓ opens, ↑ ↓ move, Enter picks, Esc closes; a press outside or Tab out closes |
 
@@ -241,7 +241,7 @@ work, and fills in its own words.
 | Class | What it is |
 | --- | --- |
 | `.sheen-list-kit` | the column the three rows sit in; a container, so the rows fold at 760px of its own width |
-| `.sheen-views-row`, `.sheen-view-tabs`, `.sheen-view-tab` (`small` count), `.sheen-views-end` | quick filters as tabs with counts, saved views at the end |
+| `.sheen-views-row`, `.sheen-view-tabs`, `.sheen-view-tab` (`small` count), `.sheen-views-end` | quick filters as tabs with counts, saved views at the end (a menu button there opens 320px to 360px wide) |
 | `.sheen-find-row`, `.sheen-control`, `.sheen-find`, `.sheen-control-count`, `.sheen-compact-glyph` | one wide search and compact 36px controls; a compact control keeps only its glyph and count when narrow |
 | `.sheen-applied-row`, `.sheen-filter-chip`, `.sheen-chip-remove`, `.sheen-last-used`, `.sheen-result-count` | one removable chip per filter, Clear all and the count; narrow, chips scroll and the count stays |
 | `.sheen-link-button` | a text button for small steps: Save view, Clear all, Select all |
@@ -273,7 +273,7 @@ work, and fills in its own words.
 | `.sheen-switch.sheen-large`, `.sheen-switch-row` | a 51 by 31 switch; words and a switch on one row over a hairline |
 | `tr.sheen-table-group`, `.sheen-table-foot`, `.sheen-pager` | a table's group row with its count; the count and a pager under a table |
 | `.sheen-empty` (+ `-glyph`, `-title`, `-actions`) | empty states |
-| `.sheen-status` (+ `-glyph`, `-title`, `-actions`; `.sheen-danger`, `.sheen-warning`, `.sheen-success`) | Flutter sheen's SheenStatusScreen: a glyph in a 72px circle of its tone, a title, short words, up to two actions stacked; a page that is empty, failed, offline or closed to you |
+| `.sheen-status` (+ `-glyph`, `-title`, `-actions`, a `small` note; `.sheen-danger`, `.sheen-warning`, `.sheen-success`) | Flutter sheen's SheenStatusScreen: a glyph in a 72px circle of its tone, a title, short words, up to two actions stacked; a page that is empty, failed, offline or closed to you |
 | `.sheen-page-title` | an app page's title (26px) |
 | `.sheen-focus-only` | a part only keyboard users meet: out of sight until it has focus |
 | `.sheen-page-head` (+ `-text`, `-actions`), `.sheen-page-crumbs`, `.sheen-page-subtitle` | an app page's header: crumbs, the title and a line with room for a pill, the actions at the end edge on the bottom line (under the words when narrow) |

@@ -124,7 +124,7 @@ class SheenMenuButton extends HTMLElement {
   // nothing narrows it. It lines up with the button's end edge when it would leave the screen, and opens upward when it
   // doesn't fit below and there is more room above.
   place() {
-    var at = placeUnder(this.menu, this.button.getBoundingClientRect(), isRtl(this));
+    var at = placeUnder(this.menu, this.button.getBoundingClientRect());
     this.menu.classList.toggle('sheen-menu-flip', at.flip);
     this.menu.classList.toggle('sheen-menu-up', at.up);
   }

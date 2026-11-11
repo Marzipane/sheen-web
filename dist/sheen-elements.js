@@ -62,12 +62,13 @@ function isRtl(el) {
   return (holder ? holder.getAttribute('dir') : document.documentElement.getAttribute('dir')) === 'rtl';
 }
 
-// Places a fixed (or top-layer) box under an anchor's rectangle: lined up with the anchor's start edge, on the other edge
+// Places a fixed (or top-layer) box under an anchor's rectangle: lined up with the anchor's start edge (read from the
+// box's own direction), on the other edge
 // when that would leave the screen, and above the anchor when it doesn't fit below
 // and there is more room above. A box with auto width shrinks to the room between its left and the screen's end, so it
 // is measured at 0,0 first, where nothing narrows it. Returns { flip, up } for the caller's classes.
-function placeUnder(box, a, rtl) {
-  var s = box.style, gap = 6, w = window.innerWidth, h = window.innerHeight;
+function placeUnder(box, a) {
+  var rtl = isRtl(box), s = box.style, gap = 6, w = window.innerWidth, h = window.innerHeight;
   s.position = 'fixed'; s.margin = '0'; s.right = 'auto'; s.bottom = 'auto'; s.left = '0px'; s.top = '0px';
   var r = box.getBoundingClientRect(), width = r.right - r.left, height = r.bottom - r.top;
   var atEnd = rtl;   // in Arabic the start edge is the anchor's right edge
@@ -132,6 +133,7 @@ function cssVar(el, name, fallback) {
 // The page is marked <html data-sheen-focus> by whichever of sheen.js and the elements loads first (the other finds it
 // marked and adds nothing); a page with neither script keeps the browser's own :focus-visible rings.
 (function () {
+  if (typeof document === 'undefined') return;
   var root = document.documentElement;
   if (root.hasAttribute('data-sheen-focus')) return;
   root.setAttribute('data-sheen-focus', '');
@@ -233,6 +235,10 @@ define('sheen-drop-zone', SheenDropZone);
 //   Pointer over a toast or focus inside it pauses its timer. At most max are shown; the rest wait their turn.
 class SheenToaster extends HTMLElement {
   connectedCallback() {
+    var self = this;
+    // where focus was before it went into a toast: closing a toast that holds focus gives it back there (0.7.0)
+    if (!this.onFocus) this.onFocus = function (e) { if (e.target && e.target.nodeType === 1 && !self.contains(e.target)) self.back = e.target; };
+    document.addEventListener('focusin', this.onFocus);
     this.setAttribute('role', 'region');
     this.setAttribute('aria-live', 'polite');
     if (!this.getAttribute('aria-label') && this.getAttribute('label')) this.setAttribute('aria-label', this.getAttribute('label'));
@@ -280,10 +286,12 @@ class SheenToaster extends HTMLElement {
       run();
     }
   }
+  disconnectedCallback() { if (this.onFocus) document.removeEventListener('focusin', this.onFocus); }
   dismiss(id) {
-    var node = this.querySelector('#' + id);
+    var node = this.querySelector('#' + id), held = !!node && node.contains(document.activeElement);
     this.queue = (this.queue || []).filter(function (q) { return q.id !== id; });
     if (node) node.remove();
+    if (held && this.back && this.back.isConnected) this.back.focus();
     this.pump();
   }
 }
@@ -1379,7 +1387,7 @@ define('sheen-hover-card', SheenHoverCard);
 //   heading="Filters" puts that title and the close button on one row above the body (0.7.0).
 //   modal dims the page behind it: a press on the dim closes it, Tab stays inside while it is open, and focus that lands
 //   outside comes back in (0.7.0). Hidden by its attribute, it takes its dim away too; moved while open, it keeps one.
-//   --sheen-panel-size sets its width (440px by default); size="small" makes it 400px wide, for filters and editors.
+//   --sheen-panel-size sets its width (440px by default); class="sheen-small" makes it 400px wide, for filters and editors.
 //   Fires "sheen-panel-close".
 class SheenSidePanel extends HTMLElement {
   connectedCallback() {
@@ -1743,7 +1751,7 @@ class SheenMenuButton extends HTMLElement {
   // nothing narrows it. It lines up with the button's end edge when it would leave the screen, and opens upward when it
   // doesn't fit below and there is more room above.
   place() {
-    var at = placeUnder(this.menu, this.button.getBoundingClientRect(), isRtl(this));
+    var at = placeUnder(this.menu, this.button.getBoundingClientRect());
     this.menu.classList.toggle('sheen-menu-flip', at.flip);
     this.menu.classList.toggle('sheen-menu-up', at.up);
   }

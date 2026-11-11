@@ -13,6 +13,7 @@
 //   draw their thin ring; the next press clears it. The page is marked <html data-sheen-focus> once, by this file or by
 //   the elements, whichever loads first; a page with neither keeps the browser's own :focus-visible rings.
 (function () {
+  if (typeof document === 'undefined') return;
   var root = document.documentElement;
   if (root.hasAttribute('data-sheen-focus')) return;
   root.setAttribute('data-sheen-focus', '');

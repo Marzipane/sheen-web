@@ -101,7 +101,7 @@ test('menu button: the new looks are in the built CSS', () => {
   assert.ok(css.includes('.sheen-menu-item:not([aria-disabled="true"]) .sheen-menu-words:has(>.sheen-menu-hint)>span:first-child{font-weight:600}'));
   // small menus are the dense app size, and their width can be set
   assert.match(css, /\.sheen-menu\{[^}]*min-inline-size:var\(--sheen-menu-min-size,180px\)/);
-  assert.match(css, /sheen-menu-button\.sheen-small \.sheen-menu,[^{]*\{[^}]*font-size:13\.5px;[^}]*min-inline-size:var\(--sheen-menu-min-size,250px\)/);
+  assert.match(css, /sheen-menu-button\.sheen-small \.sheen-menu,[^{]*\{[^}]*font-size:13\.5px;[^}]*min-inline-size:min\(var\(--sheen-menu-min-size,250px\),calc\(100vw - 16px\)\)/);
   assert.match(css, /@media \(prefers-reduced-motion:reduce\)\{[^}]*\.sheen-control-chevron\{transition:none\}/);
 });
 

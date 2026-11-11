@@ -27,8 +27,8 @@ test('Tab marks keyboard navigation and a press clears it; typing, moving the ca
 
 test('a text field inside a control draws no outline of its own, and the control no glow', () => {
   // (the normalizer drops the space before ":is("; the min file keeps the descendant combinators)
-  has('.sheen:is(.sheen-field,.sheen-segment,.sheen-picker-pill,.sheen-control):is(input,textarea,.sheen-segment-trigger,.sheen-picker-trigger):focus-visible{outline:none}');
-  assert.ok(min.includes('.sheen :is(.sheen-field,.sheen-segment,.sheen-picker-pill,.sheen-control) :is(input,textarea,'));
+  has('.sheen:is(.sheen-field,.sheen-segment,.sheen-picker-pill,.sheen-control):is(input,select,textarea,.sheen-segment-trigger,.sheen-picker-trigger):focus-visible{outline:none}');
+  assert.ok(min.includes('.sheen :is(.sheen-field,.sheen-segment,.sheen-picker-pill,.sheen-control) :is(input,select,textarea,'));
   assert.ok(!css.includes('.sheen-control:focus-within'), 'no ring or glow on any focus inside a control');
   assert.ok(!/\.sheen-control:focus-visible[^{]*\{[^}]*box-shadow/.test(css), 'no glow on a focused control');
 });

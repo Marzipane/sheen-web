@@ -5,7 +5,7 @@
 //   heading="Filters" puts that title and the close button on one row above the body (0.7.0).
 //   modal dims the page behind it: a press on the dim closes it, Tab stays inside while it is open, and focus that lands
 //   outside comes back in (0.7.0). Hidden by its attribute, it takes its dim away too; moved while open, it keeps one.
-//   --sheen-panel-size sets its width (440px by default); size="small" makes it 400px wide, for filters and editors.
+//   --sheen-panel-size sets its width (440px by default); class="sheen-small" makes it 400px wide, for filters and editors.
 //   Fires "sheen-panel-close".
 class SheenSidePanel extends HTMLElement {
   connectedCallback() {

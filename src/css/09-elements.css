@@ -143,8 +143,9 @@ sheen-hover-card.sheen-glass{display:block;position:fixed;z-index:1000;inline-si
 sheen-hover-card.sheen-glass[hidden]{display:none}
 sheen-side-panel.sheen-glass{position:fixed;inset-block:0;inset-inline-end:0;z-index:900;display:flex;flex-direction:column;inline-size:min(var(--sheen-panel-size,440px),100vw);padding:16px;overflow:auto}
 sheen-side-panel.sheen-glass[hidden]{display:none}
-/* size="small" is the 400px panel of an app's filters and editors (0.7.0); --sheen-panel-size still wins */
-sheen-side-panel[size="small"]{--sheen-panel-size:400px}
+/* class="sheen-small" is the 400px panel of an app's filters and editors (0.7.0), at no specificity, so an app's own
+   --sheen-panel-size always wins; menu buttons inside it take the dense size, as inside any .sheen-small box */
+:where(sheen-side-panel.sheen-small){--sheen-panel-size:400px}
 sheen-side-panel.sheen-glass:focus:not(:focus-visible){outline:none}
 .sheen-panel-close{align-self:flex-end}
 .sheen-panel-body{flex:1;min-block-size:0}
@@ -156,6 +157,8 @@ sheen-side-panel.sheen-headed .sheen-panel-close{align-self:center;flex:none;inl
 sheen-side-panel.sheen-headed .sheen-panel-body{padding:0 20px 16px;overflow-y:auto}
 sheen-side-panel.sheen-headed .sheen-filter-footer{margin-inline:-20px;margin-block-end:0;padding:12px 20px 16px}
 .sheen-panel-dim{position:fixed;inset:0;z-index:899;background:rgba(0,0,0,.18)}
+/* forced colors drop the panel's shadow and its dim's colour: an edge toward the page, and a dim in the text colour */
+@media (forced-colors: active){sheen-side-panel.sheen-glass{border-inline-start:1px solid CanvasText}.sheen-panel-dim{forced-color-adjust:none;background:color-mix(in srgb,CanvasText 30%,transparent)}}
 sheen-scope-picker{display:flex;flex-direction:column;gap:10px}
 .sheen-scope-modes{display:flex;flex-wrap:wrap;gap:12px;margin:0;padding:0;border:0}
 .sheen-scope-modes legend{margin-block-end:6px;font-weight:700}
@@ -190,7 +193,7 @@ sheen-menu-button{position:relative;display:inline-block}
 .sheen-menu-item[aria-disabled="true"]>.sheen-glyph,.sheen-menu-item.sheen-accent[aria-disabled="true"]{color:var(--sheen-text-tertiary)}
 .sheen-menu-item:not([aria-disabled="true"]) .sheen-menu-words:has(>.sheen-menu-hint)>span:first-child{font-weight:600}
 /* small menus (a small button, a bulk bar, the end of a views row) are the dense app size: 13.5px, 36px rows, a focus ring */
-sheen-menu-button.sheen-small .sheen-menu,.sheen-small sheen-menu-button .sheen-menu,.sheen-bulk-bar sheen-menu-button .sheen-menu,.sheen-views-end sheen-menu-button .sheen-menu{font-size:13.5px;min-inline-size:var(--sheen-menu-min-size,250px);max-inline-size:min(var(--sheen-menu-max-size,320px),calc(100vw - 16px));border-radius:16px}
+sheen-menu-button.sheen-small .sheen-menu,.sheen-small sheen-menu-button .sheen-menu,.sheen-bulk-bar sheen-menu-button .sheen-menu,.sheen-views-end sheen-menu-button .sheen-menu{font-size:13.5px;min-inline-size:min(var(--sheen-menu-min-size,250px),calc(100vw - 16px));max-inline-size:min(var(--sheen-menu-max-size,320px),calc(100vw - 16px));border-radius:16px}
 :is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item{min-block-size:36px;padding:6px 10px;font-size:inherit}
 :is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item:hover{background:var(--sheen-tonal)}
 :is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button,.sheen-bulk-bar sheen-menu-button,.sheen-views-end sheen-menu-button) .sheen-menu-item:focus-visible{background:none;outline:2px solid var(--sheen-accent-text);outline-offset:-2px}

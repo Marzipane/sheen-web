@@ -44,7 +44,7 @@ test('an open page header ••• takes the tonal fill, as every open control 
 });
 
 test('small menus are 250px to 320px wide; an item with a description lines its glyph up with the title', () => {
-  assert.match(css, /sheen-menu-button\.sheen-small \.sheen-menu,[^{]*\{font-size:13\.5px;min-inline-size:var\(--sheen-menu-min-size,250px\);max-inline-size:min\(var\(--sheen-menu-max-size,320px\),calc\(100vw - 16px\)\)/);
+  assert.match(css, /sheen-menu-button\.sheen-small \.sheen-menu,[^{]*\{font-size:13\.5px;min-inline-size:min\(var\(--sheen-menu-min-size,250px\),calc\(100vw - 16px\)\);max-inline-size:min\(var\(--sheen-menu-max-size,320px\),calc\(100vw - 16px\)\)/);
   has(DENSE + ' .sheen-menu-item:not([aria-disabled="true"]):has(.sheen-menu-hint){align-items:flex-start}');
   has(DENSE + ' .sheen-menu-item:not([aria-disabled="true"]):has(.sheen-menu-hint)>.sheen-glyph{margin-block-start:2px}');
   has(DENSE + ' .sheen-menu-item:not([aria-disabled="true"]) .sheen-menu-hint{font-size:12px;font-weight:400}');

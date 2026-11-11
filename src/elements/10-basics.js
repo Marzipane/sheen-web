@@ -91,6 +91,10 @@ define('sheen-drop-zone', SheenDropZone);
 //   Pointer over a toast or focus inside it pauses its timer. At most max are shown; the rest wait their turn.
 class SheenToaster extends HTMLElement {
   connectedCallback() {
+    var self = this;
+    // where focus was before it went into a toast: closing a toast that holds focus gives it back there (0.7.0)
+    if (!this.onFocus) this.onFocus = function (e) { if (e.target && e.target.nodeType === 1 && !self.contains(e.target)) self.back = e.target; };
+    document.addEventListener('focusin', this.onFocus);
     this.setAttribute('role', 'region');
     this.setAttribute('aria-live', 'polite');
     if (!this.getAttribute('aria-label') && this.getAttribute('label')) this.setAttribute('aria-label', this.getAttribute('label'));
@@ -138,10 +142,12 @@ class SheenToaster extends HTMLElement {
       run();
     }
   }
+  disconnectedCallback() { if (this.onFocus) document.removeEventListener('focusin', this.onFocus); }
   dismiss(id) {
-    var node = this.querySelector('#' + id);
+    var node = this.querySelector('#' + id), held = !!node && node.contains(document.activeElement);
     this.queue = (this.queue || []).filter(function (q) { return q.id !== id; });
     if (node) node.remove();
+    if (held && this.back && this.back.isConnected) this.back.focus();
     this.pump();
   }
 }
