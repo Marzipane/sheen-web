@@ -759,8 +759,10 @@ sheen-menu-button.sheen-small .sheen-menu,.sheen-small sheen-menu-button .sheen-
 .sheen-views-end{margin-inline-start:auto;display:flex;align-items:center;gap:4px;padding-block-end:6px}
 /* in a find row the views end is one more control: its 6px are for the views row's tabs, and here they would lift it */
 .sheen-find-row .sheen-views-end{padding-block-end:0}
-/* a menu button at the end of a views or find row (Views) opens a menu 320px to 360px wide */
-.sheen-views-end sheen-menu-button{--sheen-menu-min-size:320px;--sheen-menu-max-size:360px}
+/* a menu button at the end of a views or find row (Views) opens a menu 320px to 360px wide, at no specificity (0.7.1): an
+   app's class rule on the menu button or an inline value wins over it; a value set on an ancestor does not, since this
+   rule sets it on the button itself */
+:where(.sheen-views-end sheen-menu-button){--sheen-menu-min-size:320px;--sheen-menu-max-size:360px}
 
 /* a module's page tab row (Users · Roles · …): view tabs as links in a <nav class="sheen-page-tabs"> */
 .sheen-page-tabs{display:flex;gap:4px;min-inline-size:0;overflow-x:auto;scrollbar-width:none;border-block-end:1px solid var(--sheen-separator)}

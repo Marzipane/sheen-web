@@ -90,5 +90,5 @@ test('a side panel takes class="sheen-small" for the 400px filter and edit panel
 });
 
 test('a menu button at the end of a views or find row opens a menu 320px to 360px wide, from the kit itself', () => {
-  has('.sheen-views-end sheen-menu-button{--sheen-menu-min-size:320px;--sheen-menu-max-size:360px}');
+  has(':where(.sheen-views-end sheen-menu-button){--sheen-menu-min-size:320px;--sheen-menu-max-size:360px}');
 });

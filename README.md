@@ -246,7 +246,7 @@ work, and fills in its own words.
 | Class | What it is |
 | --- | --- |
 | `.sheen-list-kit` | the column the three rows sit in; a container, so the rows fold at 760px of its own width |
-| `.sheen-views-row`, `.sheen-view-tabs`, `.sheen-view-tab` (`small` count), `.sheen-views-end` | quick filters as tabs with counts, saved views at the end (a menu button there opens 320px to 360px wide) |
+| `.sheen-views-row`, `.sheen-view-tabs`, `.sheen-view-tab` (`small` count), `.sheen-views-end` | quick filters as tabs with counts, saved views at the end (a menu button there opens 320px to 360px wide; a class rule on that button or an inline `--sheen-menu-min-size` or `--sheen-menu-max-size` wins) |
 | `.sheen-find-row`, `.sheen-control`, `.sheen-find`, `.sheen-control-count`, `.sheen-compact-glyph` | one wide search and compact 36px controls; a compact control keeps only its glyph and count when narrow |
 | `.sheen-applied-row`, `.sheen-filter-chip`, `.sheen-chip-remove`, `.sheen-last-used`, `.sheen-result-count` | one removable chip per filter, Clear all and the count; narrow, chips scroll and the count stays |
 | `.sheen-link-button` | a text button for small steps: Save view, Clear all, Select all |

@@ -2,7 +2,8 @@
 
 ## 0.7.1
 
-The sidebar shell under 760px: a drawer instead of a sidebar stacked over the page.
+The sidebar shell under 760px: a drawer instead of a sidebar stacked over the page. Three fixes to 0.7.0: less motion,
+forced colors after a press, and a Views menu width that an app can set.
 
 - Under 760px `.sheen-sidebar` leaves the page and opens as a drawer from the start edge (the left; the right in
   Arabic), `min(300px, 86vw)` wide, over a dim, so the page starts under the app bar. A `.sheen-nav-button` in the
@@ -13,11 +14,18 @@ The sidebar shell under 760px: a drawer instead of a sidebar stacked over the pa
 - Fixed: with less motion, 0.7.0 gave every element a .01ms transition of every property, so a change eased for a moment
   and a part that was just shown refused focus until it ended (the drawer's links). With less motion nothing transitions
   now; animations still end at once as before.
+- Fixed: with forced colors, a press on a select or a picker inside a `.sheen-field` or `.sheen-control` took the
+  field's system outline away, and a press on a picker took its pill's: 0.7.0 applied the rule that hides the ring after
+  a press there too. With forced colors the outline stays now, after a press too.
+- The Views menu width (320px to 360px for a menu button at the end of a views or find row) now sits at no specificity,
+  like `sheen-small` on a side panel. An app's class rule on the menu button or an inline `--sheen-menu-min-size` or
+  `--sheen-menu-max-size` wins over it; a value set on an ancestor of the button does not.
 - Looks that change: under 760px the sidebar no longer sits on top of the page (0.5.0 put it there, up to 40% of the
   window high). An app adds the button to its bar; without one, the sidebar stays out of reach under 760px.
 - Tests: the drawer's rules in the built CSS; opening, Esc, a link, the dim and the button again, with focus and inert, in
   the elements; in a browser at 600, 480 and 375px, in English and Arabic, a closed drawer that leaves the start edge to
-  the page, an open one on that edge that keeps Tab, and at 1280px the button hidden and the sidebar beside the page.
+  the page, an open one on that edge that keeps Tab, and at 1280px the button hidden and the sidebar beside the page;
+  the forced-colors outline after a press, in the built CSS and in a browser; the Views width rule at no specificity.
 
 ## 0.7.0
 
