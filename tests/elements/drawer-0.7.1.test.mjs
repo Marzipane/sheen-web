@@ -9,6 +9,8 @@ import { readFileSync } from 'node:fs';
 const min = readFileSync(new URL('../../dist/sheen.min.css', import.meta.url), 'utf8');
 const has = (part) => assert.ok(min.includes(part), part);
 const narrowCss = (() => { const at = min.indexOf('@media (max-width:760px){.sheen-sidebar-shell{'); assert.ok(at >= 0, 'the shell\'s narrow block'); let depth = 0, i = min.indexOf('{', at); for (; i < min.length; i++) { if (min[i] === '{') depth++; else if (min[i] === '}' && --depth === 0) break; } return min.slice(at, i + 1); })();
+const D = '.sheen-sidebar-shell:has(.sheen-nav-button)';
+const tokens = JSON.parse(readFileSync(new URL('../../tokens/tokens.json', import.meta.url), 'utf8'));
 const rule = (css, sel) => { const at = css.indexOf(sel + '{'); assert.ok(at >= 0, sel); return css.slice(at, css.indexOf('}', at) + 1); };
 
 const SHELL = `<div class="sheen-sidebar-shell"><aside class="sheen-sidebar" id="side"><nav class="sheen-sidebar-nav"><a class="sheen-sidebar-item" href="#a">A</a><a class="sheen-sidebar-item" href="#b">B</a></nav></aside>
@@ -21,12 +23,34 @@ test('the menu button stays hidden while the sidebar sits beside the page, and s
   assert.match(rule(narrowCss, '.sheen-sidebar-shell .sheen-nav-button'), /display:inline-grid;place-items:center;inline-size:36px;/);
 });
 
-test('under 760px the shell is one row and the sidebar a drawer at the start edge, closed by default, mirrored in Arabic', () => {
-  assert.match(rule(narrowCss, '.sheen-sidebar-shell'), /grid-template-columns:minmax\(0,1fr\);grid-template-rows:minmax\(0,1fr\)/);
-  const side = rule(narrowCss, '.sheen-sidebar');
-  for (const part of ['position:fixed', 'inset-block:0', 'inset-inline-start:0', 'inline-size:min(300px,86vw)', 'transform:translateX(-100%)', 'visibility:hidden'])
+test('under 760px a shell with a nav button is one row and its sidebar a drawer at the start edge, closed by default, mirrored in Arabic', () => {
+  assert.match(rule(narrowCss, D), /^[^{]*\{grid-template-rows:minmax\(0,1fr\)\}$/);
+  const side = rule(narrowCss, D + ' .sheen-sidebar');
+  for (const part of ['position:fixed', 'inset-block:0', 'inset-inline-start:0', 'inline-size:min(300px,86vw)', 'max-block-size:none', 'border-block-end:0', 'border-inline-end:1px solid var(--sheen-separator)', 'transform:translateX(-100%)', 'visibility:hidden'])
     assert.ok(side.includes(part), part);
-  assert.ok(narrowCss.includes('.sheen-sidebar:dir(rtl){transform:translateX(100%)}'));
+  assert.ok(narrowCss.includes(D + ' .sheen-sidebar:dir(rtl){transform:translateX(100%)}'));
+});
+
+test("under 760px a shell without a nav button keeps 0.7.0's sidebar stacked over the page, so an app that adds no button keeps its nav", () => {
+  assert.equal(rule(narrowCss, '.sheen-sidebar-shell'), '.sheen-sidebar-shell{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr)}');
+  assert.equal(rule(narrowCss, '.sheen-sidebar'), '.sheen-sidebar{border-inline-end:0;border-block-end:1px solid var(--sheen-separator);max-block-size:40vh}');
+  // every rule that moves or hides the sidebar needs the button, so a browser without :has() keeps the stack too
+  const moving = narrowCss.split('}').filter((r) => /position:fixed|visibility:hidden|translateX/.test(r));
+  assert.ok(moving.length >= 2);
+  for (const r of moving) assert.ok(r.startsWith(D), r);
+});
+
+test("a closing drawer hides once it has slid out: its delay is the snappy spring's duration token, not a number of its own", () => {
+  assert.ok(rule(narrowCss, D + ' .sheen-sidebar').includes('transition:transform var(--sheen-motion-snappy),visibility 0s linear var(--sheen-motion-snappy-duration)'));
+  assert.doesNotMatch(narrowCss, /visibility 0s linear [.\d]/);
+  has(`--sheen-motion-snappy-duration:${tokens.motion.springs.snappy.durationMs}ms;`);
+  assert.match(min, new RegExp(`@media \\(prefers-reduced-motion:reduce\\)\\{:root\\{[^}]*--sheen-motion-snappy-duration:${tokens.motion.durationsMs.reducedFade}ms;`));
+});
+
+test("with forced colors the open drawer's dim is the side panel's, the text colour at 30%, after the drawer's own dim so it wins", () => {
+  const fc = '@media (forced-colors:active){sheen-side-panel.sheen-glass{border-inline-start:1px solid CanvasText}.sheen-panel-dim,.sheen-sidebar-shell[data-nav-open]::after{forced-color-adjust:none;background:color-mix(in srgb,CanvasText 30%,transparent)}}';
+  has(fc);
+  assert.ok(min.indexOf(fc) > min.indexOf('.sheen-sidebar-shell[data-nav-open]::after{content:""'));
 });
 
 test('with less motion nothing transitions, so a change shows at once and the drawer\'s links take focus the moment it opens', () => {
@@ -38,8 +62,8 @@ test('with less motion nothing transitions, so a change shows at once and the dr
 });
 
 test('a closed drawer draws nothing: no shadow, out of sight, so no band shows along the start edge', () => {
-  assert.doesNotMatch(rule(narrowCss, '.sheen-sidebar'), /box-shadow/);
-  assert.match(rule(narrowCss, '.sheen-sidebar-shell[data-nav-open] .sheen-sidebar'), /transform:none;visibility:visible;/);
+  assert.doesNotMatch(rule(narrowCss, D + ' .sheen-sidebar'), /box-shadow/);
+  assert.match(rule(narrowCss, D + '[data-nav-open] .sheen-sidebar'), /transform:none;visibility:visible;/);
   // an open drawer's shade sits with the side panel's (the sidebar file keeps no literal colours): its shadow toward the
   // page, mirrored in Arabic, and the same dim
   has('@media (max-width:760px){.sheen-sidebar-shell[data-nav-open] .sheen-sidebar{box-shadow:20px 0 60px rgba(0,0,0,.12)}.sheen-sidebar-shell[data-nav-open] .sheen-sidebar:dir(rtl){box-shadow:-20px 0 60px rgba(0,0,0,.12)}.sheen-sidebar-shell[data-nav-open]::after{content:"";position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.18)}}');
@@ -83,4 +107,13 @@ test('the menu button toggles: a second press closes the drawer', () => {
   assert.equal(s.hasAttribute('data-nav-open'), true);
   button.click();
   assert.equal(s.hasAttribute('data-nav-open'), false);
+});
+
+test('a nav button outside the shell it names does nothing: only a shell that holds its button becomes a drawer', () => {
+  const NAV = '<button type="button" class="sheen-control sheen-nav-button" aria-controls="side" aria-expanded="false" aria-label="Menu">≡</button>';
+  assert.ok(SHELL.includes(NAV));
+  const w = page(NAV + SHELL.replace(NAV, '')), d = w.document;
+  d.querySelector('.sheen-nav-button').click();
+  assert.equal(d.querySelector('.sheen-sidebar-shell').hasAttribute('data-nav-open'), false);
+  assert.equal(d.querySelector('.sheen-app-main').hasAttribute('inert'), false);
 });

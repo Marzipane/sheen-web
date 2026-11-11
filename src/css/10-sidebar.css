@@ -37,14 +37,18 @@
 .sheen-app-content{position:relative;flex:1;min-block-size:0;overflow:auto;padding:20px 24px 24px;display:flex;flex-direction:column;gap:16px}
 /* the menu button that opens the sidebar as a drawer (0.7.1): hidden while the sidebar sits beside the page */
 .sheen-sidebar-shell .sheen-nav-button{display:none}
-/* Under 760px the sidebar leaves the page and opens as a drawer from the start edge (0.7.1). A closed drawer draws nothing:
-   out of sight, no shadow, out of the Tab order. data-nav-open on the shell, set by its .sheen-nav-button, slides it in
-   over a dim (its shadow and dim are with the side panel's, in 09-elements); it hides again once it has slid out. */
+/* Under 760px the sidebar stacks over the page, up to 40% of the window high (0.5.0). A shell that holds a
+   .sheen-nav-button makes it a drawer from the start edge instead (0.7.1), so a shell without one keeps its stack, and so
+   does a browser without :has(). A closed drawer draws nothing: out of sight, no shadow, out of the Tab order.
+   data-nav-open on the shell, set by the button (sheen.js or the elements), slides it in over a dim (its shadow and dim
+   are with the side panel's, in 09-elements); it hides once it has slid out, after the snappy spring's own duration. */
 @media (max-width:760px){
-.sheen-sidebar-shell{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
-.sheen-sidebar{position:fixed;inset-block:0;inset-inline-start:0;z-index:901;inline-size:min(300px,86vw);transform:translateX(-100%);visibility:hidden;transition:transform var(--sheen-motion-snappy),visibility 0s linear .4s}
-.sheen-sidebar:dir(rtl){transform:translateX(100%)}
-.sheen-sidebar-shell[data-nav-open] .sheen-sidebar{transform:none;visibility:visible;transition:transform var(--sheen-motion-snappy),visibility 0s}
+.sheen-sidebar-shell{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr)}
+.sheen-sidebar{border-inline-end:0;border-block-end:1px solid var(--sheen-separator);max-block-size:40vh}
+.sheen-sidebar-shell:has(.sheen-nav-button){grid-template-rows:minmax(0,1fr)}
+.sheen-sidebar-shell:has(.sheen-nav-button) .sheen-sidebar{position:fixed;inset-block:0;inset-inline-start:0;z-index:901;inline-size:min(300px,86vw);max-block-size:none;border-block-end:0;border-inline-end:1px solid var(--sheen-separator);transform:translateX(-100%);visibility:hidden;transition:transform var(--sheen-motion-snappy),visibility 0s linear var(--sheen-motion-snappy-duration)}
+.sheen-sidebar-shell:has(.sheen-nav-button) .sheen-sidebar:dir(rtl){transform:translateX(100%)}
+.sheen-sidebar-shell:has(.sheen-nav-button)[data-nav-open] .sheen-sidebar{transform:none;visibility:visible;transition:transform var(--sheen-motion-snappy),visibility 0s}
 .sheen-sidebar-shell .sheen-nav-button{display:inline-grid;place-items:center;inline-size:36px;padding:0;flex:none}
 .sheen-app-bar{padding-inline:16px}
 .sheen-app-content{padding:16px}}

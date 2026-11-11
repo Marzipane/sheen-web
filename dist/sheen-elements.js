@@ -127,15 +127,21 @@ function cssVar(el, name, fallback) {
   return v || fallback;
 }
 
-// The sidebar as a drawer under 760px (0.7.1): a .sheen-nav-button opens the .sheen-sidebar its aria-controls names, by
-// data-nav-open on their .sheen-sidebar-shell, and puts focus on its first link. Esc, a press outside the drawer or on one
-// of its links, or the button again closes it, and focus goes back to the button. While it is open the rest of the shell
-// is inert, so Tab stays in it. The CSS hides a closed drawer and the button above 760px; growing past 760px closes it.
+// The sidebar as a drawer under 760px (0.7.1): a .sheen-nav-button inside a .sheen-sidebar-shell opens the .sheen-sidebar
+// its aria-controls names, by data-nav-open on the shell, and puts focus on its first link. Esc, a press outside the
+// drawer or on one of its links, or the button again closes it, and focus goes back to the button. While it is open the
+// rest of the shell is inert, so Tab stays in it. The CSS makes a drawer only of a shell that holds its button and hides
+// a closed drawer and the button above 760px; growing past 760px closes it. sheen.js and the elements carry this same
+// code: whichever loads first marks <html data-sheen-drawer> and sets it up, the other finds it marked and adds nothing.
 (function () {
+  if (typeof document === 'undefined') return;
+  var root = document.documentElement;
+  if (root.hasAttribute('data-sheen-drawer')) return;
+  root.setAttribute('data-sheen-drawer', '');
   var narrow = window.matchMedia ? window.matchMedia('(max-width:760px)') : null, open = null;
   function drawer(button) {
     var side = document.getElementById(button.getAttribute('aria-controls') || ''), shell = side && side.closest('.sheen-sidebar-shell');
-    return shell ? { button: button, side: side, shell: shell } : null;
+    return shell && shell.contains(button) ? { button: button, side: side, shell: shell } : null;
   }
   function set(d, on, quiet) {
     d.shell.toggleAttribute('data-nav-open', on);
