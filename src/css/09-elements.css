@@ -143,8 +143,9 @@ sheen-hover-card.sheen-glass{display:block;position:fixed;z-index:1000;inline-si
 sheen-hover-card.sheen-glass[hidden]{display:none}
 sheen-side-panel.sheen-glass{position:fixed;inset-block:0;inset-inline-end:0;z-index:900;display:flex;flex-direction:column;inline-size:min(var(--sheen-panel-size,440px),100vw);padding:16px;overflow:auto}
 sheen-side-panel.sheen-glass[hidden]{display:none}
-/* class="sheen-small" is the 400px panel of an app's filters and editors (0.7.0), at no specificity, so an app's own
-   --sheen-panel-size always wins; menu buttons inside it take the dense size, as inside any .sheen-small box */
+/* class="sheen-small" is the 400px panel of an app's filters and editors (0.7.0), at no specificity: an app's class rule
+   on the panel or an inline --sheen-panel-size wins over it; a value set on an ancestor does not, since this rule sets it
+   on the panel itself. Menu buttons inside it take the dense size, as inside any .sheen-small box. */
 :where(sheen-side-panel.sheen-small){--sheen-panel-size:400px}
 sheen-side-panel.sheen-glass:focus:not(:focus-visible){outline:none}
 .sheen-panel-close{align-self:flex-end}

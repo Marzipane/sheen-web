@@ -24,7 +24,8 @@
 /* inside a field or a control, a select or a picker button never draws a box of its own (0.1.4): the field or control
    rings around it, after Tab, like every other ring */
 :is(.sheen-field,.sheen-control):has(:is(select,.sheen-picker-trigger):focus-visible){outline:2px solid var(--sheen-accent-text);outline-offset:2px}
-:root[data-sheen-focus]:not([data-sheen-keyboard]) :is(.sheen-field,.sheen-control):has(:is(select,.sheen-picker-trigger):focus-visible){outline:none}
+/* forced colors keep their own outline on a focused field (06-access), after a press too */
+@media not (forced-colors: active){:root[data-sheen-focus]:not([data-sheen-keyboard]) :is(.sheen-field,.sheen-control):has(:is(select,.sheen-picker-trigger):focus-visible){outline:none}}
 
 /* a module's page tabs: secondary words with 24px each side; the page you are on is marked by
    its 2px accent line only. The row's hairline is drawn inside it, so a scrolling row never clips the 2px line. Links

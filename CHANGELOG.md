@@ -44,7 +44,8 @@ additive; the fixes, the looks that change and one change against an earlier own
   (one stop per radio group; hidden, disabled and `tabindex="-1"` controls skipped) and brings focus that lands outside
   back in, unless another dialog or popover took it. Hiding an open panel by its attribute takes the dim away; moving it
   keeps the dim. `class="sheen-small"` makes the panel 400px wide, for filters and editors (menu buttons inside take
-  the dense size); `--sheen-panel-size` sets any other width and always wins (440px by default). With forced colors
+  the dense size); `--sheen-panel-size` sets any other width (440px by default): a class rule on the panel or an inline
+  value wins over `sheen-small`, a value set on an ancestor does not. With forced colors
   the panel keeps an edge toward the page and a modal panel's dim stays visible.
 - List kit: `.sheen-control.sheen-on` tints the fill and glyph of a control whose filters are on, and in a narrow list
   kit a control with a count keeps its count; `.sheen-table-card` puts a table on an 18px surface card that still scrolls
