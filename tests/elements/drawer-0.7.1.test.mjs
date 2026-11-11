@@ -29,10 +29,12 @@ test('under 760px the shell is one row and the sidebar a drawer at the start edg
   assert.ok(narrowCss.includes('.sheen-sidebar:dir(rtl){transform:translateX(100%)}'));
 });
 
-test('with less motion the drawer has no transitions at all, so its links can take focus the moment it opens', () => {
-  // sheen's less-motion rule gives every element a .01ms transition of every property (transition-property is all by
-  // default), which kept the drawer's links hidden for a moment after opening and refused them focus
-  has('@media (max-width:760px) and (prefers-reduced-motion:reduce){.sheen-sidebar,.sheen-sidebar *{transition-duration:0s!important}}');
+test('with less motion nothing transitions, so a change shows at once and the drawer\'s links take focus the moment it opens', () => {
+  // 0.7.0's less-motion rule gave every element a .01ms transition of every property (transition-property is all by
+  // default): a hidden drawer stayed hidden for a moment after it opened and refused focus, and a changed border showed late
+  has('@media (prefers-reduced-motion:reduce){.sheen *,.sheen *::before,.sheen *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:0s!important;transition-delay:0s!important;scroll-behavior:auto!important}}');
+  assert.ok(!min.includes('transition-duration:.01ms'));
+  assert.ok(!min.includes('.sheen-sidebar,.sheen-sidebar *{transition-duration:0s!important}'), 'the drawer needs no rule of its own');
 });
 
 test('a closed drawer draws nothing: no shadow, out of sight, so no band shows along the start edge', () => {

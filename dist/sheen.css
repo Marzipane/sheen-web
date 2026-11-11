@@ -262,8 +262,11 @@
 .sheen-glass-clear{background:rgba(0,0,0,.8)}
 .sheen-choice,.sheen-field{box-shadow:inset 0 0 0 1.5px var(--sheen-text-secondary)}
 .sheen-secondary{color:var(--sheen-text)}}
+/* less motion (0.7.1): no transitions at all. A .01ms transition (0.7.0) was not nothing: transition-property is all by
+   default, so every change on every element eased for a moment, and a hidden part stayed hidden, refusing focus, until it
+   ended. Nothing in sheen-web waits for transitionend. */
 @media (prefers-reduced-motion: reduce){
-.sheen *,.sheen *::before,.sheen *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+.sheen *,.sheen *::before,.sheen *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:0s!important;transition-delay:0s!important;scroll-behavior:auto!important}}
 @media (forced-colors: active){.sheen-deal-badge,.sheen-score,.sheen-pill{border:1px solid CanvasText}
 /* shadows are not drawn here: the field or part being filled gets a real outline */
 .sheen-field:focus-within,.sheen-segment:focus-within,.sheen-picker-open .sheen-picker-field{outline:2px solid Highlight;outline-offset:2px}
@@ -724,9 +727,6 @@ sheen-menu-button.sheen-small .sheen-menu,.sheen-small sheen-menu-button .sheen-
 .sheen-sidebar-shell .sheen-nav-button{display:inline-grid;place-items:center;inline-size:36px;padding:0;flex:none}
 .sheen-app-bar{padding-inline:16px}
 .sheen-app-content{padding:16px}}
-/* with less motion the drawer has no transitions at all: sheen's less-motion rule (06-access) gives every element a .01ms
-   transition of every property, which would keep the drawer's links hidden for a moment after it opens and refuse focus */
-@media (max-width:760px) and (prefers-reduced-motion:reduce){.sheen-sidebar,.sheen-sidebar *{transition-duration:0s!important}}
 
 .sheen-auth-page{min-block-size:100vh;display:grid;place-items:center;padding:16px;box-sizing:border-box}
 .sheen-auth-card{inline-size:min(400px,100%);box-sizing:border-box;padding:24px;border-radius:var(--sheen-radius-card);background:var(--sheen-surface);display:flex;flex-direction:column;gap:14px}

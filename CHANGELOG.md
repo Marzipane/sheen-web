@@ -10,6 +10,9 @@ The sidebar shell under 760px: a drawer instead of a sidebar stacked over the pa
   focus on the drawer's first link and makes the rest of the shell inert, so Tab stays in the drawer; Esc, a press on
   the dim or on a link, or the button again closes it, and focus goes back to the button. Growing past 760px closes it.
 - A closed drawer draws nothing: it is out of sight with no shadow and out of the Tab order.
+- Fixed: with less motion, 0.7.0 gave every element a .01ms transition of every property, so a change eased for a moment
+  and a part that was just shown refused focus until it ended (the drawer's links). With less motion nothing transitions
+  now; animations still end at once as before.
 - Looks that change: under 760px the sidebar no longer sits on top of the page (0.5.0 put it there, up to 40% of the
   window high). An app adds the button to its bar; without one, the sidebar stays out of reach under 760px.
 - Tests: the drawer's rules in the built CSS; opening, Esc, a link, the dim and the button again, with focus and inert, in
