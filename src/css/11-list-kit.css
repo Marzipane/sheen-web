@@ -15,6 +15,10 @@
 .sheen-view-tab[aria-selected="true"],.sheen-view-tab[aria-current="page"]{color:var(--sheen-text);border-block-end-color:var(--sheen-accent)}
 .sheen-view-tab[aria-selected="true"] small{background:color-mix(in srgb,var(--sheen-accent) 10%,transparent);color:var(--sheen-accent-text)}
 .sheen-views-end{margin-inline-start:auto;display:flex;align-items:center;gap:4px;padding-block-end:6px}
+/* in a find row the views end is one more control: its 6px are for the views row's tabs, and here they would lift it */
+.sheen-find-row .sheen-views-end{padding-block-end:0}
+/* a menu button at the end of a views or find row (Views) opens a menu 320px to 360px wide */
+.sheen-views-end sheen-menu-button{--sheen-menu-min-size:320px;--sheen-menu-max-size:360px}
 
 /* a module's page tab row (Users · Roles · …): view tabs as links in a <nav class="sheen-page-tabs"> */
 .sheen-page-tabs{display:flex;gap:4px;min-inline-size:0;overflow-x:auto;scrollbar-width:none;border-block-end:1px solid var(--sheen-separator)}
@@ -23,18 +27,41 @@
 .sheen-find-row{display:flex;align-items:center;gap:8px;min-inline-size:0}
 .sheen-control{block-size:36px;display:inline-flex;align-items:center;gap:7px;padding-inline:12px;border:0;border-radius:11px;background:var(--sheen-surface);box-shadow:inset 0 0 0 1px var(--sheen-separator);color:var(--sheen-text);font:inherit;font-size:13.5px;font-weight:600;line-height:1.2;white-space:nowrap;cursor:pointer}
 .sheen-control:disabled{opacity:.45;cursor:not-allowed}
-.sheen-control:focus-visible,.sheen-control:focus-within{outline:none;box-shadow:inset 0 0 0 1.5px var(--sheen-accent-text),0 0 0 4px color-mix(in srgb,var(--sheen-accent) 16%,transparent)}
-.sheen-control[aria-expanded="true"]{box-shadow:inset 0 0 0 1.5px var(--sheen-accent-text),0 0 0 4px color-mix(in srgb,var(--sheen-accent) 16%,transparent)}
+/* a control inside an inline wrapper (an app's component) sits at the top of its line, so no baseline gap moves it off
+   the row; a control holding a text field draws no ring, as no text field does (0.7.0) */
+.sheen-control,sheen-menu-button[variant="control"]{vertical-align:top}
+/* an open control (its menu or panel open) takes the tonal fill and keeps its hairline (0.7.0: no accent ring or glow;
+   the app mockups' rings are annotations, and only keyboard focus draws a ring) */
+.sheen-control[aria-expanded="true"]{background:var(--sheen-tonal)}
 .sheen-control .sheen-icon{inline-size:15px;block-size:15px;flex:none;color:var(--sheen-text-secondary)}
 .sheen-find{flex:1 1 auto;min-inline-size:0;cursor:text;font-weight:400}
 .sheen-find input{all:unset;flex:1;min-inline-size:0;color:var(--sheen-text)}
 .sheen-find input::placeholder{color:var(--sheen-text-tertiary)}
 .sheen-control-count{min-inline-size:18px;block-size:18px;border-radius:9px;padding-inline:5px;display:inline-grid;place-items:center;background:var(--sheen-accent);color:var(--sheen-on-accent);font-size:11px;font-weight:700;font-variant-numeric:tabular-nums}
 
+/* 0.7.0: a menu button in the control look (variant="control") and its glyphs, a chevron that turns while its menu is
+   open, and a control that shows its filters are on (the accent tint and its count, no ring) */
+.sheen-control>.sheen-glyph{inline-size:15px;block-size:15px;flex:none;color:var(--sheen-text-secondary)}
+.sheen-control-chevron{transition:transform var(--sheen-motion-snappy)}
+[aria-expanded="true"]>.sheen-control-chevron{transform:rotate(180deg)}
+@media (prefers-reduced-motion:reduce){.sheen-control-chevron{transition:none}}
+.sheen-control.sheen-on{background:color-mix(in srgb,var(--sheen-accent) 8%,var(--sheen-surface))}
+.sheen-control.sheen-on :is(.sheen-glyph,.sheen-icon){color:var(--sheen-accent-text)}
+/* a control menu button's box hugs the control it draws (no line box under a glyph-only button) and, with words, carries
+   the control's 13.5px */
+sheen-menu-button[variant="control"]{display:inline-flex;block-size:36px}
+sheen-menu-button[variant="control"]:not([glyph]){font-size:13.5px}
+/* a glyph button in the control look is a 36px square (a page header's •••) */
+sheen-menu-button[glyph]>.sheen-control{inline-size:36px;padding-inline:0;justify-content:center}
+sheen-menu-button[glyph]>.sheen-control>.sheen-glyph{inline-size:18px;block-size:18px}
+/* a glyph beside the words on a tonal menu button */
+sheen-menu-button>.sheen-button>.sheen-glyph{inline-size:18px;block-size:18px;flex:none}
+
 /* a text button for small steps beside the controls: Save view, Clear all, Select all */
 .sheen-link-button{display:inline-flex;align-items:center;gap:5px;block-size:30px;padding-inline:8px;border:0;border-radius:8px;background:none;font:inherit;font-size:13px;font-weight:600;color:var(--sheen-accent-text);cursor:pointer;white-space:nowrap}
 .sheen-link-button:hover{background:var(--sheen-tonal)}
 .sheen-link-button:focus-visible{outline:2px solid var(--sheen-accent-text);outline-offset:1px}
+.sheen-link-button>:is(.sheen-icon,.sheen-glyph){inline-size:14px;block-size:14px;flex:none}
 
 /* applied row: one removable chip per filter (never repeated elsewhere), Clear all, the result count */
 .sheen-applied-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-block-size:30px}
@@ -112,6 +139,40 @@ th[aria-sort="ascending"],th[aria-sort="descending"]{color:var(--sheen-text)}
 @container (max-width:760px){
   .sheen-control.sheen-compact-glyph>span:not(.sheen-control-count),.sheen-find .sheen-kbd{display:none}
   .sheen-control.sheen-compact-glyph{padding-inline:0;inline-size:36px;justify-content:center}
+  .sheen-control.sheen-compact-glyph>.sheen-control-chevron{display:none}
+  .sheen-control.sheen-compact-glyph:has(>.sheen-control-count:not([hidden])){inline-size:auto;padding-inline:12px}
   .sheen-applied-row{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
   .sheen-result-count{position:sticky;inset-inline-end:0;padding-inline-start:8px;background:var(--sheen-background)}
 }
+
+/* 0.7.0 list kit */
+/* the Filters panel: options 1px apart, 6px under their label and 10px
+   under the line above; a ticked option is tinted; counts at 500; an outlined 18px box with a drawn tick, in both themes */
+.sheen-filter-field{gap:1px;padding-block-start:0}
+.sheen-filter-field legend{padding-block-start:10px;margin-block-end:6px}
+.sheen-filter-option:has(input:checked){background:color-mix(in srgb,var(--sheen-accent) 10%,transparent);font-weight:600}
+.sheen-filter-option small{font-weight:500}
+.sheen-filter-option input[type="checkbox"]{appearance:none;-webkit-appearance:none;display:inline-grid;place-content:center;border-radius:5px;box-shadow:inset 0 0 0 1.5px var(--sheen-text-tertiary);cursor:pointer}
+.sheen-filter-option input[type="checkbox"]:checked{background:var(--sheen-accent);box-shadow:none}
+.sheen-filter-option input[type="checkbox"]:checked::after{content:"";inline-size:9px;block-size:5px;border-inline-start:2px solid var(--sheen-on-accent);border-block-end:2px solid var(--sheen-on-accent);transform:translateY(-1px) rotate(-45deg)}
+[dir="rtl"] .sheen-filter-option input[type="checkbox"]:checked::after{transform:translateY(-1px) rotate(45deg)}
+/* forced colors drop the drawn box's shadow and fill, so the system draws the checkbox */
+@media (forced-colors: active){.sheen-filter-option input[type="checkbox"]{appearance:auto;-webkit-appearance:auto;box-shadow:none}.sheen-filter-option input[type="checkbox"]:checked::after{content:none}}
+
+/* a table in a card: the surface with an 18px radius (a light shadow in light mode); with .sheen-table-wrap it still
+   scrolls sideways and keeps the pinned ••• column. The small table is the dense app size with a tinted header row. */
+.sheen-table-card{background:var(--sheen-surface);border-radius:18px}
+:root[data-theme="light"] .sheen-table-card{box-shadow:0 1px 2px rgba(16,20,30,.05),0 4px 14px rgba(16,20,30,.05)}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .sheen-table-card{box-shadow:0 1px 2px rgba(16,20,30,.05),0 4px 14px rgba(16,20,30,.05)}}
+.sheen-table.sheen-small{font-size:13.5px}
+.sheen-table.sheen-small th{font-size:12px;padding:10px 14px;background:color-mix(in srgb,var(--sheen-track) 35%,var(--sheen-surface));border-block-end:0;white-space:nowrap}
+.sheen-table.sheen-small td{padding:10px 14px;border-block-end:0;border-block-start:1px solid var(--sheen-separator);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-inline-size:260px}
+/* .sheen-wrap: a table of long sentences wraps its headers and cells at spaces and lines them up at the top */
+.sheen-table.sheen-small.sheen-wrap :is(th,td){white-space:normal}
+.sheen-table.sheen-small.sheen-wrap td{max-inline-size:none;vertical-align:top;overflow-wrap:break-word}
+.sheen-table.sheen-small .sheen-sort-button{padding:10px 14px}
+/* a sortable header leaves all its padding to its button, here too: the cell padding above would add 3px to the row
+   and the sides to the column */
+.sheen-table.sheen-small th:has(>.sheen-sort-button){padding:0}
+.sheen-table.sheen-small .sheen-pin-end{padding-inline:4px}
+/* end 0.7.0 list kit */

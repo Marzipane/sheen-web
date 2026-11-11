@@ -205,11 +205,13 @@ test('menu button: keyboard opens it, arrows skip a disabled item, Enter picks a
 test('menu button: a menu that would leave the screen flips to the other edge', () => {
   const { w, m, button } = menu();
   const list = m.querySelector('[role="menu"]');
-  list.getBoundingClientRect = () => ({ left: -40, right: 140 });
+  // 0.7.0 measures the menu before placing it, so the button's place decides: 180 wide from 990 would leave the screen
+  list.getBoundingClientRect = () => ({ left: 0, right: 180 });
+  button.getBoundingClientRect = () => ({ left: 990, right: 1020, top: 50, bottom: 80 });
   button.click();
   assert.equal(list.classList.contains('sheen-menu-flip'), true);
   key(w, w.document.activeElement, 'Escape');
-  list.getBoundingClientRect = () => ({ left: 10, right: 190 });
+  button.getBoundingClientRect = () => ({ left: 10, right: 40, top: 50, bottom: 80 });
   button.click();
   assert.equal(list.classList.contains('sheen-menu-flip'), false);
 });
@@ -540,11 +542,13 @@ test('menu button: a menu that would run off the bottom opens upward, and it scr
   const { w, m, button } = menu();
   const list = m.querySelector('[role="menu"]');
   w.innerHeight = 700;
-  list.getBoundingClientRect = () => ({ left: 10, right: 190, top: 680, bottom: 793 });
+  // 0.7.0 measures the menu (113 high) before placing it; the button's place decides
+  list.getBoundingClientRect = () => ({ left: 0, right: 180, top: 0, bottom: 113 });
+  button.getBoundingClientRect = () => ({ left: 10, right: 40, top: 640, bottom: 674 });
   button.click();
   assert.equal(list.classList.contains('sheen-menu-up'), true);
   key(w, w.document.activeElement, 'Escape');
-  list.getBoundingClientRect = () => ({ left: 10, right: 190, top: 100, bottom: 213 });
+  button.getBoundingClientRect = () => ({ left: 10, right: 40, top: 60, bottom: 94 });
   button.click();
   assert.equal(list.classList.contains('sheen-menu-up'), false);
   assert.match(css, /\.sheen-menu\.sheen-menu-up\{[^}]*inset-block-end:100%/);

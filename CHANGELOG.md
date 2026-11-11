@@ -1,5 +1,122 @@
 # Changelog
 
+## 0.7.0
+
+The parts an app's list page and its forms need, at the sizes of the app mockups they were ported from: control-look
+menu buttons with glyphs, a page header, solid layers, a modal side panel with a heading and a footer, a table card with
+a small table, a group row and a pager, dense form fields, a small command palette and shortcuts sheet, a status block
+and a toaster at the top. Focus rings now show only while the keyboard navigates, and text fields draw none. Mostly
+additive; the fixes, the looks that change and one change against an earlier owner choice are listed last.
+
+- `<sheen-menu-button>`: `variant="control"` draws the button as the find row's 36px control (a 36px square with
+  `glyph`, for a page header's •••); `icon` puts a glyph before the label,
+  `chevron` a chevron after it that turns while the menu is open, and `compact` keeps only the icon inside a narrow
+  `.sheen-list-kit`. Items take `glyph` (before the label: secondary, red on a danger item, faint when off) and `accent`.
+  A small menu (`class="sheen-small"`, a bulk bar or the end of a views row) is the dense app size: 13.5px, 36px rows,
+  250px to 320px wide (`--sheen-menu-min-size`, `--sheen-menu-max-size`; 320px to 360px at the end of a views or find
+  row; never wider than the window less 16px), plain outlined key caps; an item with a
+  description lines its glyph up with its title and shows the description at 12px.
+- `.sheen-solid` on a layer or on any box around it (the page's body) draws menus, toasts, the command palette, side
+  panels and hover cards opaque, each with its own fill and shadow, so rows and buttons under them never show through.
+  Modal layers then dim the page with a plain shade instead of a blur. Glass stays the default.
+- `<sheen-side-panel>`: `heading` puts the title and a 34px close button on one row above the body and keeps a footer
+  on the panel's bottom edge (an empty heading counts as none; the element marks a headed panel `sheen-headed`).
+  `modal` dims the page behind it (a press on the dim closes it), puts focus on the first control, keeps Tab inside
+  (one stop per radio group; hidden, disabled and `tabindex="-1"` controls skipped) and brings focus that lands outside
+  back in, unless another dialog or popover took it. Hiding an open panel by its attribute takes the dim away; moving it
+  keeps the dim. `class="sheen-small"` makes the panel 400px wide, for filters and editors (menu buttons inside take
+  the dense size); `--sheen-panel-size` sets any other width and always wins (440px by default). With forced colors
+  the panel keeps an edge toward the page and a modal panel's dim stays visible.
+- List kit: `.sheen-control.sheen-on` tints the fill and glyph of a control whose filters are on, and in a narrow list
+  kit a control with a count keeps its count; `.sheen-table-card` puts a table on an 18px surface card that still scrolls
+  sideways; `.sheen-table.sheen-small` is the dense table (13.5px cells on one line up to 260px, a tinted 12px header row,
+  16px checkboxes, a 4px side to its pinned end column) and `.sheen-wrap` wraps a table of long sentences. A
+  `.sheen-link-button`'s glyph is 14px. A `tr.sheen-table-group` row of `th` names a group
+  of rows, with its `small` count as a pill; `.sheen-table-foot` puts the count at the start and a `.sheen-pager` at the
+  end, with 24px arrow buttons that mirror in Arabic. The Filters panel spaces its options 1px apart under their label
+  and draws an outlined 18px box with a tick, the same in light and dark.
+- Forms: `.sheen-form-field.sheen-small` is the dense field (a 13px label over a 38px box, a hint under it, a red ring
+  and hint with `aria-invalid="true"`), two to a row in `.sheen-fields.sheen-small`, with `.sheen-wide` across both.
+  `.sheen-select` around a `<select>` draws the field's chevron at the end edge. In forced colors the dense field keeps
+  a 1px border (2px when invalid) and the chevron shows in the text colour. `.sheen-panel-foot` holds a side panel's
+  Cancel and main action on its bottom edge, each at least 128px, side by side or one under the other when narrow; in a
+  panel with a heading it sticks there while a long body scrolls under it. On a solid panel both footers take the
+  panel's sheet, so rows never show through them.
+  `.sheen-switch.sheen-large` is a 51 by 31 switch and `.sheen-switch-row` puts words and a switch on one row over a
+  hairline; the default switch keeps its size.
+- `<sheen-command-palette class="sheen-small">` is the 560px app palette with a 36px search field and 36px rows.
+  `.sheen-dialog.sheen-small` is a 720px sheet; `.sheen-shortcuts.sheen-small` lays shortcuts out in three columns of
+  `.sheen-keys` and words under `.sheen-shortcuts-head` headings (one column at 760px and under), with a
+  `.sheen-shortcuts-note` line.
+- `.sheen-status` (with `-glyph`, `-title`, `-actions` and the danger, warning and success tones) follows Flutter sheen's
+  SheenStatusScreen: a glyph in a 72px circle of its tone, a title, words at 15px at most 34 characters wide and up to two
+  actions stacked, and a `small` note in the tertiary colour. `.sheen-page-title` is an app page's 26px title.
+- `.sheen-page-head` is an app page's header: `.sheen-page-head-text` holds `.sheen-page-crumbs` (12.5px), the
+  `.sheen-page-title` and a 14px `.sheen-page-subtitle` with room for a `.sheen-pill` beside it, and
+  `.sheen-page-head-actions` sits at the end edge on the bottom line. The words keep 320px; under that the actions move
+  to a line of their own, still at the end edge.
+- `<sheen-toaster position="top">` follows Flutter sheen's toast: under the app bar (`--sheen-toaster-top`), at the end
+  edge (`--sheen-toaster-end`, `--sheen-toaster-size`), the action as a link, and a press on the toast closes it. Its
+  close button shows only while it has keyboard focus (`.sheen-focus-only`: out of sight until focused). A toast's
+  `glyph` replaces the tone's dot in either position, and Esc on any toast closes it.
+- Tokens: `--sheen-size-app-bar` (60px, `size.appBar` in `tokens.json`, web only) is the block size of
+  `.sheen-app-bar`, so an app places a top toaster under its bar from tokens alone:
+  `--sheen-toaster-top: calc(var(--sheen-size-app-bar) + var(--sheen-space-m))`, `--sheen-toaster-end:
+  var(--sheen-space-xxl)`. Number tokens with two-word keys take kebab-case names.
+- Glyphs: the filled Flutter sheen icons draw as `<name>-fill` (`check-circle-fill`), filled in the text colour; `alert`
+  is a warning triangle.
+- Focus: on a page that loads sheen.js or the elements (they mark `<html data-sheen-focus>`), Tab or Shift+Tab marks
+  `<html data-sheen-keyboard>`, and only then do buttons, links, tabs, selects and menu items draw their one 2px ring;
+  the next press clears it. A press, Esc, Enter, typing and arrows never bring a ring, so closing a panel with Esc leaves
+  its opener plain; in a dense menu the item the arrows reach shows the hover fill. A page with neither script keeps the
+  browser's own `:focus-visible` rings. A text input or textarea never draws a ring, keyboard or not: its caret shows the
+  focus (the find row's search drew two rings in 0.6.0); a select has no caret, so it rings after Tab, and inside a
+  `.sheen-field` or `.sheen-control` the field rings around a select or picker button instead. Esc or the close button
+  on a toast that holds focus gives focus back to where it was. sheen.js still loads in Node. The picker follows the
+  same rule: its pill rings after Tab only, never on a press or while its list is open; an open picker takes the tonal
+  fill instead of 0.1's ring and glow; its search box draws no ring. A
+  control's 0.6.0 inset ring and 4px glow are gone. A menu button with an icon or a chevron takes its label as its
+  name, so a compact one keeps a name. In forced colors the Filters checkboxes are the system's own.
+- Fixed: a menu near the screen's end came out narrow, wrapped its labels and could open upward with room below, because
+  it was measured after it was placed. It is now measured where nothing narrows it, then lined up under its button, on
+  the other edge when it would leave the screen, and above only when it doesn't fit below and there is more room above.
+  A menu wider than the room on either side (a phone) keeps to the screen. Two 0.5.0 placement tests now give the
+  button's place instead of the menu's measured box, and assert the same flips.
+- Fixed: in a find row, a views end kept the 6px it has under the views row's tabs, so a Views control there sat 3px
+  higher than Filters; a control inside an app's inline wrapper sits at the top of its line, never on its baseline.
+- Fixed: a long `.sheen-sidebar-shell` nav made the whole page scroll: the visually hidden words of its items belonged to
+  the page, not to the scrolling nav, and stretched the document (1224px in a 1000px window). The nav and the content
+  area now hold what is positioned inside them, and the shell is one row the window's height (`100dvh` where supported).
+- Fixed: a sortable header in a `.sheen-table.sheen-small` took the cell's 10px 14px padding on top of its button's,
+  so the header row was 3px taller and a sortable column grew by the cell's side padding.
+- Fixed: the hidden attribute hides the list kit, page and footer parts that set their own display (menu buttons, page
+  tabs, footers, the pager); page tabs drawn as links keep the tab colours instead of the base link rule's text colour.
+- Looks that change: an enabled menu item with a `hint` shows its label at weight 600 (a title over its description);
+  page tabs have 24px each side and mark the current page by its 2px line only, drawn inside the row so a scrolling row
+  never clips it; `.sheen-list-message.sheen-danger` keeps its title in the text colour and gets a danger ring (0.6.0
+  turned every word red); the Filters panel's options and boxes take the app mockups' spacing and look; a menu in a bulk
+  bar or at the end of a views row is the dense size (13.5px, 36px rows); a `.sheen-table` with `aria-busy="true"` draws
+  as one placeholder block; small buttons in the list kit, the Filters footer and list messages are 34px instead of 40px;
+  the find row's "/" key cap is a plain outline; a side panel draws no ring when a press gives it focus; an open control
+  (its menu or panel open) takes the tonal fill instead of 0.6.0's accent ring and 4px glow, since only keyboard focus
+  draws a ring.
+- Changed against the owner's 0.1.4 choice, approved for 0.7.0: `.sheen-field` no longer draws its focus line and soft
+  glow. In 0.1.4 the owner chose to show a field's focus with that line and glow; under the 0.7.0 rule that text fields
+  draw no focus ring, the field shows focus by its caret and its label in the accent. Forced colors still outline it.
+- Tests: the new options, items and placement, with a Views control at the end edge in English and Arabic; the heading
+  row, modal dim, focus and Tab cycle; the toaster at the top and at the bottom; filled glyphs; the pointer and keyboard
+  focus state; every new rule in the built CSS with the values it ports, logical sides only; contrast from the tokens
+  (WCAG AA in light and dark) for accent items, hints, the tinted header, ticked options, key caps, status words and
+  toasts, and 3:1 for the status glyphs and a tinted control's glyph; the dense fields, the panel footer, the large
+  switch, the group row, the pager, the small palette, the shortcuts sheet and the page head; a radio group and a
+  hidden input in the Tab cycle, focus coming back into a modal panel, its dim when hidden or moved, an empty heading,
+  the top toast by keyboard, compact menu button names, forced colors and a menu on a phone; open and applied controls
+  with no ring; a footer that stays on the bottom edge of a panel longer than the window; the keyboard flag (only Tab
+  sets it; a press, Esc, typing and arrows never do), on a page with sheen.js alone too, and selects ringing after Tab;
+  dense fields in forced colors; the find row on one line and a sidebar shell that never scrolls the page. The dist PHP test now expects `.sheen-field` without its 0.1.4 glow.
+- Docs: `docs/app-page.html` shows a list page built from these parts with neutral sample words, in English and Arabic,
+  light and dark.
+
 ## 0.6.0
 
 A list kit for long lists and tables. Additive: nothing that existed changes.

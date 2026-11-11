@@ -50,8 +50,12 @@ class DistTest extends TestCase
         // 0.1.4 (owner, 16 Oct): the base focus ring drew a sharp box around a bare input inside a rounded field or a
         // search bar's part; Airbnb, Booking, Expedia and Agoda all show focus on the field or part instead
         $css = $this->css();
-        $this->assertStringContainsString('.sheen :is(.sheen-field,.sheen-segment,.sheen-picker-pill) :is(input,select,textarea,.sheen-segment-trigger,.sheen-picker-trigger):focus-visible{outline:none}', $css);
-        $this->assertMatchesRegularExpression('/\.sheen-field:focus-within\{[^}]*0 0 0 4px/', $css);
+        // 0.7.0: a text field inside a list kit control (the find row's search) draws no box of its own either; a select
+        // or picker button inside a field or control draws none either, and the field rings around it after Tab
+        $this->assertStringContainsString('.sheen :is(.sheen-field,.sheen-segment,.sheen-picker-pill,.sheen-control) :is(input,select,textarea,.sheen-segment-trigger,.sheen-picker-trigger):focus-visible{outline:none}', $css);
+        // 0.7.0 (owner, app review): a text field draws no focus ring at all; the field keeps its label in the accent
+        $this->assertDoesNotMatchRegularExpression('/\.sheen-field:focus-within\{[^}]*box-shadow/', $css);
+        $this->assertStringContainsString('.sheen-field:focus-within>span:first-child{color:var(--sheen-accent-text)}', $css);
         $this->assertMatchesRegularExpression('/\.sheen-segment:focus-within\{[^}]*background/', $css);
         // the field still shows where the keyboard is when the system draws no shadows
         $this->assertMatchesRegularExpression('/@media \(forced-colors: active\)\{[^@]*\.sheen-field:focus-within/', $css);

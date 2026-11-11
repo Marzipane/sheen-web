@@ -91,6 +91,10 @@ define('sheen-drop-zone', SheenDropZone);
 //   Pointer over a toast or focus inside it pauses its timer. At most max are shown; the rest wait their turn.
 class SheenToaster extends HTMLElement {
   connectedCallback() {
+    var self = this;
+    // where focus was before it went into a toast: closing a toast that holds focus gives it back there (0.7.0)
+    if (!this.onFocus) this.onFocus = function (e) { if (e.target && e.target.nodeType === 1 && !self.contains(e.target)) self.back = e.target; };
+    document.addEventListener('focusin', this.onFocus);
     this.setAttribute('role', 'region');
     this.setAttribute('aria-live', 'polite');
     if (!this.getAttribute('aria-label') && this.getAttribute('label')) this.setAttribute('aria-label', this.getAttribute('label'));
@@ -109,16 +113,22 @@ class SheenToaster extends HTMLElement {
     while (this.querySelectorAll('.sheen-toast').length < max && this.queue.length) this.mount(this.queue.shift());
   }
   mount(item) {
-    var self = this, o = item.opts, tone = o.tone || 'info';
+    var self = this, o = item.opts, tone = o.tone || 'info', top = this.getAttribute('position') === 'top';
+    // A glyph (0.7.0) replaces the tone's dot. At the top, as Flutter sheen's toast: the action is a link, a press on the
+    // toast closes it, and its close button shows only while it has keyboard focus. Esc on any toast closes it.
+    var mark = o.glyph ? glyph(o.glyph, 18) : h('span', { class: 'sheen-toast-dot', 'aria-hidden': 'true' });
+    if (o.glyph) mark.classList.add('sheen-toast-glyph');
     var node = h('div', { class: 'sheen-toast sheen-glass sheen-toast-' + tone, id: item.id, role: tone === 'danger' ? 'alert' : 'status' },
-      h('span', { class: 'sheen-toast-dot', 'aria-hidden': 'true' }),
+      mark,
       h('div', { class: 'sheen-toast-text' },
         o.title ? h('b', { text: o.title }) : null,
         o.message ? h('span', { class: 'sheen-secondary', text: o.message }) : null),
-      o.action ? h('button', { type: 'button', class: 'sheen-button sheen-small', text: o.action.label,
+      o.action ? h('button', { type: 'button', class: top ? 'sheen-link-button' : 'sheen-button sheen-small', text: o.action.label,
         onclick: function () { try { o.action.onClick(); } finally { self.dismiss(item.id); } } }) : null,
-      h('button', { type: 'button', class: 'sheen-icon-button sheen-toast-close', 'aria-label': this.getAttribute('close-label') || '',
+      h('button', { type: 'button', class: 'sheen-icon-button sheen-toast-close' + (top ? ' sheen-focus-only' : ''), 'aria-label': this.getAttribute('close-label') || '',
         onclick: function () { self.dismiss(item.id); } }, glyph('close', 18)));
+    if (top) node.addEventListener('click', function (e) { if (!e.target.closest('button')) self.dismiss(item.id); });
+    node.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !e.defaultPrevented) { e.preventDefault(); self.dismiss(item.id); } });
     this.appendChild(node);
     var timeout = o.timeout == null ? 5000 : o.timeout;
     if (timeout > 0) {
@@ -132,10 +142,12 @@ class SheenToaster extends HTMLElement {
       run();
     }
   }
+  disconnectedCallback() { if (this.onFocus) document.removeEventListener('focusin', this.onFocus); }
   dismiss(id) {
-    var node = this.querySelector('#' + id);
+    var node = this.querySelector('#' + id), held = !!node && node.contains(document.activeElement);
     this.queue = (this.queue || []).filter(function (q) { return q.id !== id; });
     if (node) node.remove();
+    if (held && this.back && this.back.isConnected) this.back.focus();
     this.pump();
   }
 }

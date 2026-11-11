@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>sheen app page</title>
+<link rel="stylesheet" href="sheen.min.css">
+<style>
+  /* the frame around the page only: a sidebar and an app bar of the usual app sizes, so the parts sit where an app puts them */
+  body{margin:0}
+  .demo-frame{display:grid;grid-template-columns:248px minmax(0,1fr);min-block-size:100dvh}
+  .demo-side{background:var(--sheen-surface);border-inline-end:1px solid var(--sheen-separator)}
+  .demo-bar{block-size:var(--sheen-size-app-bar);border-block-end:1px solid var(--sheen-separator)}
+  .demo-content{display:flex;flex-direction:column;gap:16px;padding:20px 24px 24px;min-block-size:calc(100dvh - var(--sheen-size-app-bar) - 1px)}
+  .demo-compact .sheen-list-kit{max-inline-size:600px}
+  @media (max-width:760px){.demo-frame{grid-template-columns:minmax(0,1fr)}.demo-side{display:none}.demo-content{padding:16px}}
+</style>
+</head>
+<body class="sheen sheen-solid">
+<div class="demo-frame">
+  <aside class="demo-side" aria-hidden="true"></aside>
+  <div>
+    <div class="demo-bar" aria-hidden="true"></div>
+    <main class="demo-content" id="content">
+      <div class="sheen-page-head">
+        <div class="sheen-page-head-text"><span class="sheen-page-crumbs" data-w="crumbs"></span><h1 class="sheen-page-title" data-w="title"></h1><p class="sheen-page-subtitle" data-w="count"></p></div>
+        <div class="sheen-page-head-actions">
+          <button class="sheen-button sheen-small" type="button" data-w="add"></button>
+          <sheen-menu-button id="more" class="sheen-small" variant="control" glyph="more"></sheen-menu-button>
+        </div>
+      </div>
+      <nav class="sheen-page-tabs" id="tabs"></nav>
+      <div class="sheen-list-kit">
+        <div class="sheen-find-row" role="search">
+          <label class="sheen-control sheen-find"><sheen-glyph name="search" size="15"></sheen-glyph><input type="search" id="q"><kbd class="sheen-kbd">/</kbd></label>
+          <button class="sheen-control sheen-compact-glyph" id="filters" type="button" aria-haspopup="dialog"><sheen-glyph name="sliders" size="15"></sheen-glyph><span data-w="filters"></span><span class="sheen-control-count" hidden>1</span></button>
+          <div class="sheen-views-end" style="padding:0"><button class="sheen-link-button" id="save" type="button" hidden><sheen-glyph name="plus" size="14"></sheen-glyph><span data-w="save"></span></button><sheen-menu-button id="views" class="sheen-small" variant="control" icon="star" chevron compact></sheen-menu-button></div>
+        </div>
+        <div class="sheen-applied-row" id="applied" hidden><span class="sheen-filter-chip"><span data-w="from"></span><b data-w="imported"></b><button class="sheen-chip-remove" type="button" aria-label="×"><sheen-glyph name="close" size="12"></sheen-glyph></button></span><button class="sheen-link-button" type="button" data-w="clear"></button></div>
+      </div>
+      <div class="sheen-table-wrap sheen-table-card" id="table">
+        <table class="sheen-table sheen-small"><thead><tr id="head"></tr></thead><tbody id="rows"></tbody></table>
+      </div>
+      <div class="sheen-list-message sheen-danger" id="ferror" hidden><sheen-glyph name="x-circle" size="28"></sheen-glyph><b data-w="ferrorTitle"></b><p data-w="ferrorText"></p><span class="sheen-list-message-actions"><button class="sheen-button sheen-small sheen-glass-prominent" type="button" data-w="retry"></button></span></div>
+      <div class="sheen-status" id="empty" hidden><span class="sheen-status-glyph"><sheen-glyph name="search"></sheen-glyph></span><h2 class="sheen-status-title" data-w="emptyTitle"></h2><p data-w="emptyText"></p><div class="sheen-status-actions"><button class="sheen-button" type="button" data-w="clear"></button></div></div>
+      <div class="sheen-status sheen-danger" id="error" hidden><span class="sheen-status-glyph"><sheen-glyph name="x-circle"></sheen-glyph></span><h2 class="sheen-status-title" data-w="errorTitle"></h2><p data-w="errorText"></p><div class="sheen-status-actions"><button class="sheen-button" type="button" data-w="tryAgain"></button></div><small data-w="ref"></small></div>
+    </main>
+  </div>
+</div>
+<sheen-side-panel id="panel" class="sheen-small" modal>
+  <div class="sheen-filter-group" id="groups"></div>
+  <div class="sheen-filter-footer"><button class="sheen-link-button" type="button" data-w="clear"></button><button class="sheen-button sheen-small sheen-glass-prominent" type="button" data-w="show"></button></div>
+</sheen-side-panel>
+<sheen-toaster id="toaster" position="top" style="--sheen-toaster-top:calc(var(--sheen-size-app-bar) + var(--sheen-space-m));--sheen-toaster-end:var(--sheen-space-xxl)"></sheen-toaster>
+<script src="sheen-elements.min.js"></script>
+<script>
+// Sample words in English and Arabic for this demo only. ?state=normal|more|views|panel|one|compact|empty|error|ferror|loading|toast &lang=en|ar &theme=light|dark
+const W = {
+  en: { crumbs: 'Settings › Lists', title: 'Sample tags', count: '12 tags', add: 'Add tag', more: 'More actions', filters: 'Filters', views: 'Views', save: 'Save view',
+    tabs: ['Tags', 'Groups', 'Colours', 'Archive'], search: 'Code or name', cols: ['Code', 'Name (EN)', 'Name (AR)', 'Source', 'Owner', 'Plan', 'Pinned', 'Visible'],
+    history: 'Change history', link: 'Copy link', keys: 'Keyboard shortcuts', lastUsed: 'Last used', lastItem: 'Last filters', lastHint: 'Kept for this list',
+    mine: 'My views', mineItem: 'This week', mineHint: 'Only me', saveCurrent: 'Save these filters as a view', saveHint: 'Give it a name',
+    manage: 'Manage views', manageHint: 'Rename or delete', from: 'Source', owner: 'Owner', imported: 'Import', manual: 'Manual', shared: 'Shared', other: 'Other', clear: 'Clear all',
+    show: 'Show 7 results', emptyTitle: 'Nothing matches', emptyText: 'Try other filters.', errorTitle: "The page didn't load",
+    errorText: 'Try again in a moment.', tryAgain: 'Try again', ref: 'Error 503 · ref 7F3K-2Q',
+    ferrorTitle: "The results didn't load", ferrorText: 'Check the connection and try again.', retry: 'Retry', toast: 'Filters cleared', undo: 'Undo', standard: 'Standard', free: 'Free',
+    rows: [['Red'], ['Blue'], ['Green'], ['Yellow'], ['Purple'], ['Orange'], ['Grey'], ['Black']] },
+  ar: { crumbs: 'الإعدادات › القوائم', title: 'وسوم تجريبية', count: '12 وسمًا', add: 'أضف وسمًا', more: 'إجراءات أخرى', filters: 'الفلاتر', views: 'طرق العرض', save: 'حفظ طريقة العرض',
+    tabs: ['الوسوم', 'المجموعات', 'الألوان', 'الأرشيف'], search: 'الرمز أو الاسم', cols: ['الرمز', 'الاسم (EN)', 'الاسم (AR)', 'المصدر', 'المالك', 'الخطة', 'مثبّت', 'ظاهر'],
+    history: 'سجل التغييرات', link: 'نسخ الرابط', keys: 'اختصارات لوحة المفاتيح', lastUsed: 'آخر استخدام', lastItem: 'آخر فلاتر', lastHint: 'محفوظة لهذه القائمة',
+    mine: 'طرق العرض الخاصة بي', mineItem: 'هذا الأسبوع', mineHint: 'لي فقط', saveCurrent: 'احفظ هذه الفلاتر كطريقة عرض', saveHint: 'سمّها',
+    manage: 'إدارة طرق العرض', manageHint: 'إعادة التسمية أو الحذف', from: 'المصدر', owner: 'المالك', imported: 'استيراد', manual: 'يدوي', shared: 'مشترك', other: 'آخر', clear: 'مسح الكل',
+    show: 'اعرض 7 نتائج', emptyTitle: 'لا شيء مطابق', emptyText: 'جرّب فلاتر أخرى.', errorTitle: 'لم تُحمّل الصفحة',
+    errorText: 'حاول مجددًا بعد قليل.', tryAgain: 'حاول مجددًا', ref: 'خطأ 503 · مرجع 7F3K-2Q',
+    ferrorTitle: 'لم تُحمّل النتائج', ferrorText: 'تحقّق من الاتصال وحاول مجددًا.', retry: 'إعادة المحاولة', toast: 'مُسحت الفلاتر', undo: 'تراجع', standard: 'قياسي', free: 'مجاني',
+    rows: [['أحمر'], ['أزرق'], ['أخضر'], ['أصفر'], ['بنفسجي'], ['برتقالي'], ['رمادي'], ['أسود']] },
+};
+const P = new URLSearchParams(location.search), lang = P.get('lang') === 'ar' ? 'ar' : 'en', state = P.get('state') || 'normal', t = W[lang];
+const root = document.documentElement, $ = (s) => document.querySelector(s);
+root.lang = lang; root.dir = lang === 'ar' ? 'rtl' : 'ltr';
+if (P.get('theme')) root.dataset.theme = P.get('theme');
+document.querySelectorAll('[data-w]').forEach((el) => { el.textContent = t[el.dataset.w]; });
+$('#q').placeholder = t.search; $('#q').setAttribute('aria-label', t.search);
+$('#tabs').innerHTML = t.tabs.map((x, i) => `<a class="sheen-view-tab" href="#"${i ? '' : ' aria-current="page"'}>${x}</a>`).join('');
+$('#head').innerHTML = t.cols.map((c) => `<th>${c}</th>`).join('');
+const from = [t.imported, t.imported, t.imported, t.imported, t.imported, t.manual, t.imported, t.shared];
+$('#rows').innerHTML = t.rows.map((r, i) => `<tr><td>AA-0${i + 1}</td><td>${W.en.rows[i][0]}</td><td dir="rtl">${W.ar.rows[i][0]}</td><td>${from[i]}</td><td>${i === 5 ? t.shared : t.imported}</td><td>${i === 7 ? t.free : t.standard}</td><td><input type="checkbox" aria-label="${t.cols[6]}"${i % 4 === 3 ? ' checked' : ''}></td><td><input type="checkbox" aria-label="${t.cols[7]}"${i % 3 ? ' checked' : ''}></td></tr>`).join('');
+const more = $('#more'); more.setAttribute('label', t.more);
+more.items = [{ id: 'h', label: t.history, glyph: 'clock' }, { separator: true }, { id: 'l', label: t.link, glyph: 'link' }, { id: 'k', label: t.keys, glyph: 'help', shortcut: '?' }];
+const views = $('#views'); views.setAttribute('label', t.views);
+views.items = [{ heading: t.lastUsed }, { id: 'last', label: t.lastItem, hint: t.lastHint, glyph: 'clock' }, { heading: t.mine }, { id: 'v1', label: t.mineItem, hint: t.mineHint, glyph: 'star' },
+  { separator: true }, { id: 'save', label: t.saveCurrent, hint: t.saveHint, glyph: 'plus', accent: true }, { id: 'manage', label: t.manage, hint: t.manageHint, glyph: 'sliders' }];
+const panel = $('#panel'); panel.setAttribute('label', t.filters); panel.setAttribute('heading', t.filters); panel.setAttribute('close-label', '×');
+const group = (label, opts) => `<fieldset class="sheen-filter-field"><legend>${label}</legend>${opts.map(([v, n, on]) => `<label class="sheen-filter-option"><input type="checkbox"${on ? ' checked' : ''}><span>${v}</span><small>${n}</small></label>`).join('')}</fieldset>`;
+$('#groups').innerHTML = group(t.from, [[t.imported, 7, 1], [t.manual, 3], [t.shared, 2]]) + group(t.owner, [[t.imported, 8], [t.shared, 3], [t.other, 1]]);
+$('#filters').onclick = () => panel.open();
+const on = () => { $('#filters').classList.add('sheen-on'); $('#filters .sheen-control-count').hidden = false; $('#applied').hidden = false; $('#save').hidden = false; };
+const hideTable = () => { $('#table').hidden = true; };
+({
+  normal() {}, more() { more.open(); }, views() { views.open(); }, panel() { on(); panel.open(); }, one() { on(); },
+  compact() { $('#content').classList.add('demo-compact'); on(); },
+  empty() { on(); hideTable(); $('#empty').hidden = false; },
+  error() { hideTable(); $('#error').hidden = false; },
+  ferror() { on(); hideTable(); $('#ferror').hidden = false; },
+  loading() { $('#table table').setAttribute('aria-busy', 'true'); },
+  toast() { $('#toaster').show({ title: t.toast, tone: 'success', glyph: 'check-circle-fill', timeout: 0, action: { label: t.undo, onClick() {} } }); },
+}[state] || (() => {}))();
+</script>
+</body>
+</html>
