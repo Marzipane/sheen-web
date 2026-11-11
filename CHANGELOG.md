@@ -72,7 +72,9 @@ additive; the fixes, the looks that change and one change against an earlier own
   browser's own `:focus-visible` rings. A text input or textarea never draws a ring, keyboard or not: its caret shows the
   focus (the find row's search drew two rings in 0.6.0); a select has no caret, so it rings after Tab, and inside a
   `.sheen-field` or `.sheen-control` the field rings around a select or picker button instead. Esc or the close button
-  on a toast that holds focus gives focus back to where it was. sheen.js still loads in Node. A
+  on a toast that holds focus gives focus back to where it was. sheen.js still loads in Node. The picker follows the
+  same rule: its pill rings after Tab only, never on a press or while its list is open; an open picker takes the tonal
+  fill instead of 0.1's ring and glow; its search box draws no ring. A
   control's 0.6.0 inset ring and 4px glow are gone. A menu button with an icon or a chevron takes its label as its
   name, so a compact one keeps a name. In forced colors the Filters checkboxes are the system's own.
 - Fixed: a menu near the screen's end came out narrow, wrapped its labels and could open upward with room below, because

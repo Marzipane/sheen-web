@@ -10,14 +10,18 @@
 .sheen-picker-trigger>svg{flex:none;color:var(--sheen-text-secondary);transition:transform .15s}
 .sheen-picker-trigger[aria-expanded="true"]>svg{transform:rotate(180deg)}
 .sheen-picker-trigger .sheen-picker-placeholder{color:var(--sheen-text-tertiary)}
-/* the field stays lit while its list is open, as while it has the focus */
-.sheen-picker-open .sheen-picker-field{box-shadow:inset 0 0 0 1.5px var(--sheen-accent-text),0 0 0 4px color-mix(in srgb,var(--sheen-accent) 24%,transparent)}
+/* an open picker takes the tonal fill, as an open control does (0.7.0: no ring or glow while it is open), and its label
+   the accent */
+.sheen-picker-open .sheen-picker-field{background:var(--sheen-tonal)}
 .sheen-picker-open .sheen-picker-field>span:first-child{color:var(--sheen-accent-text)}
 .sheen-picker-invalid .sheen-picker-field{box-shadow:inset 0 0 0 2px var(--sheen-danger)}
 .sheen-picker-pill{display:inline-flex;align-items:center;gap:8px;height:44px;max-width:100%;padding-inline:16px 14px;border-radius:22px;cursor:pointer}
 .sheen-picker-pill .sheen-picker-trigger,.sheen-picker-pill select{font-size:15px;font-weight:600;width:auto}
 .sheen-picker-pill select{all:unset;cursor:pointer;font-size:15px;font-weight:600;min-width:0}
-.sheen-picker-pill:focus-within,.sheen-picker-open .sheen-picker-pill{outline:2px solid var(--sheen-accent-text);outline-offset:2px}
+.sheen-picker-open .sheen-picker-pill::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:var(--sheen-tonal);pointer-events:none}
+/* the pill rings after Tab only, like every ring (0.7.0): not on a press, not while its list is open */
+.sheen-picker-pill:has(:focus-visible){outline:2px solid var(--sheen-accent-text);outline-offset:2px}
+:root[data-sheen-focus]:not([data-sheen-keyboard]) .sheen-picker-pill:has(:focus-visible){outline:none}
 
 .sheen-picker-pop{position:fixed;inset:auto;margin:0;border:0;z-index:60;box-sizing:border-box;flex-direction:column;gap:4px;padding:8px;max-height:440px;overflow:hidden;border-radius:20px;color:var(--sheen-text);font-size:15.5px;background:color-mix(in srgb,var(--sheen-sheet) 90%,transparent);-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);box-shadow:inset 0 0 0 .5px var(--sheen-separator),inset 0 .5px 0 rgba(255,255,255,.12),0 18px 48px rgba(0,0,0,.35),0 2px 6px rgba(0,0,0,.18);animation:sheen-picker-in .14s ease-out}
 .sheen-picker-pop:not([hidden]){display:flex}
@@ -26,7 +30,6 @@
 .sheen-picker-title b{flex:1;font-size:17px;font-weight:600}
 .sheen-picker-title .sheen-icon-button{width:34px;height:34px}
 .sheen-picker-search{flex:none;display:flex;align-items:center;gap:8px;height:44px;padding-inline:12px;border-radius:14px;background:var(--sheen-tonal,rgba(127,127,127,.14));color:var(--sheen-text-secondary);cursor:text}
-.sheen-picker-search:focus-within{box-shadow:inset 0 0 0 1.5px var(--sheen-accent-text)}
 .sheen-picker-search input{all:unset;flex:1;min-width:0;font-size:16px;color:var(--sheen-text)}
 .sheen-picker-search input::placeholder{color:var(--sheen-text-tertiary)}
 .sheen .sheen-picker-search input:focus-visible,.sheen .sheen-picker-list:focus-visible{outline:none}
