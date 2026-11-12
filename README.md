@@ -216,11 +216,11 @@ mirrored in Arabic; the native control stays the form value, and setting it by p
 events. Without the elements script the native control shows as it is.
 
 ```html
-<label class="sheen-form-field sheen-small"><span>Hub</span>
-  <sheen-select placeholder="All hubs" search="Search hubs" empty="No matches" clear="Clear">
-    <select name="hub" required>
-      <option value="">All hubs</option>
-      <optgroup label="North"><option value="b">Al Barsha</option><option value="m" data-hint="2 vans">Marina</option></optgroup>
+<label class="sheen-form-field sheen-small"><span>Area</span>
+  <sheen-select placeholder="All areas" search="Search areas" empty="No matches" clear="Clear">
+    <select name="area" required>
+      <option value="">All areas</option>
+      <optgroup label="North"><option value="b">Old Town</option><option value="m" data-hint="2 teams">Riverside</option></optgroup>
       <option value="d" disabled>Downtown</option>
     </select>
   </sheen-select>

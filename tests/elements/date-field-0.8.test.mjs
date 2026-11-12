@@ -46,10 +46,15 @@ test('date field: wraps the page\'s native date input, which stays first and kee
   assert.ok(el.hasAttribute('data-chosen'));
   assert.equal(pop.getAttribute('role'), 'dialog');
   assert.equal(pop.hidden, true);
-  // a label around the field names the trigger; it already holds the value
-  const label = d.querySelector('label');
-  assert.ok(label.id);
-  assert.equal(trigger.getAttribute('aria-labelledby'), label.id);
+  // a label around the field names the trigger by its words outside the field, then the value: the whole label would read
+  // the open calendar into the name (Chromium does); the popup takes the same words
+  const words = d.querySelector('label > span');
+  assert.ok(words.id);
+  const [name, value] = trigger.getAttribute('aria-labelledby').split(' ');
+  assert.equal(name, words.id);
+  assert.ok(d.getElementById(value).classList.contains('sheen-date-text'), 'then the value');
+  assert.equal(pop.getAttribute('aria-labelledby'), words.id);
+  assert.equal(d.querySelector('label').hasAttribute('id'), false, 'the whole label names nothing');
 });
 
 test('date field: an empty value shows the placeholder; with no words given the element shows none of its own', () => {

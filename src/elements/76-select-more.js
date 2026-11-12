@@ -1,4 +1,4 @@
-// <sheen-select search="Search hubs" empty="No matches" clear="Clear" remove="Remove @label"> (0.8.0): the rest of the select.
+// <sheen-select search="Search areas" empty="No matches" clear="Clear" remove="Remove @label"> (0.8.0): the rest of the select.
 //   search: the list opens with a search box at its top, focused, the value as its placeholder and name. Typing hides the
 //   options whose label doesn't hold the query (case- and accent-blind, as type-ahead; in Arabic hamza seats and short
 //   vowels too), hides a group left with none, makes the first visible option active, and shows the empty line (empty)

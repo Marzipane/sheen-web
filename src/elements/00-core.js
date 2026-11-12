@@ -120,7 +120,26 @@ function popup(box, anchor, host, gone) {
   document.addEventListener('pointerdown', onPress, true);
   window.addEventListener('scroll', onScroll, true);
   window.addEventListener('resize', place);
+  // The popup and its anchor can change size while it is open (a field whose chips wrap, a list a search shortens, a
+  // month with one more week): it is placed again each time, so it never covers the field or floats away from it.
+  var sized = window.ResizeObserver ? new window.ResizeObserver(function () { place(); }) : null;
+  if (sized) { sized.observe(box); sized.observe(anchor); }
+  var drop = stop;
+  stop = function () { if (sized) sized.disconnect(); drop(); };
   return { place: place, stop: stop };
+}
+
+// The ids that name a field from its <label>s (0.8.0). A label apart from the field names it whole. A label around the
+// field names it by its children outside the field (its words, a hint under it): the whole label would read the field's
+// value and an open popup into the name (Chromium does). A label around the field with bare words only names it whole.
+// Labels and parts without an id get one.
+function labelIds(labels, field) {
+  var ids = [];
+  Array.prototype.forEach.call(labels || [], function (l) {
+    var parts = l.contains(field) ? Array.prototype.filter.call(l.children, function (c) { return !c.contains(field); }) : [];
+    (parts.length ? parts : [l]).forEach(function (p) { ids.push(p.id || (p.id = uid('sheen-label'))); });
+  });
+  return ids;
 }
 
 function reducedMotion() {

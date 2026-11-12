@@ -205,17 +205,18 @@ class SheenDateBase extends HTMLElement {
     if (icon) icon.classList.add('sheen-date-icon');
     this.trigger.replaceChildren.apply(this.trigger, [icon, this.text, chev].filter(Boolean));
   }
-  // Names: the <label>s of the (first) native input, else the label attribute; the value is read after the name unless
-  // the label wraps the field and already holds it.
+  // Names: the <label>s of the (first) native input, by labelIds() (00-core.js): a <label> around the field by its parts
+  // outside the field, so the open calendar never reads into the name; else the label attribute. The value is read
+  // after the name, unless a label around the field with bare words names it whole and already holds the value.
   name() {
     var self = this, labels = Array.prototype.slice.call(this.inputs[0].labels || []);
     var t = this.trigger, label = this.word('label');
     t.removeAttribute('aria-label');
     this.pop.removeAttribute('aria-label');
     if (labels.length) {
-      var ids = labels.map(function (l) { if (!l.id) l.id = uid('date-label'); return l.id; });
-      var wraps = labels.some(function (l) { return l.contains(self); });
-      t.setAttribute('aria-labelledby', ids.join(' ') + (wraps ? '' : ' ' + this.text.id));
+      var ids = labelIds(labels, this);
+      var whole = labels.some(function (l) { return l.contains(self) && ids.indexOf(l.id) >= 0; });
+      t.setAttribute('aria-labelledby', ids.join(' ') + (whole ? '' : ' ' + this.text.id));
       this.pop.setAttribute('aria-labelledby', ids.join(' '));
     } else if (label) {
       t.setAttribute('aria-label', label);

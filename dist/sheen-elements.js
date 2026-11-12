@@ -128,7 +128,26 @@ function popup(box, anchor, host, gone) {
   document.addEventListener('pointerdown', onPress, true);
   window.addEventListener('scroll', onScroll, true);
   window.addEventListener('resize', place);
+  // The popup and its anchor can change size while it is open (a field whose chips wrap, a list a search shortens, a
+  // month with one more week): it is placed again each time, so it never covers the field or floats away from it.
+  var sized = window.ResizeObserver ? new window.ResizeObserver(function () { place(); }) : null;
+  if (sized) { sized.observe(box); sized.observe(anchor); }
+  var drop = stop;
+  stop = function () { if (sized) sized.disconnect(); drop(); };
   return { place: place, stop: stop };
+}
+
+// The ids that name a field from its <label>s (0.8.0). A label apart from the field names it whole. A label around the
+// field names it by its children outside the field (its words, a hint under it): the whole label would read the field's
+// value and an open popup into the name (Chromium does). A label around the field with bare words only names it whole.
+// Labels and parts without an id get one.
+function labelIds(labels, field) {
+  var ids = [];
+  Array.prototype.forEach.call(labels || [], function (l) {
+    var parts = l.contains(field) ? Array.prototype.filter.call(l.children, function (c) { return !c.contains(field); }) : [];
+    (parts.length ? parts : [l]).forEach(function (p) { ids.push(p.id || (p.id = uid('sheen-label'))); });
+  });
+  return ids;
 }
 
 function reducedMotion() {
@@ -1903,7 +1922,7 @@ class SheenAvatar extends HTMLElement {
 define('sheen-avatar', SheenAvatar);
 
 // ---- 75-select.js
-// <sheen-select placeholder="All hubs"><select name="hub">…options and optgroups…</select></sheen-select> (0.8.0)
+// <sheen-select placeholder="All areas"><select name="area">…options and optgroups…</select></sheen-select> (0.8.0)
 //   A select whose list the page draws with its own tokens (light, dark, Arabic) instead of the browser's. The native
 //   select inside stays the form control: name, multiple, required, disabled (its own or a fieldset's), form, form reset
 //   and FormData work as before, and a framework binds it as it binds any select (Angular's formControlName, (change)).
@@ -2145,17 +2164,11 @@ class SheenSelect extends HTMLElement {
     return row;
   }
 
-  // aria-labelledby lists the native select's <label>s (given ids when they have none); without one, the label attribute
-  // is the aria-label. The trigger and the listbox carry the same name. A <label> around the field is named by its
-  // children outside the field (its words, a hint under it): the whole label would read the chosen value and the open
-  // list into the name too (Chromium does). A label around the field with bare words only is named whole.
+  // aria-labelledby lists the native select's <label>s, by labelIds() (00-core.js): a <label> around the field by its
+  // parts outside the field. Without one, the label attribute is the aria-label. The trigger and the listbox carry the
+  // same name.
   name() {
-    var self = this, ids = [];
-    Array.prototype.forEach.call(this.native.labels || [], function (l) {
-      var parts = l.contains(self) ? Array.prototype.filter.call(l.children, function (c) { return !c.contains(self); }) : [];
-      (parts.length ? parts : [l]).forEach(function (p) { ids.push(p.id || (p.id = uid('sheen-select-label'))); });
-    });
-    ids = ids.join(' ');
+    var ids = labelIds(this.native.labels, this).join(' ');
     var label = ids ? null : this.getAttribute('label');
     [this.trigger, this.list].forEach(function (el) {
       selectPut(el, 'aria-labelledby', ids || null);
@@ -2181,7 +2194,7 @@ class SheenSelect extends HTMLElement {
 
   // The trigger's content: the chosen label (a multiple list joins them, or "more" draws chips), else the placeholder.
   // data-chosen marks a choice the clear button can take away: in a multiple list any chosen option, in a single list a
-  // chosen option with a value (the "" option, "All hubs", is no choice).
+  // chosen option with a value (the "" option, "All areas", is no choice).
   drawField() {
     var n = this.native, picked = this.picked(), t = this.trigger;
     this.toggleAttribute('data-chosen', n.multiple ? picked.length > 0 : !!(picked[0] && picked[0].value !== ''));
@@ -2418,7 +2431,7 @@ class SheenSelect extends HTMLElement {
 define('sheen-select', SheenSelect);
 
 // ---- 76-select-more.js
-// <sheen-select search="Search hubs" empty="No matches" clear="Clear" remove="Remove @label"> (0.8.0): the rest of the select.
+// <sheen-select search="Search areas" empty="No matches" clear="Clear" remove="Remove @label"> (0.8.0): the rest of the select.
 //   search: the list opens with a search box at its top, focused, the value as its placeholder and name. Typing hides the
 //   options whose label doesn't hold the query (case- and accent-blind, as type-ahead; in Arabic hamza seats and short
 //   vowels too), hides a group left with none, makes the first visible option active, and shows the empty line (empty)
@@ -2808,17 +2821,18 @@ class SheenDateBase extends HTMLElement {
     if (icon) icon.classList.add('sheen-date-icon');
     this.trigger.replaceChildren.apply(this.trigger, [icon, this.text, chev].filter(Boolean));
   }
-  // Names: the <label>s of the (first) native input, else the label attribute; the value is read after the name unless
-  // the label wraps the field and already holds it.
+  // Names: the <label>s of the (first) native input, by labelIds() (00-core.js): a <label> around the field by its parts
+  // outside the field, so the open calendar never reads into the name; else the label attribute. The value is read
+  // after the name, unless a label around the field with bare words names it whole and already holds the value.
   name() {
     var self = this, labels = Array.prototype.slice.call(this.inputs[0].labels || []);
     var t = this.trigger, label = this.word('label');
     t.removeAttribute('aria-label');
     this.pop.removeAttribute('aria-label');
     if (labels.length) {
-      var ids = labels.map(function (l) { if (!l.id) l.id = uid('date-label'); return l.id; });
-      var wraps = labels.some(function (l) { return l.contains(self); });
-      t.setAttribute('aria-labelledby', ids.join(' ') + (wraps ? '' : ' ' + this.text.id));
+      var ids = labelIds(labels, this);
+      var whole = labels.some(function (l) { return l.contains(self) && ids.indexOf(l.id) >= 0; });
+      t.setAttribute('aria-labelledby', ids.join(' ') + (whole ? '' : ' ' + this.text.id));
       this.pop.setAttribute('aria-labelledby', ids.join(' '));
     } else if (label) {
       t.setAttribute('aria-label', label);

@@ -91,13 +91,13 @@
   <section id="s-forms"><h2 class="sheen-title">App forms: select, date fields, avatar, confirm</h2>
     <div class="sheen-panel sheen-glass">
       <div class="sheen-fields sheen-small">
-        <label class="sheen-form-field sheen-small"><span>Hub</span>
-          <sheen-select placeholder="All hubs" search="Search hubs" empty="No matches" clear="Clear">
-            <select name="hub"><option value="">All hubs</option><optgroup label="North"><option value="b">Al Barsha</option><option value="m" data-hint="2 vans">Marina</option></optgroup><optgroup label="South"><option value="d" disabled>Downtown</option><option value="j">Jaddaf</option></optgroup></select>
+        <label class="sheen-form-field sheen-small"><span>Area</span>
+          <sheen-select placeholder="All areas" search="Search areas" empty="No matches" clear="Clear">
+            <select name="area"><option value="">All areas</option><optgroup label="North"><option value="b">Old Town</option><option value="m" data-hint="2 teams">Riverside</option></optgroup><optgroup label="South"><option value="d" disabled>Downtown</option><option value="j">Hillside</option></optgroup></select>
           </sheen-select></label>
         <label class="sheen-form-field sheen-small"><span>Teams</span>
           <sheen-select placeholder="Any team" search="Search teams" empty="No matches" clear="Clear" remove="Remove @label">
-            <select name="teams" multiple><option value="a" selected>North crew</option><option value="b" selected>South crew</option><option value="c">Night crew</option></select>
+            <select name="teams" multiple><option value="a" selected>Morning team</option><option value="b" selected>Evening team</option><option value="c">Night team</option></select>
           </sheen-select></label>
         <label class="sheen-form-field sheen-small"><span>From</span>
           <sheen-date-field placeholder="Pick a date" prev="Previous month" next="Next month" clear="Clear"><input type="date" name="from"></sheen-date-field></label>
@@ -106,7 +106,7 @@
       </div>
       <p class="demo-row" style="margin-block-start:16px">
         <sheen-date-range variant="control" placeholder="Any dates" prev="Previous month" next="Next month" from="From" to="To" apply="Apply" cancel="Cancel"><input type="date" name="start"><input type="date" name="end"></sheen-date-range>
-        <span class="sheen-avatar-name"><sheen-avatar name="Maria Santos" size="s"></sheen-avatar><span><b>Maria Santos</b><small>North crew</small></span></span>
+        <span class="sheen-avatar-name"><sheen-avatar name="Maria Santos" size="s"></sheen-avatar><span><b>Maria Santos</b><small>Morning team</small></span></span>
         <sheen-avatar name="Omar Haddad"></sheen-avatar><sheen-avatar name="عمر حداد" size="xs"></sheen-avatar>
         <button class="sheen-button sheen-danger" id="confirmBtn" type="button">Take offline</button>
       </p>

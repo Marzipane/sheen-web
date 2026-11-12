@@ -5,8 +5,9 @@
 A select and date fields of the kit's own, an avatar, a minimum gap between boxes, and the small parts app pages were
 missing: a danger button, a 32px button, a confirm sheet, a wide side panel, a tight table, end-aligned cells, a compact
 row •••, a unit after a value and pickers drawn as a cell's words or a status pill. Additive: a page that uses none of
-the new elements, classes or attributes sees the same layout, except that a dialog or panel body no longer stacks two
-boxes flush (see "A minimum gap").
+the new elements, classes or attributes sees the same layout, with two exceptions (see "A minimum gap"): a dialog or
+panel body no longer stacks two boxes flush, and a page that sets `--sheen-gap` under 8px on a stack, row or grid gets
+8px there. An open popup now follows its field when either changes size.
 
 ### `<sheen-select>`
 
@@ -33,8 +34,8 @@ boxes flush (see "A minimum gap").
 - With no inner select the element makes one from its own `name`, `multiple` and `required`, and
   `options = [{value, label, disabled, hint, group}]` fills it. `select`, `value`, `values`, `open()`, `close()`,
   `sync()` and `clear()` complete the API. Its name comes from the select's `<label>`s; for a `<label>` around the
-  field it lists the label's parts outside the field, so a screen reader hears "Hub", not the value twice.
-- `search="Search hubs"` puts a search box at the list's top with focus in it. Typing keeps the options whose label holds
+  field it lists the label's parts outside the field, so a screen reader hears "Area", not the value twice.
+- `search="Search areas"` puts a search box at the list's top with focus in it. Typing keeps the options whose label holds
   what you typed, blind to case, accents and Arabic hamza seats and short vowels, and hides a group left empty; the first
   option left becomes active; `empty="No matches"` shows while nothing is left. Closing empties the box. The box never
   submits a form and keeps its own events inside the element.
@@ -138,7 +139,11 @@ boxes flush (see "A minimum gap").
 ### Under the hood
 
 - A shared `popup()` in the elements places, follows and closes every popup (menus, the select's list, the calendar);
-  `<sheen-menu-button>` uses it and behaves as in 0.7.1.
+  `<sheen-menu-button>` uses it and behaves as in 0.7.1. An open popup is placed again when it or its anchor changes
+  size (a field whose chips wrap, a list a search shortens, a month with one more week), where the browser has
+  `ResizeObserver`.
+- A `<label>` around a select or a date field names it by its parts outside the field (`labelIds()`), so a screen
+  reader never hears the open list or calendar in the field's name.
 - Size tokens shared by the new parts: `--sheen-size-field` (38px, the dense field) and `--sheen-size-control` (36px).
 - Tests, in jsdom and on the built CSS, per part: `select-core-0.8`, `select-more-0.8`, `select-css-0.8`,
   `date-field-0.8`, `avatar-0.8`, `space-0.8`, `actions-0.8`, `table-panel-0.8`, `affix-cell-0.8`. Size fixtures under
