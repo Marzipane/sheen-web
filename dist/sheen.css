@@ -1178,7 +1178,7 @@ sheen-lookup,sheen-select{position:relative;display:flex;align-items:center;gap:
    stays, as on every field (0.7.1). Its own rule: the field rule's place in its media block is fixed by the 0.7 tests. */
 @media not (forced-colors: active){:root[data-sheen-focus]:not([data-sheen-keyboard]) sheen-lookup:has(>.sheen-select-trigger:focus-visible),:root[data-sheen-focus]:not([data-sheen-keyboard]) sheen-select:has(>.sheen-select-trigger:focus-visible){outline:none}}
 /* the native select keeps the name, the value and the form's checks, out of sight and out of the way */
-sheen-select>.sheen-select-native,sheen-lookup>.sheen-select-native{position:absolute;inset-block-end:0;inset-inline-start:0;inline-size:1px;block-size:1px;margin:0;padding:0;border:0;opacity:0;overflow:hidden;clip-path:inset(50%);pointer-events:none}
+sheen-select .sheen-select-native,sheen-lookup .sheen-select-native{position:absolute;inset-block-end:0;inset-inline-start:0;inline-size:1px;block-size:1px;margin:0;padding:0;border:0;opacity:0;overflow:hidden;clip-path:inset(50%);pointer-events:none}
 
 /* the Filters panel control: the mockup's value is bold; the chevron is a control glyph (11-list-kit) */
 sheen-lookup[variant="control"],sheen-select[variant="control"]{min-block-size:var(--sheen-size-control);background:var(--sheen-surface)}
@@ -1222,6 +1222,9 @@ sheen-lookup[variant="control"] .sheen-select-value,sheen-select[variant="contro
 /* the search box: the small palette's search field (15-app-forms) with the find row's words (11-list-kit); a text field,
    so no ring */
 .sheen-select-search{display:flex;align-items:center;flex:none;cursor:text}
+/* 0.9.1: inside a glass .sheen-field the field's reset of every input (03-controls, 0,1,1: 17px words, full width) would
+   reach the search box; this rule outranks it (0,2,0), so the box keeps the list's words and its flex width */
+.sheen-select-search>.sheen-select-input{font-size:inherit;inline-size:auto}
 
 /* the hidden attribute hides the parts, though they set their own display */
 :where(.sheen-select-option,.sheen-select-group,.sheen-select-clear,.sheen-select-empty,.sheen-select-chips,.sheen-select-search)[hidden]{display:none!important}

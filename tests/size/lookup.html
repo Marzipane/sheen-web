@@ -43,7 +43,8 @@
   // the page's answers: the select fixture's options, as entries
   var HUBS = [{ value: 'b', label: W.b, group: W.north }, { value: 'm', label: W.m, hint: W.vans, group: W.north },
     { value: 'd', label: W.d, group: W.south, disabled: true }, { value: 'j', label: W.j, group: W.south }];
-  var TEAM = [{ value: 'b', label: W.b }, { value: 'm', label: W.m }, { value: 'd', label: W.d }, { value: 'j', label: W.j }];
+  // the team rows carry a count at their end edge (0.9.1 meta), as a Filters group's search shows them
+  var TEAM = [{ value: 'b', label: W.b, meta: '41' }, { value: 'm', label: W.m, meta: '17' }, { value: 'd', label: W.d, meta: '9' }, { value: 'j', label: W.j, meta: '0' }];
   var open = q.get('open');
   document.addEventListener('sheen-lookup-query', function (e) {
     var probe = e.target.getAttribute('data-probe');
