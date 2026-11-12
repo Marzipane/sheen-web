@@ -326,8 +326,10 @@ if (typeof SheenSelect === 'function' && typeof SheenSelect.prototype.buildSearc
     }
 
     // Enter and Alt+Up pick nothing while an ask is out (the rows are an older answer's); after an error Enter asks again.
+    // Alt+Up picks only in a single list with an active option; anywhere else it closes, as the select's does.
     onKey(e) {
-      var picks = e.key === 'Enter' || (e.key === 'ArrowUp' && e.altKey);
+      var altUpPicks = e.key === 'ArrowUp' && e.altKey && !this.native.multiple && !!this.active;
+      var picks = e.key === 'Enter' || altUpPicks;
       if (this.isOpen() && picks && !e.isComposing && !e.defaultPrevented) {
         if (this.failed && e.key === 'Enter') { e.preventDefault(); this.retry(); return; }
         if (this.timer || this.waiting) { e.preventDefault(); return; }

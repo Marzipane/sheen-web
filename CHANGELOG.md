@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.9.1
+
+Two fixes. Additive: nothing else changes.
+
+- Fixed: a `<sheen-select>` or `<sheen-lookup>` inside a glass `.sheen-field` lost its trigger, because the field's reset
+  of its select outranked the rule that hides the native select. The rule now names its host
+  (`sheen-select>.sheen-select-native`, `sheen-lookup>.sheen-select-native`), at the same specificity and later.
+- Fixed: while an ask is out, `<sheen-lookup>` blocked Alt+Up everywhere. It now blocks only the pick, in a single list
+  with an active option; in a multiple lookup or with no active option Alt+Up closes the list, as the select's does.
+
 ## 0.9.0
 
 A select searched by the page, for lists too long to load. Additive: `<sheen-select>` looks and works as in 0.8.0.

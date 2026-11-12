@@ -635,3 +635,18 @@ test('select css: rows and groups keep their height in a list long enough to scr
   const w = page('<div class="sheen-select-list"><div class="sheen-select-option"></div><div class="sheen-select-group"></div></div>');
   for (const c of w.document.querySelector('.sheen-select-list').children) assert.ok(c.matches('.sheen-select-list>*'));
 });
+
+test('lookup: while an ask is out Alt+Up still closes a list it would pick nothing in', async () => {
+  const many = await made(WORDS, { multiple: true });
+  await opened(many);
+  type(many.w, parts(many.el).input, 'zz');
+  assert.equal(key(many.w, parts(many.el).input, 'ArrowUp', { altKey: true }), false);
+  assert.equal(many.el.isOpen(), false, 'a multiple lookup closes, as the multiple select does');
+  assert.deepEqual(plain(many.el.values), [], 'and picks nothing');
+  const one = await made();
+  one.el.open();
+  assert.equal(one.el.querySelector('.sheen-select-option.sheen-active'), null, 'no rows yet, no active option');
+  key(one.w, parts(one.el).input, 'ArrowUp', { altKey: true });
+  assert.equal(one.el.isOpen(), false, 'a single lookup with no active option closes');
+  assert.equal(parts(one.el).native.value, '');
+});
