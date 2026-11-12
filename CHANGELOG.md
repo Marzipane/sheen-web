@@ -10,7 +10,9 @@ Two fixes and a short text at an option's end. Additive: nothing else changes.
 
 - Fixed: a `<sheen-select>` or `<sheen-lookup>` inside a glass `.sheen-field` lost its trigger, because the field's reset
   of its select outranked the rule that hides the native select. The rule now names its host
-  (`sheen-select>.sheen-select-native`, `sheen-lookup>.sheen-select-native`), at the same specificity and later.
+  (`sheen-select .sheen-select-native`, `sheen-lookup .sheen-select-native`), at the same specificity and later, and
+  reaches the select wherever the element holds it. The search box keeps the list's words and width there too: the
+  field's reset of every input no longer reaches it.
 - Fixed: while an ask is out, `<sheen-lookup>` blocked Alt+Up everywhere. It now blocks only the pick, in a single list
   with an active option; in a multiple lookup or with no active option Alt+Up closes the list, as the select's does.
 

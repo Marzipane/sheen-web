@@ -670,3 +670,25 @@ test('select and lookup (0.9.1): an option\'s meta is a short text at the row\'s
   assert.ok(css.includes('.sheen-select-meta,.sheen-filter-option small{margin-inline-start:auto;color:var(--sheen-text-tertiary);font-size:12.5px;font-variant-numeric:tabular-nums}'));
   assert.ok(css.includes('.sheen-select-meta,.sheen-filter-option small{font-weight:500}'), 'a chosen row stays bold, its count does not');
 });
+
+test('select (0.9.1): inside a glass .sheen-field the search box keeps its words, and a nested native select stays hidden', () => {
+  // .sheen-field input{all:unset;font-size:17px;width:100%} is 0,1,1; the search box's own rule outranks it at 0,2,0
+  const field = css.indexOf('.sheen-field input,.sheen-field select,.sheen-field textarea{all:unset');
+  const box = css.indexOf('.sheen-select-search>.sheen-select-input{font-size:inherit;inline-size:auto}');
+  assert.ok(field >= 0 && box > field, 'the search box rule is in the built CSS, after the field rule');
+  const w = page('<label class="sheen-field"><sheen-select search="Search"><span><select><option value="a">A</option></select></span></sheen-select></label>');
+  const el = w.document.querySelector('sheen-select');
+  el.open();
+  assert.ok(el.querySelector('.sheen-select-input').matches('.sheen-select-search>.sheen-select-input'));
+  assert.ok(el.querySelector('select').matches('sheen-select .sheen-select-native'), 'a select inside a span still gets the hiding rule');
+});
+
+test('select and lookup (0.9.1): a meta of 0 shows as 0; null and "" show none', async () => {
+  const w = page('<sheen-select label="Area"><select></select></sheen-select>');
+  const sel = w.document.querySelector('sheen-select');
+  sel.options = [{ value: 'z', label: 'Zero', meta: 0 }, { value: 'n', label: 'None', meta: null }];
+  assert.deepEqual([...sel.querySelectorAll('.sheen-select-option')].map((r) => (r.querySelector('.sheen-select-meta') || {}).textContent ?? null), ['0', null]);
+  const m = await made();
+  await opened(m, [{ value: 'b', label: 'Old Town', meta: 0 }]);
+  assert.equal(m.el.querySelector('.sheen-select-meta').textContent, '0');
+});
