@@ -1204,6 +1204,8 @@ sheen-lookup[variant="control"] .sheen-select-value,sheen-select[variant="contro
 .sheen-select-pop{display:flex;flex-direction:column;gap:max(var(--sheen-space-min),4px);min-inline-size:min(var(--sheen-select-anchor-size,0px),calc(100vw - 16px));max-inline-size:calc(100vw - 16px);max-block-size:none;overflow:hidden;border-radius:16px;color:var(--sheen-text);font-size:13.5px;font-weight:400;white-space:normal;text-align:start;cursor:default}
 .sheen-select-list{display:flex;flex-direction:column;gap:1px;min-block-size:0;max-block-size:min(320px,60vh);overflow-y:auto;overscroll-behavior:contain}
 .sheen-select-list:focus{outline:none}
+/* 0.9.0: the rows and groups keep their height in a list long enough to scroll; a row with a hint stays two lines tall */
+.sheen-select-list>*{flex-shrink:0}
 .sheen-select-group{display:flex;flex-direction:column;gap:1px}
 .sheen-select-pop:has(>.sheen-select-empty:not([hidden]))>.sheen-select-list{display:none}
 .sheen-lookup-status,.sheen-select-empty{display:flex;align-items:center;min-block-size:36px;padding:6px 10px;color:var(--sheen-text-tertiary)}

@@ -18,10 +18,12 @@ A select searched by the page, for lists too long to load. Additive: `<sheen-sel
   A newer ask, closing the list or taking the element out of the page aborts the signal, and the element drops the
   answer to an older ask. `options = [...]` sets the answer to the current ask without `respond`.
 - While an ask is out, a 15px spinner takes the search glyph's place (still under less motion), the listbox is
-  `aria-busy`, the last answer's rows stay, and Enter picks nothing. A status line under the rows, a polite live
-  region with the empty line's look, says `loading` while no rows are drawn, `empty` for an answer with none, `error`
-  with a `retry` link button when the promise rejects (Enter in the search box asks again too), and `more` with
-  `@count` and `@total` when the answer holds fewer rows than `total`. Without the attribute, the line stays quiet.
+  `aria-busy`, the last answer's rows stay, and neither Enter nor Alt+Up picks one. A status line under the rows, a
+  polite live region with the empty line's look, says `loading` while no rows are drawn, `empty` for an answer with
+  none, `error` with a `retry` link button when the promise rejects (Enter in the search box asks again too), and
+  `more` with `@count` and `@total`, written by `Intl.NumberFormat` for the nearest `lang`, when the answer holds fewer
+  rows than `total`. Without the attribute, the line stays quiet. Every ask needs an answer (`[]` for a query the page
+  skips): until one comes the spinner turns.
 - Chosen options stay chosen when an answer lacks them: they stay in the native select, hidden from the list, and keep
   their label in the field or their chip. Chips keep the order the options were chosen in. `chosen` reads and sets the
   choice with its labels (an edit form's stored value), without events. A single lookup keeps a hidden `""` option
@@ -34,6 +36,8 @@ A select searched by the page, for lists too long to load. Additive: `<sheen-sel
   lookup builds on them. Nothing changes for a page that uses the select.
 - The kit rules that name `sheen-select` (the field, the Filters panel control, disabled, open, the ring after Tab, the
   invalid ring, the chevron) name `sheen-lookup` too.
+- Fix: in a list long enough to scroll, rows and groups no longer shrink below their content, so an option with a hint
+  stays two lines tall instead of spilling over the next row.
 
 ## 0.8.0
 

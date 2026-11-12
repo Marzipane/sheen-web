@@ -271,7 +271,8 @@ Opening asks for `""` at once; typing asks once the person pauses for `delay` ms
 `signal` and the element drops a late answer, so a slow reply never replaces a newer one. A promise that rejects shows
 `error` and a `retry` button. The options you send are the rows: the element filters nothing, so match on whatever the
 server likes (names, phones, codes, Arabic without its marks). The chosen options stay in the native select when an
-answer lacks them, and the chips keep the order they were chosen in.
+answer lacks them, and the chips keep the order they were chosen in. Answer every ask: until an answer comes the
+spinner turns and Enter picks nothing, so a page that skips a query (one too short to send) answers it with `[]`.
 
 Glyph names are the Flutter sheen icons, the media glyphs and, from 0.7.0, the filled Flutter sheen icons as
 `<name>-fill` (`check-circle-fill`), drawn filled in the text colour; `alert` is a warning triangle.

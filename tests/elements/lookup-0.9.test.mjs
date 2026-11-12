@@ -3,10 +3,11 @@
 // lacks it, chips in the order chosen, el.chosen, clear, the keys it changes, forms, input methods and Arabic.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { page, key, plain } from './setup.mjs';
 
 const WORDS = 'placeholder="Any hub" search="Search hubs" loading="Searching…" empty="No matches" error="Couldn\'t load the hubs" retry="Try again" more="@count of @total shown"';
-const HUBS = [{ value: 'b', label: 'Al Barsha' }, { value: 'm', label: 'Marina', hint: '2 vans' }, { value: 'd', label: 'Downtown' }];
+const HUBS = [{ value: 'b', label: 'Old Town' }, { value: 'm', label: 'Riverside', hint: '2 vans' }, { value: 'd', label: 'Hillside' }];
 
 async function made(attrs = WORDS, { multiple = false, dir = 'ltr', inner = '', around = (s) => s } = {}) {
   const w = page(around(`<sheen-lookup name="hub" label="Hub" delay="20" ${multiple ? 'multiple ' : ''}${attrs}>${inner}</sheen-lookup>`), dir);
@@ -132,8 +133,8 @@ test('lookup: opening asks for "" at once with a signal and respond, and shows t
 test('lookup: an answer draws the rows, makes the first active and ends the loading', async () => {
   const m = await made();
   await opened(m);
-  assert.deepEqual(rows(m.el), ['Al Barsha', 'Marina', 'Downtown']);
-  assert.equal(active(m.el), 'Al Barsha');
+  assert.deepEqual(rows(m.el), ['Old Town', 'Riverside', 'Hillside']);
+  assert.equal(active(m.el), 'Old Town');
   const input = parts(m.el).input;
   assert.equal(input.getAttribute('aria-activedescendant'), m.el.querySelector('.sheen-select-option.sheen-active').id);
   assert.equal(m.el.querySelector('.sheen-select-hint').textContent, '2 vans');
@@ -151,13 +152,13 @@ test('lookup: typing asks once the person pauses, for the trimmed query, and not
   type(m.w, input, ' mar ');
   assert.equal(m.asks.length, 1, 'nothing asked while typing');
   assert.deepEqual(busy(m.el), { spin: true, glass: false, aria: 'true' }, 'the spinner shows from the first key');
-  assert.deepEqual(rows(m.el), ['Al Barsha', 'Marina', 'Downtown'], 'the last answer\'s rows stay meanwhile');
+  assert.deepEqual(rows(m.el), ['Old Town', 'Riverside', 'Hillside'], 'the last answer\'s rows stay meanwhile');
   assert.equal(says(m.el), null, 'no loading line over rows');
   await tick(m.w, 40);
   assert.deepEqual(m.asks.map((a) => a.query), ['', 'mar']);
   m.asks[1].respond([HUBS[1]]);
   await tick(m.w);
-  assert.deepEqual(rows(m.el), ['Marina']);
+  assert.deepEqual(rows(m.el), ['Riverside']);
   type(m.w, input, 'mar  ');
   await tick(m.w, 40);
   assert.equal(m.asks.length, 2, 'the same query after trimming asks nothing');
@@ -192,18 +193,18 @@ test('lookup: a newer ask aborts the older signal, and the older answer arriving
   assert.equal(says(m.el), 'Searching…');
   m.asks[1].respond(Promise.resolve([HUBS[2]]));
   await tick(m.w);
-  assert.deepEqual(rows(m.el), ['Downtown']);
+  assert.deepEqual(rows(m.el), ['Hillside']);
   // respond once: a second call changes nothing
   m.asks[1].respond(HUBS);
   await tick(m.w);
-  assert.deepEqual(rows(m.el), ['Downtown']);
+  assert.deepEqual(rows(m.el), ['Hillside']);
 });
 
 test('lookup: el.options is the answer to the current ask, without respond', async () => {
   const { el, w } = await made();
   el.addEventListener('sheen-lookup-query', (e) => { el.options = e.detail.query ? [] : HUBS; });
   el.open();
-  assert.deepEqual(rows(el), ['Al Barsha', 'Marina', 'Downtown']);
+  assert.deepEqual(rows(el), ['Old Town', 'Riverside', 'Hillside']);
   assert.deepEqual(busy(el), { spin: false, glass: true, aria: null });
   type(w, parts(el).input, 'zz');
   await tick(w, 40);
@@ -213,10 +214,10 @@ test('lookup: el.options is the answer to the current ask, without respond', asy
 
 test('lookup: groups, disabled entries, a value twice and a "" value come out as a select draws them', async () => {
   const m = await made();
-  await opened(m, [{ value: 'b', label: 'Al Barsha', group: 'North' }, { value: 'm', label: 'Marina', group: 'North' },
-    { value: 'd', label: 'Downtown', group: 'South', disabled: true }, { value: 'b', label: 'Again' }, { value: '', label: 'Nothing' }, { value: 7, label: 'Seven' }]);
+  await opened(m, [{ value: 'b', label: 'Old Town', group: 'North' }, { value: 'm', label: 'Riverside', group: 'North' },
+    { value: 'd', label: 'Hillside', group: 'South', disabled: true }, { value: 'b', label: 'Again' }, { value: '', label: 'Nothing' }, { value: 7, label: 'Seven' }]);
   assert.deepEqual([...m.el.querySelectorAll('.sheen-select-heading')].map((x) => x.textContent), ['North', 'South']);
-  assert.deepEqual(rows(m.el), ['Al Barsha', 'Marina', 'Downtown', 'Seven']);
+  assert.deepEqual(rows(m.el), ['Old Town', 'Riverside', 'Hillside', 'Seven']);
   assert.equal(m.el.querySelectorAll('.sheen-select-option')[2].getAttribute('aria-disabled'), 'true');
   assert.equal(parts(m.el).native.options[0].hasAttribute('data-none'), true, 'the "" option stays first');
 });
@@ -231,8 +232,8 @@ test('lookup: an empty answer says empty; fewer rows than total say more with @c
   await tick(m.w, 40);
   m.asks[1].respond({ options: HUBS.slice(0, 2), total: 3214 });
   await tick(m.w);
-  assert.deepEqual(rows(m.el), ['Al Barsha', 'Marina']);
-  assert.equal(says(m.el), '2 of 3214 shown');
+  assert.deepEqual(rows(m.el), ['Old Town', 'Riverside']);
+  assert.equal(says(m.el), '2 of 3,214 shown', 'numbers written for the page\'s language');
   assert.equal(m.el.querySelector('.sheen-select-list').hidden, false, 'the rows stay under the more line');
   type(m.w, parts(m.el).input, 'al');
   await tick(m.w, 40);
@@ -277,7 +278,7 @@ test('lookup: a failed answer shows the error line and a retry button; Enter or 
   assert.equal(m.w.document.activeElement, p.input, 'focus stays in the search box');
   m.asks[2].respond(HUBS);
   await tick(m.w);
-  assert.deepEqual(rows(m.el), ['Al Barsha', 'Marina', 'Downtown']);
+  assert.deepEqual(rows(m.el), ['Old Town', 'Riverside', 'Hillside']);
   assert.equal(says(m.el), null);
   assert.equal(p.retry.hidden, true);
 });
@@ -318,7 +319,7 @@ test('lookup: Enter while an ask is out picks nothing; once answered it picks', 
   assert.equal(native.value, 'd');
   assert.deepEqual(seen, ['input', 'change']);
   assert.equal(m.el.isOpen(), false);
-  assert.equal(field(m.el), 'Downtown');
+  assert.equal(field(m.el), 'Hillside');
 });
 
 test('lookup: a single choice stays chosen when an answer lacks it, and takes a new answer\'s words', async () => {
@@ -334,18 +335,18 @@ test('lookup: a single choice stays chosen when an answer lacks it, and takes a 
   assert.equal(kept.length, 1);
   assert.equal(kept[0].hidden, true);
   assert.ok(kept[0].hasAttribute('data-kept'));
-  assert.equal(field(m.el), 'Marina');
+  assert.equal(field(m.el), 'Riverside');
   assert.equal(m.el.hasAttribute('data-chosen'), true);
   await opened(m, [HUBS[0], HUBS[2]]);
-  assert.deepEqual(rows(m.el), ['Al Barsha', 'Downtown']);
+  assert.deepEqual(rows(m.el), ['Old Town', 'Hillside']);
   assert.equal(native.value, 'm');
-  assert.equal(field(m.el), 'Marina');
+  assert.equal(field(m.el), 'Riverside');
   m.el.close();
-  await opened(m, [{ value: 'm', label: 'Dubai Marina' }, HUBS[0]]);
-  assert.deepEqual(rows(m.el), ['Dubai Marina', 'Al Barsha']);
+  await opened(m, [{ value: 'm', label: 'Riverside North' }, HUBS[0]]);
+  assert.deepEqual(rows(m.el), ['Riverside North', 'Old Town']);
   assert.equal(m.el.querySelector('.sheen-select-option').getAttribute('aria-selected'), 'true');
-  assert.equal(active(m.el), 'Dubai Marina', 'the chosen row is active');
-  assert.equal(field(m.el), 'Dubai Marina');
+  assert.equal(active(m.el), 'Riverside North', 'the chosen row is active');
+  assert.equal(field(m.el), 'Riverside North');
   assert.equal(native.querySelector('option[value="m"]').hasAttribute('data-kept'), false);
 });
 
@@ -361,26 +362,26 @@ test('lookup: a multiple lookup keeps its chips when an answer lacks them, in th
   key(m.w, input, 'Enter');
   key(m.w, input, 'ArrowUp');
   key(m.w, input, 'Enter');
-  assert.deepEqual(chips(m.el), ['Al Barsha', 'Downtown'], 'the order chosen');
+  assert.deepEqual(chips(m.el), ['Old Town', 'Hillside'], 'the order chosen');
   assert.deepEqual(seen, ['input', 'change', 'input', 'change']);
   assert.equal(m.el.isOpen(), true, 'a multiple list stays open');
   type(m.w, input, 'mar');
   await tick(m.w, 40);
   m.asks[1].respond([HUBS[1]]);
   await tick(m.w);
-  assert.deepEqual(rows(m.el), ['Marina']);
-  assert.deepEqual(chips(m.el), ['Al Barsha', 'Downtown']);
+  assert.deepEqual(rows(m.el), ['Riverside']);
+  assert.deepEqual(chips(m.el), ['Old Town', 'Hillside']);
   key(m.w, input, 'Enter');
-  assert.deepEqual(chips(m.el), ['Al Barsha', 'Downtown', 'Marina']);
+  assert.deepEqual(chips(m.el), ['Old Town', 'Hillside', 'Riverside']);
   assert.deepEqual(plain(m.el.values).sort(), ['b', 'd', 'm']);
   m.el.close();
-  assert.deepEqual(chips(m.el), ['Al Barsha', 'Downtown', 'Marina'], 'closing keeps every chip');
-  assert.equal(m.el.querySelector('.sheen-select-chip-remove').getAttribute('title'), 'Remove Al Barsha');
+  assert.deepEqual(chips(m.el), ['Old Town', 'Hillside', 'Riverside'], 'closing keeps every chip');
+  assert.equal(m.el.querySelector('.sheen-select-chip-remove').getAttribute('title'), 'Remove Old Town');
   // Backspace on the closed field takes the last one chosen; a chip's mark takes its own
   key(m.w, parts(m.el).trigger, 'Backspace');
-  assert.deepEqual(chips(m.el), ['Al Barsha', 'Downtown']);
+  assert.deepEqual(chips(m.el), ['Old Town', 'Hillside']);
   m.el.querySelector('.sheen-select-chip[data-value="b"] .sheen-select-chip-remove').dispatchEvent(new m.w.MouseEvent('click', { bubbles: true, cancelable: true }));
-  assert.deepEqual(chips(m.el), ['Downtown']);
+  assert.deepEqual(chips(m.el), ['Hillside']);
   assert.deepEqual(plain(m.el.values), ['d']);
 });
 
@@ -388,22 +389,22 @@ test('lookup: el.chosen sets the choice with its labels, without events, and rea
   const m = await made(WORDS + ' clear="Clear"');
   const { native } = parts(m.el);
   const seen = events(native);
-  m.el.chosen = [{ value: 42, label: 'Marina' }];
+  m.el.chosen = [{ value: 42, label: 'Riverside' }];
   assert.equal(native.value, '42');
-  assert.equal(field(m.el), 'Marina');
-  assert.deepEqual(plain(m.el.chosen), [{ value: '42', label: 'Marina' }]);
+  assert.equal(field(m.el), 'Riverside');
+  assert.deepEqual(plain(m.el.chosen), [{ value: '42', label: 'Riverside' }]);
   assert.deepEqual(seen, [], 'no events');
   assert.equal(parts(m.el).clear.hidden, false);
   // a single lookup takes the first entry only; [] chooses nothing
-  m.el.chosen = [{ value: 'b', label: 'Al Barsha' }, { value: 'd', label: 'Downtown' }];
-  assert.deepEqual(plain(m.el.chosen), [{ value: 'b', label: 'Al Barsha' }]);
+  m.el.chosen = [{ value: 'b', label: 'Old Town' }, { value: 'd', label: 'Hillside' }];
+  assert.deepEqual(plain(m.el.chosen), [{ value: 'b', label: 'Old Town' }]);
   m.el.chosen = [];
   assert.equal(native.value, '');
   assert.equal(field(m.el), 'Any hub');
   assert.deepEqual(plain(m.el.chosen), []);
   const many = await made(WORDS, { multiple: true });
-  many.el.chosen = [{ value: 'd', label: 'Downtown' }, { value: 'b', label: 'Al Barsha' }, { value: 'd', label: 'Twice' }];
-  assert.deepEqual(chips(many.el), ['Downtown', 'Al Barsha'], 'the order given, a value twice once');
+  many.el.chosen = [{ value: 'd', label: 'Hillside' }, { value: 'b', label: 'Old Town' }, { value: 'd', label: 'Twice' }];
+  assert.deepEqual(chips(many.el), ['Hillside', 'Old Town'], 'the order given, a value twice once');
   assert.deepEqual(plain(many.el.values).sort(), ['b', 'd']);
 });
 
@@ -411,28 +412,28 @@ test('lookup: a choice set before the element is built is used when it builds', 
   const w = page('');
   const el = w.document.createElement('sheen-lookup');
   el.setAttribute('name', 'hub');
-  el.chosen = [{ value: 'm', label: 'Marina' }];
-  assert.deepEqual(plain(el.chosen), [{ value: 'm', label: 'Marina' }]);
+  el.chosen = [{ value: 'm', label: 'Riverside' }];
+  assert.deepEqual(plain(el.chosen), [{ value: 'm', label: 'Riverside' }]);
   w.document.body.appendChild(el);
   await tick(w);
   assert.equal(el.querySelector('select').value, 'm');
-  assert.equal(field(el), 'Marina');
+  assert.equal(field(el), 'Riverside');
 });
 
 test('lookup: in the markup the chosen options are the starting choice and the others go', async () => {
-  const { el } = await made(WORDS, { inner: '<select name="hub"><option value="">All hubs</option><option value="m" selected>Marina</option><option value="d">Downtown</option></select>' });
+  const { el } = await made(WORDS, { inner: '<select name="hub"><option value="">All hubs</option><option value="m" selected>Riverside</option><option value="d">Hillside</option></select>' });
   const native = el.querySelector('select');
   assert.deepEqual([...native.options].map((o) => o.value), ['', 'm']);
   assert.ok(native.options[0].hasAttribute('data-none'), 'the page\'s "" option is the "" option, without words');
   assert.equal(native.options[0].textContent, '');
   assert.equal(native.value, 'm');
-  assert.equal(field(el), 'Marina');
+  assert.equal(field(el), 'Riverside');
 });
 
 test('lookup: clear goes to the "" option once, and Delete on the closed field does the same', async () => {
   const m = await made(WORDS + ' clear="Clear"');
   const { native, clear, trigger } = parts(m.el);
-  m.el.chosen = [{ value: 'm', label: 'Marina' }];
+  m.el.chosen = [{ value: 'm', label: 'Riverside' }];
   const seen = events(native);
   press(m.w, clear);
   assert.equal(native.value, '');
@@ -440,7 +441,7 @@ test('lookup: clear goes to the "" option once, and Delete on the closed field d
   assert.deepEqual(seen, ['input', 'change']);
   assert.equal(clear.hidden, true);
   assert.equal(m.w.document.activeElement, trigger);
-  m.el.chosen = [{ value: 'm', label: 'Marina' }];
+  m.el.chosen = [{ value: 'm', label: 'Riverside' }];
   key(m.w, trigger, 'Delete');
   assert.equal(native.value, '');
   assert.equal(seen.length, 4);
@@ -492,10 +493,10 @@ test('lookup: an input method composing asks nothing until the composition ends'
   type(m.w, input, 'ما', { isComposing: true });
   await tick(m.w, 40);
   assert.equal(m.asks.length, 1);
-  input.value = 'مارينا';
+  input.value = 'الضفة';
   input.dispatchEvent(new m.w.CompositionEvent('compositionend', { bubbles: true }));
   await tick(m.w, 40);
-  assert.deepEqual(m.asks.map((a) => a.query), ['', 'مارينا']);
+  assert.deepEqual(m.asks.map((a) => a.query), ['', 'الضفة']);
 });
 
 test('lookup: the query\'s own events stay inside the element', async () => {
@@ -516,7 +517,7 @@ test('lookup: the native select is the form value; required with nothing chosen 
   const native = el.querySelector('select');
   assert.equal(native.required, true);
   assert.equal(native.validity.valueMissing, true);
-  el.chosen = [{ value: 'm', label: 'Marina' }];
+  el.chosen = [{ value: 'm', label: 'Riverside' }];
   assert.equal(native.validity.valueMissing, false);
   assert.equal(new w.FormData(w.document.querySelector('form')).get('hub'), 'm');
   w.document.querySelector('form').reset();
@@ -527,12 +528,12 @@ test('lookup: the native select is the form value; required with nothing chosen 
 
 test('lookup: a made select that turns multiple loses its "" option, and gets it back when it turns single', async () => {
   const m = await made();
-  m.el.chosen = [{ value: 'm', label: 'Marina' }];
+  m.el.chosen = [{ value: 'm', label: 'Riverside' }];
   m.el.setAttribute('multiple', '');
   const native = m.el.querySelector('select');
   assert.equal(native.multiple, true);
   assert.deepEqual([...native.options].map((o) => o.value), ['m']);
-  assert.deepEqual(chips(m.el), ['Marina']);
+  assert.deepEqual(chips(m.el), ['Riverside']);
   m.el.removeAttribute('multiple');
   assert.deepEqual([...native.options].map((o) => o.value), ['', 'm']);
   assert.equal(native.value, 'm');
@@ -548,19 +549,89 @@ test('lookup: taken out of the page it stops asking; put back it works again', a
   assert.equal(m.el.isOpen(), false);
   holder.appendChild(m.el);
   await opened(m);
-  assert.deepEqual(rows(m.el), ['Al Barsha', 'Marina', 'Downtown']);
+  assert.deepEqual(rows(m.el), ['Old Town', 'Riverside', 'Hillside']);
 });
 
 test('lookup: on an Arabic page the query goes as typed and the words come from the attributes', async () => {
-  const m = await made('placeholder="أي مركز" search="ابحث في المراكز" loading="جارٍ البحث…" empty="لا نتائج" more="@count من @total"', { dir: 'rtl' });
+  const m = await made('placeholder="أي مركز" search="ابحث في المراكز" loading="جارٍ البحث…" empty="لا نتائج" more="@count من @total"', { dir: 'rtl', around: (s) => `<div lang="ar-u-nu-arab">${s}</div>` });
   m.el.open();
   assert.equal(says(m.el), 'جارٍ البحث…');
   assert.equal(parts(m.el).input.getAttribute('placeholder'), 'ابحث في المراكز');
-  type(m.w, parts(m.el).input, ' مَارينا ');
+  type(m.w, parts(m.el).input, ' الضِّفة ');
   await tick(m.w, 40);
-  assert.equal(m.asks[1].query, 'مَارينا', 'marks and hamza seats are the server\'s to match');
-  m.asks[1].respond({ options: [{ value: 'm', label: 'مارينا' }], total: 4 });
+  assert.equal(m.asks[1].query, 'الضِّفة', 'marks and hamza seats are the server\'s to match');
+  m.asks[1].respond({ options: [{ value: 'm', label: 'الضفة' }], total: 4 });
   await tick(m.w);
-  assert.deepEqual(rows(m.el), ['مارينا']);
-  assert.equal(says(m.el), '1 من 4');
+  assert.deepEqual(rows(m.el), ['الضفة']);
+  assert.equal(says(m.el), '١ من ٤', 'the digits of the nearest lang (ar-u-nu-arab: Arabic-Indic)');
+});
+
+test('lookup: Alt+Up picks nothing while an ask is out, as Enter', async () => {
+  const m = await made();
+  await opened(m);
+  const { input, native } = parts(m.el);
+  key(m.w, input, 'ArrowDown');
+  type(m.w, input, 'zz');
+  assert.equal(key(m.w, input, 'ArrowUp', { altKey: true }), false, 'handled');
+  assert.equal(native.value, '', 'no row of the older answer is picked');
+  assert.equal(m.el.isOpen(), true);
+  await tick(m.w, 40);
+  m.asks[1].respond([HUBS[2]]);
+  await tick(m.w);
+  key(m.w, input, 'ArrowUp', { altKey: true });
+  assert.equal(native.value, 'd', 'once answered, Alt+Up picks and closes');
+  assert.equal(m.el.isOpen(), false);
+});
+
+test('lookup: el.chosen reuses an option the select already holds, so a value is never there twice', async () => {
+  const m = await made();
+  await opened(m);
+  const native = parts(m.el).native;
+  m.el.chosen = [{ value: 'm', label: 'Riverside East' }];
+  m.el.chosen = [{ value: 'm', label: 'Riverside East' }];
+  const ms = [...native.options].filter((o) => o.value === 'm');
+  assert.equal(ms.length, 1);
+  assert.equal(ms[0].hidden, false, 'the answer\'s own row, not a kept copy');
+  assert.equal(native.value, 'm');
+  assert.deepEqual(rows(m.el), ['Old Town', 'Riverside East', 'Hillside'], 'the row takes the new words');
+  m.el.close();
+  m.el.chosen = [{ value: 'm', label: 'Riverside East' }];
+  assert.equal([...native.options].filter((o) => o.value === 'm').length, 1, 'kept, still once');
+});
+
+// ---- the look
+
+const css = readFileSync(new URL('../../dist/sheen.css', import.meta.url), 'utf8').replace(/\s+/g, ' ').replace(/\s*([{};:,])\s*/g, '$1');
+const cssRules = [...css.replace(/\/\*.*?\*\//g, '').replace(/@media[^{]*\{((?:[^{}]*\{[^}]*\})*)\}/g, '$1').matchAll(/([^{}]+)\{([^}]*)\}/g)].map((x) => [x[1].trim(), x[2]]);
+const selectorsOf = (body) => cssRules.filter(([, b]) => b === body).map(([s]) => s);
+
+test('lookup css: every kit rule that names the sheen-select tag names sheen-lookup in the same list', () => {
+  const lists = cssRules.map(([s]) => s.split(/,(?![^(]*\))/)).filter((parts) => parts.some((p) => /(^|[\s>])sheen-select(?![-\w])/.test(p)));
+  assert.ok(lists.length >= 12, 'the field, the control, disabled, open, the rings and the chevron');
+  for (const parts of lists) {
+    for (const p of parts.filter((x) => /(^|[\s>])sheen-select(?![-\w])/.test(x))) {
+      assert.ok(parts.includes(p.replace(/sheen-select(?![-\w])/, 'sheen-lookup')), `${p} has its sheen-lookup twin`);
+    }
+  }
+});
+
+test('lookup css: the status line has the empty line look, fits the retry button in 36px and keeps quiet in the tree', () => {
+  assert.ok(css.includes('.sheen-lookup-status,.sheen-select-empty{display:flex;align-items:center;min-block-size:36px;padding:6px 10px;color:var(--sheen-text-tertiary)}'));
+  assert.ok(css.includes('.sheen-lookup-status{gap:max(var(--sheen-space-min),8px);flex-wrap:wrap}'));
+  assert.ok(css.includes('.sheen-lookup-status:has(>.sheen-lookup-retry:not([hidden])){padding-block:3px}'), '30px link button + 3 + 3');
+  assert.ok(css.includes('.sheen-lookup-status[data-quiet]{position:absolute;inline-size:1px;block-size:1px;min-block-size:0;margin:0;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}'), 'clipped, not display:none');
+  assert.ok(!/\.sheen-lookup-status\[data-quiet\]\{[^}]*display:none/.test(css));
+});
+
+test('lookup css: the spinner turns as the bulk bar\'s, stops with less motion, and hidden parts leave', () => {
+  assert.ok(css.includes('.sheen-lookup-spin{animation:sheen-bulk-spin 1s linear infinite}'));
+  assert.match(css, /@media \(prefers-reduced-motion:reduce\)\{\.sheen-lookup-spin\{animation:none\}\}/);
+  assert.ok(css.includes(':where(.sheen-select-search>.sheen-glyph,.sheen-lookup-retry)[hidden]{display:none!important}'));
+  assert.ok(selectorsOf('inline-size:15px;block-size:15px;flex:none;color:var(--sheen-text-secondary)').some((s) => s.includes('.sheen-select-search>.sheen-glyph')), 'the spinner is a 15px search glyph');
+});
+
+test('select css: rows and groups keep their height in a list long enough to scroll', () => {
+  assert.ok(css.includes('.sheen-select-list>*{flex-shrink:0}'));
+  const w = page('<div class="sheen-select-list"><div class="sheen-select-option"></div><div class="sheen-select-group"></div></div>');
+  for (const c of w.document.querySelector('.sheen-select-list').children) assert.ok(c.matches('.sheen-select-list>*'));
 });

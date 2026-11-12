@@ -3180,10 +3180,13 @@ define('sheen-date-range', SheenDateRange);
 //   either, and pass signal to fetch(). A newer ask, closing the list or leaving the page aborts the signal, and the
 //   answer to an older ask is dropped, so a slow reply never overwrites a newer one. A promise that rejects shows the
 //   error line, unless its signal was aborted. el.options = [...] is the answer to the current ask, without respond.
+//   Every ask needs an answer: until one comes the spinner turns and Enter picks nothing, so a page that skips a query
+//   (one too short to send) answers it with [] or with what it already has.
 //   While an ask is out, a spinner takes the search glyph's place and the listbox is aria-busy; the rows of the last
 //   answer stay, and Enter picks nothing until the new ones arrive. One status line (role=status) under the rows says what
 //   there is: loading while no rows are drawn yet, empty for an answer with none, error with a retry button (retry;
-//   Enter in the search box does the same), more ("@count" rows, "@total" in all) when the answer holds fewer than total.
+//   Enter in the search box does the same), more ("@count" rows, "@total" in all, written for the nearest lang) when
+//   the answer holds fewer than total.
 //   A state whose attribute is missing leaves the line quiet.
 //   Chosen options stay chosen when an answer lacks them: they stay in the native select, hidden from the list, and keep
 //   their label in the field or their chip. Chips follow the order the options were chosen in. el.chosen reads
@@ -3492,13 +3495,20 @@ if (typeof SheenSelect === 'function' && typeof SheenSelect.prototype.buildSearc
       this.show([]);
     }
 
-    // Enter while an ask is out picks nothing (the rows are an older answer's); after an error it asks again.
+    // Enter and Alt+Up pick nothing while an ask is out (the rows are an older answer's); after an error Enter asks again.
     onKey(e) {
-      if (this.isOpen() && e.key === 'Enter' && !e.isComposing && !e.defaultPrevented) {
-        if (this.failed) { e.preventDefault(); this.retry(); return; }
+      var picks = e.key === 'Enter' || (e.key === 'ArrowUp' && e.altKey);
+      if (this.isOpen() && picks && !e.isComposing && !e.defaultPrevented) {
+        if (this.failed && e.key === 'Enter') { e.preventDefault(); this.retry(); return; }
         if (this.timer || this.waiting) { e.preventDefault(); return; }
       }
       super.onKey(e);
+    }
+
+    // A number for the more line, written for the nearest lang (its digits and grouping), as the date field writes dates.
+    number(n) {
+      var holder = this.closest('[lang]'), lang = holder ? holder.getAttribute('lang') : '';
+      try { return new Intl.NumberFormat(lang || undefined).format(n); } catch (e) { return String(n); }
     }
 
     // The spinner, aria-busy and the status line, from where the asking stands.
@@ -3509,7 +3519,7 @@ if (typeof SheenSelect === 'function' && typeof SheenSelect.prototype.buildSearc
       if (this.failed) { words = this.getAttribute('error') || ''; retry = this.hasAttribute('retry'); }
       else if (pending) { if (!rows) words = this.getAttribute('loading') || ''; }
       else if (a && !rows) words = this.getAttribute('empty') || '';
-      else if (a && a.total != null && a.total > rows) words = fill(this.getAttribute('more') || '', { count: rows, total: a.total });
+      else if (a && a.total != null && a.total > rows) words = fill(this.getAttribute('more') || '', { count: this.number(rows), total: this.number(a.total) });
       this.statusWords.textContent = words;
       this.retryButton.textContent = retry ? this.getAttribute('retry') : '';
       this.retryButton.hidden = !retry;
