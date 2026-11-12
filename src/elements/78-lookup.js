@@ -6,7 +6,7 @@
 //   The list always opens with a search box. Opening asks for "" at once; typing asks for the trimmed query once the
 //   person stops typing for delay ms (250 by default), and never while an input method composes. Each ask fires
 //   sheen-lookup-query {query, signal, respond} on the element. Call respond(answer) with the options
-//   [{value, label, disabled, hint, group}], with {options, total} (total: how many match in all), or with a promise of
+//   [{value, label, disabled, hint, meta, group}] (meta, 0.9.1: a short text at the row's end edge, such as a count), with {options, total} (total: how many match in all), or with a promise of
 //   either, and pass signal to fetch(). A newer ask, closing the list or leaving the page aborts the signal, and the
 //   answer to an older ask is dropped, so a slow reply never overwrites a newer one. A promise that rejects shows the
 //   error line, unless its signal was aborted. el.options = [...] is the answer to the current ask, without respond.
@@ -156,6 +156,7 @@ if (typeof SheenSelect === 'function' && typeof SheenSelect.prototype.buildSearc
         o.textContent = e.label == null ? '' : String(e.label);
         o.disabled = !!e.disabled;
         selectPut(o, 'data-hint', e.hint ? String(e.hint) : null);
+        selectPut(o, 'data-meta', e.meta == null || e.meta === '' ? null : String(e.meta));
         o.hidden = false;
         o.removeAttribute('data-kept');
         if (e.group == null || e.group === '') { nodes.push(o); return; }
@@ -326,8 +327,10 @@ if (typeof SheenSelect === 'function' && typeof SheenSelect.prototype.buildSearc
     }
 
     // Enter and Alt+Up pick nothing while an ask is out (the rows are an older answer's); after an error Enter asks again.
+    // Alt+Up picks only in a single list with an active option; anywhere else it closes, as the select's does.
     onKey(e) {
-      var picks = e.key === 'Enter' || (e.key === 'ArrowUp' && e.altKey);
+      var altUpPicks = e.key === 'ArrowUp' && e.altKey && !this.native.multiple && !!this.active;
+      var picks = e.key === 'Enter' || altUpPicks;
       if (this.isOpen() && picks && !e.isComposing && !e.defaultPrevented) {
         if (this.failed && e.key === 'Enter') { e.preventDefault(); this.retry(); return; }
         if (this.timer || this.waiting) { e.preventDefault(); return; }

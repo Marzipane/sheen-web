@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.9.1
+
+Two fixes and a short text at an option's end. Additive: nothing else changes.
+
+- An option of `<sheen-select>` takes `data-meta`, an `options` entry or a `<sheen-lookup>` answer takes `meta`: a short
+  text at the row's end edge in the Filters panel count's look (12.5px, tertiary, tabular digits, 500), such as how many
+  rows hold the value. The page writes it ready to show.
+
+- Fixed: a `<sheen-select>` or `<sheen-lookup>` inside a glass `.sheen-field` lost its trigger, because the field's reset
+  of its select outranked the rule that hides the native select. The rule now names its host
+  (`sheen-select>.sheen-select-native`, `sheen-lookup>.sheen-select-native`), at the same specificity and later.
+- Fixed: while an ask is out, `<sheen-lookup>` blocked Alt+Up everywhere. It now blocks only the pick, in a single list
+  with an active option; in a multiple lookup or with no active option Alt+Up closes the list, as the select's does.
+
 ## 0.9.0
 
 A select searched by the page, for lists too long to load. Additive: `<sheen-select>` looks and works as in 0.8.0.

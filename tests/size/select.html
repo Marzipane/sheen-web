@@ -35,6 +35,8 @@
       '<label class="sheen-form-field sheen-small" data-probe="field"><span>' + W.hub + '</span><sheen-select placeholder="' + W.all + '" clear="' + W.clear + '" data-probe="single"><select name="hub">' + opts + '</select></sheen-select></label>' +
       '<label class="sheen-form-field sheen-small"><span>' + W.hub + '</span><sheen-select placeholder="' + W.need + '" data-probe="placeholder"><select name="hub2" required aria-invalid="true"><option value="" selected></option><option value="b">' + W.b + '</option></select></sheen-select><small>' + W.need + '</small></label>' +
       '<label class="sheen-form-field sheen-small"><span>' + W.off + '</span><sheen-select data-probe="disabled"><select name="hub3" disabled><option>' + W.m + '</option></select></sheen-select></label>' +
+      // inside a glass field: the native select stays hidden and the trigger keeps the field's width
+      '<div class="sheen-field" data-probe="glass-field"><label for="hub4">' + W.hub + '</label><sheen-select data-probe="in-glass-field"><select id="hub4" name="hub4">' + opts + '</select></sheen-select></div>' +
     '</div>' +
     '<div class="fixture-panel sheen-filter-group">' +
       '<fieldset class="sheen-filter-field"><legend>' + W.time + '</legend><sheen-select variant="control" data-probe="control"><select name="time"><option value="" selected>' + W.any + '</option><option value="30">' + W.t30 + '</option><option value="60">' + W.t60 + '</option></select></sheen-select></fieldset>' +

@@ -4,9 +4,10 @@
 //   and FormData work as before, and a framework binds it as it binds any select (Angular's formControlName, (change)).
 //   Without the script it shows as it is.
 //   Without an inner select it makes one from its own name, multiple and required attributes, and
-//   el.options = [{value, label, disabled, hint, group}] writes its options (inside <optgroup label> for group).
+//   el.options = [{value, label, disabled, hint, meta, group}] writes its options (inside <optgroup label> for group).
 //   placeholder shows while nothing is chosen; label names it when no <label> names the select; data-hint on an option is
-//   a second line under its label; variant="control" is the find-row look of a Filters panel.
+//   a second line under its label, and data-meta (0.9.1) a short text at the row's end edge, as a Filters panel option's
+//   count; variant="control" is the find-row look of a Filters panel.
 //   el.select is the native select; el.value and el.values (every chosen value) read and set it; open(), close(), sync().
 //   A choice the person makes fires input then change on the native select, as a native select does. Nothing fires when
 //   the page sets the value itself, by property or attribute: the element just redraws.
@@ -231,11 +232,12 @@ class SheenSelect extends HTMLElement {
     var self = this;
     selectFollow(option, ['selected'], function () { self.redraw(); });
     if (option.hidden) return null;
-    var label = option.label, hint = option.getAttribute('data-hint') || '';
+    var label = option.label, hint = option.getAttribute('data-hint') || '', meta = option.getAttribute('data-meta') || '';
     var disabled = option.disabled || !!(optgroup && optgroup.disabled);
     var row = h('div', { class: 'sheen-select-option', role: 'option', id: uid('sheen-select-option'), 'aria-selected': 'false', 'aria-disabled': disabled ? 'true' : null },
       h('span', { class: 'sheen-select-check', 'aria-hidden': 'true' }),
-      h('span', { class: 'sheen-select-words' }, h('span', { class: 'sheen-select-label', text: label }), hint ? h('small', { class: 'sheen-select-hint', text: hint }) : null));
+      h('span', { class: 'sheen-select-words' }, h('span', { class: 'sheen-select-label', text: label }), hint ? h('small', { class: 'sheen-select-hint', text: hint }) : null),
+      meta ? h('small', { class: 'sheen-select-meta', text: meta }) : null);
     this.items.push({ option: option, row: row, value: option.value, label: label, hint: hint, disabled: disabled, group: box });
     return row;
   }
@@ -289,7 +291,8 @@ class SheenSelect extends HTMLElement {
   writeOptions() {
     var n = this.native, keep = this.picked().map(function (o) { return o.value; }), groups = Object.create(null), nodes = [];
     this._options.forEach(function (o) {
-      var option = h('option', { value: o.value == null ? '' : String(o.value), disabled: !!o.disabled, 'data-hint': o.hint || null, text: o.label == null ? '' : String(o.label) });
+      var option = h('option', { value: o.value == null ? '' : String(o.value), disabled: !!o.disabled, 'data-hint': o.hint || null,
+        'data-meta': o.meta == null || o.meta === '' ? null : String(o.meta), text: o.label == null ? '' : String(o.label) });
       if (o.group == null || o.group === '') { nodes.push(option); return; }
       if (!groups[o.group]) nodes.push(groups[o.group] = h('optgroup', { label: String(o.group) }));
       groups[o.group].appendChild(option);

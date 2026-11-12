@@ -635,3 +635,38 @@ test('select css: rows and groups keep their height in a list long enough to scr
   const w = page('<div class="sheen-select-list"><div class="sheen-select-option"></div><div class="sheen-select-group"></div></div>');
   for (const c of w.document.querySelector('.sheen-select-list').children) assert.ok(c.matches('.sheen-select-list>*'));
 });
+
+test('lookup: while an ask is out Alt+Up still closes a list it would pick nothing in', async () => {
+  const many = await made(WORDS, { multiple: true });
+  await opened(many);
+  type(many.w, parts(many.el).input, 'zz');
+  assert.equal(key(many.w, parts(many.el).input, 'ArrowUp', { altKey: true }), false);
+  assert.equal(many.el.isOpen(), false, 'a multiple lookup closes, as the multiple select does');
+  assert.deepEqual(plain(many.el.values), [], 'and picks nothing');
+  const one = await made();
+  one.el.open();
+  assert.equal(one.el.querySelector('.sheen-select-option.sheen-active'), null, 'no rows yet, no active option');
+  key(one.w, parts(one.el).input, 'ArrowUp', { altKey: true });
+  assert.equal(one.el.isOpen(), false, 'a single lookup with no active option closes');
+  assert.equal(parts(one.el).native.value, '');
+});
+
+test('select and lookup (0.9.1): an option\'s meta is a short text at the row\'s end, in the Filters count\'s look', async () => {
+  const w = page('<sheen-select label="Area"><select><option value="a" data-meta="41">Old Town</option><option value="b">Riverside</option></select></sheen-select>');
+  const rows = [...w.document.querySelectorAll('.sheen-select-option')];
+  const meta = rows[0].lastElementChild;
+  assert.equal(meta.tagName, 'SMALL');
+  assert.ok(meta.classList.contains('sheen-select-meta'));
+  assert.equal(meta.textContent, '41');
+  assert.equal(meta.previousElementSibling.className, 'sheen-select-words', 'after the words, so it sits at the end edge');
+  assert.equal(rows[1].querySelector('.sheen-select-meta'), null, 'none without data-meta');
+  const sel = w.document.querySelector('sheen-select');
+  sel.options = [{ value: 'c', label: 'Hillside', meta: 7 }, { value: 'd', label: 'Lakeside', meta: '' }];
+  assert.deepEqual([...sel.querySelectorAll('.sheen-select-option')].map((r) => (r.querySelector('.sheen-select-meta') || {}).textContent || null), ['7', null]);
+
+  const m = await made();
+  await opened(m, [{ value: 'b', label: 'Old Town', meta: '1,204' }, { value: 'm', label: 'Riverside' }]);
+  assert.deepEqual([...m.el.querySelectorAll('.sheen-select-option')].map((r) => (r.querySelector('.sheen-select-meta') || {}).textContent || null), ['1,204', null]);
+  assert.ok(css.includes('.sheen-select-meta,.sheen-filter-option small{margin-inline-start:auto;color:var(--sheen-text-tertiary);font-size:12.5px;font-variant-numeric:tabular-nums}'));
+  assert.ok(css.includes('.sheen-select-meta,.sheen-filter-option small{font-weight:500}'), 'a chosen row stays bold, its count does not');
+});
