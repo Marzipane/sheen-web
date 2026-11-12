@@ -1,5 +1,40 @@
 # Changelog
 
+## 0.9.0
+
+A select searched by the page, for lists too long to load. Additive: `<sheen-select>` looks and works as in 0.8.0.
+
+### `<sheen-lookup>`
+
+- A select whose options come from the page, one answer per query: put it where a `<sheen-select>` would hold 10 000
+  options. It is built on the select's internals, so the field, the list, the keys (the select-only combobox), the
+  ARIA, the chips of a `multiple` lookup, `clear`, `remove`, `variant="control"`, the looks in light and dark and in
+  Arabic, and the native select that holds the form value are the select's. Every word comes from an attribute.
+- The list always opens with a search box (`search` names it, else the field's own label does). Opening asks for `""`
+  at once; typing asks for the trimmed query once the person pauses for `delay` ms (250 by default), never while an
+  input method composes and never twice in a row for the same query.
+- Each ask fires `sheen-lookup-query` with `{query, signal, respond}`. `respond(answer)` takes the options
+  `[{value, label, disabled, hint, group}]`, `{options, total}`, or a promise of either; pass `signal` to `fetch()`.
+  A newer ask, closing the list or taking the element out of the page aborts the signal, and the element drops the
+  answer to an older ask. `options = [...]` sets the answer to the current ask without `respond`.
+- While an ask is out, a 15px spinner takes the search glyph's place (still under less motion), the listbox is
+  `aria-busy`, the last answer's rows stay, and Enter picks nothing. A status line under the rows, a polite live
+  region with the empty line's look, says `loading` while no rows are drawn, `empty` for an answer with none, `error`
+  with a `retry` link button when the promise rejects (Enter in the search box asks again too), and `more` with
+  `@count` and `@total` when the answer holds fewer rows than `total`. Without the attribute, the line stays quiet.
+- Chosen options stay chosen when an answer lacks them: they stay in the native select, hidden from the list, and keep
+  their label in the field or their chip. Chips keep the order the options were chosen in. `chosen` reads and sets the
+  choice with its labels (an edit form's stored value), without events. A single lookup keeps a hidden `""` option
+  first, so nothing chosen is the value `""` and `required` works; options in the markup that are chosen are the
+  starting choice, the others go. Closing drops the rows and keeps the choice.
+
+### `<sheen-select>`
+
+- Its "more" parts are methods now (`hasSearch()`, `buildMore()`, `searched()`, `filter()`, `chipItems()`), so the
+  lookup builds on them. Nothing changes for a page that uses the select.
+- The kit rules that name `sheen-select` (the field, the Filters panel control, disabled, open, the ring after Tab, the
+  invalid ring, the chevron) name `sheen-lookup` too.
+
 ## 0.8.0
 
 A select and date fields of the kit's own, an avatar, a minimum gap between boxes, and the small parts app pages were

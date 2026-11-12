@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>lookup size fixture</title>
+<link rel="stylesheet" href="../../dist/sheen.css">
+<!-- Size fixture for the 0.9.0 lookup, laid out as the select's fixture (tests/size/select.html) with the same words, so
+     the two measure side by side. ?theme=light|dark and ?lang=en|ar set the theme and the direction. ?open=single opens
+     the single lookup on an answer (groups, a hint, the chosen row, a disabled row) with the more line; ?open=multiple the
+     multiple one (chips, ticked boxes); ?open=loading, ?open=empty and ?open=error the single one with that status line.
+     The page answers from a list here, at once, so nothing waits. -->
+<script>
+  var q = new URLSearchParams(location.search);
+  document.documentElement.setAttribute('data-theme', q.get('theme') === 'dark' ? 'dark' : 'light');
+  var ar = q.get('lang') === 'ar';
+  if (ar) { document.documentElement.lang = 'ar'; document.documentElement.dir = 'rtl'; }
+  var W = ar
+    ? { hub: 'المركز', all: 'كل المراكز', north: 'الشمال', south: 'الجنوب', b: 'البرشاء', m: 'مارينا', d: 'وسط المدينة', j: 'الجداف', vans: 'سيارتان', time: 'الوقت', any: 'أي وقت', t30: '30 دقيقة', t60: '60 دقيقة', team: 'الفرق', search: 'ابحث في الفرق', empty: 'لا نتائج', clear: 'مسح', remove: 'إزالة @label', need: 'اختر مركزًا', off: 'متوقف', loading: 'جارٍ البحث…', error: 'تعذر تحميل المراكز', retry: 'أعد المحاولة', more: '@count من @total. اكتب لتضييق البحث' }
+    : { hub: 'Hub', all: 'All hubs', north: 'North', south: 'South', b: 'Al Barsha', m: 'Marina', d: 'Downtown', j: 'Jaddaf', vans: '2 vans', time: 'Time', any: 'Any time', t30: '30 min', t60: '60 min', team: 'Teams', search: 'Search teams', empty: 'No matches', clear: 'Clear', remove: 'Remove @label', need: 'Choose a hub', off: 'Off', loading: 'Searching…', error: 'Couldn\'t load the hubs', retry: 'Try again', more: '@count of @total shown. Type to narrow' };
+  var words = ' loading="' + W.loading + '" empty="' + W.empty + '" error="' + W.error + '" retry="' + W.retry + '" more="' + W.more + '"';
+</script>
+<style>
+  body { margin: 0; }
+  main { padding: var(--sheen-space-xxl); display: grid; grid-template-columns: 260px 400px; align-items: start; gap: 48px 64px; min-block-size: 900px; }
+  .fixture-col { display: grid; gap: var(--sheen-space-l); align-content: start; }
+  .fixture-panel { padding: 0 20px 16px; background: var(--sheen-sheet); border-radius: 16px; box-shadow: 0 0 0 1px var(--sheen-separator); }
+</style>
+</head>
+<body class="sheen sheen-solid">
+<main></main>
+<script>
+  document.querySelector('main').innerHTML =
+    '<div class="fixture-col">' +
+      '<label class="sheen-form-field sheen-small" data-probe="field"><span>' + W.hub + '</span><sheen-lookup name="hub" placeholder="' + W.all + '" clear="' + W.clear + '"' + words + ' data-probe="single"></sheen-lookup></label>' +
+      '<label class="sheen-form-field sheen-small"><span>' + W.hub + '</span><sheen-lookup placeholder="' + W.need + '" data-probe="placeholder"><select name="hub2" required aria-invalid="true"></select></sheen-lookup><small>' + W.need + '</small></label>' +
+      '<label class="sheen-form-field sheen-small"><span>' + W.off + '</span><sheen-lookup data-probe="disabled"><select name="hub3" disabled><option selected>' + W.m + '</option></select></sheen-lookup></label>' +
+    '</div>' +
+    '<div class="fixture-panel sheen-filter-group">' +
+      '<fieldset class="sheen-filter-field"><legend>' + W.time + '</legend><sheen-lookup variant="control" placeholder="' + W.any + '" data-probe="control"><select name="time"></select></sheen-lookup></fieldset>' +
+      '<fieldset class="sheen-filter-field"><legend>' + W.team + '</legend><sheen-lookup variant="control" name="team" multiple search="' + W.search + '"' + words + ' remove="' + W.remove + '" clear="' + W.clear + '" data-probe="multiple"></sheen-lookup></fieldset>' +
+    '</div>';
+  // the page's answers: the select fixture's options, as entries
+  var HUBS = [{ value: 'b', label: W.b, group: W.north }, { value: 'm', label: W.m, hint: W.vans, group: W.north },
+    { value: 'd', label: W.d, group: W.south, disabled: true }, { value: 'j', label: W.j, group: W.south }];
+  var TEAM = [{ value: 'b', label: W.b }, { value: 'm', label: W.m }, { value: 'd', label: W.d }, { value: 'j', label: W.j }];
+  var open = q.get('open');
+  document.addEventListener('sheen-lookup-query', function (e) {
+    var probe = e.target.getAttribute('data-probe');
+    if (probe === 'multiple') return e.detail.respond(TEAM);
+    if (open === 'loading') return;
+    if (open === 'empty') return e.detail.respond([]);
+    if (open === 'error') return e.detail.respond(Promise.reject(new Error('fixture')));
+    e.detail.respond({ options: HUBS, total: 120 });
+  });
+</script>
+<script src="../../dist/sheen-elements.js"></script>
+<script>
+  var $ = function (p) { return document.querySelector('[data-probe="' + p + '"]'); };
+  $('single').chosen = [{ value: 'b', label: W.b }];
+  $('multiple').chosen = [{ value: 'b', label: W.b }, { value: 'm', label: W.m }];
+  // a lookup without an inner select builds a microtask later, as the select does
+  if (open) setTimeout(function () { (open === 'multiple' ? $('multiple') : $('single')).open(); }, 0);
+</script>
+</body>
+</html>

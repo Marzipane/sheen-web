@@ -775,13 +775,13 @@ sheen-menu-button.sheen-small .sheen-menu,.sheen-small sheen-menu-button .sheen-
 /* find row: one wide search, then compact controls of the same height */
 .sheen-find-row{display:flex;align-items:center;gap:max(var(--sheen-space-min),8px);min-inline-size:0}
 .sheen-control{block-size:36px;display:inline-flex;align-items:center;gap:7px;padding-inline:12px;border:0;border-radius:11px;background:var(--sheen-surface);box-shadow:inset 0 0 0 1px var(--sheen-separator);color:var(--sheen-text);font:inherit;font-size:13.5px;font-weight:600;line-height:1.2;white-space:nowrap;cursor:pointer}
-sheen-select[data-disabled],.sheen-select-option[aria-disabled="true"],.sheen-control:disabled{opacity:.45;cursor:not-allowed}
+sheen-lookup[data-disabled],sheen-select[data-disabled],.sheen-select-option[aria-disabled="true"],.sheen-control:disabled{opacity:.45;cursor:not-allowed}
 /* a control inside an inline wrapper (an app's component) sits at the top of its line, so no baseline gap moves it off
    the row; a control holding a text field draws no ring, as no text field does (0.7.0) */
 .sheen-control,sheen-menu-button[variant="control"]{vertical-align:top}
 /* an open control (its menu or panel open) takes the tonal fill and keeps its hairline (0.7.0: no accent ring or glow;
    the app mockups' rings are annotations, and only keyboard focus draws a ring) */
-sheen-select[variant="control"][data-open],.sheen-control[aria-expanded="true"]{background:var(--sheen-tonal)}
+sheen-lookup[variant="control"][data-open],sheen-select[variant="control"][data-open],.sheen-control[aria-expanded="true"]{background:var(--sheen-tonal)}
 .sheen-control .sheen-icon{inline-size:15px;block-size:15px;flex:none;color:var(--sheen-text-secondary)}
 .sheen-find{flex:1 1 auto;min-inline-size:0;cursor:text;font-weight:400}
 .sheen-select-input,.sheen-find input{all:unset;flex:1;min-inline-size:0;color:var(--sheen-text)}
@@ -790,9 +790,9 @@ sheen-select[variant="control"][data-open],.sheen-control[aria-expanded="true"]{
 
 /* 0.7.0: a menu button in the control look (variant="control") and its glyphs, a chevron that turns while its menu is
    open, and a control that shows its filters are on (the accent tint and its count, no ring) */
-sheen-select[variant="control"]>.sheen-select-chevron,.sheen-select-search>.sheen-glyph,.sheen-control>.sheen-glyph{inline-size:15px;block-size:15px;flex:none;color:var(--sheen-text-secondary)}
+sheen-lookup[variant="control"]>.sheen-select-chevron,sheen-select[variant="control"]>.sheen-select-chevron,.sheen-select-search>.sheen-glyph,.sheen-control>.sheen-glyph{inline-size:15px;block-size:15px;flex:none;color:var(--sheen-text-secondary)}
 .sheen-select-chevron,.sheen-control-chevron{transition:transform var(--sheen-motion-snappy)}
-sheen-select[data-open]>.sheen-select-chevron,[aria-expanded="true"]>.sheen-control-chevron{transform:rotate(180deg)}
+sheen-lookup[data-open]>.sheen-select-chevron,sheen-select[data-open]>.sheen-select-chevron,[aria-expanded="true"]>.sheen-control-chevron{transform:rotate(180deg)}
 @media (prefers-reduced-motion:reduce){.sheen-select-chevron,.sheen-control-chevron{transition:none}}
 .sheen-control.sheen-on{background:color-mix(in srgb,var(--sheen-accent) 8%,var(--sheen-surface))}
 .sheen-control.sheen-on :is(.sheen-glyph,.sheen-icon){color:var(--sheen-accent-text)}
@@ -985,7 +985,7 @@ th[aria-sort="ascending"],th[aria-sort="descending"]{color:var(--sheen-text)}
 .sheen :is(input:not([type="checkbox"],[type="radio"],[type="range"],[type="button"],[type="submit"],[type="reset"],[type="file"],[type="color"],[type="image"]),textarea):focus-visible{outline:none!important}
 /* inside a field or a control, a select or a picker button never draws a box of its own (0.1.4): the field or control
    rings around it, after Tab, like every other ring */
-sheen-select:has(>.sheen-select-trigger:focus-visible),:is(.sheen-field,.sheen-control):has(:is(select,.sheen-picker-trigger):focus-visible){outline:2px solid var(--sheen-accent-text);outline-offset:2px}
+sheen-lookup:has(>.sheen-select-trigger:focus-visible),sheen-select:has(>.sheen-select-trigger:focus-visible),:is(.sheen-field,.sheen-control):has(:is(select,.sheen-picker-trigger):focus-visible){outline:2px solid var(--sheen-accent-text);outline-offset:2px}
 /* forced colors keep their own outline on a focused field (06-access), after a press too */
 @media not (forced-colors: active){:root[data-sheen-focus]:not([data-sheen-keyboard]) :is(.sheen-field,.sheen-control):has(:is(select,.sheen-picker-trigger):focus-visible){outline:none}}
 
@@ -1086,7 +1086,7 @@ sheen-toaster[position="top"] .sheen-toast-text{font-size:14.5px;font-weight:600
 .sheen-form-field.sheen-small textarea.sheen-input{block-size:auto;min-block-size:76px}
 .sheen-form-field.sheen-small .sheen-input::placeholder{color:var(--sheen-text-tertiary)}
 .sheen-form-field.sheen-small>small{color:var(--sheen-text-tertiary)}
-sheen-select:has(>.sheen-select-trigger[aria-invalid="true"]),.sheen-form-field.sheen-small .sheen-input[aria-invalid="true"]{box-shadow:inset 0 0 0 2px var(--sheen-danger)}
+sheen-lookup:has(>.sheen-select-trigger[aria-invalid="true"]),sheen-select:has(>.sheen-select-trigger[aria-invalid="true"]),.sheen-form-field.sheen-small .sheen-input[aria-invalid="true"]{box-shadow:inset 0 0 0 2px var(--sheen-danger)}
 .sheen-form-field.sheen-small:has(.sheen-select-trigger[aria-invalid="true"])>small,.sheen-form-field.sheen-small:has(.sheen-input[aria-invalid="true"])>small{color:var(--sheen-danger)}
 .sheen-fields.sheen-small{gap:max(var(--sheen-space-min),12px) max(var(--sheen-space-min),16px)}
 .sheen-fields>.sheen-wide{grid-column:1/-1}
@@ -1169,21 +1169,21 @@ sheen-command-palette.sheen-small .sheen-cmd-row[aria-selected="true"]{backgroun
    fill, the option rows, the Filters panel check box and tick, the search box and its words. Logical sides only. */
 
 /* without the script the native select shows as it is, with no box around it */
-sheen-select:not(:defined){display:contents}
-sheen-select{position:relative;display:flex;align-items:center;gap:max(var(--sheen-space-min),8px);min-inline-size:0;min-block-size:var(--sheen-size-field);padding:6px 12px;border-radius:11px;background:var(--sheen-background);box-shadow:inset 0 0 0 1px var(--sheen-separator);color:var(--sheen-text);cursor:pointer;box-sizing:border-box}
+sheen-lookup:not(:defined),sheen-select:not(:defined){display:contents}
+sheen-lookup,sheen-select{position:relative;display:flex;align-items:center;gap:max(var(--sheen-space-min),8px);min-inline-size:0;min-block-size:var(--sheen-size-field);padding:6px 12px;border-radius:11px;background:var(--sheen-background);box-shadow:inset 0 0 0 1px var(--sheen-separator);color:var(--sheen-text);cursor:pointer;box-sizing:border-box}
 .sheen-select-trigger{flex:1;min-inline-size:0;align-self:stretch;display:flex;align-items:center;margin:0;padding:0;border:0;background:none;color:inherit;font:inherit;font-size:14px;text-align:start;cursor:inherit}
 .sheen-select-value,.sheen-select-placeholder{flex:1;min-inline-size:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sheen-select-chevron{inline-size:18px;block-size:18px;color:var(--sheen-text-tertiary);pointer-events:none}
 /* the field rings around itself after Tab (13-app-pages), never after a press; with forced colors the system outline
    stays, as on every field (0.7.1). Its own rule: the field rule's place in its media block is fixed by the 0.7 tests. */
-@media not (forced-colors: active){:root[data-sheen-focus]:not([data-sheen-keyboard]) sheen-select:has(>.sheen-select-trigger:focus-visible){outline:none}}
+@media not (forced-colors: active){:root[data-sheen-focus]:not([data-sheen-keyboard]) sheen-lookup:has(>.sheen-select-trigger:focus-visible),:root[data-sheen-focus]:not([data-sheen-keyboard]) sheen-select:has(>.sheen-select-trigger:focus-visible){outline:none}}
 /* the native select keeps the name, the value and the form's checks, out of sight and out of the way */
 .sheen-select-native{position:absolute;inset-block-end:0;inset-inline-start:0;inline-size:1px;block-size:1px;margin:0;padding:0;border:0;opacity:0;overflow:hidden;clip-path:inset(50%);pointer-events:none}
 
 /* the Filters panel control: the mockup's value is bold; the chevron is a control glyph (11-list-kit) */
-sheen-select[variant="control"]{min-block-size:var(--sheen-size-control);background:var(--sheen-surface)}
-sheen-select[variant="control"]>.sheen-select-trigger{font-size:13.5px;font-weight:500;line-height:1.2}
-sheen-select[variant="control"] .sheen-select-value{font-weight:700}
+sheen-lookup[variant="control"],sheen-select[variant="control"]{min-block-size:var(--sheen-size-control);background:var(--sheen-surface)}
+sheen-lookup[variant="control"]>.sheen-select-trigger,sheen-select[variant="control"]>.sheen-select-trigger{font-size:13.5px;font-weight:500;line-height:1.2}
+sheen-lookup[variant="control"] .sheen-select-value,sheen-select[variant="control"] .sheen-select-value{font-weight:700}
 
 /* multiple: one 24px tonal chip per chosen option, wrapping; its 16px remove mark */
 .sheen-select-chips{flex:1;min-inline-size:0;display:flex;flex-wrap:wrap;gap:max(var(--sheen-space-min),4px)}
@@ -1206,7 +1206,7 @@ sheen-select[variant="control"] .sheen-select-value{font-weight:700}
 .sheen-select-list:focus{outline:none}
 .sheen-select-group{display:flex;flex-direction:column;gap:1px}
 .sheen-select-pop:has(>.sheen-select-empty:not([hidden]))>.sheen-select-list{display:none}
-.sheen-select-empty{display:flex;align-items:center;min-block-size:36px;padding:6px 10px;color:var(--sheen-text-tertiary)}
+.sheen-lookup-status,.sheen-select-empty{display:flex;align-items:center;min-block-size:36px;padding:6px 10px;color:var(--sheen-text-tertiary)}
 
 /* an option: the row of a Filters panel option (11-list-kit). The active one on a chosen row keeps both fills, the
    tonal one over the chosen tint, so the arrows stay visible on chosen rows. */
@@ -1427,3 +1427,25 @@ sheen-menu-button[variant="pill"]>.sheen-pill:is(:hover,[aria-expanded="true"]){
    and the paragraph's own larger margin still wins. */
 :where(.sheen-dialog-body)>:where(p,h1,h2,h3,h4,h5,h6,ul,ol,dl,hr,pre,blockquote,figure)+:where(:not(p,h1,h2,h3,h4,h5,h6,ul,ol,dl,hr,pre,blockquote,figure,legend)){margin-block-start:var(--sheen-space-min)}
 /* end 0.8.0 the minimum gap */
+
+/* 22-lookup.css */
+/* 0.9.0 lookup */
+/* <sheen-lookup> (78-lookup.js) is the select whose options come from the page's answers. Its field, list, rows, chips,
+   clear button and search box are the select's: 16-select.css and the kit rules the select joins name sheen-lookup next
+   to sheen-select. Its own parts: the spinner that takes the search glyph's place while an ask is out, and the status
+   line under the rows, which has the select's empty line look (16-select.css) and a link button to retry. */
+
+/* the status line: its words, then the retry link button, wrapping on a narrow list */
+.sheen-lookup-status{gap:max(var(--sheen-space-min),8px);flex-wrap:wrap}
+/* the 30px link button fits the 36px line: 3px above and below it */
+.sheen-lookup-status:has(>.sheen-lookup-retry:not([hidden])){padding-block:3px}
+/* with nothing to say the line stays in the accessibility tree, so its next words are announced, but takes no room */
+.sheen-lookup-status[data-quiet]{position:absolute;inline-size:1px;block-size:1px;min-block-size:0;margin:0;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+/* the spinner: the search glyph's size and colour (11-list-kit), turning as the bulk bar's does; still with less motion */
+.sheen-lookup-spin{animation:sheen-bulk-spin 1s linear infinite}
+@media (prefers-reduced-motion:reduce){.sheen-lookup-spin{animation:none}}
+
+/* the hidden attribute hides the parts, though they set their own display */
+:where(.sheen-select-search>.sheen-glyph,.sheen-lookup-retry)[hidden]{display:none!important}
+/* end 0.9.0 lookup */

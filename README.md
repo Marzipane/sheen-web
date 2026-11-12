@@ -180,6 +180,7 @@ Live stories for every element: `docs/elements.html` (open it from a local serve
 | `<sheen-scope-picker>` | chooses a rule, not a list | `label`, `all-label`, `chosen-label`, `except-label`, `search-label`, `select-shown-label`, `empty-label`, `result`; `groups`, `value` (only the list its mode reads) | `sheen-scope-change` {mode, include, exclude} | Space ticks; focus stays on the ticked row |
 | `<sheen-menu-button>` | a button with a keyboard menu | `label`, `glyph`, `variant="control"` (the find row's 36px control; square with a glyph), `variant="text"` (a table cell's words, for a picker in a cell; 0.8.0), `variant="pill"` with `tone="success\|warning\|danger"` (a status pill, 22px in a small table; 0.8.0), `icon` (a glyph before the label), `chevron`, `compact`, `class="sheen-small"` (the dense menu; `--sheen-menu-min-size`, `--sheen-menu-max-size`), `class="sheen-xsmall"` (the 32px button of a bulk bar), `class="sheen-compact"` with a glyph (the 30px row •••); `items` [{id, label, disabled, hint, shortcut, danger, glyph, accent}, {separator: true}, {heading}], `open()`, `close()` | `sheen-menu-select` {id} | ↓ opens, ↑ ↓ move, Enter picks, Esc closes; a press outside or Tab out closes |
 | `<sheen-select>` (0.8.0) | a select whose list follows the theme and Arabic | wraps your `<select>`, which stays the form control (`name`, `multiple`, `required`, `disabled` or a fieldset's, reset, FormData); `placeholder`, `label` (the name when no `<label>` names the select), `search` (a search box in the list; its placeholder and name), `empty` (the line while the search matches nothing), `clear` (a clear button; its name), `remove` (a chip mark's tooltip, "@label"), `variant="control"` (the 36px control of a Filters panel), `data-hint` on an option; with no inner select, `name`, `multiple` and `required` make one and `options` [{value, label, disabled, hint, group}] fills it; `select`, `value`, `values`, `open()`, `close()`, `sync()`, `clear()` | `input` then `change` on the native select, for a person's choice only; `blur` when focus leaves the field | ↓ ↑ Enter Space Alt+↓ open, Home End open on the ends, letters jump; open: ↑ ↓ Home End PageUp PageDown move, Enter or Space picks (multiple: toggles), Alt+↑ picks and closes, Esc closes, Tab moves on; closed: Delete clears (`clear`), Backspace removes the last chip (`multiple`) |
+| `<sheen-lookup>` (0.9.0) | a select whose options the page brings per query, for lists too long to load (an API search) | `<sheen-select>`'s field, list, chips, clear, looks and native select, with a search box always; `name`, `multiple`, `required`, `placeholder`, `label`, `search`, `clear`, `remove`, `variant="control"` as there; `delay` (ms the typing pauses before an ask, 250), `loading`, `empty`, `error`, `retry`, `more` ("@count", "@total"); `options` (the answer to the current ask), `chosen` [{value, label}] (the choice with its labels, kept when an answer lacks it), `select`, `value`, `values`, `open()`, `close()`, `clear()` | `sheen-lookup-query` {query, signal, respond(answer)}; `input` then `change` on the native select, for a person's choice only | as `<sheen-select>`; Enter picks nothing while an ask is out and asks again after an error |
 | `<sheen-date-field>` (0.8.0) | a date field around your `<input type="date">`, which stays the form value (ISO `yyyy-mm-dd`) | `placeholder`, `label`, `prev`, `next`, `clear`, `variant="control"`, `compact`, `first-day` (1 Monday … 7 Sunday), `weekdays` (seven names from Monday), `today`; `input`, `value`, `open()`, `close()`, `sync()` | `input` and `change` on the native input; `blur` when focus leaves the field | ↓ opens; arrows by day and week, PageUp/PageDown by month (Shift: year), Home/End, Enter or Space picks, Esc closes; Tab stays inside |
 | `<sheen-date-range>` (0.8.0) | a range around two `<input type="date">` | as the date field, plus `from`, `to`, `apply`, `cancel`, `note`, `custom`; `presets` [{label, start, end}], `inputs`, `value` {start, end} | `input` and `change` on each native input that changed | as the date field; the second pick sets the end, an earlier one swaps them |
 | `<sheen-avatar>` (0.8.0) | a person's initials in a circle (Flutter sheen's `SheenAvatar`) | `name` (the initials and the tint), `letters` (how many words give a letter; 2), `tint-key` (picks the tint in place of the name), `size` (`s` 30px, `xs` 18px; 40px without), `image` (covers the initials once it loads), `label` (without it: decorative); `.sheen-avatar-name` sets it beside a `<b>` name and a `<small>` second line | | |
@@ -241,6 +242,36 @@ events. Without the elements script the native control shows as it is.
 The date field formats with `Intl` for the nearest `lang`: month and weekday names and digits are the locale's
 (`lang="ar-u-nu-latn"` keeps Western digits in Arabic), and `today` takes the day from your server. The same avatar name
 or `tint-key` gives the same tint here and in a Flutter sheen app, and white initials reach 4.5:1 on every tint.
+
+### Lookup: a select searched by the page (0.9.0)
+
+For a list too long to load whole (customers, addresses, 10 000 rows behind an API), `<sheen-lookup>` asks the page for
+the options that match what the person typed and shows the answer. It is the select of 0.8.0 in every other way: the
+same field, list, keys, chips and native select, so a form binds it as it binds a select.
+
+```html
+<label class="sheen-form-field sheen-small"><span>Customer</span>
+  <sheen-lookup name="customer" placeholder="Any customer" search="Search customers" loading="Searching…"
+    empty="No matches" error="Couldn't load the customers" retry="Try again" more="@count of @total shown. Type to narrow"
+    clear="Clear"></sheen-lookup>
+</label>
+<script>
+  const lookup = document.querySelector('sheen-lookup');
+  lookup.addEventListener('sheen-lookup-query', (e) => {
+    const { query, signal, respond } = e.detail;
+    respond(fetch('/api/customers?search=' + encodeURIComponent(query) + '&pageSize=20', { signal })
+      .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then((page) => ({ total: page.total, options: page.items.map((c) => ({ value: c.id, label: c.name, hint: c.phone })) })));
+  });
+  lookup.chosen = [{ value: 'c-1024', label: 'Maria Santos' }];   // an edit form's stored value, before any search
+</script>
+```
+
+Opening asks for `""` at once; typing asks once the person pauses for `delay` ms. A newer ask aborts the older one's
+`signal` and the element drops a late answer, so a slow reply never replaces a newer one. A promise that rejects shows
+`error` and a `retry` button. The options you send are the rows: the element filters nothing, so match on whatever the
+server likes (names, phones, codes, Arabic without its marks). The chosen options stay in the native select when an
+answer lacks them, and the chips keep the order they were chosen in.
 
 Glyph names are the Flutter sheen icons, the media glyphs and, from 0.7.0, the filled Flutter sheen icons as
 `<name>-fill` (`check-circle-fill`), drawn filled in the text colour; `alert` is a warning triangle.
