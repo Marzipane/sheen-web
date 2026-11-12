@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>select size fixture</title>
+<link rel="stylesheet" href="../../dist/sheen.css">
+<!-- Size fixture for the 0.8.0 select. ?theme=light|dark and ?lang=en|ar set the theme and the direction (Arabic sample
+     words in Arabic); ?open=single opens the single list (groups, a hint, the chosen row, a disabled row), ?open=multiple
+     the multiple list (chips, ticked boxes, a search box). A dense field 260px wide as in a record form, an invalid one with its hint, a disabled one, and
+     a 400px panel holding the Filters panel control and a multiple select. -->
+<script>
+  var q = new URLSearchParams(location.search);
+  document.documentElement.setAttribute('data-theme', q.get('theme') === 'dark' ? 'dark' : 'light');
+  var ar = q.get('lang') === 'ar';
+  if (ar) { document.documentElement.lang = 'ar'; document.documentElement.dir = 'rtl'; }
+  var W = ar
+    ? { hub: 'المركز', all: 'كل المراكز', north: 'الشمال', south: 'الجنوب', b: 'البرشاء', m: 'مارينا', d: 'وسط المدينة', j: 'الجداف', vans: 'سيارتان', time: 'الوقت', any: 'أي وقت', t30: '30 دقيقة', t60: '60 دقيقة', team: 'الفرق', search: 'ابحث في الفرق', empty: 'لا نتائج', clear: 'مسح', remove: 'إزالة @label', need: 'اختر مركزًا', off: 'متوقف' }
+    : { hub: 'Hub', all: 'All hubs', north: 'North', south: 'South', b: 'Al Barsha', m: 'Marina', d: 'Downtown', j: 'Jaddaf', vans: '2 vans', time: 'Time', any: 'Any time', t30: '30 min', t60: '60 min', team: 'Teams', search: 'Search teams', empty: 'No matches', clear: 'Clear', remove: 'Remove @label', need: 'Choose a hub', off: 'Off' };
+</script>
+<style>
+  body { margin: 0; }
+  main { padding: var(--sheen-space-xxl); display: grid; grid-template-columns: 260px 400px; align-items: start; gap: 48px 64px; min-block-size: 900px; }
+  .fixture-col { display: grid; gap: var(--sheen-space-l); align-content: start; }
+  .fixture-panel { padding: 0 20px 16px; background: var(--sheen-sheet); border-radius: 16px; box-shadow: 0 0 0 1px var(--sheen-separator); }
+</style>
+</head>
+<body class="sheen sheen-solid">
+<main></main>
+<script>
+  var opts = '<option value="">' + W.all + '</option><optgroup label="' + W.north + '"><option value="b" selected>' + W.b + '</option><option value="m" data-hint="' + W.vans + '">' + W.m + '</option></optgroup>' +
+    '<optgroup label="' + W.south + '"><option value="d" disabled>' + W.d + '</option><option value="j">' + W.j + '</option></optgroup>';
+  document.querySelector('main').innerHTML =
+    '<div class="fixture-col">' +
+      '<label class="sheen-form-field sheen-small" data-probe="field"><span>' + W.hub + '</span><sheen-select placeholder="' + W.all + '" clear="' + W.clear + '" data-probe="single"><select name="hub">' + opts + '</select></sheen-select></label>' +
+      '<label class="sheen-form-field sheen-small"><span>' + W.hub + '</span><sheen-select placeholder="' + W.need + '" data-probe="placeholder"><select name="hub2" required aria-invalid="true"><option value="" selected></option><option value="b">' + W.b + '</option></select></sheen-select><small>' + W.need + '</small></label>' +
+      '<label class="sheen-form-field sheen-small"><span>' + W.off + '</span><sheen-select data-probe="disabled"><select name="hub3" disabled><option>' + W.m + '</option></select></sheen-select></label>' +
+    '</div>' +
+    '<div class="fixture-panel sheen-filter-group">' +
+      '<fieldset class="sheen-filter-field"><legend>' + W.time + '</legend><sheen-select variant="control" data-probe="control"><select name="time"><option value="" selected>' + W.any + '</option><option value="30">' + W.t30 + '</option><option value="60">' + W.t60 + '</option></select></sheen-select></fieldset>' +
+      '<fieldset class="sheen-filter-field"><legend>' + W.team + '</legend><sheen-select variant="control" search="' + W.search + '" empty="' + W.empty + '" remove="' + W.remove + '" clear="' + W.clear + '" data-probe="multiple"><select name="team" multiple>' +
+        '<option value="b" selected>' + W.b + '</option><option value="m" selected>' + W.m + '</option><option value="d">' + W.d + '</option><option value="j">' + W.j + '</option></select></sheen-select></fieldset>' +
+    '</div>';
+</script>
+<script src="../../dist/sheen-elements.js"></script>
+<script>
+  if (q.get('open')) document.querySelector('[data-probe="' + q.get('open') + '"]').open();
+</script>
+</body>
+</html>

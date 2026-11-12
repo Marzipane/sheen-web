@@ -24,7 +24,7 @@
 .sheen :is(input:not([type="checkbox"],[type="radio"],[type="range"],[type="button"],[type="submit"],[type="reset"],[type="file"],[type="color"],[type="image"]),textarea):focus-visible{outline:none!important}
 /* inside a field or a control, a select or a picker button never draws a box of its own (0.1.4): the field or control
    rings around it, after Tab, like every other ring */
-:is(.sheen-field,.sheen-control):has(:is(select,.sheen-picker-trigger):focus-visible){outline:2px solid var(--sheen-accent-text);outline-offset:2px}
+sheen-select:has(>.sheen-select-trigger:focus-visible),:is(.sheen-field,.sheen-control):has(:is(select,.sheen-picker-trigger):focus-visible){outline:2px solid var(--sheen-accent-text);outline-offset:2px}
 /* forced colors keep their own outline on a focused field (06-access), after a press too */
 @media not (forced-colors: active){:root[data-sheen-focus]:not([data-sheen-keyboard]) :is(.sheen-field,.sheen-control):has(:is(select,.sheen-picker-trigger):focus-visible){outline:none}}
 
@@ -39,20 +39,21 @@
 /* an app page's header: the crumbs at 12.5px, the 26px title and a 14px secondary
    line with room for a pill beside it, then the actions at the end edge on the bottom line. The mockups set no narrow
    layout: the words keep 320px, and under that the actions move to a line of their own, still at the end edge. */
-.sheen-page-head{display:flex;flex-wrap:wrap;align-items:flex-end;gap:16px}
+.sheen-page-head{display:flex;flex-wrap:wrap;align-items:flex-end;gap:max(var(--sheen-space-min),16px)}
 .sheen-page-head-text{flex:1 1 0;min-inline-size:min(100%,320px);display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px}
 .sheen-page-head-text>.sheen-page-title{inline-size:100%}
 .sheen-page-crumbs{inline-size:100%;font-size:12.5px;color:var(--sheen-text-tertiary)}
 .sheen-page-subtitle{margin:0;font-size:14px;color:var(--sheen-text-secondary)}
-.sheen-page-head-actions{display:flex;flex-wrap:wrap;gap:8px;margin-inline-start:auto}
+.sheen-page-head-actions{display:flex;flex-wrap:wrap;gap:max(var(--sheen-space-min),8px);margin-inline-start:auto}
 
 /* a side panel with a heading keeps the Filters footer on its bottom edge, however few the options */
 sheen-side-panel.sheen-headed .sheen-panel-body{display:flex;flex-direction:column}
 sheen-side-panel.sheen-headed .sheen-panel-body>:is(.sheen-filter-footer,.sheen-panel-foot){margin-block-start:auto}
 sheen-side-panel.sheen-headed .sheen-panel-body:has(>.sheen-filter-footer){padding-block-end:0}
 
-/* small tables: 16px checkboxes in the accent; a busy table (aria-busy) is one solid placeholder block that breathes */
-.sheen-table.sheen-small input[type="checkbox"]{inline-size:16px;block-size:16px;accent-color:var(--sheen-accent)}
+/* small tables: 16px checkboxes in the accent, though not a switch (0.8.0: role="switch" or the kit's .sheen-switch keeps
+   its own size; :where keeps the 0.7 specificity); a busy table (aria-busy) is one solid placeholder block that breathes */
+.sheen-table.sheen-small input[type="checkbox"]:where(:not([role="switch"],.sheen-switch input)){inline-size:16px;block-size:16px;accent-color:var(--sheen-accent)}
 .sheen-table[aria-busy="true"] :is(th,td){color:transparent;background:var(--sheen-track);border-color:transparent;border-radius:7px}
 .sheen-table[aria-busy="true"] :is(th,td)>:not(input){visibility:hidden}
 @media (prefers-reduced-motion: no-preference){.sheen-table[aria-busy="true"]{animation:sheen-busy 1.4s ease-in-out infinite}}
@@ -69,7 +70,7 @@ sheen-side-panel.sheen-headed .sheen-panel-body:has(>.sheen-filter-footer){paddi
 .sheen-status:is(.sheen-danger,.sheen-warning,.sheen-success){color:var(--sheen-text-secondary)}
 .sheen-status-title{margin:0;font-size:22px;line-height:1.2;font-weight:700;letter-spacing:-.022em;color:var(--sheen-text)}
 .sheen-status p{margin:0;max-inline-size:34ch;font-size:15px;line-height:1.3}
-.sheen-status-actions{display:flex;flex-direction:column;gap:8px;margin-block-start:8px;inline-size:min(100%,280px)}
+.sheen-status-actions{display:flex;flex-direction:column;gap:max(var(--sheen-space-min),8px);margin-block-start:8px;inline-size:min(100%,280px)}
 .sheen-status-actions>*{inline-size:100%}
 .sheen-status small{color:var(--sheen-text-tertiary)}
 

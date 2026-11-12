@@ -1,5 +1,5 @@
 /* sheen-web tokens, generated from tokens/tokens.json (Flutter sheen 0.3.6) */
-:root{--sheen-background:#FAFAF8;--sheen-surface:#FFFFFF;--sheen-surface-muted:#F2F2EF;--sheen-track:#E6E6E2;--sheen-separator:#10131817;--sheen-text:#101318;--sheen-text-secondary:#555B66;--sheen-text-tertiary:#6A707B;--sheen-accent:#0A5FE0;--sheen-on-accent:#FFFFFF;--sheen-accent-text:#0A5FE0;--sheen-success:#0B7A3E;--sheen-warning:#8F5200;--sheen-danger:#C62828;--sheen-rating:#F5B83D;--sheen-sheet:#FFFFFF;--sheen-deal-fill:#C62828;--sheen-tonal:#1013180D;--sheen-space-xs:4px;--sheen-space-s:8px;--sheen-space-m:12px;--sheen-space-l:16px;--sheen-space-xl:20px;--sheen-space-xxl:24px;--sheen-space-xxxl:32px;--sheen-space-hit:44px;--sheen-radius-card:24px;--sheen-radius-photo:20px;--sheen-radius-sheet:38px;--sheen-radius-field:14px;--sheen-radius-group:20px;--sheen-width-readable:720px;--sheen-width-wide:1080px;--sheen-width-page:1440px;--sheen-size-app-bar:60px;--sheen-motion-press:337ms linear(0, 0.029, 0.099, 0.189, 0.286, 0.381, 0.471, 0.553, 0.625, 0.688, 0.742, 0.787, 0.826, 0.858, 0.884, 0.906, 0.924, 0.939, 0.951, 0.961, 0.968, 0.975, 0.98, 0.984, 0.987, 0.99, 0.992, 0.994, 0.995, 0.996, 0.997, 0.997, 1);--sheen-motion-press-duration:337ms;--sheen-motion-snappy:385ms linear(0, 0.028, 0.095, 0.186, 0.287, 0.389, 0.487, 0.578, 0.658, 0.728, 0.788, 0.838, 0.878, 0.911, 0.937, 0.957, 0.972, 0.984, 0.992, 0.998, 1.002, 1.004, 1.006, 1.006, 1.006, 1.006, 1.006, 1.005, 1.004, 1.004, 1.003, 1.002, 1);--sheen-motion-snappy-duration:385ms;--sheen-motion-smooth:607ms linear(0, 0.029, 0.099, 0.189, 0.286, 0.382, 0.472, 0.553, 0.625, 0.688, 0.742, 0.788, 0.826, 0.858, 0.885, 0.906, 0.924, 0.939, 0.951, 0.961, 0.968, 0.975, 0.98, 0.984, 0.987, 0.99, 0.992, 0.994, 0.995, 0.996, 0.997, 0.997, 1);--sheen-motion-smooth-duration:607ms;--sheen-motion-gentle:809ms linear(0, 0.029, 0.099, 0.189, 0.286, 0.382, 0.471, 0.553, 0.625, 0.688, 0.742, 0.787, 0.826, 0.858, 0.884, 0.906, 0.924, 0.939, 0.951, 0.961, 0.968, 0.975, 0.98, 0.984, 0.987, 0.99, 0.992, 0.994, 0.995, 0.996, 0.997, 0.997, 1);--sheen-motion-gentle-duration:809ms;--sheen-motion-celebrate:729ms linear(0, 0.036, 0.124, 0.242, 0.372, 0.501, 0.621, 0.727, 0.816, 0.888, 0.944, 0.985, 1.014, 1.032, 1.042, 1.046, 1.045, 1.042, 1.037, 1.031, 1.025, 1.019, 1.014, 1.01, 1.006, 1.003, 1.001, 1, 0.999, 0.998, 0.998, 0.998, 1);--sheen-motion-celebrate-duration:729ms;--sheen-motion-fade-in:180ms;--sheen-motion-fade-out:120ms;--sheen-motion-reduced-fade:150ms;--sheen-motion-press-down:120ms;--sheen-motion-stagger:30ms;--sheen-motion-ease-out:cubic-bezier(0.2, 0, 0, 1);--sheen-motion-ease-in:cubic-bezier(0.4, 0, 1, 1);--sheen-motion-press-scale:0.97;color-scheme:light}
+:root{--sheen-background:#FAFAF8;--sheen-surface:#FFFFFF;--sheen-surface-muted:#F2F2EF;--sheen-track:#E6E6E2;--sheen-separator:#10131817;--sheen-text:#101318;--sheen-text-secondary:#555B66;--sheen-text-tertiary:#6A707B;--sheen-accent:#0A5FE0;--sheen-on-accent:#FFFFFF;--sheen-accent-text:#0A5FE0;--sheen-success:#0B7A3E;--sheen-warning:#8F5200;--sheen-danger:#C62828;--sheen-rating:#F5B83D;--sheen-sheet:#FFFFFF;--sheen-deal-fill:#C62828;--sheen-tonal:#1013180D;--sheen-tint-blue:#1F6FEB;--sheen-tint-red:#E5484D;--sheen-tint-green:#30A46C;--sheen-tint-orange:#F76B15;--sheen-tint-purple:#6E56CF;--sheen-tint-teal:#0090A8;--sheen-tint-violet:#8E4EC6;--sheen-tint-gray:#6A707B;--sheen-space-xs:4px;--sheen-space-s:8px;--sheen-space-m:12px;--sheen-space-l:16px;--sheen-space-xl:20px;--sheen-space-xxl:24px;--sheen-space-xxxl:32px;--sheen-space-hit:44px;--sheen-space-min:8px;--sheen-radius-card:24px;--sheen-radius-photo:20px;--sheen-radius-sheet:38px;--sheen-radius-field:14px;--sheen-radius-group:20px;--sheen-width-readable:720px;--sheen-width-wide:1080px;--sheen-width-page:1440px;--sheen-size-app-bar:60px;--sheen-size-field:38px;--sheen-size-control:36px;--sheen-size-avatar-xs:18px;--sheen-size-avatar-s:30px;--sheen-size-avatar-m:40px;--sheen-size-avatar-xs-text:9px;--sheen-size-avatar-s-text:12px;--sheen-size-avatar-m-text:15px;--sheen-size-avatar-note-text:12px;--sheen-size-button-xsmall:32px;--sheen-size-confirm:440px;--sheen-size-confirm-button:34px;--sheen-size-pill-small:22px;--sheen-size-pill-small-text:12px;--sheen-size-select-chip:24px;--sheen-size-select-clear:24px;--sheen-size-panel-wide:440px;--sheen-size-icon-button-compact:30px;--sheen-size-icon-button-compact-radius:9px;--sheen-size-icon-button-compact-glyph:18px;--sheen-size-table-tight-padding:9px;--sheen-size-date-pop-min:260px;--sheen-size-date-pop-max:360px;--sheen-size-date-range-pop:540px;--sheen-size-date-presets:168px;--sheen-size-date-end:42px;--sheen-size-calendar-day:30px;--sheen-size-calendar-button:24px;--sheen-motion-press:337ms linear(0, 0.029, 0.099, 0.189, 0.286, 0.381, 0.471, 0.553, 0.625, 0.688, 0.742, 0.787, 0.826, 0.858, 0.884, 0.906, 0.924, 0.939, 0.951, 0.961, 0.968, 0.975, 0.98, 0.984, 0.987, 0.99, 0.992, 0.994, 0.995, 0.996, 0.997, 0.997, 1);--sheen-motion-press-duration:337ms;--sheen-motion-snappy:385ms linear(0, 0.028, 0.095, 0.186, 0.287, 0.389, 0.487, 0.578, 0.658, 0.728, 0.788, 0.838, 0.878, 0.911, 0.937, 0.957, 0.972, 0.984, 0.992, 0.998, 1.002, 1.004, 1.006, 1.006, 1.006, 1.006, 1.006, 1.005, 1.004, 1.004, 1.003, 1.002, 1);--sheen-motion-snappy-duration:385ms;--sheen-motion-smooth:607ms linear(0, 0.029, 0.099, 0.189, 0.286, 0.382, 0.472, 0.553, 0.625, 0.688, 0.742, 0.788, 0.826, 0.858, 0.885, 0.906, 0.924, 0.939, 0.951, 0.961, 0.968, 0.975, 0.98, 0.984, 0.987, 0.99, 0.992, 0.994, 0.995, 0.996, 0.997, 0.997, 1);--sheen-motion-smooth-duration:607ms;--sheen-motion-gentle:809ms linear(0, 0.029, 0.099, 0.189, 0.286, 0.382, 0.471, 0.553, 0.625, 0.688, 0.742, 0.787, 0.826, 0.858, 0.884, 0.906, 0.924, 0.939, 0.951, 0.961, 0.968, 0.975, 0.98, 0.984, 0.987, 0.99, 0.992, 0.994, 0.995, 0.996, 0.997, 0.997, 1);--sheen-motion-gentle-duration:809ms;--sheen-motion-celebrate:729ms linear(0, 0.036, 0.124, 0.242, 0.372, 0.501, 0.621, 0.727, 0.816, 0.888, 0.944, 0.985, 1.014, 1.032, 1.042, 1.046, 1.045, 1.042, 1.037, 1.031, 1.025, 1.019, 1.014, 1.01, 1.006, 1.003, 1.001, 1, 0.999, 0.998, 0.998, 0.998, 1);--sheen-motion-celebrate-duration:729ms;--sheen-motion-fade-in:180ms;--sheen-motion-fade-out:120ms;--sheen-motion-reduced-fade:150ms;--sheen-motion-press-down:120ms;--sheen-motion-stagger:30ms;--sheen-motion-ease-out:cubic-bezier(0.2, 0, 0, 1);--sheen-motion-ease-in:cubic-bezier(0.4, 0, 1, 1);--sheen-motion-press-scale:0.97;color-scheme:light}
 @media (prefers-reduced-motion:reduce){:root{--sheen-motion-press:150ms linear;--sheen-motion-press-duration:150ms;--sheen-motion-snappy:150ms linear;--sheen-motion-snappy-duration:150ms;--sheen-motion-smooth:150ms linear;--sheen-motion-smooth-duration:150ms;--sheen-motion-gentle:150ms linear;--sheen-motion-gentle-duration:150ms;--sheen-motion-celebrate:150ms linear;--sheen-motion-celebrate-duration:150ms;--sheen-motion-press-scale:1;}}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--sheen-background:#05070B;--sheen-surface:#0E1219;--sheen-surface-muted:#161B24;--sheen-track:#212734;--sheen-separator:#FFFFFF17;--sheen-text:#F5F6F8;--sheen-text-secondary:#A9B0BD;--sheen-text-tertiary:#868E9D;--sheen-accent:#1F6FEB;--sheen-on-accent:#FFFFFF;--sheen-accent-text:#6AA8FF;--sheen-success:#5EE08F;--sheen-warning:#FFC266;--sheen-danger:#FF7A7A;--sheen-rating:#F5B83D;--sheen-sheet:#10141B;--sheen-deal-fill:#D93036;--sheen-tonal:#FFFFFF14;color-scheme:dark}}
 :root[data-theme="dark"]{--sheen-background:#05070B;--sheen-surface:#0E1219;--sheen-surface-muted:#161B24;--sheen-track:#212734;--sheen-separator:#FFFFFF17;--sheen-text:#F5F6F8;--sheen-text-secondary:#A9B0BD;--sheen-text-tertiary:#868E9D;--sheen-accent:#1F6FEB;--sheen-on-accent:#FFFFFF;--sheen-accent-text:#6AA8FF;--sheen-success:#5EE08F;--sheen-warning:#FFC266;--sheen-danger:#FF7A7A;--sheen-rating:#F5B83D;--sheen-sheet:#10141B;--sheen-deal-fill:#D93036;--sheen-tonal:#FFFFFF14;color-scheme:dark}
@@ -41,10 +41,10 @@
 @media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .sheen-card{box-shadow:0 1px 2px rgba(16,20,30,.05),0 6px 20px rgba(16,20,30,.06)}}
 .sheen-muted-surface{background:var(--sheen-surface-muted);border-radius:var(--sheen-radius-field)}
 .sheen-visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-.sheen-stack{display:flex;flex-direction:column;gap:var(--sheen-gap,12px)}
-.sheen-row{display:flex;align-items:center;gap:var(--sheen-gap,12px)}
+.sheen-stack{display:flex;flex-direction:column;gap:max(var(--sheen-space-min),var(--sheen-gap,12px))}
+.sheen-row{display:flex;align-items:center;gap:max(var(--sheen-space-min),var(--sheen-gap,12px))}
 .sheen-wrap{flex-wrap:wrap}
-.sheen-grid{display:grid;grid-template-columns:repeat(var(--sheen-cols,4),minmax(0,1fr));gap:var(--sheen-gap,24px)}
+.sheen-grid{display:grid;grid-template-columns:repeat(var(--sheen-cols,4),minmax(0,1fr));gap:max(var(--sheen-space-min),var(--sheen-gap,24px))}
 @media (max-width:1100px){.sheen-grid{grid-template-columns:repeat(min(var(--sheen-cols,4),2),minmax(0,1fr))}}
 @media (max-width:720px){.sheen-grid{grid-template-columns:minmax(0,1fr)}
 .sheen-grid.sheen-scroll-s{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:calc(-1 * clamp(16px,4.45vw,64px));padding-inline:clamp(16px,4.45vw,64px);scrollbar-width:none}
@@ -94,7 +94,7 @@
 .sheen-chip.sheen-deal{background:color-mix(in srgb,var(--sheen-deal-fill) 16%,transparent);color:var(--sheen-danger)}
 .sheen-chip.sheen-deal[aria-pressed="true"],.sheen-chip.sheen-deal.sheen-on{background:var(--sheen-deal-fill);color:#fff}
 .sheen-chip.sheen-glass-clear{color:#fff}
-.sheen-chip-row{display:flex;flex-wrap:wrap;gap:8px}
+.sheen-chip-row{display:flex;flex-wrap:wrap;gap:max(var(--sheen-space-min),8px)}
 .sheen-chip-row.sheen-scroll{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-block:2px}
 .sheen-tabs{display:inline-flex;padding:4px;border-radius:24px;background:var(--sheen-tonal,rgba(127,127,127,.14));gap:2px}
 .sheen-tabs a,.sheen-tabs button{height:40px;padding-inline:18px;border-radius:20px;display:inline-flex;align-items:center;font-weight:600;font-size:15px;color:var(--sheen-text-secondary);border:0;background:none;cursor:pointer}
@@ -104,7 +104,7 @@
 /* Focus is never a box around a field's words (0.1.4). Since 0.7.0 a text field draws no ring at all, so the field shows
    its focus by its caret and its label in the accent (forced colors still outline it, in 06-access). */
 .sheen-field:focus-within>span:first-child{color:var(--sheen-accent-text)}
-.sheen :is(.sheen-field,.sheen-segment,.sheen-picker-pill,.sheen-control) :is(input,select,textarea,.sheen-segment-trigger,.sheen-picker-trigger):focus-visible{outline:none}
+.sheen-select-trigger:focus-visible,.sheen :is(.sheen-field,.sheen-segment,.sheen-picker-pill,.sheen-control) :is(input,select,textarea,.sheen-segment-trigger,.sheen-picker-trigger):focus-visible{outline:none}
 /* A part of a glass bar (a search bar's where, dates, guests): the part being filled lights up as its own pill. Its
    opener (a button that opens a calendar) takes .sheen-segment-trigger; what opens from it keeps its own focus ring. */
 .sheen-segment{border-radius:999px;transition:background-color .15s,box-shadow .15s}
@@ -118,7 +118,7 @@
 .sheen-field input::placeholder,.sheen-field textarea::placeholder{color:var(--sheen-text-tertiary)}
 .sheen-field[aria-invalid="true"],.sheen-field.sheen-invalid{box-shadow:inset 0 0 0 2px var(--sheen-danger)}
 .sheen-field-error{font-size:13.5px;color:var(--sheen-danger);margin-top:4px}
-.sheen-fields{display:grid;grid-template-columns:repeat(var(--sheen-cols,2),minmax(0,1fr));gap:10px}
+.sheen-fields{display:grid;grid-template-columns:repeat(var(--sheen-cols,2),minmax(0,1fr));gap:max(var(--sheen-space-min),10px)}
 @media (max-width:720px){.sheen-fields{grid-template-columns:minmax(0,1fr)}}
 .sheen-stepper{display:inline-flex;align-items:center;gap:14px}
 .sheen-stepper button{width:36px;height:36px;border-radius:18px;border:0;background:var(--sheen-tonal,rgba(127,127,127,.14));color:var(--sheen-text);display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
@@ -129,7 +129,7 @@
 .sheen-check input:checked{background:var(--sheen-accent);box-shadow:none}
 .sheen-check input:checked::after{content:"";width:11px;height:6px;border-inline-start:2.5px solid var(--sheen-on-accent);border-bottom:2.5px solid var(--sheen-on-accent);transform:translateY(-2px) rotate(-45deg)}
 :root[dir="rtl"] .sheen-check input:checked::after,[dir="rtl"] .sheen-check input:checked::after{transform:translateY(-2px) rotate(45deg)}
-.sheen-choices{display:flex;flex-direction:column;gap:10px;border:0;padding:0;margin:0;min-width:0}
+.sheen-choices{display:flex;flex-direction:column;gap:max(var(--sheen-space-min),10px);border:0;padding:0;margin:0;min-width:0}
 .sheen-choice{position:relative;display:grid;grid-template-columns:24px minmax(0,1fr) auto;align-items:center;gap:16px;padding:14px 16px;border-radius:20px;box-shadow:inset 0 0 0 1px var(--sheen-separator);cursor:pointer;background:var(--sheen-surface)}
 .sheen-choice.sheen-has-media{grid-template-columns:24px 88px minmax(0,1fr) auto}
 .sheen-choice input{appearance:none;margin:0;width:24px;height:24px;border-radius:12px;box-shadow:inset 0 0 0 2px var(--sheen-text-tertiary);cursor:pointer}
@@ -388,7 +388,7 @@
 .sheen-dialog-head{display:flex;align-items:center;gap:12px;padding:20px 20px 0}
 .sheen-dialog-head>:first-child{flex:1;margin:0;font-size:20px;font-weight:700}
 .sheen-dialog-body{padding:16px 20px}
-.sheen-dialog-foot{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:10px;padding:0 20px 20px}
+.sheen-dialog-foot{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:max(var(--sheen-space-min),10px);padding:0 20px 20px}
 
 /* <label class="sheen-switch"><input type="checkbox" role="switch"> words</label> */
 .sheen-switch{display:inline-flex;align-items:center;gap:10px;cursor:pointer;font-size:15px}
@@ -424,7 +424,7 @@
 .sheen-empty-glyph{display:grid;place-items:center;inline-size:64px;block-size:64px;border-radius:22px;color:var(--sheen-accent-text);background:color-mix(in srgb,var(--sheen-accent) 14%,transparent)}
 .sheen-empty-title{font-size:19px;font-weight:700;color:var(--sheen-text);margin:0}
 .sheen-empty p{margin:0;max-inline-size:46ch}
-.sheen-empty-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-block-start:6px}
+.sheen-empty-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:max(var(--sheen-space-min),8px);margin-block-start:6px}
 .sheen-skeleton-line{block-size:14px;border-radius:7px;margin-block:6px}
 .sheen-skeleton-line.sheen-short{inline-size:40%}
 .sheen-skeleton-block{block-size:var(--sheen-skeleton-h,120px);border-radius:16px}
@@ -653,7 +653,7 @@ sheen-menu-button{position:relative;display:inline-block}
 .sheen-menu-item:hover,.sheen-menu-item:focus-visible{background:var(--sheen-track)}
 .sheen-menu-item[aria-disabled="true"]{color:var(--sheen-text-tertiary);cursor:not-allowed}
 .sheen-menu-item:has(.sheen-menu-words){display:flex;align-items:center;gap:10px}
-.sheen-menu-words{display:flex;flex-direction:column;flex:1;min-inline-size:0}
+.sheen-select-words,.sheen-menu-words{display:flex;flex-direction:column;flex:1;min-inline-size:0}
 .sheen-menu-hint{font-size:11.5px;font-weight:500;color:var(--sheen-text-tertiary)}
 .sheen-menu-item .sheen-kbd{margin-inline-start:auto}
 .sheen-menu-item.sheen-danger{color:var(--sheen-danger)}
@@ -738,7 +738,7 @@ sheen-menu-button.sheen-small .sheen-menu,.sheen-small sheen-menu-button .sheen-
 .sheen-auth-card{inline-size:min(400px,100%);box-sizing:border-box;padding:24px;border-radius:var(--sheen-radius-card);background:var(--sheen-surface);display:flex;flex-direction:column;gap:14px}
 .sheen-auth-card>.sheen-app-tool{align-self:flex-end;padding:4px 8px;border-radius:8px}
 .sheen-auth-title{margin:0;font-size:22px}
-.sheen-form{display:flex;flex-direction:column;gap:14px}
+.sheen-form{display:flex;flex-direction:column;gap:max(var(--sheen-space-min),14px)}
 .sheen-form-field{display:flex;flex-direction:column;gap:6px;font-size:14px}
 .sheen-input{block-size:44px;box-sizing:border-box;padding-inline:12px;border-radius:var(--sheen-radius-field);border:1px solid var(--sheen-separator);background:var(--sheen-background);color:var(--sheen-text);font:inherit}
 [dir="rtl"] .sheen-input[dir="ltr"]{text-align:end}
@@ -749,7 +749,7 @@ sheen-menu-button.sheen-small .sheen-menu,.sheen-small sheen-menu-button .sheen-
    Views row (tabs with counts, saved views at the end), find row (search, controls, Filters with a count), applied row
    (removable chips, Clear all, the result count), result messages (none, error), sortable headers, a bulk bar over the
    table while rows are ticked, and a pinned row-menu column. Layout and look only: the app keeps the state. */
-.sheen-list-kit{display:flex;flex-direction:column;gap:12px;container-type:inline-size;min-inline-size:0}
+.sheen-list-kit{display:flex;flex-direction:column;gap:max(var(--sheen-space-min),12px);container-type:inline-size;min-inline-size:0}
 
 /* views row: the main quick filters as tabs (they are the status filter), saved views at the end. The same tab look, as links
    with aria-current="page" in a <nav>, is the page tab row of a module with several pages. */
@@ -773,27 +773,27 @@ sheen-menu-button.sheen-small .sheen-menu,.sheen-small sheen-menu-button .sheen-
 .sheen-page-tabs{display:flex;gap:4px;min-inline-size:0;overflow-x:auto;scrollbar-width:none;border-block-end:1px solid var(--sheen-separator)}
 
 /* find row: one wide search, then compact controls of the same height */
-.sheen-find-row{display:flex;align-items:center;gap:8px;min-inline-size:0}
+.sheen-find-row{display:flex;align-items:center;gap:max(var(--sheen-space-min),8px);min-inline-size:0}
 .sheen-control{block-size:36px;display:inline-flex;align-items:center;gap:7px;padding-inline:12px;border:0;border-radius:11px;background:var(--sheen-surface);box-shadow:inset 0 0 0 1px var(--sheen-separator);color:var(--sheen-text);font:inherit;font-size:13.5px;font-weight:600;line-height:1.2;white-space:nowrap;cursor:pointer}
-.sheen-control:disabled{opacity:.45;cursor:not-allowed}
+sheen-select[data-disabled],.sheen-select-option[aria-disabled="true"],.sheen-control:disabled{opacity:.45;cursor:not-allowed}
 /* a control inside an inline wrapper (an app's component) sits at the top of its line, so no baseline gap moves it off
    the row; a control holding a text field draws no ring, as no text field does (0.7.0) */
 .sheen-control,sheen-menu-button[variant="control"]{vertical-align:top}
 /* an open control (its menu or panel open) takes the tonal fill and keeps its hairline (0.7.0: no accent ring or glow;
    the app mockups' rings are annotations, and only keyboard focus draws a ring) */
-.sheen-control[aria-expanded="true"]{background:var(--sheen-tonal)}
+sheen-select[variant="control"][data-open],.sheen-control[aria-expanded="true"]{background:var(--sheen-tonal)}
 .sheen-control .sheen-icon{inline-size:15px;block-size:15px;flex:none;color:var(--sheen-text-secondary)}
 .sheen-find{flex:1 1 auto;min-inline-size:0;cursor:text;font-weight:400}
-.sheen-find input{all:unset;flex:1;min-inline-size:0;color:var(--sheen-text)}
-.sheen-find input::placeholder{color:var(--sheen-text-tertiary)}
+.sheen-select-input,.sheen-find input{all:unset;flex:1;min-inline-size:0;color:var(--sheen-text)}
+.sheen-select-placeholder,.sheen-select-input::placeholder,.sheen-find input::placeholder{color:var(--sheen-text-tertiary)}
 .sheen-control-count{min-inline-size:18px;block-size:18px;border-radius:9px;padding-inline:5px;display:inline-grid;place-items:center;background:var(--sheen-accent);color:var(--sheen-on-accent);font-size:11px;font-weight:700;font-variant-numeric:tabular-nums}
 
 /* 0.7.0: a menu button in the control look (variant="control") and its glyphs, a chevron that turns while its menu is
    open, and a control that shows its filters are on (the accent tint and its count, no ring) */
-.sheen-control>.sheen-glyph{inline-size:15px;block-size:15px;flex:none;color:var(--sheen-text-secondary)}
-.sheen-control-chevron{transition:transform var(--sheen-motion-snappy)}
-[aria-expanded="true"]>.sheen-control-chevron{transform:rotate(180deg)}
-@media (prefers-reduced-motion:reduce){.sheen-control-chevron{transition:none}}
+sheen-select[variant="control"]>.sheen-select-chevron,.sheen-select-search>.sheen-glyph,.sheen-control>.sheen-glyph{inline-size:15px;block-size:15px;flex:none;color:var(--sheen-text-secondary)}
+.sheen-select-chevron,.sheen-control-chevron{transition:transform var(--sheen-motion-snappy)}
+sheen-select[data-open]>.sheen-select-chevron,[aria-expanded="true"]>.sheen-control-chevron{transform:rotate(180deg)}
+@media (prefers-reduced-motion:reduce){.sheen-select-chevron,.sheen-control-chevron{transition:none}}
 .sheen-control.sheen-on{background:color-mix(in srgb,var(--sheen-accent) 8%,var(--sheen-surface))}
 .sheen-control.sheen-on :is(.sheen-glyph,.sheen-icon){color:var(--sheen-accent-text)}
 /* a control menu button's box hugs the control it draws (no line box under a glyph-only button) and, with words, carries
@@ -813,7 +813,7 @@ sheen-menu-button>.sheen-button>.sheen-glyph{inline-size:18px;block-size:18px;fl
 .sheen-link-button>:is(.sheen-icon,.sheen-glyph){inline-size:14px;block-size:14px;flex:none}
 
 /* applied row: one removable chip per filter (never repeated elsewhere), Clear all, the result count */
-.sheen-applied-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-block-size:30px}
+.sheen-applied-row{display:flex;align-items:center;gap:max(var(--sheen-space-min),8px);flex-wrap:wrap;min-block-size:30px}
 .sheen-filter-chip{display:inline-flex;align-items:center;gap:4px;block-size:30px;padding-inline:12px 4px;border-radius:15px;background:color-mix(in srgb,var(--sheen-accent) 9%,var(--sheen-surface));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--sheen-accent) 28%,transparent);font-size:13px;white-space:nowrap}
 .sheen-filter-chip>span{color:var(--sheen-text-secondary)}
 .sheen-filter-chip>b{font-weight:600;color:var(--sheen-accent-text)}
@@ -829,11 +829,11 @@ sheen-menu-button>.sheen-button>.sheen-glyph{inline-size:18px;block-size:18px;fl
 .sheen-filter-field{display:flex;flex-direction:column;gap:6px;padding-block:10px;border-block-end:1px solid var(--sheen-separator);border-inline:0;border-block-start:0;margin:0;padding-inline:0;min-inline-size:0}
 .sheen-filter-group .sheen-filter-field:last-child{border-block-end:0}
 .sheen-filter-field legend{padding:0;font-size:13.5px;font-weight:600}
-.sheen-filter-option{display:flex;align-items:center;gap:10px;min-block-size:36px;padding:6px 10px;border-radius:10px;font-size:13.5px;cursor:pointer}
-.sheen-filter-option:hover{background:var(--sheen-tonal)}
-.sheen-filter-option input{inline-size:18px;block-size:18px;margin:0;accent-color:var(--sheen-accent);flex:none}
+.sheen-select-option,.sheen-filter-option{display:flex;align-items:center;gap:10px;min-block-size:36px;padding:6px 10px;border-radius:10px;font-size:13.5px;cursor:pointer}
+.sheen-select-option.sheen-active,.sheen-select-option:not([aria-disabled="true"]):hover,.sheen-filter-option:hover{background:var(--sheen-tonal)}
+.sheen-select-check,.sheen-filter-option input{inline-size:18px;block-size:18px;margin:0;accent-color:var(--sheen-accent);flex:none}
 .sheen-filter-option small{margin-inline-start:auto;color:var(--sheen-text-tertiary);font-size:12.5px;font-variant-numeric:tabular-nums}
-.sheen-filter-footer{position:sticky;inset-block-end:0;display:flex;align-items:center;justify-content:space-between;gap:10px;padding-block:12px;margin-block-start:12px;border-block-start:1px solid var(--sheen-separator);background:inherit}
+.sheen-filter-footer{position:sticky;inset-block-end:0;display:flex;align-items:center;justify-content:space-between;gap:max(var(--sheen-space-min),10px);padding-block:12px;margin-block-start:12px;border-block-start:1px solid var(--sheen-separator);background:inherit}
 
 /* result messages: nothing matches (with a way out), or the results couldn't load (no count is shown then) */
 .sheen-list-message{display:flex;flex-direction:column;align-items:center;gap:8px;padding:32px 16px;text-align:center;border-radius:18px;background:var(--sheen-surface)}
@@ -841,7 +841,7 @@ sheen-menu-button>.sheen-button>.sheen-glyph{inline-size:18px;block-size:18px;fl
 .sheen-list-message.sheen-danger .sheen-icon{color:var(--sheen-danger)}
 .sheen-list-message b{font-size:15px}
 .sheen-list-message p{margin:0;max-inline-size:420px;color:var(--sheen-text-secondary);font-size:13.5px}
-.sheen-list-message-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-block-start:4px}
+.sheen-list-message-actions{display:flex;gap:max(var(--sheen-space-min),8px);flex-wrap:wrap;justify-content:center;margin-block-start:4px}
 
 /* sortable headers: click to sort, again to reverse. The arrow sits in the end padding, so a sortable column is no wider */
 .sheen-table th:has(>.sheen-sort-button){padding:0}
@@ -871,7 +871,7 @@ th[aria-sort="ascending"],th[aria-sort="descending"]{color:var(--sheen-text)}
 
 /* bulk bar: over the table header while rows are ticked. The count, select all, at most two promoted actions, a menu
    for the rest, and Clear. While it works it shows progress; when some failed it says how many and links to them. */
-.sheen-bulk-bar{position:sticky;inset-block-start:0;z-index:3;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 12px;background:color-mix(in srgb,var(--sheen-accent) 10%,var(--sheen-surface));border-block-end:1px solid var(--sheen-separator);font-size:13.5px}
+.sheen-bulk-bar{position:sticky;inset-block-start:0;z-index:3;display:flex;align-items:center;gap:max(var(--sheen-space-min),10px);flex-wrap:wrap;padding:8px 12px;background:color-mix(in srgb,var(--sheen-accent) 10%,var(--sheen-surface));border-block-end:1px solid var(--sheen-separator);font-size:13.5px}
 .sheen-bulk-bar[hidden]{display:none}
 .sheen-bulk-count{display:inline-flex;gap:5px;font-weight:600}
 .sheen-bulk-count b{color:var(--sheen-accent-text);font-variant-numeric:tabular-nums}
@@ -899,12 +899,12 @@ th[aria-sort="ascending"],th[aria-sort="descending"]{color:var(--sheen-text)}
    under the line above; a ticked option is tinted; counts at 500; an outlined 18px box with a drawn tick, in both themes */
 .sheen-filter-field{gap:1px;padding-block-start:0}
 .sheen-filter-field legend{padding-block-start:10px;margin-block-end:6px}
-.sheen-filter-option:has(input:checked){background:color-mix(in srgb,var(--sheen-accent) 10%,transparent);font-weight:600}
+.sheen-select-option[aria-selected="true"],.sheen-filter-option:has(input:checked){background:color-mix(in srgb,var(--sheen-accent) 10%,transparent);font-weight:600}
 .sheen-filter-option small{font-weight:500}
-.sheen-filter-option input[type="checkbox"]{appearance:none;-webkit-appearance:none;display:inline-grid;place-content:center;border-radius:5px;box-shadow:inset 0 0 0 1.5px var(--sheen-text-tertiary);cursor:pointer}
-.sheen-filter-option input[type="checkbox"]:checked{background:var(--sheen-accent);box-shadow:none}
-.sheen-filter-option input[type="checkbox"]:checked::after{content:"";inline-size:9px;block-size:5px;border-inline-start:2px solid var(--sheen-on-accent);border-block-end:2px solid var(--sheen-on-accent);transform:translateY(-1px) rotate(-45deg)}
-[dir="rtl"] .sheen-filter-option input[type="checkbox"]:checked::after{transform:translateY(-1px) rotate(45deg)}
+[aria-multiselectable="true"] .sheen-select-check,.sheen-filter-option input[type="checkbox"]{appearance:none;-webkit-appearance:none;display:inline-grid;place-content:center;border-radius:5px;box-shadow:inset 0 0 0 1.5px var(--sheen-text-tertiary);cursor:pointer}
+[aria-multiselectable="true"] [aria-selected="true"]>.sheen-select-check,.sheen-filter-option input[type="checkbox"]:checked{background:var(--sheen-accent);box-shadow:none}
+[aria-selected="true"]>.sheen-select-check::after,.sheen-filter-option input[type="checkbox"]:checked::after{content:"";inline-size:9px;block-size:5px;border-inline-start:2px solid var(--sheen-on-accent);border-block-end:2px solid var(--sheen-on-accent);transform:translateY(-1px) rotate(-45deg)}
+[dir="rtl"] [aria-selected="true"]>.sheen-select-check::after,[dir="rtl"] .sheen-filter-option input[type="checkbox"]:checked::after{transform:translateY(-1px) rotate(45deg)}
 /* forced colors drop the drawn box's shadow and fill, so the system draws the checkbox */
 @media (forced-colors: active){.sheen-filter-option input[type="checkbox"]{appearance:auto;-webkit-appearance:auto;box-shadow:none}.sheen-filter-option input[type="checkbox"]:checked::after{content:none}}
 
@@ -925,6 +925,38 @@ th[aria-sort="ascending"],th[aria-sort="descending"]{color:var(--sheen-text)}
 .sheen-table.sheen-small th:has(>.sheen-sort-button){padding:0}
 .sheen-table.sheen-small .sheen-pin-end{padding-inline:4px}
 /* end 0.7.0 list kit */
+
+/* 12-avatar.css */
+/* Avatar (0.8.0): a person's initials in a circle, as Flutter sheen's SheenAvatar. <sheen-avatar> draws .sheen-avatar in
+   the light DOM: the initials in a <span>, or the filled user glyph on the track colour without a name, and the photo
+   after them, so it covers them once it loads. The diameter and the initials' size are tokens: 40 and 15 (size.avatarM,
+   avatarMText) without a size, size="s" 30 and 12, size="xs" 18 and 9.
+   Fill: data-tint, which the element sets from the name (or tint-key), picks one of the eight --sheen-tint-* tokens
+   (Flutter sheen's SheenTint, the same in both themes). White initials need 4.5:1 (WCAG AA), so each tint mixes toward
+   black, keeping the largest whole percent P of the tint that still reaches 4.5:1. color-mix in srgb scales each
+   gamma-encoded channel by P; a tint that passes alone keeps 100%. The circle runs at 135deg from that colour to 65% of
+   it, darker only, so the contrast holds across the whole circle. tests/elements/avatar-0.8.test.mjs reads every P from
+   the built CSS and checks both limits.
+   .sheen-avatar-name: the avatar beside a name (<b>) and a second line (<small>), as a table cell draws a person. */
+:where(.sheen-avatar)[hidden]{display:none!important}
+.sheen-avatar{--sheen-avatar-size:var(--sheen-size-avatar-m);--sheen-avatar-text:var(--sheen-size-avatar-m-text);display:inline-grid;place-items:center;flex:none;overflow:hidden;inline-size:var(--sheen-avatar-size);block-size:var(--sheen-avatar-size);border-radius:50%;background:var(--sheen-track);color:var(--sheen-on-accent);font-size:var(--sheen-avatar-text);font-weight:700;line-height:1;letter-spacing:0;white-space:nowrap}
+.sheen-avatar[size="s"]{--sheen-avatar-size:var(--sheen-size-avatar-s);--sheen-avatar-text:var(--sheen-size-avatar-s-text)}
+.sheen-avatar[size="xs"]{--sheen-avatar-size:var(--sheen-size-avatar-xs);--sheen-avatar-text:var(--sheen-size-avatar-xs-text)}
+.sheen-avatar>*{grid-area:1/1}
+.sheen-avatar>svg{inline-size:55%;block-size:55%;color:var(--sheen-text-tertiary)}
+.sheen-avatar>img{inline-size:100%;block-size:100%;object-fit:cover}
+.sheen-avatar[data-tint]{background:linear-gradient(135deg,var(--sheen-avatar-fill),color-mix(in srgb,var(--sheen-avatar-fill) 65%,#000))}
+.sheen-avatar[data-tint="blue"]{--sheen-avatar-fill:color-mix(in srgb,var(--sheen-tint-blue) 100%,#000)}
+.sheen-avatar[data-tint="red"]{--sheen-avatar-fill:color-mix(in srgb,var(--sheen-tint-red) 92%,#000)}
+.sheen-avatar[data-tint="green"]{--sheen-avatar-fill:color-mix(in srgb,var(--sheen-tint-green) 81%,#000)}
+.sheen-avatar[data-tint="orange"]{--sheen-avatar-fill:color-mix(in srgb,var(--sheen-tint-orange) 79%,#000)}
+.sheen-avatar[data-tint="purple"]{--sheen-avatar-fill:color-mix(in srgb,var(--sheen-tint-purple) 100%,#000)}
+.sheen-avatar[data-tint="teal"]{--sheen-avatar-fill:color-mix(in srgb,var(--sheen-tint-teal) 90%,#000)}
+.sheen-avatar[data-tint="violet"]{--sheen-avatar-fill:color-mix(in srgb,var(--sheen-tint-violet) 100%,#000)}
+.sheen-avatar[data-tint="gray"]{--sheen-avatar-fill:color-mix(in srgb,var(--sheen-tint-gray) 100%,#000)}
+.sheen-avatar-name{display:inline-flex;align-items:center;gap:var(--sheen-space-s)}
+.sheen-avatar-name b{white-space:nowrap}
+.sheen-avatar-name small{display:block;color:var(--sheen-text-secondary);font-size:var(--sheen-size-avatar-note-text)}
 
 /* 13-app-pages.css */
 /* 0.7.0 app pages */
@@ -953,7 +985,7 @@ th[aria-sort="ascending"],th[aria-sort="descending"]{color:var(--sheen-text)}
 .sheen :is(input:not([type="checkbox"],[type="radio"],[type="range"],[type="button"],[type="submit"],[type="reset"],[type="file"],[type="color"],[type="image"]),textarea):focus-visible{outline:none!important}
 /* inside a field or a control, a select or a picker button never draws a box of its own (0.1.4): the field or control
    rings around it, after Tab, like every other ring */
-:is(.sheen-field,.sheen-control):has(:is(select,.sheen-picker-trigger):focus-visible){outline:2px solid var(--sheen-accent-text);outline-offset:2px}
+sheen-select:has(>.sheen-select-trigger:focus-visible),:is(.sheen-field,.sheen-control):has(:is(select,.sheen-picker-trigger):focus-visible){outline:2px solid var(--sheen-accent-text);outline-offset:2px}
 /* forced colors keep their own outline on a focused field (06-access), after a press too */
 @media not (forced-colors: active){:root[data-sheen-focus]:not([data-sheen-keyboard]) :is(.sheen-field,.sheen-control):has(:is(select,.sheen-picker-trigger):focus-visible){outline:none}}
 
@@ -968,20 +1000,21 @@ th[aria-sort="ascending"],th[aria-sort="descending"]{color:var(--sheen-text)}
 /* an app page's header: the crumbs at 12.5px, the 26px title and a 14px secondary
    line with room for a pill beside it, then the actions at the end edge on the bottom line. The mockups set no narrow
    layout: the words keep 320px, and under that the actions move to a line of their own, still at the end edge. */
-.sheen-page-head{display:flex;flex-wrap:wrap;align-items:flex-end;gap:16px}
+.sheen-page-head{display:flex;flex-wrap:wrap;align-items:flex-end;gap:max(var(--sheen-space-min),16px)}
 .sheen-page-head-text{flex:1 1 0;min-inline-size:min(100%,320px);display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px}
 .sheen-page-head-text>.sheen-page-title{inline-size:100%}
 .sheen-page-crumbs{inline-size:100%;font-size:12.5px;color:var(--sheen-text-tertiary)}
 .sheen-page-subtitle{margin:0;font-size:14px;color:var(--sheen-text-secondary)}
-.sheen-page-head-actions{display:flex;flex-wrap:wrap;gap:8px;margin-inline-start:auto}
+.sheen-page-head-actions{display:flex;flex-wrap:wrap;gap:max(var(--sheen-space-min),8px);margin-inline-start:auto}
 
 /* a side panel with a heading keeps the Filters footer on its bottom edge, however few the options */
 sheen-side-panel.sheen-headed .sheen-panel-body{display:flex;flex-direction:column}
 sheen-side-panel.sheen-headed .sheen-panel-body>:is(.sheen-filter-footer,.sheen-panel-foot){margin-block-start:auto}
 sheen-side-panel.sheen-headed .sheen-panel-body:has(>.sheen-filter-footer){padding-block-end:0}
 
-/* small tables: 16px checkboxes in the accent; a busy table (aria-busy) is one solid placeholder block that breathes */
-.sheen-table.sheen-small input[type="checkbox"]{inline-size:16px;block-size:16px;accent-color:var(--sheen-accent)}
+/* small tables: 16px checkboxes in the accent, though not a switch (0.8.0: role="switch" or the kit's .sheen-switch keeps
+   its own size; :where keeps the 0.7 specificity); a busy table (aria-busy) is one solid placeholder block that breathes */
+.sheen-table.sheen-small input[type="checkbox"]:where(:not([role="switch"],.sheen-switch input)){inline-size:16px;block-size:16px;accent-color:var(--sheen-accent)}
 .sheen-table[aria-busy="true"] :is(th,td){color:transparent;background:var(--sheen-track);border-color:transparent;border-radius:7px}
 .sheen-table[aria-busy="true"] :is(th,td)>:not(input){visibility:hidden}
 @media (prefers-reduced-motion: no-preference){.sheen-table[aria-busy="true"]{animation:sheen-busy 1.4s ease-in-out infinite}}
@@ -998,7 +1031,7 @@ sheen-side-panel.sheen-headed .sheen-panel-body:has(>.sheen-filter-footer){paddi
 .sheen-status:is(.sheen-danger,.sheen-warning,.sheen-success){color:var(--sheen-text-secondary)}
 .sheen-status-title{margin:0;font-size:22px;line-height:1.2;font-weight:700;letter-spacing:-.022em;color:var(--sheen-text)}
 .sheen-status p{margin:0;max-inline-size:34ch;font-size:15px;line-height:1.3}
-.sheen-status-actions{display:flex;flex-direction:column;gap:8px;margin-block-start:8px;inline-size:min(100%,280px)}
+.sheen-status-actions{display:flex;flex-direction:column;gap:max(var(--sheen-space-min),8px);margin-block-start:8px;inline-size:min(100%,280px)}
 .sheen-status-actions>*{inline-size:100%}
 .sheen-status small{color:var(--sheen-text-tertiary)}
 
@@ -1053,9 +1086,9 @@ sheen-toaster[position="top"] .sheen-toast-text{font-size:14.5px;font-weight:600
 .sheen-form-field.sheen-small textarea.sheen-input{block-size:auto;min-block-size:76px}
 .sheen-form-field.sheen-small .sheen-input::placeholder{color:var(--sheen-text-tertiary)}
 .sheen-form-field.sheen-small>small{color:var(--sheen-text-tertiary)}
-.sheen-form-field.sheen-small .sheen-input[aria-invalid="true"]{box-shadow:inset 0 0 0 2px var(--sheen-danger)}
-.sheen-form-field.sheen-small:has(.sheen-input[aria-invalid="true"])>small{color:var(--sheen-danger)}
-.sheen-fields.sheen-small{gap:12px 16px}
+sheen-select:has(>.sheen-select-trigger[aria-invalid="true"]),.sheen-form-field.sheen-small .sheen-input[aria-invalid="true"]{box-shadow:inset 0 0 0 2px var(--sheen-danger)}
+.sheen-form-field.sheen-small:has(.sheen-select-trigger[aria-invalid="true"])>small,.sheen-form-field.sheen-small:has(.sheen-input[aria-invalid="true"])>small{color:var(--sheen-danger)}
+.sheen-fields.sheen-small{gap:max(var(--sheen-space-min),12px) max(var(--sheen-space-min),16px)}
 .sheen-fields>.sheen-wide{grid-column:1/-1}
 
 /* a select drawn as a field: its value and an 18px chevron in one box, the chevron at the end edge */
@@ -1067,7 +1100,7 @@ sheen-toaster[position="top"] .sheen-toast-text{font-size:14.5px;font-weight:600
    128px and growing alike (equal when both labels fit in 128px), one under the other when the row is too narrow. In a
    panel with a heading it sticks to the end of the scrolling body, so a body longer than the window scrolls under it
    and the buttons stay 20px above the panel's bottom edge. */
-.sheen-panel-foot{display:flex;flex-wrap:wrap;gap:10px;margin-block-start:auto;padding-block-start:14px}
+.sheen-panel-foot{display:flex;flex-wrap:wrap;gap:max(var(--sheen-space-min),10px);margin-block-start:auto;padding-block-start:14px}
 .sheen-panel-foot>*{flex:1 0 128px}
 sheen-side-panel.sheen-headed .sheen-panel-body:has(>.sheen-panel-foot){padding-block-end:0}
 sheen-side-panel.sheen-headed .sheen-panel-body>.sheen-panel-foot{position:sticky;inset-block-end:0;margin-inline:-20px;padding:14px 20px 20px;background:inherit}
@@ -1096,7 +1129,7 @@ sheen-side-panel.sheen-headed .sheen-panel-body>.sheen-panel-foot{position:stick
 
 /* the small command palette: a 560px box, a 36px search field, 36px rows with 18px glyphs, plain key caps */
 sheen-command-palette.sheen-small .sheen-cmd{inline-size:min(560px,calc(100vw - 32px));padding:10px;gap:10px;border-radius:20px;margin-block-start:14vh}
-sheen-command-palette.sheen-small .sheen-cmd-head{block-size:36px;padding:0 12px;gap:7px;border:0;border-radius:11px;box-shadow:inset 0 0 0 1px var(--sheen-separator);font-size:13.5px}
+.sheen-select-search,sheen-command-palette.sheen-small .sheen-cmd-head{block-size:36px;padding:0 12px;gap:7px;border:0;border-radius:11px;box-shadow:inset 0 0 0 1px var(--sheen-separator);font-size:13.5px}
 sheen-command-palette.sheen-small .sheen-cmd-head>.sheen-glyph{inline-size:15px;block-size:15px}
 sheen-command-palette.sheen-small .sheen-cmd-input{font-size:13.5px}
 sheen-command-palette.sheen-small .sheen-cmd-list{display:flex;flex-direction:column;gap:1px;padding:0;max-block-size:340px}
@@ -1106,7 +1139,7 @@ sheen-command-palette.sheen-small .sheen-cmd-row .sheen-glyph{inline-size:18px;b
 sheen-command-palette.sheen-small .sheen-cmd-row[aria-selected="true"]{background:var(--sheen-tonal)}
 
 /* a small dialog, and shortcuts in three columns of keys and words; one column when narrow */
-.sheen-dialog.sheen-small{display:flex;flex-direction:column;gap:10px;inline-size:min(720px,calc(100vw - 32px));padding:20px;border-radius:20px;background:var(--sheen-surface);box-shadow:0 0 0 1px var(--sheen-separator),0 24px 60px rgba(16,20,30,.22)}
+.sheen-dialog.sheen-small{display:flex;flex-direction:column;gap:max(var(--sheen-space-min),10px);inline-size:min(720px,calc(100vw - 32px));padding:20px;border-radius:20px;background:var(--sheen-surface);box-shadow:0 0 0 1px var(--sheen-separator),0 24px 60px rgba(16,20,30,.22)}
 .sheen-dialog.sheen-small:not([open]){display:none}
 .sheen-dialog.sheen-small .sheen-dialog-head{padding:18px 20px 6px;justify-content:space-between}
 .sheen-dialog.sheen-small .sheen-dialog-head>:first-child{font-size:22px;line-height:1.2;letter-spacing:-.022em}
@@ -1123,3 +1156,274 @@ sheen-command-palette.sheen-small .sheen-cmd-row[aria-selected="true"]{backgroun
    border (2px when invalid) and the chevron the text colour */
 @media (forced-colors: active){.sheen-form-field.sheen-small .sheen-input{border:1px solid CanvasText}.sheen-form-field.sheen-small .sheen-input[aria-invalid="true"]{border-width:2px}.sheen-select::after{background:CanvasText;forced-color-adjust:none}}
 /* end 0.7.0 app forms */
+
+/* 16-select.css */
+/* 0.8.0 select */
+/* <sheen-select> (75-select.js) draws a field and its list over the native select it keeps. The element is the field box:
+   the dense field (at least 38px, an 11px radius, the page background, a hairline, 14px words) or, with
+   variant="control", the control of a Filters panel (36px on the surface, 13.5px at 500). The trigger fills it, then the
+   clear button and the chevron at the end edge, 8px apart; the box grows when chips wrap. The list opens in the top layer,
+   so its rules start at its own classes and never at where it sits; the menu box look comes from .sheen-menu.sheen-glass
+   (opaque under .sheen-solid), so dark pages get a dark list. Rules that are the same as a kit rule join that rule's
+   selector list (03, 09, 11, 13, 15): the field ring after Tab, the invalid ring, the chevron's turn, a control's open
+   fill, the option rows, the Filters panel check box and tick, the search box and its words. Logical sides only. */
+
+/* without the script the native select shows as it is, with no box around it */
+sheen-select:not(:defined){display:contents}
+sheen-select{position:relative;display:flex;align-items:center;gap:max(var(--sheen-space-min),8px);min-inline-size:0;min-block-size:var(--sheen-size-field);padding:6px 12px;border-radius:11px;background:var(--sheen-background);box-shadow:inset 0 0 0 1px var(--sheen-separator);color:var(--sheen-text);cursor:pointer;box-sizing:border-box}
+.sheen-select-trigger{flex:1;min-inline-size:0;align-self:stretch;display:flex;align-items:center;margin:0;padding:0;border:0;background:none;color:inherit;font:inherit;font-size:14px;text-align:start;cursor:inherit}
+.sheen-select-value,.sheen-select-placeholder{flex:1;min-inline-size:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sheen-select-chevron{inline-size:18px;block-size:18px;color:var(--sheen-text-tertiary);pointer-events:none}
+/* the field rings around itself after Tab (13-app-pages), never after a press; with forced colors the system outline
+   stays, as on every field (0.7.1). Its own rule: the field rule's place in its media block is fixed by the 0.7 tests. */
+@media not (forced-colors: active){:root[data-sheen-focus]:not([data-sheen-keyboard]) sheen-select:has(>.sheen-select-trigger:focus-visible){outline:none}}
+/* the native select keeps the name, the value and the form's checks, out of sight and out of the way */
+.sheen-select-native{position:absolute;inset-block-end:0;inset-inline-start:0;inline-size:1px;block-size:1px;margin:0;padding:0;border:0;opacity:0;overflow:hidden;clip-path:inset(50%);pointer-events:none}
+
+/* the Filters panel control: the mockup's value is bold; the chevron is a control glyph (11-list-kit) */
+sheen-select[variant="control"]{min-block-size:var(--sheen-size-control);background:var(--sheen-surface)}
+sheen-select[variant="control"]>.sheen-select-trigger{font-size:13.5px;font-weight:500;line-height:1.2}
+sheen-select[variant="control"] .sheen-select-value{font-weight:700}
+
+/* multiple: one 24px tonal chip per chosen option, wrapping; its 16px remove mark */
+.sheen-select-chips{flex:1;min-inline-size:0;display:flex;flex-wrap:wrap;gap:max(var(--sheen-space-min),4px)}
+.sheen-select-chip{display:inline-flex;align-items:center;gap:4px;max-inline-size:100%;block-size:var(--sheen-size-select-chip);padding-inline:8px 4px;border-radius:12px;background:var(--sheen-tonal);font-size:12.5px;box-sizing:border-box}
+.sheen-select-chip>span:first-child{min-inline-size:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sheen-select-chip-remove{inline-size:16px;block-size:16px;flex:none;display:grid;place-items:center;border-radius:8px;color:var(--sheen-text-secondary);cursor:pointer}
+.sheen-select-chip-remove:hover{background:var(--sheen-tonal)}
+.sheen-select-chip-remove>.sheen-glyph{inline-size:14px;block-size:14px}
+
+/* the clear button: 24px round, a 16px glyph */
+.sheen-select-clear{flex:none;inline-size:var(--sheen-size-select-clear);block-size:var(--sheen-size-select-clear);display:grid;place-items:center;margin:0;padding:0;border:0;border-radius:50%;background:none;color:var(--sheen-text-tertiary);cursor:pointer}
+.sheen-select-clear:hover{background:var(--sheen-tonal)}
+.sheen-select-clear>.sheen-glyph{inline-size:16px;block-size:16px}
+
+/* the list box: a small menu (16px radius, 4px gaps) at least the field wide (the core sets --sheen-select-anchor-size)
+   and at most the screen. It doesn't scroll itself: the options scroll inside min(320px, 60vh) under the search box.
+   It inherits from the field it belongs to, so it sets its own words. */
+.sheen-select-pop{display:flex;flex-direction:column;gap:max(var(--sheen-space-min),4px);min-inline-size:min(var(--sheen-select-anchor-size,0px),calc(100vw - 16px));max-inline-size:calc(100vw - 16px);max-block-size:none;overflow:hidden;border-radius:16px;color:var(--sheen-text);font-size:13.5px;font-weight:400;white-space:normal;text-align:start;cursor:default}
+.sheen-select-list{display:flex;flex-direction:column;gap:1px;min-block-size:0;max-block-size:min(320px,60vh);overflow-y:auto;overscroll-behavior:contain}
+.sheen-select-list:focus{outline:none}
+.sheen-select-group{display:flex;flex-direction:column;gap:1px}
+.sheen-select-pop:has(>.sheen-select-empty:not([hidden]))>.sheen-select-list{display:none}
+.sheen-select-empty{display:flex;align-items:center;min-block-size:36px;padding:6px 10px;color:var(--sheen-text-tertiary)}
+
+/* an option: the row of a Filters panel option (11-list-kit). The active one on a chosen row keeps both fills, the
+   tonal one over the chosen tint, so the arrows stay visible on chosen rows. */
+.sheen-select-option[aria-selected="true"]:is(.sheen-active,:hover){background:linear-gradient(var(--sheen-tonal),var(--sheen-tonal)),color-mix(in srgb,var(--sheen-accent) 10%,transparent)}
+.sheen-select-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sheen-select-hint{font-size:12px;font-weight:400;color:var(--sheen-text-tertiary)}
+/* the check mark: an 18px place on every row; a box in a multiple list (11-list-kit), a lone accent tick in a single one */
+.sheen-select-check{display:inline-grid;place-content:center}
+.sheen-select-list:not([aria-multiselectable="true"]) .sheen-select-check::after{border-color:var(--sheen-accent-text)}
+
+/* the search box: the small palette's search field (15-app-forms) with the find row's words (11-list-kit); a text field,
+   so no ring */
+.sheen-select-search{display:flex;align-items:center;flex:none;cursor:text}
+
+/* the hidden attribute hides the parts, though they set their own display */
+:where(.sheen-select-option,.sheen-select-group,.sheen-select-clear,.sheen-select-empty,.sheen-select-chips,.sheen-select-search)[hidden]{display:none!important}
+/* end 0.8.0 select */
+
+/* 17-date.css */
+/* 0.8.0 date fields */
+/* <sheen-date-field> and <sheen-date-range>: the page's native date inputs stay in the form, hidden. The field is the dense
+   form field (a 38px box, an 11px radius, 14px words, an 18px chevron at the end edge) or, with variant="control", the
+   find-row control (.sheen-control with a 15px calendar glyph and a chevron). The calendar opens in a popup at the dense
+   menu scale: a 16px radius, 13.5px words, a 16px glyph either side of the month, weekday names at 11px over 30px days at
+   12.5px; a range with presets is 540px wide with a 168px preset column at its start. Today has a thin accent ring, a
+   picked day or a range's ends the accent fill, the days between them an accent tint. Logical sides only, so Arabic
+   mirrors; the month arrows turn round in Arabic. */
+sheen-date-field,sheen-date-range{position:relative;display:block;min-inline-size:0}
+:is(sheen-date-field,sheen-date-range)[variant="control"]{display:inline-flex;vertical-align:top}
+/* the native input keeps its place in the form, unseen and out of the way (a page's field class may size it) */
+:is(sheen-date-field,sheen-date-range)>.sheen-date-native{position:absolute!important;inset-block-start:0;inset-inline-start:0;inline-size:1px!important;min-inline-size:0!important;block-size:1px!important;margin:0!important;padding:0!important;border:0!important;opacity:0;overflow:hidden;clip-path:inset(50%);pointer-events:none}
+
+/* the dense field */
+.sheen-date-trigger:not(.sheen-control){display:flex;align-items:center;gap:8px;inline-size:100%;min-block-size:var(--sheen-size-field);padding:6px 12px;border:0;border-radius:11px;background:var(--sheen-background);box-shadow:inset 0 0 0 1px var(--sheen-separator);color:var(--sheen-text);font:inherit;font-size:14px;text-align:start;cursor:pointer}
+.sheen-date-trigger:not(.sheen-control):disabled{opacity:.45;cursor:not-allowed}
+.sheen-date-trigger:not(.sheen-control)[aria-invalid="true"]{box-shadow:inset 0 0 0 2px var(--sheen-danger)}
+.sheen-date-trigger:not(.sheen-control)>.sheen-date-chevron{inline-size:18px;block-size:18px;flex:none;color:var(--sheen-text-tertiary)}
+.sheen-date-text{flex:1;min-inline-size:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:start}
+.sheen-date-placeholder{color:var(--sheen-text-tertiary)}
+/* the find-row control: the value in the control's 600 weight; open, the control's tonal fill */
+.sheen-control.sheen-date-trigger>.sheen-date-text{flex:none}
+.sheen-control.sheen-date-trigger[aria-invalid="true"]{box-shadow:inset 0 0 0 2px var(--sheen-danger)}
+
+/* the popup: as wide as the field, from 260px to 360px; a range with presets 540px; never wider than the screen */
+.sheen-date-pop{display:flex;flex-direction:column;gap:max(var(--sheen-space-min),4px);box-sizing:border-box;inline-size:min(max(var(--sheen-size-date-pop-min),var(--sheen-date-anchor-size,0px)),var(--sheen-size-date-pop-max),calc(100vw - 16px));min-inline-size:0;max-inline-size:calc(100vw - 16px);max-block-size:calc(100vh - 16px);padding:6px;border-radius:16px}
+sheen-date-range[data-presets] .sheen-date-pop{inline-size:min(var(--sheen-size-date-range-pop),calc(100vw - 16px))}
+.sheen-date-pop[hidden]{display:none}
+.sheen-date-body{display:block;min-inline-size:0}
+sheen-date-range[data-presets] .sheen-date-body{display:grid;grid-template-columns:var(--sheen-size-date-presets) 1fr;gap:10px}
+
+/* presets: 36px rows at 13.5px with a lone tick on the chosen one, a hairline at their end edge; a long label wraps */
+.sheen-date-presets{display:flex;flex-direction:column;gap:1px;min-inline-size:0;padding-inline-end:8px;border-inline-end:1px solid var(--sheen-separator)}
+.sheen-date-preset{display:flex;align-items:center;gap:10px;min-block-size:36px;padding:6px 10px;border:0;border-radius:10px;background:none;color:var(--sheen-text);font:inherit;font-size:13.5px;text-align:start;cursor:pointer}
+.sheen-date-preset>span:last-child{flex:1;min-inline-size:0;overflow-wrap:anywhere}
+.sheen-date-preset:hover{background:var(--sheen-tonal)}
+.sheen-date-preset[aria-checked="true"]{background:color-mix(in srgb,var(--sheen-accent) 10%,transparent);font-weight:600}
+.sheen-date-tick{flex:none;inline-size:18px;block-size:18px;display:inline-grid;place-content:center}
+.sheen-date-preset[aria-checked="true"]>.sheen-date-tick::after{content:"";inline-size:9px;block-size:5px;border-inline-start:2px solid var(--sheen-accent-text);border-block-end:2px solid var(--sheen-accent-text);transform:translateY(-1px) rotate(-45deg)}
+[dir="rtl"] .sheen-date-preset[aria-checked="true"]>.sheen-date-tick::after{transform:translateY(-1px) rotate(45deg)}
+
+/* the calendar: the month between its arrows, the weekday names, the days */
+.sheen-cal{display:flex;flex-direction:column;gap:8px;min-inline-size:0;padding:4px;font-size:13.5px}
+.sheen-cal-head{display:flex;align-items:center;justify-content:space-between;gap:var(--sheen-space-min)}
+.sheen-cal-title{font-weight:700;text-align:center}
+/* the arrows are 24px targets (WCAG 2.5.8) around a 16px glyph; their spare 4px reaches into the gaps, so the row keeps
+   the height of its words */
+.sheen-cal-prev,.sheen-cal-next{flex:none;display:inline-grid;place-items:center;inline-size:var(--sheen-size-calendar-button);block-size:var(--sheen-size-calendar-button);margin-block:-4px;padding:0;border:0;border-radius:8px;background:none;color:var(--sheen-text-secondary);cursor:pointer}
+:is(.sheen-cal-prev,.sheen-cal-next)>svg{inline-size:16px;block-size:16px}
+:is(.sheen-cal-prev,.sheen-cal-next):hover:not([aria-disabled="true"]){background:var(--sheen-tonal);color:var(--sheen-text)}
+:is(.sheen-cal-prev,.sheen-cal-next)[aria-disabled="true"]{opacity:.45;cursor:not-allowed}
+[dir="rtl"] :is(.sheen-cal-prev,.sheen-cal-next)>svg{transform:scaleX(-1)}
+.sheen-cal-grid{display:flex;flex-direction:column;row-gap:2px;text-align:center;font-size:12.5px}
+.sheen-cal-row{display:grid;grid-template-columns:repeat(7,1fr)}
+.sheen-cal-weekdays>small{padding-block-end:4px;font-size:11px;font-weight:600;color:var(--sheen-text-tertiary)}
+.sheen-cal-day{display:grid;place-items:center;min-inline-size:0;block-size:var(--sheen-size-calendar-day);padding:0;border:0;border-radius:0;background:none;color:var(--sheen-text);font:inherit;font-variant-numeric:tabular-nums;cursor:pointer}
+.sheen-cal-day:not([aria-selected="true"],[aria-disabled="true"]):hover{background:var(--sheen-tonal);border-radius:8px}
+.sheen-cal-day[aria-selected="true"],.sheen-cal-day.sheen-cal-in{background:color-mix(in srgb,var(--sheen-accent) 12%,transparent)}
+/* the day the arrows reach takes the hover fill; the ring only after Tab, as on every button */
+.sheen-cal-day:focus-visible{background:var(--sheen-tonal);border-radius:8px;outline:2px solid var(--sheen-accent-text);outline-offset:-2px}
+.sheen-cal-day.sheen-cal-end{background:var(--sheen-accent);color:var(--sheen-on-accent);border-radius:8px;font-weight:700}
+.sheen-cal-day[aria-current="date"]:not(.sheen-cal-end){box-shadow:inset 0 0 0 1px var(--sheen-accent-text);border-radius:8px}
+.sheen-cal-day[aria-disabled="true"]{opacity:.45;cursor:not-allowed}
+
+/* a range's two ends under the calendar: 42px boxes, the end's word at 11px over its date at 13px */
+.sheen-date-ends{display:grid;grid-template-columns:1fr 1fr;gap:max(var(--sheen-space-min),8px)}
+.sheen-date-end{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;min-inline-size:0;block-size:var(--sheen-size-date-end);padding-inline:12px;border-radius:11px;background:var(--sheen-surface);box-shadow:inset 0 0 0 1px var(--sheen-separator);color:var(--sheen-text);line-height:1.2;white-space:nowrap}
+.sheen-date-end>small{font-size:11px;font-weight:500;color:var(--sheen-text-tertiary)}
+.sheen-date-end>b{min-block-size:1.2em;font-size:13px;font-weight:600}
+
+/* the footer: a note at the start, then Clear, Cancel and Apply at the end, over a hairline */
+.sheen-date-foot{display:flex;align-items:center;justify-content:flex-end;gap:max(var(--sheen-space-min),8px);padding:8px 4px 2px;border-block-start:1px solid var(--sheen-separator)}
+.sheen-date-note{margin-inline-end:auto;color:var(--sheen-text-tertiary);font-size:12px}
+.sheen-date-foot>.sheen-button.sheen-small{block-size:34px;border-radius:17px;padding-inline:16px;font-size:13.5px}
+
+/* rings: the field's button, the arrows and the presets ring after Tab; never after a press, Esc, Enter or the arrows.
+   A preset the arrows reach takes the hover fill instead. */
+.sheen-date-trigger:not(.sheen-control):focus-visible{outline:2px solid var(--sheen-accent-text);outline-offset:2px}
+:is(.sheen-cal-prev,.sheen-cal-next):focus-visible{outline:2px solid var(--sheen-accent-text);outline-offset:1px}
+.sheen-date-preset:focus-visible{outline:2px solid var(--sheen-accent-text);outline-offset:-2px}
+@media not (forced-colors: active){:root[data-sheen-focus]:not([data-sheen-keyboard]) :is(.sheen-date-trigger,.sheen-cal-prev,.sheen-cal-next,.sheen-date-preset,.sheen-cal-day):focus-visible{outline:none}
+:root[data-sheen-focus]:not([data-sheen-keyboard]) .sheen-date-preset:not([aria-checked="true"]):focus-visible{background:var(--sheen-tonal)}}
+
+/* a phone: the presets go above the calendar */
+@media (max-width:559px){sheen-date-range[data-presets] .sheen-date-body{grid-template-columns:1fr}
+sheen-date-range[data-presets] .sheen-date-presets{padding-inline-end:0;padding-block-end:8px;border-inline-end:0;border-block-end:1px solid var(--sheen-separator)}}
+/* end 0.8.0 date fields */
+
+/* 18-actions.css */
+/* 0.8.0 action buttons and the confirm sheet */
+/* A danger button, an extra small button for a bulk bar's actions, and the small dialog's confirm option. Each is a class
+   a page opts in to; a page without them draws as in 0.7. Logical sides only, so Arabic mirrors. */
+
+/* a danger button: a step that takes something away (Take offline, Delete). The fill of a deal under white words, 4.5:1
+   in light and dark; the hover darkens the fill, so the words never lose contrast. A disabled one keeps the kit's faded
+   look and takes no hover. It never asks for the first focus: the app puts that on the safe button. */
+.sheen-button.sheen-danger{background:var(--sheen-deal-fill);color:var(--sheen-on-accent)}
+.sheen-button.sheen-danger:hover:not([disabled],[aria-disabled="true"]){filter:brightness(.94)}
+
+/* an extra small button: a bulk bar's actions. 32px tall, 12px sides, 13px words, 14px glyphs 6px from the words.
+   class="sheen-xsmall" on a sheen-menu-button makes its own button the same size. */
+.sheen-button.sheen-xsmall,sheen-menu-button.sheen-xsmall>.sheen-button{block-size:var(--sheen-size-button-xsmall);border-radius:calc(var(--sheen-size-button-xsmall) / 2);padding-inline:12px;gap:6px;font-size:13px}
+:is(.sheen-button.sheen-xsmall,sheen-menu-button.sheen-xsmall>.sheen-button) :is(.sheen-glyph,.sheen-icon){inline-size:14px;block-size:14px}
+
+/* the confirm sheet: <dialog class="sheen-dialog sheen-small sheen-confirm"> asks before a risky step. 440px wide, 14% down
+   the window, the head, body and foot with no padding of their own, so the question, the record, the words and the
+   buttons stack 10px apart. The record is a tag that hugs its words; the words are 13.5px and secondary; the buttons sit
+   at the end, 8px apart, 6px further down, 34px tall. Taller than the room under its top, it scrolls inside. */
+.sheen-dialog.sheen-small.sheen-confirm{inline-size:min(var(--sheen-size-confirm),calc(100vw - 32px));margin-block-start:14vh;max-block-size:calc(100dvh - 14vh - var(--sheen-space-l))}
+.sheen-dialog.sheen-small.sheen-confirm :is(.sheen-dialog-head,.sheen-dialog-body,.sheen-dialog-foot){padding:0}
+.sheen-dialog.sheen-small.sheen-confirm .sheen-dialog-body{display:flex;flex-direction:column;gap:inherit}
+/* the body's gap already keeps the minimum between two boxes, so its children take no block margin (the kit's
+   margin between two boxes sits at no specificity); at one class, so a page's own margin still wins */
+:where(.sheen-dialog.sheen-small.sheen-confirm) .sheen-dialog-body>*{margin-block:0}
+.sheen-dialog.sheen-small.sheen-confirm .sheen-dialog-body>.sheen-pill{align-self:flex-start;block-size:auto;padding:3px 10px;border-radius:8px;font-weight:600;color:var(--sheen-text)}
+.sheen-dialog.sheen-small.sheen-confirm .sheen-dialog-body>p{font-size:13.5px}
+/* the colour at no specificity, so a high-contrast .sheen-secondary on the same words still wins */
+:where(.sheen-dialog.sheen-small.sheen-confirm .sheen-dialog-body>p){color:var(--sheen-text-secondary)}
+.sheen-dialog.sheen-small.sheen-confirm .sheen-dialog-foot{gap:max(var(--sheen-space-min),8px);margin-block-start:6px}
+.sheen-dialog.sheen-small.sheen-confirm .sheen-dialog-foot .sheen-button{block-size:var(--sheen-size-confirm-button);border-radius:calc(var(--sheen-size-confirm-button) / 2);padding-inline:16px;font-size:14.5px}
+/* end 0.8.0 action buttons and the confirm sheet */
+
+/* 19-table-panel.css */
+/* 0.8.0 table and panel */
+/* The wide side panel beside the dense size, end-aligned table cells, a tight small table, a compact icon button for a
+   table row's ••• and the page header's glyph-only control. Each is a class a page opts in to, except the header •••,
+   whose box and glyph don't change; a page without them draws as in 0.7. Logical sides only, so Arabic mirrors. */
+
+/* class="sheen-wide" on a side panel: the 440px panel (--sheen-size-panel-wide). Beside sheen-small it keeps the dense
+   content and the 440px width, since this rule comes after the sheen-small one. At no specificity, as sheen-small: an
+   app's class rule on the panel or an inline --sheen-panel-size wins over it. */
+:where(sheen-side-panel.sheen-wide){--sheen-panel-size:var(--sheen-size-panel-wide)}
+
+/* class="sheen-end" on a th or td: its words and a sort button sit at the end edge (the right, the left in Arabic), the
+   way a number column lines up; with sheen-num its digits line up too */
+.sheen-table :is(th,td).sheen-end{text-align:end}
+.sheen-table th.sheen-end .sheen-sort-button{justify-content:flex-end}
+
+/* class="sheen-tight" on a small table of many columns: 9px at the sides of its cells and its sort buttons
+   (--sheen-size-table-tight-padding), the block padding as before. The pinned ••• cell keeps its 4px and a sortable
+   header still leaves its padding to its button: :where adds no specificity to leaving them out. */
+.sheen-table.sheen-small.sheen-tight :is(th,td):where(:not(.sheen-pin-end,:has(>.sheen-sort-button))){padding-inline:var(--sheen-size-table-tight-padding)}
+.sheen-table.sheen-small.sheen-tight .sheen-sort-button{padding-inline:var(--sheen-size-table-tight-padding)}
+
+/* class="sheen-compact" on an icon button, or on a menu button with a glyph and no variant: the 30px row ••• with a
+   radius of 9, no fill and an 18px glyph in the secondary colour; hovered or open, the tonal fill and the text colour.
+   The menu button's own box hugs it at the top of its line, so a small table's row stays the row's height. */
+.sheen-icon-button.sheen-compact,sheen-menu-button.sheen-compact>.sheen-icon-button{inline-size:var(--sheen-size-icon-button-compact);block-size:var(--sheen-size-icon-button-compact);border-radius:var(--sheen-size-icon-button-compact-radius);background:none;color:var(--sheen-text-secondary)}
+:is(.sheen-icon-button.sheen-compact,sheen-menu-button.sheen-compact>.sheen-icon-button):is(:hover,[aria-expanded="true"]){background:var(--sheen-tonal);color:var(--sheen-text)}
+:is(.sheen-icon-button.sheen-compact,sheen-menu-button.sheen-compact>.sheen-icon-button)>:is(.sheen-glyph,.sheen-icon){inline-size:var(--sheen-size-icon-button-compact-glyph);block-size:var(--sheen-size-icon-button-compact-glyph)}
+:is(.sheen-icon-button.sheen-compact,sheen-menu-button.sheen-compact>.sheen-icon-button):focus-visible{outline-offset:1px}
+sheen-menu-button.sheen-compact{display:inline-flex;vertical-align:top}
+
+/* a page header's ••• (a control menu button with a glyph and no words) takes the font size around it, as the mockups'
+   header •••; its 36px box and 18px glyph stay the same */
+sheen-menu-button[variant="control"][glyph]>.sheen-control{font-size:inherit}
+/* end 0.8.0 table and panel */
+
+/* 20-affix.css */
+/* 0.8.0 affix */
+/* a unit after an input's value ("30 min"), in the dense field: <span class="sheen-affix"><input class="sheen-input">
+   <span class="sheen-affix-unit">…</span></span>. The affix is the field's box (38px, an 11px radius, its edge and
+   background, 14px words) and the input inside it draws none of its own and takes the room the unit leaves. The unit sits
+   at the end edge, 8px from the value, in the value's colour and size; a unit written before the input is a prefix at the
+   start edge. Flex keeps the page's order, so Arabic mirrors both. A press on the unit goes through to the box: in a label
+   (the field, or the affix written as a label) it focuses the input. The page writes the unit's words. Like the field, the
+   affix draws no ring; an invalid input rings the whole box. */
+.sheen-form-field.sheen-small .sheen-affix{display:flex;align-items:center;gap:max(var(--sheen-space-min),8px);min-block-size:var(--sheen-size-field);padding-inline:12px;border-radius:11px;background:var(--sheen-background);box-shadow:inset 0 0 0 1px var(--sheen-separator);font-size:14px;cursor:text}
+.sheen-form-field.sheen-small .sheen-affix>.sheen-input,.sheen-form-field.sheen-small .sheen-affix>.sheen-input[aria-invalid="true"]{flex:1 1 0;min-inline-size:0;align-self:stretch;block-size:auto;padding:0;border-radius:0;background:none;box-shadow:none}
+.sheen-affix>.sheen-affix-unit{flex:none;white-space:nowrap;color:var(--sheen-text);pointer-events:none}
+.sheen-form-field.sheen-small .sheen-affix:has(>.sheen-input[aria-invalid="true"]){box-shadow:inset 0 0 0 2px var(--sheen-danger)}
+/* end 0.8.0 affix */
+
+/* 0.8.0 cell pickers */
+/* a menu button drawn as the value it sets, for a picker in a table cell. variant="text" is the cell's words (the kit's
+   cell button, underlined on hover and while its menu is open); variant="pill" is a status pill in its tone (tone=
+   "success", "warning" or "danger"), a little deeper on hover and while open. Neither has a chevron or a frame: the
+   trigger is as wide as its words. In a small table, or with .sheen-small, the pill is the table's 22px with 12px words.
+   The menu, its keys and focus are the menu button's own; the ring shows after Tab only, like every button's. */
+sheen-menu-button[variant="text"]>.sheen-cell-button[aria-expanded="true"]{text-decoration:underline}
+/* at no specificity, so the forced-colors frame of every pill (06-access) still draws */
+:where(sheen-menu-button[variant="pill"]>.sheen-pill){border:0}
+sheen-menu-button[variant="pill"]>.sheen-pill{margin:0;padding-block:0;font-family:inherit;white-space:nowrap;cursor:pointer}
+sheen-menu-button[variant="pill"]>.sheen-pill:is(:hover,[aria-expanded="true"]){background-image:linear-gradient(color-mix(in srgb,currentColor 10%,transparent),color-mix(in srgb,currentColor 10%,transparent))}
+:is(sheen-menu-button.sheen-small,.sheen-small sheen-menu-button)[variant="pill"]>.sheen-pill{block-size:var(--sheen-size-pill-small);font-size:var(--sheen-size-pill-small-text)}
+/* end 0.8.0 cell pickers */
+
+/* 21-space.css */
+/* 0.8.0 the minimum gap */
+/* --sheen-space-min (tokens.json space.min) is the least room between two boxes the kit lays out: fields, field rows,
+   cards, buttons and controls never sit flush against each other. Every kit layout gap between boxes is
+   max(var(--sheen-space-min), <its own value>), so a layout that sets more keeps it and one token raises them all.
+   Dialog and panel bodies stack whatever the page puts in them, with no gap of their own: there each box after another
+   box keeps the minimum above it. Text keeps its own margins: a paragraph, a heading or a list is never pushed. At no
+   specificity, so any rule of the page or the kit that sets the margin wins (a panel footer's auto margin, an error under
+   its field). A filter group in a panel body is spaced by its own heading. */
+:where(.sheen-dialog-body,.sheen-panel-body)>:where(:not(p,h1,h2,h3,h4,h5,h6,ul,ol,dl,hr,pre,blockquote,figure,legend,.sheen-filter-group))+:where(:not(p,h1,h2,h3,h4,h5,h6,ul,ol,dl,hr,pre,blockquote,figure,legend,.sheen-filter-group)){margin-block-start:var(--sheen-space-min)}
+/* A dialog body is plain block flow, where neighbouring margins overlap: a box after a paragraph keeps the minimum too,
+   and the paragraph's own larger margin still wins. */
+:where(.sheen-dialog-body)>:where(p,h1,h2,h3,h4,h5,h6,ul,ol,dl,hr,pre,blockquote,figure)+:where(:not(p,h1,h2,h3,h4,h5,h6,ul,ol,dl,hr,pre,blockquote,figure,legend)){margin-block-start:var(--sheen-space-min)}
+/* end 0.8.0 the minimum gap */

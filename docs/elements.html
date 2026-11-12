@@ -15,7 +15,7 @@
 <div class="sheen-aurora" aria-hidden="true"></div>
 <main class="sheen-container" style="padding-block:32px">
   <header class="sheen-topbar sheen-glass">
-    <h1 class="sheen-topbar-title">sheen elements <span class="sheen-footnote sheen-secondary">0.7.0</span></h1>
+    <h1 class="sheen-topbar-title">sheen elements <span class="sheen-footnote sheen-secondary">0.8.0</span></h1>
     <button class="sheen-button sheen-small" id="theme" type="button">Light / dark</button>
     <button class="sheen-button sheen-small" id="dir" type="button">LTR / RTL</button>
     <button class="sheen-search-trigger" id="openCmd" type="button"><sheen-glyph name="search"></sheen-glyph><span>Command palette</span><kbd class="sheen-kbd">⌘K</kbd></button>
@@ -88,6 +88,31 @@
     <div class="sheen-list-message" style="margin-block-start:12px"><sheen-glyph name="search" size="28"></sheen-glyph><b>No results match these filters</b><p>Try removing a filter.</p><span class="sheen-list-message-actions"><button class="sheen-button sheen-small" type="button">Clear all</button></span></div>
   </section>
 
+  <section id="s-forms"><h2 class="sheen-title">App forms: select, date fields, avatar, confirm</h2>
+    <div class="sheen-panel sheen-glass">
+      <div class="sheen-fields sheen-small">
+        <label class="sheen-form-field sheen-small"><span>Area</span>
+          <sheen-select placeholder="All areas" search="Search areas" empty="No matches" clear="Clear">
+            <select name="area"><option value="">All areas</option><optgroup label="North"><option value="b">Old Town</option><option value="m" data-hint="2 teams">Riverside</option></optgroup><optgroup label="South"><option value="d" disabled>Downtown</option><option value="j">Hillside</option></optgroup></select>
+          </sheen-select></label>
+        <label class="sheen-form-field sheen-small"><span>Teams</span>
+          <sheen-select placeholder="Any team" search="Search teams" empty="No matches" clear="Clear" remove="Remove @label">
+            <select name="teams" multiple><option value="a" selected>Morning team</option><option value="b" selected>Evening team</option><option value="c">Night team</option></select>
+          </sheen-select></label>
+        <label class="sheen-form-field sheen-small"><span>From</span>
+          <sheen-date-field placeholder="Pick a date" prev="Previous month" next="Next month" clear="Clear"><input type="date" name="from"></sheen-date-field></label>
+        <label class="sheen-form-field sheen-small"><span>Buffer between jobs</span>
+          <span class="sheen-affix"><input class="sheen-input" type="number" value="30"><span class="sheen-affix-unit">min</span></span></label>
+      </div>
+      <p class="demo-row" style="margin-block-start:16px">
+        <sheen-date-range variant="control" placeholder="Any dates" prev="Previous month" next="Next month" from="From" to="To" apply="Apply" cancel="Cancel"><input type="date" name="start"><input type="date" name="end"></sheen-date-range>
+        <span class="sheen-avatar-name"><sheen-avatar name="Maria Santos" size="s"></sheen-avatar><span><b>Maria Santos</b><small>Morning team</small></span></span>
+        <sheen-avatar name="Omar Haddad"></sheen-avatar><sheen-avatar name="عمر حداد" size="xs"></sheen-avatar>
+        <button class="sheen-button sheen-danger" id="confirmBtn" type="button">Take offline</button>
+      </p>
+    </div>
+  </section>
+
   <section id="s-app"><h2 class="sheen-title">App pieces</h2>
     <div class="sheen-grid" style="--sheen-cols:3">
       <div class="sheen-stat"><span class="sheen-stat-label">Videos made</span><span class="sheen-stat-value">128</span><span class="sheen-stat-note">this month</span></div>
@@ -100,6 +125,7 @@
   </section>
 </main>
 <dialog class="sheen-dialog" id="dlg"><div class="sheen-dialog-head"><h2>Dialog</h2></div><div class="sheen-dialog-body"><input type="range" class="sheen-range" value="40"></div><div class="sheen-dialog-foot"><button class="sheen-button" type="button" onclick="this.closest('dialog').close()">Close</button></div></dialog>
+<dialog class="sheen-dialog sheen-small sheen-confirm" id="confirmDlg" role="alertdialog" aria-labelledby="cq" aria-describedby="cs"><div class="sheen-dialog-head"><h2 id="cq">Take this item offline?</h2></div><div class="sheen-dialog-body"><span class="sheen-pill"><bdi>A1</bdi></span><p id="cs">Its work moves to the next one in the same area.</p></div><div class="sheen-dialog-foot"><button class="sheen-button" type="button" autofocus onclick="this.closest('dialog').close()">Keep it</button><button class="sheen-button sheen-danger" type="button" onclick="this.closest('dialog').close()">Take offline</button></div></dialog>
 <sheen-command-palette id="cmd" hotkey label="Command palette" placeholder="Search or type a command…" empty="Nothing found" submit-label="Run “@q”"></sheen-command-palette>
 <sheen-toaster close-label="Dismiss"></sheen-toaster>
 <sheen-side-panel id="panel" label="Record R-1001" close-label="Close"><h3>Record R-1001</h3><p>The page behind keeps its scroll and selection.</p><sheen-menu-button id="panelMenu" label="Actions"></sheen-menu-button></sheen-side-panel>
@@ -140,6 +166,7 @@ addEventListener('DOMContentLoaded', () => {
   $('#graph').edges = [{ from: 'a', to: 'b' }, { from: 'b', to: 'c' }];
   $('#toastBtn').onclick = () => sheenElements.toast({ title: 'Export finished', message: '3 files are ready', tone: 'success', action: { label: 'Open', onClick() {} } });
   $('#dialogBtn').onclick = () => $('#dlg').showModal();
+  $('#confirmBtn').onclick = () => $('#confirmDlg').showModal();
   $('#tour').steps = [
     { target: '#s-drop sheen-drop-zone', title: 'Start here', text: 'Drop a video, or pick the sample.' },
     { target: '#openCmd', title: 'One box for everything', text: 'Press ⌘K and type what you want.' },

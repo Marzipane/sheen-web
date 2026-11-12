@@ -4,13 +4,14 @@
 if (typeof window === 'undefined' || window.sheenElements) return;
 var GLYPHS = {"arrow-up":"<path d=\"M12 19V5.5\"></path><path d=\"m6 11 6-6 6 6\"></path>","back":"<path d=\"M14.5 5.5 8 12l6.5 6.5\"></path>","bed":"<path d=\"M3 18V7\"></path><path d=\"M3 14h18v4\"></path><path d=\"M21 14v-2.5A2.5 2.5 0 0 0 18.5 9H11v5\"></path><circle cx=\"7\" cy=\"11\" r=\"1.6\"></circle>","bell":"<path d=\"M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15Z\"></path><path d=\"M10 20.5h4\"></path>","calendar-plus":"<rect x=\"4\" y=\"5.5\" width=\"16\" height=\"14\" rx=\"1.5\"></rect><path d=\"M4 10h16\"></path><path d=\"M8.5 3.5v4\"></path><path d=\"M15.5 3.5v4\"></path><path d=\"M12 12.5v5\"></path><path d=\"M9.5 15h5\"></path>","calendar":"<rect x=\"4\" y=\"5.5\" width=\"16\" height=\"14\" rx=\"1.5\"></rect><path d=\"M4 10h16\"></path><path d=\"M8.5 3.5v4\"></path><path d=\"M15.5 3.5v4\"></path>","car":"<path d=\"M5 16.5V12l2-5h10l2 5v4.5\"></path><path d=\"M3.5 12h17v4.5h-17Z\"></path><circle cx=\"7.5\" cy=\"14.3\" r=\".8\"></circle><circle cx=\"16.5\" cy=\"14.3\" r=\".8\"></circle><path d=\"M6 16.5v2\"></path><path d=\"M18 16.5v2\"></path>","card":"<rect x=\"3\" y=\"5.5\" width=\"18\" height=\"13\" rx=\"2\"></rect><path d=\"M3 9.5h18\"></path><path d=\"M6.5 15h4\"></path>","chat":"<path d=\"M4 5.5h16v10H9.5L5 19.5v-4H4Z\"></path><path d=\"M8.5 10.5h7\"></path>","check":"<path d=\"m5 12.5 4.5 4.5L19 7.5\"></path>","chevron-down":"<path d=\"m6 9.5 6 6 6-6\"></path>","chevron":"<path d=\"m9.5 5.5 6.5 6.5-6.5 6.5\"></path>","clock":"<circle cx=\"12\" cy=\"12\" r=\"8.5\"></circle><path d=\"M12 7.5V12l3 2\"></path>","close":"<path d=\"m6.5 6.5 11 11\"></path><path d=\"m17.5 6.5-11 11\"></path>","coin":"<circle cx=\"12\" cy=\"12\" r=\"8.5\"></circle><path d=\"M14.5 9.2c-.5-.9-1.4-1.4-2.5-1.4-1.5 0-2.6.8-2.6 2s1.1 1.6 2.6 1.9 2.6.8 2.6 2-1.1 2-2.6 2c-1.1 0-2-.5-2.5-1.4\"></path><path d=\"M12 6.3v1.5\"></path><path d=\"M12 16.2v1.5\"></path>","compass":"<circle cx=\"12\" cy=\"12\" r=\"8.5\"></circle><path d=\"m15.5 8.5-2 5-5 2 2-5Z\"></path>","compose":"<path d=\"M12 4.5H6.5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V12\"></path><path d=\"M17.5 3.5a1.8 1.8 0 0 1 2.5 2.5L12.5 13.5 9 14.5l1-3.5Z\"></path>","copy":"<rect x=\"8.5\" y=\"8.5\" width=\"11\" height=\"11\" rx=\"2\"></rect><path d=\"M15.5 8.5v-2a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2\"></path>","directions":"<path d=\"M12 2.8 21.2 12 12 21.2 2.8 12Z\"></path><path d=\"M9.5 14.5v-2.5a1.5 1.5 0 0 1 1.5-1.5h3.5\"></path><path d=\"m13 8.5 2 2-2 2\"></path>","document":"<path d=\"M6 3.5h8l4 4v13H6Z\"></path><path d=\"M14 3.5v4h4\"></path><path d=\"M9 12.5h6\"></path><path d=\"M9 16h6\"></path>","door":"<path d=\"M5 20.5h14\"></path><path d=\"M7 20.5V4.5h10v16\"></path><circle cx=\"14\" cy=\"12.5\" r=\".9\"></circle>","download":"<path d=\"M12 4.5V15\"></path><path d=\"m7.5 10.5 4.5 4.5 4.5-4.5\"></path><path d=\"M5 19.5h14\"></path>","dumbbell":"<path d=\"M6.5 8v8\"></path><path d=\"M17.5 8v8\"></path><path d=\"M3.5 10v4\"></path><path d=\"M20.5 10v4\"></path><path d=\"M6.5 12h11\"></path>","eye":"<path d=\"M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z\"></path><circle cx=\"12\" cy=\"12\" r=\"3\"></circle>","filter":"<path d=\"M4 6.5h16\"></path><path d=\"M7 12h10\"></path><path d=\"M10 17.5h4\"></path>","flag":"<path d=\"M5 20.5v-16\"></path><path d=\"M5 4.5h11l-2 4 2 4H5\"></path>","globe":"<circle cx=\"12\" cy=\"12\" r=\"8.5\"></circle><path d=\"M3.5 12h17\"></path><path d=\"M12 3.5c2.4 2.4 3.5 5.2 3.5 8.5s-1.1 6.1-3.5 8.5c-2.4-2.4-3.5-5.2-3.5-8.5s1.1-6.1 3.5-8.5Z\"></path>","grid":"<rect x=\"4\" y=\"4\" width=\"7\" height=\"7\" rx=\"1.2\"></rect><rect x=\"13\" y=\"4\" width=\"7\" height=\"7\" rx=\"1.2\"></rect><rect x=\"4\" y=\"13\" width=\"7\" height=\"7\" rx=\"1.2\"></rect><rect x=\"13\" y=\"13\" width=\"7\" height=\"7\" rx=\"1.2\"></rect>","heart":"<path d=\"M12 19.5s-7.5-4.4-7.5-10A4.2 4.2 0 0 1 12 7a4.2 4.2 0 0 1 7.5 2.5c0 5.6-7.5 10-7.5 10Z\"></path>","help":"<circle cx=\"12\" cy=\"12\" r=\"8.5\"></circle><path d=\"M9.6 9.5a2.5 2.5 0 0 1 4.8.8c0 1.7-2.4 2-2.4 3.6\"></path><path d=\"M12 16.8v.3\"></path>","hourglass":"<path d=\"M7 3.5h10\"></path><path d=\"M7 20.5h10\"></path><path d=\"M8 3.5c0 4 4 5 4 8.5 0-3.5 4-4.5 4-8.5\"></path><path d=\"M8 20.5c0-4 4-5 4-8.5 0 3.5 4 4.5 4 8.5\"></path>","id-card":"<rect x=\"3\" y=\"5.5\" width=\"18\" height=\"13\" rx=\"2\"></rect><circle cx=\"8.5\" cy=\"11\" r=\"2\"></circle><path d=\"M5.8 15.5c.6-1.4 1.6-2 2.7-2s2.1.6 2.7 2\"></path><path d=\"M14 10h4\"></path><path d=\"M14 13.5h3\"></path>","image":"<rect x=\"3.5\" y=\"4.5\" width=\"17\" height=\"15\" rx=\"2.5\"></rect><circle cx=\"9\" cy=\"10\" r=\"1.8\"></circle><path d=\"m4 17.5 5-4.5 4 3.5 2.5-2 4.5 3.5\"></path>","info":"<circle cx=\"12\" cy=\"12\" r=\"8.5\"></circle><path d=\"M12 11v5\"></path><path d=\"M12 7.6v.4\"></path>","key":"<circle cx=\"8\" cy=\"12\" r=\"3.5\"></circle><path d=\"M11.5 12H20.5\"></path><path d=\"M17.5 12v3\"></path><path d=\"M20.5 12v2\"></path>","layers":"<path d=\"m12 4 8.5 4.5L12 13 3.5 8.5Z\"></path><path d=\"m3.5 12.5 8.5 4.5 8.5-4.5\"></path><path d=\"m3.5 16.5 8.5 4.5 8.5-4.5\"></path>","link":"<path d=\"M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1\"></path><path d=\"M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1\"></path>","location":"<path d=\"M20 4 4 11l7 2 2 7Z\"></path>","lock":"<rect x=\"5\" y=\"10.5\" width=\"14\" height=\"10\" rx=\"2\"></rect><path d=\"M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5\"></path>","mail":"<rect x=\"3.5\" y=\"5.5\" width=\"17\" height=\"13\" rx=\"2\"></rect><path d=\"m4 7 8 6 8-6\"></path>","map":"<path d=\"M9 4.5 3.5 6.5v13l5.5-2 6 2 5.5-2v-13l-5.5 2-6-2Z\"></path><path d=\"M9 4.5v13\"></path><path d=\"M15 6.5v13\"></path>","mic":"<rect x=\"9\" y=\"3.5\" width=\"6\" height=\"11\" rx=\"3\"></rect><path d=\"M5.5 11.5a6.5 6.5 0 0 0 13 0\"></path><path d=\"M12 18v2.5\"></path>","minus":"<path d=\"M5 12h14\"></path>","more":"<circle cx=\"6\" cy=\"12\" r=\"1.1\"></circle><circle cx=\"12\" cy=\"12\" r=\"1.1\"></circle><circle cx=\"18\" cy=\"12\" r=\"1.1\"></circle>","navigate":"<path d=\"m4 11.5 16-7-7 16-2-7Z\"></path>","passport":"<rect x=\"5.5\" y=\"3.5\" width=\"13\" height=\"17\" rx=\"1.5\"></rect><circle cx=\"12\" cy=\"11\" r=\"3.3\"></circle><path d=\"M8.7 11h6.6\"></path><path d=\"M9 16.5h6\"></path>","people":"<circle cx=\"9\" cy=\"9\" r=\"3\"></circle><path d=\"M3.5 18.5c.8-2.8 3-4.3 5.5-4.3s4.7 1.5 5.5 4.3\"></path><circle cx=\"16.5\" cy=\"9.5\" r=\"2.5\"></circle><path d=\"M16 14.3c2.2.1 3.9 1.5 4.5 4.2\"></path>","phone":"<rect x=\"6.5\" y=\"2.5\" width=\"11\" height=\"19\" rx=\"2.5\"/><path d=\"M10.5 18.5h3\"/>","pin":"<path d=\"M12 21s6.5-6.3 6.5-11A6.5 6.5 0 0 0 5.5 10c0 4.7 6.5 11 6.5 11Z\"></path><circle cx=\"12\" cy=\"10\" r=\"2.3\"></circle>","plane":"<path d=\"M10.5 13.5 4 11l1.5-1.5 7 1L17 6c1-1 2.6-1.3 3-.9.4.4.1 2-.9 3l-4.5 4.5 1 7L14 21l-2.5-6.5-3 3V20L7 21l-1-3-3-1 1-1.5h2.5Z\"></path>","plus":"<path d=\"M12 5v14\"></path><path d=\"M5 12h14\"></path>","pool":"<path d=\"M3 17c1.5 0 1.5-1.2 3-1.2s1.5 1.2 3 1.2 1.5-1.2 3-1.2 1.5 1.2 3 1.2 1.5-1.2 3-1.2 1.5 1.2 3 1.2\"></path><path d=\"M8 14V6a2 2 0 0 1 4 0\"></path><path d=\"M14 14V6a2 2 0 0 1 4 0\"></path><path d=\"M8 9h6\"></path>","refresh":"<path d=\"M19.5 12a7.5 7.5 0 1 1-2.2-5.3\"></path><path d=\"M19.5 4.5v4h-4\"></path>","room-service":"<path d=\"M4 17.5h16\"></path><path d=\"M5.5 17.5a6.5 6.5 0 0 1 13 0\"></path><path d=\"M12 9V7.5\"></path><path d=\"M10.5 7.5h3\"></path>","search":"<circle cx=\"11\" cy=\"11\" r=\"6.5\"></circle><path d=\"M16 16l4.5 4.5\"></path>","share":"<path d=\"M12 15V4.5\"></path><path d=\"m8 8.5 4-4 4 4\"></path><path d=\"M5.5 12.5v6h13v-6\"></path>","shield":"<path d=\"M12 3.5 19 6v5.5c0 4.3-3 7.8-7 9-4-1.2-7-4.7-7-9V6Z\"></path><path d=\"m9 12 2 2 4-4\"></path>","ship":"<path d=\"M3.5 13h17l-2.2 4.5H5.7Z\"></path><path d=\"M7 13V9.5h10V13\"></path><path d=\"M10.5 9.5v-3h3v3\"></path><path d=\"M3 20.5c1.5 0 1.5-1 3-1s1.5 1 3 1 1.5-1 3-1 1.5 1 3 1 1.5-1 3-1 1.5 1 3 1\"></path>","sidebar":"<rect x=\"3.5\" y=\"4.5\" width=\"17\" height=\"15\" rx=\"2.5\"></rect><path d=\"M9.5 4.5v15\"></path>","sign-out":"<path d=\"M14 4.5h4.5a1.5 1.5 0 0 1 1.5 1.5v12a1.5 1.5 0 0 1-1.5 1.5H14\"></path><path d=\"M10 16.5 5.5 12 10 7.5\"></path><path d=\"M5.5 12H15\"></path>","sliders":"<path d=\"M4 7h10\"></path><path d=\"M18 7h2\"></path><circle cx=\"16\" cy=\"7\" r=\"2\"></circle><path d=\"M4 17h2\"></path><path d=\"M10 17h10\"></path><circle cx=\"8\" cy=\"17\" r=\"2\"></circle>","spa":"<path d=\"M12 20c-4.5 0-8-2.8-8.5-7 2.8 0 5.6 1.2 8.5 4.2 2.9-3 5.7-4.2 8.5-4.2-.5 4.2-4 7-8.5 7Z\"></path><path d=\"M12 17.2c-1.8-2.4-2.5-5-1.9-8C10.6 7 11.2 5.4 12 4c.8 1.4 1.4 3 1.9 5.2.6 3-.1 5.6-1.9 8Z\"></path>","sparkle":"<path d=\"M12 3.5c.6 3.9 2.6 5.9 6.5 6.5-3.9.6-5.9 2.6-6.5 6.5-.6-3.9-2.6-5.9-6.5-6.5 3.9-.6 5.9-2.6 6.5-6.5Z\"></path><path d=\"M18.5 15.5c.3 1.6 1.1 2.4 2.5 2.7-1.4.3-2.2 1.1-2.5 2.6-.3-1.5-1.1-2.3-2.5-2.6 1.4-.3 2.2-1.1 2.5-2.7Z\"></path>","star":"<path d=\"m12 4 2.4 5 5.4.6-4 3.7 1.1 5.4L12 16l-4.9 2.7 1.1-5.4-4-3.7 5.4-.6Z\"></path>","suitcase":"<rect x=\"4\" y=\"7\" width=\"16\" height=\"12\" rx=\"1.5\"></rect><path d=\"M9 7V5h6v2\"></path><path d=\"M4 12h16\"></path>","sun":"<circle cx=\"12\" cy=\"12\" r=\"4\"></circle><path d=\"M12 2.5v2\"></path><path d=\"M12 19.5v2\"></path><path d=\"M2.5 12h2\"></path><path d=\"M19.5 12h2\"></path><path d=\"m5.3 5.3 1.4 1.4\"></path><path d=\"m17.3 17.3 1.4 1.4\"></path><path d=\"m5.3 18.7 1.4-1.4\"></path><path d=\"m17.3 6.7 1.4-1.4\"></path>","swap":"<path d=\"M7 7h11l-3-3\"></path><path d=\"M17 17H6l3 3\"></path>","tag":"<path d=\"M3.5 12.2V4.5a1 1 0 0 1 1-1h7.7l8.3 8.3a1 1 0 0 1 0 1.4l-7.3 7.3a1 1 0 0 1-1.4 0Z\"></path><circle cx=\"8\" cy=\"8\" r=\"1.4\"></circle>","trash":"<path d=\"M4.5 6.5h15\"></path><path d=\"M9.5 6.5V4.5h5v2\"></path><path d=\"M6.5 6.5l1 13h9l1-13\"></path>","user":"<circle cx=\"12\" cy=\"8.5\" r=\"3.5\"></circle><path d=\"M5 19.5c1.2-3.3 4-5 7-5s5.8 1.7 7 5\"></path>","wallet":"<rect x=\"3.5\" y=\"6\" width=\"17\" height=\"13\" rx=\"2.5\"></rect><path d=\"M3.5 10h17\"></path><path d=\"M6 6V5a1.5 1.5 0 0 1 1.5-1.5h9A1.5 1.5 0 0 1 18 5v1\"></path>","waves":"<path d=\"M3 9c1.5 0 1.5-1.5 3-1.5S7.5 9 9 9s1.5-1.5 3-1.5S13.5 9 15 9s1.5-1.5 3-1.5S19.5 9 21 9\"></path><path d=\"M3 15c1.5 0 1.5-1.5 3-1.5S7.5 15 9 15s1.5-1.5 3-1.5S13.5 15 15 15s1.5-1.5 3-1.5S19.5 15 21 15\"></path>","wifi":"<path d=\"M3 9a13 13 0 0 1 18 0\"></path><path d=\"M6.2 12.5a8.5 8.5 0 0 1 11.6 0\"></path><path d=\"M9.3 15.8a4 4 0 0 1 5.4 0\"></path><circle cx=\"12\" cy=\"19\" r=\".9\"></circle>","wrench":"<path d=\"M14.5 4a5 5 0 0 0-5.6 6.6L3.8 15.7a1.8 1.8 0 0 0 2.5 2.5l5.1-5.1A5 5 0 0 0 18 7.5l-3 3-2.5-.5-.5-2.5 3-3a5 5 0 0 0-.5-.5Z\"></path>","x-circle":"<circle cx=\"12\" cy=\"12\" r=\"8.5\"></circle><path d=\"m9 9 6 6\"></path><path d=\"m15 9-6 6\"></path>","bolt":"<path d=\"M13 3 5 13.5h6L10.5 21 19 10.5h-6L13 3Z\"/>","captions":"<rect x=\"3\" y=\"5\" width=\"18\" height=\"14\" rx=\"3\"/><path d=\"M10.5 10.3a2.2 2.2 0 1 0 0 3.4M17 10.3a2.2 2.2 0 1 0 0 3.4\"/>","command":"<path d=\"M9 9V6.5A2.5 2.5 0 1 0 6.5 9H9Zm0 0h6m-6 0v6m6-6V6.5A2.5 2.5 0 1 1 17.5 9H15Zm0 0v6m0 0h-6m6 0v2.5a2.5 2.5 0 1 0 2.5-2.5H15Zm-6 0v2.5A2.5 2.5 0 1 1 6.5 15H9Z\"/>","compare":"<rect x=\"3.5\" y=\"4.5\" width=\"17\" height=\"15\" rx=\"2.5\"/><path d=\"M12 2.5v19\"/><path d=\"m8.5 10.5-2 1.5 2 1.5M15.5 10.5l2 1.5-2 1.5\"/>","export":"<path d=\"M12 4.5v11M7.5 11 12 15.5 16.5 11\"/><path d=\"M4.5 15v2.5a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V15\"/>","eye-off":"<path d=\"M3.5 3.5l17 17M10.6 6.1A9.8 9.8 0 0 1 12 6c5 0 8.5 4.5 9.2 6-.3.7-1.2 2-2.6 3.3M6.5 7.6C4.6 8.9 3.3 10.8 2.8 12c.7 1.5 4.2 6 9.2 6a9.6 9.6 0 0 0 4.2-1\"/><path d=\"M9.9 9.9a3 3 0 0 0 4.2 4.2\"/>","film":"<rect x=\"3.5\" y=\"4.5\" width=\"17\" height=\"15\" rx=\"2.5\"/><path d=\"M7.5 4.5v15M16.5 4.5v15M3.5 9.5h4M3.5 14.5h4M16.5 9.5h4M16.5 14.5h4\"/>","folder":"<path d=\"M3.5 7.5a2 2 0 0 1 2-2h4l2 2.5h7a2 2 0 0 1 2 2v7.5a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2Z\"/>","gauge":"<path d=\"M4.2 17a8.5 8.5 0 1 1 15.6 0\"/><path d=\"m12 13 3.8-3.8\"/><circle cx=\"12\" cy=\"13\" r=\"1.3\"/>","history":"<path d=\"M4 12a8 8 0 1 0 2.4-5.7L4 8.7\"/><path d=\"M4 4.5v4.2h4.2M12 8v4.5l3 1.8\"/>","home":"<path d=\"M4 10.5 12 4l8 6.5V19a1.5 1.5 0 0 1-1.5 1.5H15v-5.5H9v5.5H5.5A1.5 1.5 0 0 1 4 19Z\"/>","image-frame":"<rect x=\"3.5\" y=\"4.5\" width=\"17\" height=\"15\" rx=\"2.5\"/><circle cx=\"9\" cy=\"10\" r=\"1.8\"/><path d=\"m4.5 18 5.5-5 3.5 3 2.5-2 4 3.5\"/>","keyboard":"<rect x=\"2.5\" y=\"6\" width=\"19\" height=\"12\" rx=\"2.5\"/><path d=\"M6 10h.01M9.5 10h.01M13 10h.01M16.5 10h.01M8 14.5h8\"/>","list":"<path d=\"M9 6.5h11M9 12h11M9 17.5h11\"/><circle cx=\"4.8\" cy=\"6.5\" r=\".9\"/><circle cx=\"4.8\" cy=\"12\" r=\".9\"/><circle cx=\"4.8\" cy=\"17.5\" r=\".9\"/>","music":"<path d=\"M9 18V6.5l11-2v11\"/><circle cx=\"6.5\" cy=\"18\" r=\"2.5\"/><circle cx=\"17.5\" cy=\"15.5\" r=\"2.5\"/>","mute":"<path d=\"M4.5 9.5h3l4.5-4v13l-4.5-4h-3a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1Z\"/><path d=\"m16 9.5 5 5M21 9.5l-5 5\"/>","nodes":"<rect x=\"3\" y=\"4\" width=\"6.5\" height=\"5\" rx=\"1.5\"/><rect x=\"14.5\" y=\"15\" width=\"6.5\" height=\"5\" rx=\"1.5\"/><path d=\"M9.5 6.5h3a2 2 0 0 1 2 2v5a2 2 0 0 0 2 2\"/>","palette":"<path d=\"M12 3.5a8.5 8.5 0 0 0 0 17c1.1 0 1.7-.8 1.7-1.6 0-.9-.7-1.3-.7-2.2 0-1 .8-1.7 1.8-1.7H17a3.5 3.5 0 0 0 3.5-3.5c0-4.4-3.8-8-8.5-8Z\"/><circle cx=\"7.8\" cy=\"11\" r=\".9\"/><circle cx=\"10.5\" cy=\"7.5\" r=\".9\"/><circle cx=\"15\" cy=\"8\" r=\".9\"/>","pause":"<rect x=\"6.5\" y=\"5\" width=\"3.6\" height=\"14\" rx=\"1.2\"/><rect x=\"13.9\" y=\"5\" width=\"3.6\" height=\"14\" rx=\"1.2\"/>","play":"<path d=\"M7.5 5.2v13.6c0 .8.9 1.3 1.6.9l10.6-6.8c.6-.4.6-1.3 0-1.7L9.1 4.3c-.7-.4-1.6.1-1.6.9Z\"/>","quote":"<path d=\"M9.5 7.5H6a1.5 1.5 0 0 0-1.5 1.5v3A1.5 1.5 0 0 0 6 13.5h3v1a3 3 0 0 1-3 3M19.5 7.5H16a1.5 1.5 0 0 0-1.5 1.5v3a1.5 1.5 0 0 0 1.5 1.5h3v1a3 3 0 0 1-3 3\"/>","redo":"<path d=\"m15 14 4.5-4.5L15 5\"/><path d=\"M19.5 9.5h-9a5.5 5.5 0 0 0 0 11H13\"/>","scissors":"<circle cx=\"6.5\" cy=\"7\" r=\"2.6\"/><circle cx=\"6.5\" cy=\"17\" r=\"2.6\"/><path d=\"M8.6 8.6 19 17.5M8.6 15.4 19 6.5\"/>","skip-back":"<path d=\"M18 6.5v11L10 12l8-5.5Z\"/><path d=\"M6.5 6v12\"/>","skip-forward":"<path d=\"M6 6.5v11l8-5.5-8-5.5Z\"/><path d=\"M17.5 6v12\"/>","split":"<path d=\"M12 3.5v17\"/><path d=\"M4 7.5h5v9H4zM15 7.5h5v9h-5z\"/>","stack":"<path d=\"m12 4 8.5 4.5L12 13 3.5 8.5 12 4Z\"/><path d=\"m3.5 12.5 8.5 4.5 8.5-4.5M3.5 16.5 12 21l8.5-4.5\"/>","sun-moon":"<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4\"/>","template":"<rect x=\"3.5\" y=\"4\" width=\"17\" height=\"16\" rx=\"2.5\"/><path d=\"M3.5 9h17M9.5 9v11\"/>","text":"<path d=\"M5 6.5V5h14v1.5M12 5v14M9 19h6\"/>","timeline":"<rect x=\"3\" y=\"5\" width=\"11\" height=\"4\" rx=\"1.3\"/><rect x=\"8\" y=\"10.5\" width=\"13\" height=\"4\" rx=\"1.3\"/><rect x=\"3\" y=\"16\" width=\"8\" height=\"3.5\" rx=\"1.3\"/>","undo":"<path d=\"M9 14 4.5 9.5 9 5\"/><path d=\"M4.5 9.5h9a5.5 5.5 0 0 1 0 11H11\"/>","upload":"<path d=\"M12 15.5V4.5M7.5 9 12 4.5 16.5 9\"/><path d=\"M4.5 15v2.5a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V15\"/>","volume":"<path d=\"M4.5 9.5h3l4.5-4v13l-4.5-4h-3a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1Z\"/><path d=\"M15.5 9a4.2 4.2 0 0 1 0 6M18.2 6.5a7.8 7.8 0 0 1 0 11\"/>","wand":"<path d=\"m4 20 11-11M13.5 7.5l3 3\"/><path d=\"M18 3.5v3M16.5 5h3M20 9.5v2M19 10.5h2M9.5 3.5v2M8.5 4.5h2\"/>","waveform":"<path d=\"M3.5 12h1.5M7 8.5v7M10.5 5v14M14 8v8M17.5 10v4M20.5 12h0\"/>","zoom-in":"<circle cx=\"10.5\" cy=\"10.5\" r=\"6.5\"/><path d=\"m20 20-4.8-4.8M10.5 8v5M8 10.5h5\"/>","zoom-out":"<circle cx=\"10.5\" cy=\"10.5\" r=\"6.5\"/><path d=\"m20 20-4.8-4.8M8 10.5h5\"/>","alert":"<path d=\"M12 4 21 19.5H3Z\"/><path d=\"M12 10v4M12 17h.01\"/>","bed-fill":"<path d=\"M2.5 6.5a1 1 0 0 1 2 0V13h7V9.5c0-.6.4-1 1-1h5.5a3.5 3.5 0 0 1 3.5 3.5v7a1 1 0 0 1-2 0v-2h-15v2a1 1 0 0 1-2 0Z\"></path><circle cx=\"7.5\" cy=\"10\" r=\"2\"></circle>","check-circle-fill":"<path fill-rule=\"evenodd\" d=\"M12 2.5a9.5 9.5 0 1 1 0 19 9.5 9.5 0 0 1 0-19Zm4.3 6.3a.9.9 0 0 0-1.3 0l-4.3 4.6-1.8-1.8a.9.9 0 1 0-1.3 1.3l2.5 2.4c.4.4 1 .4 1.3 0l5-5.3c.3-.4.3-.9-.1-1.2Z\"></path>","compass-fill":"<path fill-rule=\"evenodd\" d=\"M12 2.4a9.6 9.6 0 1 1 0 19.2 9.6 9.6 0 0 1 0-19.2Zm4.1 5.5-5.6 2.6-2.6 5.6 5.6-2.6Z\"></path>","heart-fill":"<path d=\"M12 20.3S3.5 15.5 3.5 9.3A4.6 4.6 0 0 1 12 6.8a4.6 4.6 0 0 1 8.5 2.5c0 6.2-8.5 11-8.5 11Z\"></path>","home-fill":"<path d=\"M12 3.1 2.8 10.4a.9.9 0 0 0 .6 1.6H5v7.6c0 .8.6 1.4 1.4 1.4h3.8v-5.6h3.6V21h3.8c.8 0 1.4-.6 1.4-1.4V12h1.6a.9.9 0 0 0 .6-1.6Z\"></path>","map-fill":"<path d=\"M8.6 3.6 3.9 5.4a1.4 1.4 0 0 0-.9 1.3v12.6c0 .7.7 1.2 1.3.9l4.3-1.6Z\"></path><path d=\"M10.2 3.6v15l4.6 2V5.6Z\"></path><path d=\"M16.4 5.6v15l4.7-1.8c.5-.2.9-.7.9-1.3V4.9c0-.7-.7-1.2-1.3-.9Z\"></path>","star-fill":"<path d=\"m12 3.6 2.5 5.2 5.6.6-4.2 3.8 1.2 5.6L12 16l-5.1 2.8 1.2-5.6L3.9 9.4l5.6-.6Z\"></path>","user-fill":"<circle cx=\"12\" cy=\"7.6\" r=\"4.1\"></circle><path d=\"M3.9 20c.7-4 4.1-6.6 8.1-6.6s7.4 2.6 8.1 6.6c.1.6-.4 1.1-1 1.1H4.9c-.6 0-1.1-.5-1-1.1Z\"></path>"};
 var FILLED = {"bed-fill":1,"check-circle-fill":1,"compass-fill":1,"heart-fill":1,"home-fill":1,"map-fill":1,"star-fill":1,"user-fill":1};
+var TINTS = ["blue","red","green","orange","purple","teal","violet","gray"];
 // ---- 00-core.js
 // Shared helpers for the sheen elements. Every element:
 // - draws in the light DOM, so sheen.css styles it and pages can restyle it;
 // - takes all of its words from attributes (already translated); it never renders text of its own;
 // - mirrors for dir="rtl" (positions use inset-inline-start, keys follow the reading direction);
 // - follows light/dark through the sheen tokens and stops motion under prefers-reduced-motion.
-var VERSION = '0.7.1';
+var VERSION = '0.8.0';
 
 function define(tag, cls) {
   if (!window.customElements.get(tag)) window.customElements.define(tag, cls);
@@ -75,12 +76,78 @@ function placeUnder(box, a) {
   var left = atEnd ? a.right - width : a.left;
   var flip = left < 0 || left + width > w;
   if (flip) left = atEnd ? a.left : a.right - width;
-  // Wider than the room on either side (a phone): it keeps to the screen.
-  left = clamp(left, 0, Math.max(0, w - width));
+  // Wider than the room on either side (a phone): it keeps to the screen, and from 0.8.0 the minimum gap
+  // (--sheen-space-min) from its edges where the screen has that much room to spare, so it never sits flush against one.
+  var room = Math.max(0, w - width);
+  if (left < 0 || left > room) {
+    var edge = Math.min(parseFloat(cssVar(document.documentElement, '--sheen-space-min', '0')) || 0, room / 2);
+    left = clamp(left, edge, room - edge);
+  }
   var up = a.bottom + gap + height > h && a.top > h - a.bottom;
   s.left = left + 'px';
   s.top = (up ? Math.max(0, a.top - height - gap) : a.bottom + gap) + 'px';
   return { flip: flip, up: up };
+}
+
+// A popup opened from an anchor (0.8.0): a menu, a select's list, a calendar. popup(box, anchor, host, gone) shows box in
+// the top layer (popover) where the API exists, else fixed, so no scrolling box, glass box or sticky cell cuts it off, and
+// places it under anchor (placeUnder), marking it sheen-menu-flip when it lines up with the anchor's other edge and
+// sheen-menu-up when it opens upward. It follows the anchor on any scroll but its own and on resize, and calls gone() on a
+// press outside host, or once the anchor has wholly left the box that scrolled (or the screen). Returns { place, stop }:
+// place() places it again; stop() takes it out of the top layer, hides it and drops the listeners.
+function popup(box, anchor, host, gone) {
+  function place() {
+    box.classList.remove('sheen-menu-flip', 'sheen-menu-up');
+    var at = placeUnder(box, anchor.getBoundingClientRect());
+    box.classList.toggle('sheen-menu-flip', at.flip);
+    box.classList.toggle('sheen-menu-up', at.up);
+  }
+  // Whether the anchor has wholly left this box.
+  function outside(r) {
+    var b = anchor.getBoundingClientRect();
+    return b.bottom <= r.top || b.top >= r.bottom || b.right <= r.left || b.left >= r.right;
+  }
+  function onPress(e) { if (!host.contains(e.target)) gone(); }
+  function onScroll(e) {
+    var t = e.target;
+    if (t && t.nodeType === 1 && box.contains(t)) return;
+    if (outside(t && t.nodeType === 1 && t.contains(anchor) ? t.getBoundingClientRect() : { left: 0, top: 0, right: window.innerWidth, bottom: window.innerHeight })) return gone();
+    place();
+  }
+  function stop() {
+    // A removed box has already left the top layer, and hiding it again would throw.
+    if (box.hasAttribute('popover') && box.isConnected && !box.hidden) box.hidePopover();
+    box.hidden = true;
+    document.removeEventListener('pointerdown', onPress, true);
+    window.removeEventListener('scroll', onScroll, true);
+    window.removeEventListener('resize', place);
+  }
+  box.hidden = false;
+  if (typeof box.showPopover === 'function') { box.setAttribute('popover', 'manual'); box.showPopover(); }
+  place();
+  document.addEventListener('pointerdown', onPress, true);
+  window.addEventListener('scroll', onScroll, true);
+  window.addEventListener('resize', place);
+  // The popup and its anchor can change size while it is open (a field whose chips wrap, a list a search shortens, a
+  // month with one more week): it is placed again each time, so it never covers the field or floats away from it.
+  var sized = window.ResizeObserver ? new window.ResizeObserver(function () { place(); }) : null;
+  if (sized) { sized.observe(box); sized.observe(anchor); }
+  var drop = stop;
+  stop = function () { if (sized) sized.disconnect(); drop(); };
+  return { place: place, stop: stop };
+}
+
+// The ids that name a field from its <label>s (0.8.0). A label apart from the field names it whole. A label around the
+// field names it by its children outside the field (its words, a hint under it): the whole label would read the field's
+// value and an open popup into the name (Chromium does). A label around the field with bare words only names it whole.
+// Labels and parts without an id get one.
+function labelIds(labels, field) {
+  var ids = [];
+  Array.prototype.forEach.call(labels || [], function (l) {
+    var parts = l.contains(field) ? Array.prototype.filter.call(l.children, function (c) { return !c.contains(field); }) : [];
+    (parts.length ? parts : [l]).forEach(function (p) { ids.push(p.id || (p.id = uid('sheen-label'))); });
+  });
+  return ids;
 }
 
 function reducedMotion() {
@@ -1705,29 +1772,23 @@ class SheenMenuButton extends HTMLElement {
     this.addEventListener('focusout', function (e) {
       if (!self.menu.hidden && e.relatedTarget && !self.contains(e.relatedTarget)) self.hide();
     });
-    this.onOutside = function (e) { if (!self.contains(e.target)) self.hide(); };
-    // A menu on the screen would stay put while the page moves under it, so it follows its button on any scroll but its own,
-    // and closes once the button has left the box that scrolled (or the screen).
-    this.onScroll = function (e) {
-      var t = e.target;
-      if (t && t.nodeType === 1 && self.menu.contains(t)) return;
-      if (self.outside(t && t.nodeType === 1 && t.contains(self) ? t.getBoundingClientRect() : { left: 0, top: 0, right: window.innerWidth, bottom: window.innerHeight })) return self.hide();
-      self.replace();
-    };
-    this.onResize = function () { self.replace(); };
     this.draw();
   }
   disconnectedCallback() { if (this.menu) this.hide(); }
-  static get observedAttributes() { return ['label', 'glyph', 'variant', 'icon', 'chevron', 'compact']; }
+  static get observedAttributes() { return ['label', 'glyph', 'variant', 'icon', 'chevron', 'compact', 'tone']; }
   attributeChangedCallback(name, was, now) {
     if (!this.menu) return;
     this.look();
     if (!this.hasAttribute('glyph')) this.button.removeAttribute('aria-label');
     this.name(this.getAttribute('label') || '');
   }
-  // The button's class from variant: the tonal button (or the 0.5.1 icon button with a glyph), or the control.
+  // The button's class from variant: the tonal button (or the 0.5.1 icon button with a glyph), the control, and for a
+  // picker in a table cell (0.8.0) the cell's words (text) or a status pill (pill) in its tone: tone="success", "warning"
+  // or "danger"; any other tone keeps the plain pill.
   look() {
-    this.button.className = this.getAttribute('variant') === 'control' ? 'sheen-control' : this.hasAttribute('glyph') ? 'sheen-icon-button' : 'sheen-button';
+    var variant = this.getAttribute('variant'), tone = this.getAttribute('tone');
+    var pill = 'sheen-pill' + (tone === 'success' || tone === 'warning' || tone === 'danger' ? ' sheen-' + tone : '');
+    this.button.className = variant === 'control' ? 'sheen-control' : variant === 'text' ? 'sheen-cell-button' : variant === 'pill' ? pill : this.hasAttribute('glyph') ? 'sheen-icon-button' : 'sheen-button';
     this.button.classList.toggle('sheen-compact-glyph', this.hasAttribute('compact'));
   }
   // The visible text, or for a glyph button the glyph and an accessible name. An icon or a chevron puts the words in a span
@@ -1766,44 +1827,21 @@ class SheenMenuButton extends HTMLElement {
       self.menu.appendChild(row);
     });
   }
+  // The menu opens as a popup (00-core.js): in the top layer under the button, following it on scroll and resize, closed by
+  // a press outside or once the button scrolls out of its box.
   open() {
-    this.menu.hidden = false;
-    if (typeof this.menu.showPopover === 'function') { this.menu.setAttribute('popover', 'manual'); this.menu.showPopover(); }
+    var self = this;
     this.button.setAttribute('aria-expanded', 'true');
-    this.replace();
-    document.addEventListener('pointerdown', this.onOutside, true);
-    window.addEventListener('scroll', this.onScroll, true);
-    window.addEventListener('resize', this.onResize);
+    if (!this.shown) this.shown = popup(this.menu, this.button, this, function () { self.hide(); });
     // The first item that is safe to land on: never a danger one, so Enter right after opening can't delete.
     var first = this.rows().filter(function (row) { return !row.classList.contains('sheen-danger'); })[0];
     (first || this.menu).focus();
   }
-  replace() {
-    this.menu.classList.remove('sheen-menu-flip', 'sheen-menu-up');
-    this.place();
-  }
-  // Whether the button has wholly left this box.
-  outside(box) {
-    var b = this.button.getBoundingClientRect();
-    return b.bottom <= box.top || b.top >= box.bottom || b.right <= box.left || b.left >= box.right;
-  }
-  // The menu is placed from the screen (the top layer, or fixed), under the button at its start edge, measured where
-  // nothing narrows it. It lines up with the button's end edge when it would leave the screen, and opens upward when it
-  // doesn't fit below and there is more room above.
-  place() {
-    var at = placeUnder(this.menu, this.button.getBoundingClientRect());
-    this.menu.classList.toggle('sheen-menu-flip', at.flip);
-    this.menu.classList.toggle('sheen-menu-up', at.up);
-  }
   // Closes and leaves focus where it is: for a press outside or focus that has moved on.
   hide() {
-    // A removed menu has already left the top layer, and hiding it again would throw.
-    if (this.menu.hasAttribute('popover') && this.menu.isConnected && !this.menu.hidden) this.menu.hidePopover();
+    if (this.shown) { this.shown.stop(); this.shown = null; }
     this.menu.hidden = true;
     this.button.setAttribute('aria-expanded', 'false');
-    document.removeEventListener('pointerdown', this.onOutside, true);
-    window.removeEventListener('scroll', this.onScroll, true);
-    window.removeEventListener('resize', this.onResize);
   }
   // Closes and gives focus back to the button: for Esc, a pick or the button itself.
   close() {
@@ -1820,6 +1858,1295 @@ class SheenMenuButton extends HTMLElement {
   }
 }
 define('sheen-menu-button', SheenMenuButton);
+
+// ---- 74-avatar.js
+// <sheen-avatar name="Maria Santos" size="s" letters="1" tint-key="p-1024" image="/photos/a.jpg" label="Maria Santos">
+//   (0.8.0) A person's initials in a circle, as Flutter sheen's SheenAvatar. It shows the image once it loads, else the
+//   initials (the first letter of the first two words of name; letters sets how many words) on the tint the key picks,
+//   else the filled user glyph. The key is tint-key when set (a record's ID keeps the colour when the name changes),
+//   else the name. size: "s" or "xs" (the stylesheet maps them to the size tokens); 40 without. With label it is an
+//   image with that name; without, screen readers skip it (the name sits beside it). It follows later changes to every
+//   attribute.
+
+// "Maria Santos" → "MS": the first code point of each of the first n words, in capitals.
+function avatarInitials(name, n) {
+  return name.split(/\s+/).filter(Boolean).slice(0, n)
+    .map(function (w) { return String.fromCodePoint(w.codePointAt(0)).toUpperCase(); }).join('');
+}
+
+// FNV-1a (32 bits) over the UTF-16 code units of the trimmed, lower-cased key picks one of TINTS, as Flutter sheen's
+// SheenAvatar.tintOf, so a person gets the same colour in the app and on the web.
+function avatarTint(key) {
+  var s = key.trim().toLowerCase(), h = 0x811c9dc5;
+  for (var i = 0; i < s.length; i++) h = Math.imul(h ^ s.charCodeAt(i), 0x01000193) >>> 0;
+  return TINTS[h % TINTS.length];
+}
+
+class SheenAvatar extends HTMLElement {
+  static get observedAttributes() { return ['name', 'letters', 'tint-key', 'image', 'label']; }
+  connectedCallback() { this.render(); }
+  attributeChangedCallback() { if (this.isConnected) this.render(); }
+  render() {
+    var self = this, name = (this.getAttribute('name') || '').trim(), key = (this.getAttribute('tint-key') || '').trim();
+    var letters = parseInt(this.getAttribute('letters'), 10), label = this.getAttribute('label'), src = this.getAttribute('image') || '';
+    this.classList.add('sheen-avatar');
+    if (name) this.setAttribute('data-tint', avatarTint(key || name)); else this.removeAttribute('data-tint');
+    if (label) {
+      this.setAttribute('role', 'img');
+      this.setAttribute('aria-label', label);
+      this.removeAttribute('aria-hidden');
+    } else {
+      this.removeAttribute('role');
+      this.removeAttribute('aria-label');
+      this.setAttribute('aria-hidden', 'true');
+    }
+    // The photo stays hidden until it loads, so the initials show meanwhile. One that fails is dropped and not asked for
+    // again; a photo that stays the same is kept, so a change of name doesn't load it again.
+    if (!src || src === this.failed) this.photo = null;
+    else if (!this.photo || this.photo.getAttribute('src') !== src) {
+      var img = h('img', { alt: '' });
+      img.hidden = true;
+      img.addEventListener('load', function () { img.hidden = false; });
+      img.addEventListener('error', function () {
+        self.failed = img.getAttribute('src');
+        img.remove();
+        if (self.photo === img) self.photo = null;
+      });
+      img.setAttribute('src', src);
+      this.photo = img;
+    }
+    var face = name ? h('span', { text: avatarInitials(name, letters > 0 ? letters : 2) }) : glyph('user-fill', 22);
+    if (this.photo) this.replaceChildren(face, this.photo); else this.replaceChildren(face);
+  }
+}
+define('sheen-avatar', SheenAvatar);
+
+// ---- 75-select.js
+// <sheen-select placeholder="All areas"><select name="area">…options and optgroups…</select></sheen-select> (0.8.0)
+//   A select whose list the page draws with its own tokens (light, dark, Arabic) instead of the browser's. The native
+//   select inside stays the form control: name, multiple, required, disabled (its own or a fieldset's), form, form reset
+//   and FormData work as before, and a framework binds it as it binds any select (Angular's formControlName, (change)).
+//   Without the script it shows as it is.
+//   Without an inner select it makes one from its own name, multiple and required attributes, and
+//   el.options = [{value, label, disabled, hint, group}] writes its options (inside <optgroup label> for group).
+//   placeholder shows while nothing is chosen; label names it when no <label> names the select; data-hint on an option is
+//   a second line under its label; variant="control" is the find-row look of a Filters panel.
+//   el.select is the native select; el.value and el.values (every chosen value) read and set it; open(), close(), sync().
+//   A choice the person makes fires input then change on the native select, as a native select does. Nothing fires when
+//   the page sets the value itself, by property or attribute: the element just redraws.
+//   Keys, as a select-only combobox: Down, Up, Enter, Space and Alt+Down open; Home and End open on the first and last
+//   option; a letter opens on the next option that starts with the letters typed (type-ahead). While open: Down, Up,
+//   Home, End, PageDown and PageUp move; Enter or Space picks (a multiple list toggles and stays open); Esc closes and is
+//   marked handled; Tab closes and moves on; Alt+Up picks and closes. Focus stays on the trigger, never in the list.
+//   76-select-more.js adds the search box, the clear button and the chips through the hooks setupMore, drawChosen,
+//   drawClear, onOpen, onClose and keyMore; the element works without them.
+
+// The prototypes this file put under one element each, to tell them from the browser's.
+var selectWraps = new WeakSet();
+
+// The browser's own accessor of a property, past the wrapper this file put under an element.
+function selectAccessor(el, name) {
+  for (var p = Object.getPrototypeOf(el); p; p = Object.getPrototypeOf(p)) {
+    if (selectWraps.has(p)) continue;
+    var d = Object.getOwnPropertyDescriptor(p, name);
+    if (d) return d;
+  }
+  return null;
+}
+
+// Sets a property through the browser's own accessor, so no redraw runs for it.
+function selectRaw(el, name, v) { selectAccessor(el, name).set.call(el, v); }
+
+// Wraps properties of this one element: reads and writes go to the browser's accessors, and a write then calls after().
+// A framework that sets select.value or option.selected is seen this way; nothing else tells. The wrappers sit on a
+// prototype of the element's own, put between it and the browser's, so no other element changes. (Own properties would
+// do in a browser, but jsdom refuses a write through an accessor that a select holds itself, and apps test in jsdom.)
+function selectFollow(el, names, after) {
+  var base = Object.getPrototypeOf(el);
+  if (selectWraps.has(base)) return;
+  var wrap = Object.create(base);
+  names.forEach(function (name) {
+    var d = selectAccessor(el, name);
+    if (!d || !d.set) return;
+    Object.defineProperty(wrap, name, { configurable: true, enumerable: d.enumerable,
+      get: function () { return d.get.call(this); },
+      set: function (v) { d.set.call(this, v); after(); } });
+  });
+  selectWraps.add(wrap);
+  Object.setPrototypeOf(el, wrap);
+}
+
+// Sets an attribute, or removes it for null.
+function selectPut(el, name, v) {
+  if (v == null) el.removeAttribute(name);
+  else el.setAttribute(name, v);
+}
+
+// The words type-ahead compares: no case, no accents or other marks (É to e, مَ to م).
+function selectFold(s) { return String(s).normalize('NFD').replace(/\p{M}+/gu, '').toLocaleLowerCase(); }
+
+class SheenSelect extends HTMLElement {
+  static get observedAttributes() { return ['placeholder', 'label', 'name', 'multiple', 'required']; }
+
+  connectedCallback() {
+    if (this.trigger) { this.watch(); this.sync(); return; }
+    var self = this;
+    // A property a framework set before this element was defined sits on the instance and hides the accessor: set it again.
+    ['options', 'values', 'value'].forEach(function (p) {
+      if (!Object.prototype.hasOwnProperty.call(self, p)) return;
+      var v = self[p];
+      delete self[p];
+      self[p] = v;
+    });
+    if (this.querySelector('select')) this.build();
+    // Angular appends the children of an element that is already in the page, so the select may come right after:
+    // wait one microtask before making one.
+    else Promise.resolve().then(function () { if (self.isConnected && !self.trigger) self.build(); });
+  }
+
+  disconnectedCallback() {
+    if (!this.trigger) return;
+    this.hide();
+    this.unwatch();
+  }
+
+  attributeChangedCallback(name) {
+    if (!this.trigger) return;
+    // A select this element made follows its name, multiple and required; the page's own select keeps its own.
+    if (this.made && name === 'name') selectPut(this.native, 'name', this.getAttribute('name'));
+    else if (this.made && (name === 'multiple' || name === 'required')) this.native.toggleAttribute(name, this.hasAttribute(name));
+    this.sync();
+  }
+
+  // The frame around the native select: the trigger (role=combobox), the chevron and the popup with the listbox.
+  build() {
+    var native = this.querySelector('select');
+    if (!native) {
+      native = h('select', { name: this.getAttribute('name'), multiple: this.hasAttribute('multiple'), required: this.hasAttribute('required') });
+      this.made = true;
+      this.prepend(native);
+    }
+    this.native = native;
+    native.classList.add('sheen-select-native');
+    native.setAttribute('tabindex', '-1');
+    native.setAttribute('aria-hidden', 'true');
+    var listId = uid('sheen-select-list');
+    this.trigger = h('button', { type: 'button', class: 'sheen-select-trigger', role: 'combobox', 'aria-haspopup': 'listbox', 'aria-expanded': 'false', 'aria-controls': listId });
+    var chevron = glyph('chevron-down', 18);
+    chevron.classList.add('sheen-select-chevron');
+    this.list = h('div', { class: 'sheen-select-list', role: 'listbox', id: listId, tabindex: '-1' });
+    this.pop = h('div', { class: 'sheen-select-pop sheen-menu sheen-glass', id: uid('sheen-select-pop') }, this.list);
+    this.pop.hidden = true;
+    this.append(this.trigger, chevron, this.pop);
+    this.items = [];
+    this.listen();
+    // What the page set before the build: the options first, then the value.
+    if (this._options) this.writeOptions();
+    if (this._values) this.choose(this._values);
+    else if (this._value != null) selectRaw(native, 'value', this._value);
+    var self = this;
+    selectFollow(native, ['value', 'selectedIndex'], function () { self.redraw(); });
+    this.drawList();
+    this.name();
+    // The hooks of 76-select-more.js run on the whole frame, the field last.
+    if (this.setupMore) this.setupMore();
+    this.redraw();
+    this.watch();
+  }
+
+  listen() {
+    var self = this;
+    this.trigger.addEventListener('keydown', function (e) { if (!(self.keyMore && self.keyMore(e))) self.onKey(e); });
+    // A button clicks on the keyup of Space; the keydown already acted.
+    this.trigger.addEventListener('keyup', function (e) { if (e.key === ' ') e.preventDefault(); });
+    this.addEventListener('click', function (e) { self.press(e); });
+    // A press in the popup keeps focus where it is (the trigger or the search box): focus never moves into the list.
+    this.pop.addEventListener('mousedown', function (e) { if (!e.target.closest('.sheen-select-input')) e.preventDefault(); });
+    // The mouse moves the active option; a move without the pointer moving (the list scrolled under it) does not.
+    this.list.addEventListener('mousemove', function (e) {
+      if (e.clientX === self.mouseX && e.clientY === self.mouseY) return;
+      self.mouseX = e.clientX;
+      self.mouseY = e.clientY;
+      var item = self.itemOf(e.target.closest('.sheen-select-option'));
+      if (item && !item.disabled && item !== self.active) self.mark(item);
+    });
+    // A <label> or a form check puts focus on the native select: it belongs on the trigger.
+    this.native.addEventListener('focus', function () { self.trigger.focus(); });
+    // Focus leaving the whole field closes the list, and the native select hears blur and focusout as if it had held the
+    // focus, so a form marks it touched (Angular's select accessor listens for blur). The focusout it fires bubbles back
+    // here and is let through.
+    this.addEventListener('focusout', function (e) {
+      if (e.target === self.native) return;
+      if (e.relatedTarget && self.contains(e.relatedTarget)) return;
+      if (self.isOpen() && e.relatedTarget) self.hide();
+      self.native.dispatchEvent(new FocusEvent('blur'));
+      self.native.dispatchEvent(new FocusEvent('focusout', { bubbles: true }));
+    });
+    this.onReset = function (e) {
+      // The browser resets the options after the reset event: redraw once it has.
+      if (e.target === self.native.form) setTimeout(function () { self.redraw(); }, 0);
+    };
+  }
+
+  // Watches the native select: options and groups added, removed or renamed, its own attributes, and the fieldsets around
+  // it (disabled). Undone while the element is out of the page.
+  watch() {
+    var self = this;
+    if (!this.watcher && window.MutationObserver) this.watcher = new MutationObserver(function (records) { self.changed(records); });
+    if (this.watcher) {
+      this.watcher.observe(this.native, { childList: true, subtree: true, characterData: true, attributes: true });
+      for (var f = this.native.parentElement; f; f = f.parentElement) {
+        if (f.tagName === 'FIELDSET') this.watcher.observe(f, { attributes: true, attributeFilter: ['disabled'] });
+      }
+    }
+    document.addEventListener('reset', this.onReset, true);
+  }
+
+  unwatch() {
+    if (this.watcher) this.watcher.disconnect();
+    document.removeEventListener('reset', this.onReset, true);
+  }
+
+  // A change inside the select (an option or a group) builds the list again; one on the select itself (disabled,
+  // required, aria-invalid, a framework's classes) or a fieldset only redraws, so an open, searched list stays as it is.
+  changed(records) {
+    var native = this.native;
+    var deep = records.some(function (r) { return r.type !== 'attributes' || (r.target !== native && native.contains(r.target)); });
+    if (deep) this.sync();
+    else this.redraw();
+  }
+
+  // Draws everything again from the native select: the list, the names, the field and the states.
+  sync() {
+    if (!this.trigger) return;
+    this.drawList();
+    this.name();
+    this.redraw();
+  }
+
+  // The rows: one role=option per option (a hidden option has none, as in a native list), and one role=group with its
+  // heading per optgroup, in document order. this.items lists them; the active option stays active when it is still there.
+  drawList() {
+    var self = this, was = this.active && this.active.option, rows = [];
+    this.items = [];
+    this.active = null;
+    Array.prototype.forEach.call(this.native.children, function (c) {
+      if (c.tagName === 'OPTION') rows.push(self.row(c, null, null));
+      else if (c.tagName === 'OPTGROUP') rows.push(self.group(c));
+    });
+    this.list.replaceChildren.apply(this.list, rows.filter(Boolean));
+    var again = this.items.filter(function (i) { return i.option === was; })[0];
+    if (this.isOpen()) this.mark(again && !again.disabled ? again : null);
+  }
+
+  group(optgroup) {
+    var id = uid('sheen-select-heading');
+    var box = h('div', { class: 'sheen-select-group', role: 'group', 'aria-labelledby': id },
+      h('div', { class: 'sheen-menu-heading sheen-select-heading', id: id, role: 'presentation', text: optgroup.label }));
+    for (var o = optgroup.firstElementChild; o; o = o.nextElementSibling) {
+      if (o.tagName !== 'OPTION') continue;
+      var row = this.row(o, optgroup, box);
+      if (row) box.appendChild(row);
+    }
+    return box;
+  }
+
+  row(option, optgroup, box) {
+    var self = this;
+    selectFollow(option, ['selected'], function () { self.redraw(); });
+    if (option.hidden) return null;
+    var label = option.label, hint = option.getAttribute('data-hint') || '';
+    var disabled = option.disabled || !!(optgroup && optgroup.disabled);
+    var row = h('div', { class: 'sheen-select-option', role: 'option', id: uid('sheen-select-option'), 'aria-selected': 'false', 'aria-disabled': disabled ? 'true' : null },
+      h('span', { class: 'sheen-select-check', 'aria-hidden': 'true' }),
+      h('span', { class: 'sheen-select-words' }, h('span', { class: 'sheen-select-label', text: label }), hint ? h('small', { class: 'sheen-select-hint', text: hint }) : null));
+    this.items.push({ option: option, row: row, value: option.value, label: label, hint: hint, disabled: disabled, group: box });
+    return row;
+  }
+
+  // aria-labelledby lists the native select's <label>s, by labelIds() (00-core.js): a <label> around the field by its
+  // parts outside the field. Without one, the label attribute is the aria-label. The trigger and the listbox carry the
+  // same name.
+  name() {
+    var ids = labelIds(this.native.labels, this).join(' ');
+    var label = ids ? null : this.getAttribute('label');
+    [this.trigger, this.list].forEach(function (el) {
+      selectPut(el, 'aria-labelledby', ids || null);
+      selectPut(el, 'aria-label', label);
+    });
+  }
+
+  // The field, the rows' aria-selected and the states, from the native select as it is now. A select that became disabled
+  // closes.
+  redraw() {
+    if (!this.trigger) return;
+    var n = this.native, off = n.matches(':disabled');
+    this.toggleAttribute('data-multiple', n.multiple);
+    this.toggleAttribute('data-disabled', off);
+    this.trigger.disabled = off;
+    selectPut(this.trigger, 'aria-required', n.required ? 'true' : null);
+    selectPut(this.trigger, 'aria-invalid', n.getAttribute('aria-invalid') === 'true' ? 'true' : null);
+    selectPut(this.list, 'aria-multiselectable', n.multiple ? 'true' : null);
+    this.items.forEach(function (i) { i.row.setAttribute('aria-selected', i.option.selected ? 'true' : 'false'); });
+    this.drawField();
+    if (off) this.hide();
+  }
+
+  // The trigger's content: the chosen label (a multiple list joins them, or "more" draws chips), else the placeholder.
+  // data-chosen marks a choice the clear button can take away: in a multiple list any chosen option, in a single list a
+  // chosen option with a value (the "" option, "All areas", is no choice).
+  drawField() {
+    var n = this.native, picked = this.picked(), t = this.trigger;
+    this.toggleAttribute('data-chosen', n.multiple ? picked.length > 0 : !!(picked[0] && picked[0].value !== ''));
+    var text = picked.map(function (o) { return o.label; }).filter(Boolean).join(', ');
+    t.replaceChildren();
+    if (n.multiple && picked.length && this.drawChosen) this.drawChosen(t);
+    else if (text) t.appendChild(h('span', { class: 'sheen-select-value', text: text }));
+    else t.appendChild(h('span', { class: 'sheen-select-placeholder', text: this.getAttribute('placeholder') || '' }));
+    if (this.drawClear) this.drawClear();
+  }
+
+  picked() { return Array.prototype.filter.call(this.native.options, function (o) { return o.selected; }); }
+
+  // Writes this._options into the native select: an option per entry, inside one <optgroup label> per group name, in the
+  // order the groups first appear. The values chosen before stay chosen where they are still offered.
+  writeOptions() {
+    var n = this.native, keep = this.picked().map(function (o) { return o.value; }), groups = Object.create(null), nodes = [];
+    this._options.forEach(function (o) {
+      var option = h('option', { value: o.value == null ? '' : String(o.value), disabled: !!o.disabled, 'data-hint': o.hint || null, text: o.label == null ? '' : String(o.label) });
+      if (o.group == null || o.group === '') { nodes.push(option); return; }
+      if (!groups[o.group]) nodes.push(groups[o.group] = h('optgroup', { label: String(o.group) }));
+      groups[o.group].appendChild(option);
+    });
+    n.replaceChildren.apply(n, nodes);
+    var offered = Array.prototype.map.call(n.options, function (o) { return o.value; });
+    keep = keep.filter(function (v) { return offered.indexOf(v) >= 0; });
+    if (keep.length) this.choose(keep);
+  }
+
+  // Chooses exactly these values, through the browser's own accessors (the caller redraws once).
+  choose(values) {
+    var n = this.native, want = values.map(String);
+    if (n.multiple) {
+      Array.prototype.forEach.call(n.options, function (o) { selectRaw(o, 'selected', want.indexOf(o.value) >= 0); });
+      return;
+    }
+    var hit = Array.prototype.filter.call(n.options, function (o) { return want.indexOf(o.value) >= 0; })[0];
+    selectRaw(n, 'selectedIndex', hit ? hit.index : -1);
+  }
+
+  get select() { return this.native || null; }
+  get value() { return this.native ? this.native.value : (this._value != null ? String(this._value) : ''); }
+  set value(v) {
+    if (this.native) { this.native.value = v; return; }
+    this._value = v;
+    this._values = null;
+  }
+  get values() {
+    if (this.native) return this.picked().map(function (o) { return o.value; });
+    return this._values ? this._values.slice() : [];
+  }
+  set values(list) {
+    var want = Array.isArray(list) ? list.map(String) : [];
+    if (!this.native) { this._values = want; this._value = null; return; }
+    this.choose(want);
+    this.redraw();
+  }
+  set options(list) {
+    this._options = Array.isArray(list) ? list : [];
+    if (!this.trigger) return;
+    this.writeOptions();
+    // Drawn at once, so the page can set the value right after; the observer's records of this write are dropped.
+    if (this.watcher) this.watcher.takeRecords();
+    this.sync();
+  }
+
+  itemOf(row) { return row ? this.items.filter(function (i) { return i.row === row; })[0] || null : null; }
+
+  // The options the arrows reach: enabled, and not hidden by the search of "more" (the row or its group).
+  visibleItems() {
+    return this.items.filter(function (i) { return !i.disabled && !i.row.hidden && !(i.group && i.group.hidden); });
+  }
+
+  // The active option: the one the arrows or the mouse reached, marked sheen-active and named by aria-activedescendant on
+  // what has focus: the search box of "more" while the list is open, else the trigger.
+  mark(item) {
+    var input = this.pop.querySelector('.sheen-select-input');
+    if (this.active) this.active.row.classList.remove('sheen-active');
+    this.active = item || null;
+    this.trigger.removeAttribute('aria-activedescendant');
+    if (input) input.removeAttribute('aria-activedescendant');
+    if (!item) return;
+    item.row.classList.add('sheen-active');
+    (input && this.isOpen() ? input : this.trigger).setAttribute('aria-activedescendant', item.row.id);
+  }
+
+  activate(item) {
+    this.mark(item);
+    if (item && item.row.scrollIntoView) item.row.scrollIntoView({ block: 'nearest' });
+  }
+
+  isOpen() { return !!this.shown; }
+
+  // Opens as a popup (00-core.js) under the field, at least as wide as the field, on the chosen option (the first chosen
+  // one in a multiple list), else on the first enabled one.
+  open() {
+    if (!this.trigger || this.isOpen() || this.native.matches(':disabled')) return;
+    var self = this;
+    this.pop.style.setProperty('--sheen-select-anchor-size', this.getBoundingClientRect().width + 'px');
+    this.setAttribute('data-open', '');
+    this.trigger.setAttribute('aria-expanded', 'true');
+    this.shown = popup(this.pop, this, this, function () { self.hide(); });
+    if (document.activeElement !== this.trigger) this.trigger.focus();
+    var reach = this.visibleItems();
+    this.activate(reach.filter(function (i) { return i.option.selected; })[0] || reach[0] || null);
+    if (this.onOpen) this.onOpen();
+  }
+
+  // Closes and leaves focus where it is: for a press outside, Tab, or focus that moved on.
+  hide() {
+    if (!this.shown) return;
+    this.shown.stop();
+    this.shown = null;
+    this.removeAttribute('data-open');
+    this.trigger.setAttribute('aria-expanded', 'false');
+    this.mark(null);
+    this.typed = '';
+    if (this.onClose) this.onClose();
+  }
+
+  // Closes and gives focus back to the trigger: for Esc, a pick or the trigger itself.
+  close() {
+    this.hide();
+    if (this.trigger) this.trigger.focus();
+  }
+
+  // A press on the field box (the trigger, the chevron, the padding) opens or closes; a press on a row picks it. Either is
+  // marked handled, so a <label> around the field does nothing more. The clear button and a chip's remove mark are
+  // "more"'s, and a click a <label> sends to the native select is left alone.
+  press(e) {
+    var t = e.target;
+    if (t === this.native) return;
+    if (this.pop.contains(t)) {
+      e.preventDefault();
+      var item = this.itemOf(t.closest('.sheen-select-option'));
+      if (item) this.pick(item);
+      return;
+    }
+    if (t.closest('.sheen-select-clear, .sheen-select-chip-remove')) return;
+    e.preventDefault();
+    if (this.isOpen()) this.close();
+    else this.open();
+  }
+
+  // Picks an option as a person does. A single list closes (focus back on the trigger), then fires input and change
+  // unless the option was already chosen; closing first lets a change handler move focus on. A multiple list toggles the
+  // option and stays open. A disabled option does nothing.
+  pick(item) {
+    if (!item || item.disabled) return;
+    var o = item.option;
+    if (this.native.multiple) {
+      selectRaw(o, 'selected', !o.selected);
+      this.commit();
+      return;
+    }
+    var same = o.selected;
+    if (!same) selectRaw(o, 'selected', true);
+    this.close();
+    if (!same) this.commit();
+  }
+
+  // After a person changed the native options: input then change on the native select, as a native select fires them,
+  // then the field and the rows.
+  commit() {
+    this.native.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
+    this.native.dispatchEvent(new Event('change', { bubbles: true }));
+    this.redraw();
+  }
+
+  move(by) {
+    var reach = this.visibleItems(), at = reach.indexOf(this.active);
+    if (!reach.length) return;
+    this.activate(reach[at < 0 ? (by > 0 ? 0 : reach.length - 1) : clamp(at + by, 0, reach.length - 1)]);
+  }
+
+  // Whether letters typed in the last 500 ms are still being added up.
+  typing() { return !!this.typed && Date.now() - this.typedAt < 500; }
+
+  // Type-ahead: the letters typed less than 500 ms apart move to the next option whose label starts with them, case- and
+  // accent-blind, from the active one on; one letter typed again and again steps through the options that start with it.
+  typeAhead(ch) {
+    var now = Date.now();
+    this.typed = (this.typing() ? this.typed : '') + selectFold(ch);
+    this.typedAt = now;
+    var typed = this.typed, reach = this.visibleItems(), at = reach.indexOf(this.active);
+    var one = Array.from(typed).every(function (c) { return c === typed[0]; });
+    var find = one ? typed[0] : typed, start = one ? at + 1 : Math.max(at, 0);
+    for (var i = 0; i < reach.length; i++) {
+      var item = reach[(start + i) % reach.length];
+      if (selectFold(item.label).indexOf(find) === 0) { this.activate(item); return; }
+    }
+  }
+
+  // The keys, from the trigger and (through "more") from the search box, where Home and End move the caret, Space types a
+  // space and letters search.
+  onKey(e) {
+    if (e.defaultPrevented || e.isComposing || !this.trigger) return;
+    var k = e.key, inInput = e.target !== this.trigger;
+    var letter = /^.$/u.test(k) && !e.ctrlKey && !e.metaKey && !e.altKey;
+    if (!this.isOpen()) {
+      if (inInput) return;
+      if (k === 'ArrowDown' || k === 'ArrowUp' || k === 'Enter' || k === ' ') { e.preventDefault(); this.open(); }
+      else if (k === 'Home' || k === 'End') { e.preventDefault(); this.open(); this.ends(k); }
+      else if (letter) {
+        this.open();
+        // With a search box ("more") focus is in it now, and the letter, not held, lands there and searches.
+        if (document.activeElement === this.pop.querySelector('.sheen-select-input')) return;
+        e.preventDefault();
+        this.typeAhead(k);
+      }
+      return;
+    }
+    if (k === 'ArrowDown' || (k === 'ArrowUp' && !e.altKey)) { e.preventDefault(); this.move(k === 'ArrowDown' ? 1 : -1); }
+    else if (k === 'ArrowUp') {
+      e.preventDefault();
+      if (this.native.multiple || !this.active) this.close();
+      else this.pick(this.active);
+    }
+    else if ((k === 'Home' || k === 'End') && !inInput) { e.preventDefault(); this.ends(k); }
+    else if (k === 'PageDown' || k === 'PageUp') { e.preventDefault(); this.move(k === 'PageDown' ? 10 : -10); }
+    else if (k === 'Enter' || (k === ' ' && !inInput && !this.typing())) { e.preventDefault(); if (this.active) this.pick(this.active); }
+    else if (k === 'Escape') { e.preventDefault(); this.close(); }
+    else if (k === 'Tab') this.hide();
+    // A space while letters are being typed is part of them ("Al B").
+    else if (letter && !inInput) { e.preventDefault(); this.typeAhead(k); }
+  }
+
+  // Home or End: the first or the last option the arrows reach.
+  ends(k) {
+    var reach = this.visibleItems();
+    this.activate(k === 'Home' ? reach[0] : reach[reach.length - 1]);
+  }
+}
+define('sheen-select', SheenSelect);
+
+// ---- 76-select-more.js
+// <sheen-select search="Search areas" empty="No matches" clear="Clear" remove="Remove @label"> (0.8.0): the rest of the select.
+//   search: the list opens with a search box at its top, focused, the value as its placeholder and name. Typing hides the
+//   options whose label doesn't hold the query (case- and accent-blind, as type-ahead; in Arabic hamza seats and short
+//   vowels too), hides a group left with none, makes the first visible option active, and shows the empty line (empty)
+//   while nothing is left. Closing empties the query. The box never submits a form, and its own input and change events
+//   stay inside the element.
+//   clear: a round button in the field while something is chosen: a single select goes to its "" option (or none without
+//   one), a multiple one to none. Delete or Backspace on the closed trigger of a single select does the same. Focus stays on
+//   the trigger.
+//   multiple: one chip per chosen option inside the field, in document order, each with a remove mark (remove, "@label"
+//   filled, is its tooltip); Backspace on the closed trigger removes the last one. A chosen disabled option keeps its chip
+//   without a mark, and neither clear nor Backspace takes it away, as the list can't either.
+//   Every change fires input then change on the native select, as a pick in the list does.
+if (typeof SheenSelect === 'function' && typeof selectFold === 'function') (function (P) {
+  function enabled(self) { return !self.native.matches(':disabled'); }
+
+  // The chosen options the person can take away: in a multiple select the enabled ones (the list can't change a
+  // disabled one either), in a single select the chosen one unless it is the "" option.
+  function removable(self) {
+    if (!enabled(self)) return [];
+    if (!self.native.multiple) {
+      var one = self.native.options[self.native.selectedIndex];
+      return one && one.value !== '' ? [one] : [];
+    }
+    return self.items.filter(function (it) { return it.option.selected && !it.disabled; }).map(function (it) { return it.option; });
+  }
+
+  // Builds the parts whose attributes are set, once each. setupMore, drawClear and onOpen all call it, so an attribute
+  // set after the element was built still gets its part.
+  function build(self) {
+    if (self.hasAttribute('search') && !self.searchInput) {
+      var input = h('input', { type: 'text', class: 'sheen-select-input', role: 'combobox', 'aria-expanded': 'true',
+        'aria-autocomplete': 'list', 'aria-controls': self.list.id, autocomplete: 'off', spellcheck: 'false' });
+      input.addEventListener('keydown', function (e) {
+        // A key that ends a composition (IME) belongs to the input method.
+        if (e.isComposing || e.keyCode === 229) return;
+        self.onKey(e);
+        // A search box inside a form never submits it, even with nothing to pick.
+        if (e.key === 'Enter') e.preventDefault();
+      });
+      // The page listens to the native select; the query's own events stop here.
+      input.addEventListener('input', function (e) {
+        e.stopPropagation();
+        filter(self);
+        self.activate(self.visibleItems()[0] || null);
+      });
+      input.addEventListener('change', function (e) { e.stopPropagation(); });
+      self.searchInput = input;
+      self.pop.insertBefore(h('div', { class: 'sheen-select-search' }, glyph('search', 15), input), self.list);
+      name(self);
+    }
+    if (self.hasAttribute('empty') && !self.emptyLine) {
+      self.emptyLine = h('div', { class: 'sheen-select-empty', text: self.getAttribute('empty') });
+      self.emptyLine.hidden = true;
+      self.pop.insertBefore(self.emptyLine, self.list.nextSibling);
+    }
+    if (self.hasAttribute('clear') && !self.clearButton) {
+      var b = h('button', { type: 'button', class: 'sheen-select-clear', tabindex: '-1' }, glyph('close', 16));
+      b.hidden = true;
+      // A press keeps focus where it is; the click then puts it on the trigger.
+      b.addEventListener('mousedown', function (e) { e.preventDefault(); });
+      b.addEventListener('click', function (e) {
+        e.preventDefault();
+        self.clear();
+        self.trigger.focus();
+      });
+      self.clearButton = b;
+      self.insertBefore(b, self.trigger.nextSibling);
+    }
+  }
+
+  function name(self) {
+    var words = self.getAttribute('search') || '';
+    self.searchInput.setAttribute('placeholder', words);
+    self.searchInput.setAttribute('aria-label', words);
+  }
+
+  // Shows the options whose label holds the query, and the groups and the empty line that go with them.
+  function filter(self) {
+    var q = self.searchInput ? selectFold(self.searchInput.value).trim() : '', any = false;
+    self.items.forEach(function (it) {
+      it.row.hidden = q !== '' && selectFold(it.label).indexOf(q) < 0;
+      if (!it.row.hidden) any = true;
+    });
+    Array.prototype.forEach.call(self.list.querySelectorAll('.sheen-select-group'), function (g) {
+      g.hidden = q !== '' && !g.querySelector('.sheen-select-option:not([hidden])');
+    });
+    if (self.emptyLine) {
+      self.emptyLine.textContent = self.getAttribute('empty') || '';
+      self.emptyLine.hidden = q === '' || any || !self.hasAttribute('empty');
+    }
+  }
+
+  function unchoose(self, options) {
+    if (!options.length) return false;
+    options.forEach(function (o) { o.selected = false; });
+    self.commit();
+    return true;
+  }
+
+  P.setupMore = function () { build(this); };
+
+  // Clears the choice as the clear button does; false when there was nothing to clear.
+  P.clear = function () {
+    var gone = removable(this);
+    if (!gone.length) return false;
+    if (this.native.multiple) return unchoose(this, gone);
+    var none = Array.prototype.filter.call(this.native.options, function (o) { return o.value === ''; })[0];
+    if (none) none.selected = true;
+    else this.native.selectedIndex = -1;
+    this.commit();
+    return true;
+  };
+
+  P.drawChosen = function (into) {
+    var self = this, live = enabled(this), words = this.getAttribute('remove');
+    var box = h('span', { class: 'sheen-select-chips' });
+    this.items.forEach(function (it) {
+      if (!it.option.selected) return;
+      var mark = null;
+      if (live && !it.disabled) {
+        mark = h('span', { class: 'sheen-select-chip-remove', 'aria-hidden': 'true', title: words ? fill(words, { label: it.label }) : null }, glyph('close', 14));
+        mark.addEventListener('click', function (e) {
+          e.preventDefault();
+          if (enabled(self) && it.option.selected) unchoose(self, [it.option]);
+        });
+      }
+      box.appendChild(h('span', { class: 'sheen-select-chip', 'data-value': it.value }, h('span', { text: it.label }), mark));
+    });
+    if (box.firstChild) into.appendChild(box);
+  };
+
+  // Called after every redraw. A sync while the list is open and searched (options that arrived late) drew every row
+  // again: the query applies to the new rows, and the active option moves off a row it hides.
+  P.drawClear = function () {
+    build(this);
+    if (this.searchInput && this.searchInput.value && this.isOpen()) {
+      filter(this);
+      var at = this.list.querySelector('.sheen-select-option.sheen-active');
+      if (!at || at.hidden || at.closest('.sheen-select-group[hidden]')) this.activate(this.visibleItems()[0] || null);
+    }
+    var b = this.clearButton;
+    if (!b) return;
+    b.setAttribute('aria-label', this.getAttribute('clear') || '');
+    b.hidden = !this.hasAttribute('clear') || !removable(this).length;
+  };
+
+  P.onOpen = function () {
+    build(this);
+    var input = this.searchInput;
+    if (!input) return;
+    name(this);
+    input.value = '';
+    filter(this);
+    input.focus();
+  };
+
+  P.onClose = function () {
+    if (!this.searchInput) return;
+    this.searchInput.value = '';
+    filter(this);
+  };
+
+  P.keyMore = function (e) {
+    if (this.isOpen() || e.altKey || e.ctrlKey || e.metaKey) return false;
+    var done = false;
+    if (this.native.multiple) {
+      if (e.key === 'Backspace') done = unchoose(this, removable(this).slice(-1));
+    } else if ((e.key === 'Delete' || e.key === 'Backspace') && this.hasAttribute('clear')) {
+      done = this.clear();
+    }
+    if (done) e.preventDefault();
+    return done;
+  };
+
+  // The core defines the element before this file runs, so a select already in the page was built without these hooks:
+  // it gets its parts and its field now.
+  Array.prototype.forEach.call(document.querySelectorAll('sheen-select'), function (el) {
+    if (el instanceof SheenSelect && el.trigger) { build(el); el.drawField(); }
+  });
+})(SheenSelect.prototype);
+
+// ---- 77-date-field.js
+// <sheen-date-field placeholder="Pick a date" prev="Previous month" next="Next month">
+//   <input type="date" name="due" min="2026-01-01">
+// </sheen-date-field>
+// <sheen-date-range placeholder="Any dates" prev="…" next="…" from="From" to="To" [apply="Apply" cancel="Cancel" note="…"]>
+//   <input type="date" name="from"><input type="date" name="to">
+// </sheen-date-range>
+//   The kit's own date field (0.8.0) around the page's native date input(s), which stay the form value: name, min, max,
+//   required, disabled (its own or a fieldset's), form reset and FormData are the native input's, and a framework binds the
+//   input as it binds any date input. Values are ISO yyyy-mm-dd. The element draws a button that shows the date, formatted
+//   by Intl.DateTimeFormat for the nearest lang (month and weekday names and digits are the locale's), and a calendar popup.
+//   Words come from attributes only: placeholder, label (the name when no <label> names the input), prev, next, clear (a
+//   footer button that empties the value), and for a range from and to (the two ends under the calendar), apply and cancel
+//   (picks wait for Apply), note (a line in the footer) and custom (the preset row checked when no preset matches).
+//   first-day (1 Monday … 7 Sunday) overrides the locale's first day of the week; weekdays="Mo Tu We Th Fr Sa Su" (from
+//   Monday) overrides Intl's narrow weekday names; today="yyyy-mm-dd" sets the day marked as today (a market's own time).
+//   variant="control" draws the find-row control (a calendar glyph, the value, a chevron); compact keeps only the glyph in a
+//   narrow list kit. A range takes presets = [{label, start, end}], shown beside the calendar.
+//   In the grid: arrows move by day and week (mirrored in Arabic), PageUp and PageDown by month (with Shift by year), Home
+//   and End to the week's ends, Enter or Space picks, Esc closes (marked handled: one Esc closes one layer), Tab stays in
+//   the popup. A range's second pick before its first swaps them. A pick sets the native input(s) and fires input then
+//   change on each one that changed, bubbling, as the browser's own field does; nothing fires when the page sets a value.
+var NATIVE_PROPS = ['value', 'valueAsDate', 'valueAsNumber'];
+var NATIVE_VALUE = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
+var DAY_MS = 864e5;
+var A_MONDAY = '2024-01-01';
+
+function isoTime(s) {
+  var m = /^(\d{4,})-(\d{2})-(\d{2})$/.exec(s || '');
+  return m ? Date.UTC(+m[1], +m[2] - 1, +m[3]) : null;
+}
+function isoOf(t) {
+  var d = new Date(t);
+  return String(d.getUTCFullYear()).padStart(4, '0') + '-' + String(d.getUTCMonth() + 1).padStart(2, '0') + '-' + String(d.getUTCDate()).padStart(2, '0');
+}
+function isoDate(s) { return isoTime(s) == null ? '' : s; }
+function addDays(iso, n) { return isoOf(isoTime(iso) + n * DAY_MS); }
+function monthDays(y, m) { return new Date(Date.UTC(y, m + 1, 0)).getUTCDate(); }
+// The same day n months on, or the month's last day when it is shorter (31 Jan + 1 → 28 Feb).
+function addMonths(iso, n) {
+  var d = new Date(isoTime(iso)), y = d.getUTCFullYear(), m = d.getUTCMonth() + n;
+  var ty = y + Math.floor(m / 12), tm = ((m % 12) + 12) % 12;
+  return isoOf(Date.UTC(ty, tm, Math.min(d.getUTCDate(), monthDays(ty, tm))));
+}
+function monthOf(iso) { return iso.slice(0, 8) + '01'; }
+function lastOfMonth(iso) { var d = new Date(isoTime(iso)); return isoOf(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), monthDays(d.getUTCFullYear(), d.getUTCMonth()))); }
+function isoWeekday(iso) { return new Date(isoTime(iso)).getUTCDay() || 7; }
+function fire(input, type) { input.dispatchEvent(new Event(type, { bubbles: true })); }
+function mark(el, off) { if (off) el.setAttribute('aria-disabled', 'true'); else el.removeAttribute('aria-disabled'); }
+
+class SheenDateBase extends HTMLElement {
+  static get observedAttributes() { return ['placeholder', 'label', 'prev', 'next', 'clear', 'apply', 'cancel', 'note', 'from', 'to', 'custom', 'first-day', 'weekdays', 'today', 'variant', 'compact', 'lang']; }
+  connectedCallback() {
+    if (this.trigger) return;
+    var self = this;
+    if (!this.found()) {
+      // A framework may connect the element before it appends the input(s): wrap them once they arrive.
+      if (!this.waiting) {
+        this.waiting = new MutationObserver(function () { if (self.found()) { self.waiting.disconnect(); self.waiting = null; self.build(); } });
+        this.waiting.observe(this, { childList: true, subtree: true });
+      }
+      return;
+    }
+    this.build();
+  }
+  disconnectedCallback() { if (this.shown) this.hide(); }
+  attributeChangedCallback() { if (this.trigger) this.refresh(); }
+  // The page's native date inputs, in order: one for a field, two for a range.
+  found() {
+    var list = Array.prototype.filter.call(this.querySelectorAll('input'), function (i) { return !i.closest('.sheen-date-pop'); });
+    return list.length >= this.ends ? list.slice(0, this.ends) : null;
+  }
+  build() {
+    var self = this;
+    this.inputs = this.found();
+    this._presets = this._presets || [];
+    this.text = h('span', { class: 'sheen-date-text', id: uid('date-value') });
+    this.trigger = h('button', { type: 'button', id: uid('date-trigger'), 'aria-haspopup': 'dialog', 'aria-expanded': 'false' });
+    // tabindex -1: a press on the popup's padding keeps focus inside it.
+    this.pop = h('div', { class: 'sheen-date-pop sheen-menu sheen-glass', role: 'dialog', id: uid('date-pop'), tabindex: '-1' });
+    this.pop.hidden = true;
+    this.trigger.setAttribute('aria-controls', this.pop.id);
+    this.appendChild(this.trigger);
+    this.appendChild(this.pop);
+    this.inputs.forEach(function (input) { self.wrap(input); });
+    // A press on a <label> of the inputs would focus the hidden input first (and blur it at once): the button takes it.
+    this.inputs.forEach(function (input) {
+      Array.prototype.forEach.call(input.labels || [], function (label) {
+        label.addEventListener('click', function (e) {
+          if (self.contains(e.target)) return;
+          e.preventDefault();
+          if (!self.trigger.disabled) self.trigger.focus();
+        });
+      });
+    });
+    var fieldset = this.closest('fieldset');
+    this.watcher = new MutationObserver(function () { self.sync(); });
+    this.inputs.forEach(function (input) { self.watcher.observe(input, { attributes: true, attributeFilter: ['disabled', 'readonly', 'required', 'min', 'max', 'aria-invalid', 'value'] }); });
+    if (fieldset) this.watcher.observe(fieldset, { attributes: true, attributeFilter: ['disabled'] });
+    this.trigger.addEventListener('click', function () { if (self.shown) self.close(); else self.open(); });
+    this.trigger.addEventListener('keydown', function (e) {
+      if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && !self.shown) { e.preventDefault(); self.open(); }
+    });
+    this.pop.addEventListener('click', function (e) { self.press(e); });
+    this.pop.addEventListener('keydown', function (e) { self.key(e); });
+    this.pop.addEventListener('pointerover', function (e) {
+      var cell = e.target.closest && e.target.closest('.sheen-cal-day');
+      if (self.picking === 1 && cell && self.hover !== cell.dataset.date) { self.hover = cell.dataset.date; self.paint(); }
+    });
+    this.pop.addEventListener('pointerleave', function () { if (self.hover) { self.hover = null; self.paint(); } });
+    // Focus leaving the whole field closes it and blurs the native input(s), so a form marks them touched.
+    this.addEventListener('focusin', function () { self.inside = true; });
+    this.addEventListener('focusout', function () {
+      if (self.building) return;
+      window.setTimeout(function () {
+        var now = document.activeElement;
+        if (self.contains(now)) return;
+        if (self.shown && now && now !== document.body) self.hide();
+        if (self.inside) {
+          self.inside = false;
+          self.inputs.forEach(function (input) { input.dispatchEvent(new FocusEvent('blur')); input.dispatchEvent(new FocusEvent('focusout', { bubbles: true })); });
+        }
+      }, 0);
+    });
+    this.refresh();
+  }
+  // The native input stays in the form, hidden; setting its value by property (a framework) redraws the field.
+  wrap(input) {
+    var self = this;
+    input.classList.add('sheen-date-native');
+    input.setAttribute('tabindex', '-1');
+    input.setAttribute('aria-hidden', 'true');
+    NATIVE_PROPS.forEach(function (p) {
+      var desc = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, p);
+      if (!desc || !desc.set) return;
+      Object.defineProperty(input, p, { configurable: true, enumerable: true,
+        get: function () { return desc.get.call(this); },
+        set: function (v) { desc.set.call(this, v); self.sync(); } });
+    });
+    // A press on a label lands on the native input: the field's button takes the focus.
+    input.addEventListener('focus', function () { if (!self.trigger.disabled) self.trigger.focus(); });
+    if (input.form) input.form.addEventListener('reset', function () { window.setTimeout(function () { self.sync(); }, 0); });
+  }
+  get presets() { return this._presets || []; }
+  set presets(v) {
+    this._presets = Array.isArray(v) ? v.filter(function (p) { return p && isoDate(p.start) && isoDate(p.end); }) : [];
+    this.toggleAttribute('data-presets', this.ends === 2 && this._presets.length > 0);
+    if (this.trigger) this.refresh();
+  }
+  // The native values as they are now: [start] or [start, end].
+  values() { return (this.inputs || []).map(function (i) { return isoDate(NATIVE_VALUE.get.call(i)); }); }
+  word(name) { return this.getAttribute(name); }
+  locale() {
+    var holder = this.closest('[lang]'), lang = holder ? holder.getAttribute('lang') : '';
+    try { new Intl.DateTimeFormat(lang || undefined); return lang || undefined; } catch (e) { return undefined; }
+  }
+  format(opts) { return new Intl.DateTimeFormat(this.locale(), Object.assign({ timeZone: 'UTC' }, opts)); }
+  firstDay() {
+    var n = parseInt(this.getAttribute('first-day'), 10);
+    if (n >= 1 && n <= 7) return n;
+    try {
+      var loc = new Intl.Locale(this.locale() || new Intl.DateTimeFormat().resolvedOptions().locale);
+      var info = typeof loc.getWeekInfo === 'function' ? loc.getWeekInfo() : loc.weekInfo;
+      if (info && info.firstDay) return info.firstDay;
+    } catch (e) { /* no week data: ISO weeks */ }
+    return 1;
+  }
+  today() {
+    var set = isoDate(this.getAttribute('today'));
+    if (set) return set;
+    var n = new Date();
+    return isoOf(Date.UTC(n.getFullYear(), n.getMonth(), n.getDate()));
+  }
+  // The days a pick may take: within every input's min and max.
+  bounds() {
+    var lo = '', hi = '';
+    (this.inputs || []).forEach(function (i) {
+      var a = isoDate(i.getAttribute('min')), b = isoDate(i.getAttribute('max'));
+      if (a && (!lo || a > lo)) lo = a;
+      if (b && (!hi || b < hi)) hi = b;
+    });
+    return { lo: lo, hi: hi };
+  }
+  allowed(iso) { var b = this.bounds(); return !(b.lo && iso < b.lo) && !(b.hi && iso > b.hi); }
+  clampDay(iso) { var b = this.bounds(); return b.lo && iso < b.lo ? b.lo : b.hi && iso > b.hi ? b.hi : iso; }
+  disabledNow() {
+    return this.inputs.some(function (i) { return i.disabled || !!i.closest('fieldset[disabled]'); });
+  }
+  isOpen() { return !!this.shown; }
+
+  refresh() {
+    this.look();
+    this.name();
+    this.frame();
+    if (this.shown) { this.drawMonth(); this.paint(); }
+    this.sync();
+  }
+  // The trigger's look: the dense field, or the find-row control with a calendar glyph.
+  look() {
+    var control = this.getAttribute('variant') === 'control';
+    this.trigger.className = (control ? 'sheen-control ' : '') + 'sheen-date-trigger';
+    this.trigger.classList.toggle('sheen-compact-glyph', control && this.hasAttribute('compact'));
+    var chev = glyph('chevron-down', control ? 15 : 18);
+    chev.classList.add('sheen-date-chevron', 'sheen-control-chevron');
+    var icon = control ? glyph('calendar', 15) : null;
+    if (icon) icon.classList.add('sheen-date-icon');
+    this.trigger.replaceChildren.apply(this.trigger, [icon, this.text, chev].filter(Boolean));
+  }
+  // Names: the <label>s of the (first) native input, by labelIds() (00-core.js): a <label> around the field by its parts
+  // outside the field, so the open calendar never reads into the name; else the label attribute. The value is read
+  // after the name, unless a label around the field with bare words names it whole and already holds the value.
+  name() {
+    var self = this, labels = Array.prototype.slice.call(this.inputs[0].labels || []);
+    var t = this.trigger, label = this.word('label');
+    t.removeAttribute('aria-label');
+    this.pop.removeAttribute('aria-label');
+    if (labels.length) {
+      var ids = labelIds(labels, this);
+      var whole = labels.some(function (l) { return l.contains(self) && ids.indexOf(l.id) >= 0; });
+      t.setAttribute('aria-labelledby', ids.join(' ') + (whole ? '' : ' ' + this.text.id));
+      this.pop.setAttribute('aria-labelledby', ids.join(' '));
+    } else if (label) {
+      t.setAttribute('aria-label', label);
+      t.setAttribute('aria-labelledby', t.id + ' ' + this.text.id);
+      this.pop.removeAttribute('aria-labelledby');
+      this.pop.setAttribute('aria-label', label);
+    } else {
+      t.removeAttribute('aria-labelledby');
+      this.pop.removeAttribute('aria-labelledby');
+    }
+  }
+  // The popup's parts: presets (a range with presets), the calendar's head and grid, the two ends, the footer.
+  frame() {
+    var w = this.word.bind(this), body = h('div', { class: 'sheen-date-body' });
+    this.presetBox = null;
+    if (this.ends === 2 && this.presets.length) {
+      this.presetBox = h('div', { class: 'sheen-date-presets', role: 'radiogroup' });
+      var rows = this.presets.map(function (p, i) { return { label: p.label, at: i }; });
+      if (w('custom')) rows.push({ label: w('custom'), at: -1 });
+      var box = this.presetBox;
+      rows.forEach(function (r) {
+        box.appendChild(h('button', { type: 'button', role: 'radio', class: 'sheen-date-preset', 'aria-checked': 'false', tabindex: '-1', 'data-preset': String(r.at) },
+          h('span', { class: 'sheen-date-tick', 'aria-hidden': 'true' }), h('span', { text: r.label })));
+      });
+      body.appendChild(box);
+    }
+    this.prevButton = h('button', { type: 'button', class: 'sheen-cal-prev', 'aria-label': w('prev') }, glyph('back', 16));
+    this.nextButton = h('button', { type: 'button', class: 'sheen-cal-next', 'aria-label': w('next') }, glyph('chevron', 16));
+    this.heading = h('b', { class: 'sheen-cal-title', id: uid('cal-title'), 'aria-live': 'polite' });
+    this.grid = h('div', { class: 'sheen-cal-grid', role: 'grid', 'aria-labelledby': this.heading.id });
+    var cal = h('div', { class: 'sheen-cal' }, h('div', { class: 'sheen-cal-head' }, this.prevButton, this.heading, this.nextButton), this.grid);
+    this.endBox = null;
+    if (this.ends === 2 && (w('from') || w('to'))) {
+      this.endBox = h('div', { class: 'sheen-date-ends' },
+        h('span', { class: 'sheen-date-end' }, h('small', { text: w('from') || '' }), h('b')),
+        h('span', { class: 'sheen-date-end' }, h('small', { text: w('to') || '' }), h('b')));
+      cal.appendChild(this.endBox);
+    }
+    body.appendChild(cal);
+    var parts = [body];
+    if (w('note') || w('clear') || w('apply')) {
+      parts.push(h('div', { class: 'sheen-date-foot' },
+        w('note') ? h('small', { class: 'sheen-date-note', text: w('note') }) : null,
+        w('clear') ? h('button', { type: 'button', class: 'sheen-link-button sheen-date-clear', text: w('clear') }) : null,
+        w('apply') && w('cancel') ? h('button', { type: 'button', class: 'sheen-link-button sheen-date-cancel', text: w('cancel') }) : null,
+        w('apply') ? h('button', { type: 'button', class: 'sheen-button sheen-small sheen-glass-prominent sheen-date-apply', text: w('apply') }) : null));
+    }
+    this.building = true;
+    this.pop.replaceChildren.apply(this.pop, parts);
+    this.building = false;
+    if (!this.pop.hasAttribute('aria-label') && !this.pop.hasAttribute('aria-labelledby')) this.pop.setAttribute('aria-labelledby', this.heading.id);
+  }
+
+  // Redraws the field and an open calendar from the native inputs; marks disabled, required and invalid from them.
+  sync() {
+    if (!this.trigger) return;
+    var vals = this.values(), off = this.disabledNow();
+    this.trigger.disabled = off;
+    this.toggleAttribute('data-disabled', off);
+    var readonly = this.inputs.some(function (i) { return i.readOnly; });
+    this.toggleAttribute('data-readonly', readonly);
+    if (this.inputs.some(function (i) { return i.required; })) this.trigger.setAttribute('aria-required', 'true');
+    else this.trigger.removeAttribute('aria-required');
+    if (this.inputs.some(function (i) { return i.getAttribute('aria-invalid') === 'true'; })) this.trigger.setAttribute('aria-invalid', 'true');
+    else this.trigger.removeAttribute('aria-invalid');
+    this.drawField(vals);
+    if (this.shown) {
+      if (off) { this.hide(); return; }
+      this.pending = vals;
+      this.picking = 0;
+      this.paint();
+    }
+  }
+  // The field's words: the date, a preset's label, the range, or the placeholder.
+  drawField(vals) {
+    var shown = this.fieldText(vals), chosen = vals.some(Boolean);
+    this.text.textContent = shown != null ? shown : this.word('placeholder') || '';
+    this.text.classList.toggle('sheen-date-placeholder', shown == null);
+    this.toggleAttribute('data-chosen', chosen);
+  }
+  fieldText(vals) {
+    var f = this.format({ day: 'numeric', month: 'short', year: 'numeric' }), s = vals[0], e = vals[1];
+    if (this.ends === 2) {
+      var preset = this.matching(vals);
+      if (preset) return preset.label;
+      if (s && e) return typeof f.formatRange === 'function' ? f.formatRange(new Date(isoTime(s)), new Date(isoTime(e))) : f.format(new Date(isoTime(s))) + ' – ' + f.format(new Date(isoTime(e)));
+      if (e) return f.format(new Date(isoTime(e)));
+    }
+    return s ? f.format(new Date(isoTime(s))) : null;
+  }
+  matching(vals) {
+    if (!vals[0] || !vals[1]) return null;
+    return this.presets.filter(function (p) { return p.start === vals[0] && p.end === vals[1]; })[0] || null;
+  }
+
+  open() {
+    if (this.shown || this.trigger.disabled || this.hasAttribute('data-readonly')) return;
+    var self = this;
+    this.pending = this.values();
+    this.picking = 0;
+    this.hover = null;
+    this.focusDay = this.clampDay(this.pending[0] || this.pending[1] || this.today());
+    this.month = monthOf(this.focusDay);
+    this.setAttribute('data-open', '');
+    this.trigger.setAttribute('aria-expanded', 'true');
+    this.pop.style.setProperty('--sheen-date-anchor-size', (this.trigger.getBoundingClientRect().width || 0) + 'px');
+    this.frame();
+    this.drawMonth();
+    this.paint();
+    this.shown = popup(this.pop, this.trigger, this, function () { self.hide(); });
+    this.focusOn(this.focusDay);
+  }
+  // Closes and leaves focus where it is (a press outside, focus that moved on); picks not yet applied are dropped.
+  hide() {
+    if (this.shown) { this.shown.stop(); this.shown = null; }
+    this.pop.hidden = true;
+    this.pending = null;
+    this.removeAttribute('data-open');
+    this.trigger.setAttribute('aria-expanded', 'false');
+  }
+  // Closes and gives focus back to the field's button: Esc, a pick, Apply, Cancel, the button itself.
+  close() { this.hide(); this.trigger.focus(); }
+
+  // The month's grid: a row of weekday names, then its weeks, the days before the 1st left empty.
+  drawMonth() {
+    var first = this.month, start = this.firstDay();
+    var full = this.format({ dateStyle: 'full' }), num = this.format({ day: 'numeric' });
+    var narrow = this.format({ weekday: 'narrow' }), long = this.format({ weekday: 'long' });
+    var names = (this.word('weekdays') || '').trim().split(/\s*,\s*|\s+/);
+    if (names.length !== 7) names = null;
+    this.heading.textContent = this.format({ month: 'long', year: 'numeric' }).format(new Date(isoTime(first)));
+    var rows = [], head = h('div', { class: 'sheen-cal-row sheen-cal-weekdays', role: 'row' });
+    for (var i = 0; i < 7; i++) {
+      var wd = ((start - 1 + i) % 7) + 1, ref = new Date(isoTime(addDays(A_MONDAY, wd - 1)));
+      head.appendChild(h('small', { role: 'columnheader', 'aria-label': long.format(ref), text: names ? names[wd - 1] : narrow.format(ref) }));
+    }
+    rows.push(head);
+    var lead = (isoWeekday(first) - start + 7) % 7, count = monthDays(+first.slice(0, 4), +first.slice(5, 7) - 1);
+    var cells = [];
+    for (var b = 0; b < lead; b++) cells.push(h('span', { role: 'gridcell', class: 'sheen-cal-blank' }));
+    for (var d = 0; d < count; d++) {
+      var iso = addDays(first, d), at = new Date(isoTime(iso));
+      cells.push(h('button', { type: 'button', role: 'gridcell', class: 'sheen-cal-day', tabindex: '-1', 'data-date': iso, 'aria-label': full.format(at) }, num.format(at)));
+    }
+    while (cells.length % 7) cells.push(h('span', { role: 'gridcell', class: 'sheen-cal-blank' }));
+    for (var r = 0; r < cells.length; r += 7) rows.push(h.apply(null, ['div', { class: 'sheen-cal-row', role: 'row' }].concat(cells.slice(r, r + 7))));
+    this.building = true;
+    this.grid.replaceChildren.apply(this.grid, rows);
+    this.building = false;
+    // A month button whose month lies wholly outside min or max is off (aria-disabled: it keeps focus if it has it).
+    var bounds = this.bounds();
+    mark(this.prevButton, !!(bounds.lo && bounds.lo >= first));
+    mark(this.nextButton, !!(bounds.hi && bounds.hi <= lastOfMonth(first)));
+    if (this.shown) this.shown.place();
+  }
+  // The days' states: selected (the date, or every day of the range), the range's ends, a range being drawn, today,
+  // out of min and max; the presets' check; the ends under the calendar.
+  paint() {
+    if (!this.pending) return;
+    var p = this.pending, s = p[0] || '', e = this.ends === 2 ? p[1] || '' : '', today = this.today(), self = this;
+    var lo = s, hi = e || s;
+    var preview = this.ends === 2 && this.picking === 1 && s ? (this.hover || this.focusDay) : '';
+    var pa = preview && preview < s ? preview : s, pb = preview && preview > s ? preview : s;
+    Array.prototype.forEach.call(this.grid.querySelectorAll('.sheen-cal-day'), function (cell) {
+      var iso = cell.dataset.date;
+      var selected = !!s && iso >= lo && iso <= hi;
+      cell.setAttribute('aria-selected', selected ? 'true' : 'false');
+      cell.classList.toggle('sheen-cal-end', !!iso && (iso === s || iso === e));
+      cell.classList.toggle('sheen-cal-in', !!preview && !selected && iso >= pa && iso <= pb);
+      if (iso === today) cell.setAttribute('aria-current', 'date'); else cell.removeAttribute('aria-current');
+      mark(cell, !self.allowed(iso));
+      cell.setAttribute('tabindex', iso === self.focusDay ? '0' : '-1');
+    });
+    if (this.presetBox) {
+      var match = this.matching(p), rows = Array.prototype.slice.call(this.presetBox.children), any = p.some(Boolean);
+      rows.forEach(function (row) {
+        var at = +row.dataset.preset;
+        var on = at >= 0 ? !!match && self.presets[at] === match : any && !match;
+        row.setAttribute('aria-checked', on ? 'true' : 'false');
+      });
+      var stop = rows.filter(function (row) { return row.getAttribute('aria-checked') === 'true'; })[0] || rows[0];
+      rows.forEach(function (row) { row.setAttribute('tabindex', row === stop ? '0' : '-1'); });
+    }
+    if (this.endBox) {
+      var f = this.format({ day: 'numeric', month: 'short', year: 'numeric' });
+      Array.prototype.forEach.call(this.endBox.querySelectorAll('b'), function (b, i) { b.textContent = p[i] ? f.format(new Date(isoTime(p[i]))) : ''; });
+    }
+  }
+  // Moves the grid's focus to a day (kept within min and max), turning the month when it lies in another.
+  focusOn(iso) {
+    iso = this.clampDay(iso);
+    this.focusDay = iso;
+    if (monthOf(iso) !== this.month) { this.month = monthOf(iso); this.building = true; this.drawMonth(); }
+    this.paint();
+    var cell = this.grid.querySelector('.sheen-cal-day[data-date="' + iso + '"]');
+    if (cell) cell.focus();
+    this.building = false;
+  }
+  turn(by) {
+    var btn = by < 0 ? this.prevButton : this.nextButton;
+    if (btn.getAttribute('aria-disabled') === 'true') return;
+    this.month = monthOf(addMonths(this.month, by));
+    var day = this.clampDay(addMonths(this.focusDay, by));
+    this.focusDay = monthOf(day) === this.month ? day : this.clampDay(this.month);
+    this.drawMonth();
+    this.paint();
+  }
+  pick(iso) {
+    if (!this.allowed(iso)) return;
+    if (this.ends === 1) this.pending = [iso];
+    else if (this.picking !== 1) { this.pending = [iso, '']; this.picking = 1; }
+    else {
+      var s = this.pending[0];
+      this.pending = iso < s ? [iso, s] : [s, iso];
+      this.picking = 0;
+    }
+    this.focusDay = iso;
+    this.hover = null;
+    if (this.picking === 0 && !this.hasAttribute('apply')) { this.commit(this.pending); this.close(); return; }
+    this.paint();
+    // the picked day takes the grid's focus (a press doesn't move it everywhere)
+    if (this.grid.contains(document.activeElement)) this.focusOn(iso);
+  }
+  // Writes the values into the native inputs and fires input then change on each one that changed.
+  commit(vals) {
+    var changed = [];
+    this.inputs.forEach(function (input, i) {
+      var v = vals[i] || '';
+      if (NATIVE_VALUE.get.call(input) !== v) { NATIVE_VALUE.set.call(input, v); changed.push(input); }
+    });
+    changed.forEach(function (input) { fire(input, 'input'); fire(input, 'change'); });
+    this.sync();
+  }
+  press(e) {
+    // A press inside a <label> around the field would also reach the native input: the popup keeps it.
+    e.preventDefault();
+    var t = e.target, cell = t.closest('.sheen-cal-day');
+    if (cell) { this.pick(cell.dataset.date); return; }
+    if (t.closest('.sheen-cal-prev')) return this.turn(-1);
+    if (t.closest('.sheen-cal-next')) return this.turn(1);
+    var row = t.closest('.sheen-date-preset');
+    if (row) {
+      var at = +row.dataset.preset;
+      if (at < 0) { this.picking = 0; this.focusOn(this.pending[0] || this.focusDay); return; }
+      var p = this.presets[at];
+      this.pending = [p.start, p.end];
+      this.picking = 0;
+      if (!this.hasAttribute('apply')) { this.commit(this.pending); this.close(); return; }
+      this.focusDay = this.clampDay(p.start);
+      this.month = monthOf(this.focusDay);
+      this.drawMonth();
+      this.paint();
+      return;
+    }
+    if (t.closest('.sheen-date-clear')) { this.commit(this.inputs.map(function () { return ''; })); this.close(); return; }
+    if (t.closest('.sheen-date-cancel')) { this.close(); return; }
+    if (t.closest('.sheen-date-apply')) { this.commit(this.pending); this.close(); }
+  }
+  key(e) {
+    if (e.key === 'Escape') {
+      if (!e.defaultPrevented) { e.preventDefault(); this.close(); }
+      return;
+    }
+    if (e.key === 'Tab') return this.trap(e);
+    var t = e.target;
+    if (t.classList && t.classList.contains('sheen-date-preset')) {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        var rows = Array.prototype.slice.call(this.presetBox.children), at = rows.indexOf(t);
+        rows[(at + (e.key === 'ArrowDown' ? 1 : -1) + rows.length) % rows.length].focus();
+      }
+      return;
+    }
+    if (!t.classList || !t.classList.contains('sheen-cal-day')) return;
+    var d = this.focusDay, rtl = isRtl(this), start = this.firstDay(), into = (isoWeekday(d) - start + 7) % 7, to = null;
+    if (e.key === 'ArrowRight') to = addDays(d, rtl ? -1 : 1);
+    else if (e.key === 'ArrowLeft') to = addDays(d, rtl ? 1 : -1);
+    else if (e.key === 'ArrowDown') to = addDays(d, 7);
+    else if (e.key === 'ArrowUp') to = addDays(d, -7);
+    else if (e.key === 'PageDown') to = addMonths(d, e.shiftKey ? 12 : 1);
+    else if (e.key === 'PageUp') to = addMonths(d, e.shiftKey ? -12 : -1);
+    else if (e.key === 'Home') to = addDays(d, -into);
+    else if (e.key === 'End') to = addDays(d, 6 - into);
+    else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.pick(d); return; }
+    if (to) { e.preventDefault(); this.focusOn(to); }
+  }
+  // Tab and Shift+Tab go round the popup's stops: it is a dialog, and Esc is the way out.
+  trap(e) {
+    var stops = Array.prototype.filter.call(this.pop.querySelectorAll('button'), function (b) { return b.getAttribute('tabindex') !== '-1' && !b.disabled; });
+    if (!stops.length) return;
+    var first = stops[0], last = stops[stops.length - 1], now = document.activeElement;
+    if (e.shiftKey && (now === first || now === this.pop)) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && now === last) { e.preventDefault(); first.focus(); }
+  }
+}
+
+class SheenDateField extends SheenDateBase {
+  get ends() { return 1; }
+  get input() { return this.inputs ? this.inputs[0] : this.querySelector('input'); }
+  get value() { return this.input ? isoDate(NATIVE_VALUE.get.call(this.input)) : ''; }
+  set value(v) { if (this.input) { NATIVE_VALUE.set.call(this.input, v || ''); this.sync(); } }
+}
+class SheenDateRange extends SheenDateBase {
+  get ends() { return 2; }
+  get value() { var v = this.values(); return { start: v[0] || '', end: v[1] || '' }; }
+  set value(v) {
+    if (!this.inputs) return;
+    NATIVE_VALUE.set.call(this.inputs[0], (v && v.start) || '');
+    NATIVE_VALUE.set.call(this.inputs[1], (v && v.end) || '');
+    this.sync();
+  }
+}
+define('sheen-date-field', SheenDateField);
+define('sheen-date-range', SheenDateRange);
 
 // ---- 99-api.js
 // window.sheenElements: the version, the glyphs and a toast shortcut.

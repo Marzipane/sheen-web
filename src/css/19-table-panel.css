@@ -1,0 +1,34 @@
+/* 0.8.0 table and panel */
+/* The wide side panel beside the dense size, end-aligned table cells, a tight small table, a compact icon button for a
+   table row's ••• and the page header's glyph-only control. Each is a class a page opts in to, except the header •••,
+   whose box and glyph don't change; a page without them draws as in 0.7. Logical sides only, so Arabic mirrors. */
+
+/* class="sheen-wide" on a side panel: the 440px panel (--sheen-size-panel-wide). Beside sheen-small it keeps the dense
+   content and the 440px width, since this rule comes after the sheen-small one. At no specificity, as sheen-small: an
+   app's class rule on the panel or an inline --sheen-panel-size wins over it. */
+:where(sheen-side-panel.sheen-wide){--sheen-panel-size:var(--sheen-size-panel-wide)}
+
+/* class="sheen-end" on a th or td: its words and a sort button sit at the end edge (the right, the left in Arabic), the
+   way a number column lines up; with sheen-num its digits line up too */
+.sheen-table :is(th,td).sheen-end{text-align:end}
+.sheen-table th.sheen-end .sheen-sort-button{justify-content:flex-end}
+
+/* class="sheen-tight" on a small table of many columns: 9px at the sides of its cells and its sort buttons
+   (--sheen-size-table-tight-padding), the block padding as before. The pinned ••• cell keeps its 4px and a sortable
+   header still leaves its padding to its button: :where adds no specificity to leaving them out. */
+.sheen-table.sheen-small.sheen-tight :is(th,td):where(:not(.sheen-pin-end,:has(>.sheen-sort-button))){padding-inline:var(--sheen-size-table-tight-padding)}
+.sheen-table.sheen-small.sheen-tight .sheen-sort-button{padding-inline:var(--sheen-size-table-tight-padding)}
+
+/* class="sheen-compact" on an icon button, or on a menu button with a glyph and no variant: the 30px row ••• with a
+   radius of 9, no fill and an 18px glyph in the secondary colour; hovered or open, the tonal fill and the text colour.
+   The menu button's own box hugs it at the top of its line, so a small table's row stays the row's height. */
+.sheen-icon-button.sheen-compact,sheen-menu-button.sheen-compact>.sheen-icon-button{inline-size:var(--sheen-size-icon-button-compact);block-size:var(--sheen-size-icon-button-compact);border-radius:var(--sheen-size-icon-button-compact-radius);background:none;color:var(--sheen-text-secondary)}
+:is(.sheen-icon-button.sheen-compact,sheen-menu-button.sheen-compact>.sheen-icon-button):is(:hover,[aria-expanded="true"]){background:var(--sheen-tonal);color:var(--sheen-text)}
+:is(.sheen-icon-button.sheen-compact,sheen-menu-button.sheen-compact>.sheen-icon-button)>:is(.sheen-glyph,.sheen-icon){inline-size:var(--sheen-size-icon-button-compact-glyph);block-size:var(--sheen-size-icon-button-compact-glyph)}
+:is(.sheen-icon-button.sheen-compact,sheen-menu-button.sheen-compact>.sheen-icon-button):focus-visible{outline-offset:1px}
+sheen-menu-button.sheen-compact{display:inline-flex;vertical-align:top}
+
+/* a page header's ••• (a control menu button with a glyph and no words) takes the font size around it, as the mockups'
+   header •••; its 36px box and 18px glyph stay the same */
+sheen-menu-button[variant="control"][glyph]>.sheen-control{font-size:inherit}
+/* end 0.8.0 table and panel */

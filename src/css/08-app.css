@@ -46,7 +46,7 @@
 .sheen-dialog-head{display:flex;align-items:center;gap:12px;padding:20px 20px 0}
 .sheen-dialog-head>:first-child{flex:1;margin:0;font-size:20px;font-weight:700}
 .sheen-dialog-body{padding:16px 20px}
-.sheen-dialog-foot{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:10px;padding:0 20px 20px}
+.sheen-dialog-foot{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:max(var(--sheen-space-min),10px);padding:0 20px 20px}
 
 /* <label class="sheen-switch"><input type="checkbox" role="switch"> words</label> */
 .sheen-switch{display:inline-flex;align-items:center;gap:10px;cursor:pointer;font-size:15px}
@@ -82,7 +82,7 @@
 .sheen-empty-glyph{display:grid;place-items:center;inline-size:64px;block-size:64px;border-radius:22px;color:var(--sheen-accent-text);background:color-mix(in srgb,var(--sheen-accent) 14%,transparent)}
 .sheen-empty-title{font-size:19px;font-weight:700;color:var(--sheen-text);margin:0}
 .sheen-empty p{margin:0;max-inline-size:46ch}
-.sheen-empty-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-block-start:6px}
+.sheen-empty-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:max(var(--sheen-space-min),8px);margin-block-start:6px}
 .sheen-skeleton-line{block-size:14px;border-radius:7px;margin-block:6px}
 .sheen-skeleton-line.sheen-short{inline-size:40%}
 .sheen-skeleton-block{block-size:var(--sheen-skeleton-h,120px);border-radius:16px}

@@ -1,0 +1,13 @@
+/* 0.8.0 the minimum gap */
+/* --sheen-space-min (tokens.json space.min) is the least room between two boxes the kit lays out: fields, field rows,
+   cards, buttons and controls never sit flush against each other. Every kit layout gap between boxes is
+   max(var(--sheen-space-min), <its own value>), so a layout that sets more keeps it and one token raises them all.
+   Dialog and panel bodies stack whatever the page puts in them, with no gap of their own: there each box after another
+   box keeps the minimum above it. Text keeps its own margins: a paragraph, a heading or a list is never pushed. At no
+   specificity, so any rule of the page or the kit that sets the margin wins (a panel footer's auto margin, an error under
+   its field). A filter group in a panel body is spaced by its own heading. */
+:where(.sheen-dialog-body,.sheen-panel-body)>:where(:not(p,h1,h2,h3,h4,h5,h6,ul,ol,dl,hr,pre,blockquote,figure,legend,.sheen-filter-group))+:where(:not(p,h1,h2,h3,h4,h5,h6,ul,ol,dl,hr,pre,blockquote,figure,legend,.sheen-filter-group)){margin-block-start:var(--sheen-space-min)}
+/* A dialog body is plain block flow, where neighbouring margins overlap: a box after a paragraph keeps the minimum too,
+   and the paragraph's own larger margin still wins. */
+:where(.sheen-dialog-body)>:where(p,h1,h2,h3,h4,h5,h6,ul,ol,dl,hr,pre,blockquote,figure)+:where(:not(p,h1,h2,h3,h4,h5,h6,ul,ol,dl,hr,pre,blockquote,figure,legend)){margin-block-start:var(--sheen-space-min)}
+/* end 0.8.0 the minimum gap */

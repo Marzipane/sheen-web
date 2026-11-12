@@ -106,7 +106,9 @@ Each component's file starts with a comment that documents its attributes.
 `<x-sheen::picker>` replaces the browser's own dropdown. The field opens a glass list under it, with a search box
 from eight options (`searchFrom`), popular values first (`popular`) and the chosen one ticked. `layout="sheet"` opens
 a sheet in the middle for long lists; on phones every picker is a sheet from the bottom that rises with the keyboard.
-`variant="pill"` makes the field a glass pill with an icon, for a filter over a page.
+`variant="pill"` makes the field a glass pill with an icon, for a filter over a page. A page that a framework draws
+(Angular, plain HTML) uses `<sheen-select>` from the elements instead (0.8.0): it wraps a native select the same way,
+at the dense app size, with multiple choice and a clear button.
 
 ```blade
 <x-sheen::picker label="Currency" name="code" :value="$code" :options="$currencies" :popular="['AED', 'USD', 'EUR']"
@@ -174,9 +176,13 @@ Live stories for every element: `docs/elements.html` (open it from a local serve
 | `<sheen-node-graph>` | node graph | `label`, `connect-label`, `connected-label`, `remove-label`; `nodes`, `edges`, `order()` | `sheen-graphchange` {nodes, edges}, `sheen-nodeopen` {node} | arrows move, C then Enter connects, Delete |
 | `<sheen-tour>` | onboarding tour | `next-label`, `back-label`, `done-label`, `skip-label`, `step-label` ("@n of @all"); `steps`, `start()`, `stop()` | `sheen-tour-step` {index}, `sheen-tour-end` {completed} | Enter, Esc, Tab stays inside |
 | `<sheen-hover-card>` | facts and actions beside a link | `label`, `delay` (ms, `0` for none); `attach(trigger)`, `detach()`, `open()`, `close()` | `sheen-hover-open` {trigger}, `sheen-hover-close` | on the trigger Space opens; Esc closes from anywhere while open; Tab out closes |
-| `<sheen-side-panel>` | a panel on the end edge; with `modal` it dims the page behind it | `label`, `close-label`, `heading` (the title and the close button on one row; the element marks the panel `sheen-headed`), `class="sheen-small"` (400px, for filters and editors), `modal` (the page dims, a press on the dim closes it), `--sheen-panel-size`; `open()`, `close()` | `sheen-panel-close` | Esc closes and returns focus to the first opener; with `modal`, Tab stays inside and focus that lands outside comes back |
+| `<sheen-side-panel>` | a panel on the end edge; with `modal` it dims the page behind it | `label`, `close-label`, `heading` (the title and the close button on one row; the element marks the panel `sheen-headed`), `class="sheen-small"` (400px, for filters and editors), `class="sheen-wide"` (440px from `--sheen-size-panel-wide`; with `sheen-small`, the dense content at 440px; 0.8.0), `modal` (the page dims, a press on the dim closes it), `--sheen-panel-size`; `open()`, `close()` | `sheen-panel-close` | Esc closes and returns focus to the first opener; with `modal`, Tab stays inside and focus that lands outside comes back |
 | `<sheen-scope-picker>` | chooses a rule, not a list | `label`, `all-label`, `chosen-label`, `except-label`, `search-label`, `select-shown-label`, `empty-label`, `result`; `groups`, `value` (only the list its mode reads) | `sheen-scope-change` {mode, include, exclude} | Space ticks; focus stays on the ticked row |
-| `<sheen-menu-button>` | a button with a keyboard menu | `label`, `glyph`, `variant="control"` (the find row's 36px control; square with a glyph), `icon` (a glyph before the label), `chevron`, `compact`, `class="sheen-small"` (the dense menu; `--sheen-menu-min-size`, `--sheen-menu-max-size`); `items` [{id, label, disabled, hint, shortcut, danger, glyph, accent}, {separator: true}, {heading}], `open()`, `close()` | `sheen-menu-select` {id} | ↓ opens, ↑ ↓ move, Enter picks, Esc closes; a press outside or Tab out closes |
+| `<sheen-menu-button>` | a button with a keyboard menu | `label`, `glyph`, `variant="control"` (the find row's 36px control; square with a glyph), `variant="text"` (a table cell's words, for a picker in a cell; 0.8.0), `variant="pill"` with `tone="success\|warning\|danger"` (a status pill, 22px in a small table; 0.8.0), `icon` (a glyph before the label), `chevron`, `compact`, `class="sheen-small"` (the dense menu; `--sheen-menu-min-size`, `--sheen-menu-max-size`), `class="sheen-xsmall"` (the 32px button of a bulk bar), `class="sheen-compact"` with a glyph (the 30px row •••); `items` [{id, label, disabled, hint, shortcut, danger, glyph, accent}, {separator: true}, {heading}], `open()`, `close()` | `sheen-menu-select` {id} | ↓ opens, ↑ ↓ move, Enter picks, Esc closes; a press outside or Tab out closes |
+| `<sheen-select>` (0.8.0) | a select whose list follows the theme and Arabic | wraps your `<select>`, which stays the form control (`name`, `multiple`, `required`, `disabled` or a fieldset's, reset, FormData); `placeholder`, `label` (the name when no `<label>` names the select), `search` (a search box in the list; its placeholder and name), `empty` (the line while the search matches nothing), `clear` (a clear button; its name), `remove` (a chip mark's tooltip, "@label"), `variant="control"` (the 36px control of a Filters panel), `data-hint` on an option; with no inner select, `name`, `multiple` and `required` make one and `options` [{value, label, disabled, hint, group}] fills it; `select`, `value`, `values`, `open()`, `close()`, `sync()`, `clear()` | `input` then `change` on the native select, for a person's choice only; `blur` when focus leaves the field | ↓ ↑ Enter Space Alt+↓ open, Home End open on the ends, letters jump; open: ↑ ↓ Home End PageUp PageDown move, Enter or Space picks (multiple: toggles), Alt+↑ picks and closes, Esc closes, Tab moves on; closed: Delete clears (`clear`), Backspace removes the last chip (`multiple`) |
+| `<sheen-date-field>` (0.8.0) | a date field around your `<input type="date">`, which stays the form value (ISO `yyyy-mm-dd`) | `placeholder`, `label`, `prev`, `next`, `clear`, `variant="control"`, `compact`, `first-day` (1 Monday … 7 Sunday), `weekdays` (seven names from Monday), `today`; `input`, `value`, `open()`, `close()`, `sync()` | `input` and `change` on the native input; `blur` when focus leaves the field | ↓ opens; arrows by day and week, PageUp/PageDown by month (Shift: year), Home/End, Enter or Space picks, Esc closes; Tab stays inside |
+| `<sheen-date-range>` (0.8.0) | a range around two `<input type="date">` | as the date field, plus `from`, `to`, `apply`, `cancel`, `note`, `custom`; `presets` [{label, start, end}], `inputs`, `value` {start, end} | `input` and `change` on each native input that changed | as the date field; the second pick sets the end, an earlier one swaps them |
+| `<sheen-avatar>` (0.8.0) | a person's initials in a circle (Flutter sheen's `SheenAvatar`) | `name` (the initials and the tint), `letters` (how many words give a letter; 2), `tint-key` (picks the tint in place of the name), `size` (`s` 30px, `xs` 18px; 40px without), `image` (covers the initials once it loads), `label` (without it: decorative); `.sheen-avatar-name` sets it beside a `<b>` name and a `<small>` second line | | |
 
 ```html
 <sheen-command-palette id="cmd" hotkey label="Command bar" placeholder="Type a command or search…"
@@ -201,6 +207,40 @@ Live stories for every element: `docs/elements.html` (open it from a local serve
                { id: 'a', label: 'Audio', kind: 'audio', peaks: [/* 0..1 */], clips: [] }];
 </script>
 ```
+
+### Select and date fields (0.8.0)
+
+Put the element around the select or date input you already have, and bind that control as before (Angular's
+`formControlName`, a `(change)` handler). The element draws the field and its popup from the tokens, light or dark,
+mirrored in Arabic; the native control stays the form value, and setting it by property redraws the field without
+events. Without the elements script the native control shows as it is.
+
+```html
+<label class="sheen-form-field sheen-small"><span>Area</span>
+  <sheen-select placeholder="All areas" search="Search areas" empty="No matches" clear="Clear">
+    <select name="area" required>
+      <option value="">All areas</option>
+      <optgroup label="North"><option value="b">Old Town</option><option value="m" data-hint="2 teams">Riverside</option></optgroup>
+      <option value="d" disabled>Downtown</option>
+    </select>
+  </sheen-select>
+</label>
+
+<label class="sheen-form-field sheen-small"><span>From</span>
+  <sheen-date-field placeholder="Pick a date" prev="Previous month" next="Next month">
+    <input type="date" name="from" min="2026-01-01">
+  </sheen-date-field>
+</label>
+
+<span class="sheen-avatar-name">
+  <sheen-avatar name="Maria Santos" size="s" letters="1" tint-key="p-1024"></sheen-avatar>
+  <span><b>Maria Santos</b><small>Downtown</small></span>
+</span>
+```
+
+The date field formats with `Intl` for the nearest `lang`: month and weekday names and digits are the locale's
+(`lang="ar-u-nu-latn"` keeps Western digits in Arabic), and `today` takes the day from your server. The same avatar name
+or `tint-key` gives the same tint here and in a Flutter sheen app, and white initials reach 4.5:1 on every tint.
 
 Glyph names are the Flutter sheen icons, the media glyphs and, from 0.7.0, the filled Flutter sheen icons as
 `<name>-fill` (`check-circle-fill`), drawn filled in the text colour; `alert` is a warning triangle.
@@ -259,6 +299,9 @@ work, and fills in its own words.
 | `.sheen-list-message`, `.sheen-list-message-actions` (`.sheen-danger` for an error) | nothing matches, or the results couldn't load |
 | `.sheen-sort-button`, `.sheen-sort-glyph` on `th[aria-sort]` | a sortable header; the arrow sits in the end padding |
 | `.sheen-pin-end`, `.sheen-truncate`, `tr[aria-selected="true"]` | the row-menu column pinned at the end edge, one-line cells, a ticked row |
+| `.sheen-end` on a `th` or `td` (0.8.0) | the words and a sort button at the end edge, mirrored in Arabic; with `.sheen-num`, a number column |
+| `.sheen-compact` on a `.sheen-icon-button` or a `<sheen-menu-button glyph>` (0.8.0) | the 30px row •••: radius 9, no fill, an 18px secondary glyph, the tonal fill when hovered or open; a small table row stays 51px |
+| `.sheen-table.sheen-small.sheen-tight` (0.8.0) | 9px at a cell's sides for a table with many columns; the pinned ••• cell keeps 4px |
 | `.sheen-bulk-bar`, `.sheen-bulk-count`, `.sheen-bulk-actions`, `.sheen-bulk-status` (`.sheen-danger`), `.sheen-bulk-clear`, `.sheen-bulk-spin` | the bar over the table header while rows are ticked, with progress and partial failure |
 
 ### App UI classes
@@ -276,6 +319,10 @@ work, and fills in its own words.
 | `.sheen-kbd`, `.sheen-shortcuts`, `.sheen-shortcut` | keys and a shortcut cheat sheet |
 | `sheen-command-palette.sheen-small`, `.sheen-dialog.sheen-small`, `.sheen-shortcuts.sheen-small` (+ `-head`, `-note`), `.sheen-keys` | the 560px app palette; a 720px sheet with shortcuts in three columns (one when narrow) |
 | `.sheen-form-field.sheen-small`, `.sheen-fields.sheen-small`, `.sheen-wide`, `.sheen-select` | dense form fields two to a row (`.sheen-wide` across both) with a hint and an invalid state; a select drawn as a field |
+| `.sheen-affix`, `.sheen-affix-unit` (0.8.0) | in a dense field: a unit after the input's value ("30 min") inside the field's box at the end edge (a prefix when written before the input); a press on the unit focuses the input; an invalid input rings the whole box |
+| `.sheen-button.sheen-danger` (0.8.0) | a step that takes something away: the deal fill under white words, 4.5:1 in light and dark; the hover darkens the fill |
+| `.sheen-button.sheen-xsmall` (0.8.0) | a 32px button for a bulk bar's actions, 13px words and 14px glyphs |
+| `.sheen-dialog.sheen-small.sheen-confirm` (0.8.0) | a 440px sheet 14% down the window that asks before a risky step: the question, the record (a `.sheen-pill`), the words (a `<p>`) and 34px buttons at the end edge, 10px apart; put the first focus on the safe button |
 | `.sheen-panel-foot` | a side panel's Cancel and main action on its bottom edge, side by side or stacked when narrow; a long body scrolls under it |
 | `.sheen-switch.sheen-large`, `.sheen-switch-row` | a 51 by 31 switch; words and a switch on one row over a hairline |
 | `tr.sheen-table-group`, `.sheen-table-foot`, `.sheen-pager` | a table's group row with its count; the count and a pager under a table |
@@ -302,7 +349,12 @@ work, and fills in its own words.
 
 …and `surfaceMuted`, `track`, `separator`, `textSecondary`, `textTertiary`, `onAccent`, `success`, `warning`, `danger`,
 `rating`, `sheet`, `dealFill`, `tonal`; spacing `--sheen-space-*`, radii `--sheen-radius-*`, and the app bar's block
-size `--sheen-size-app-bar` (60px; web only). Motion springs are `--sheen-motion-*` (duration and easing), each with
+size `--sheen-size-app-bar` (60px; web only). From 0.8.0, web only too: `--sheen-space-min` (8px), the least room
+between two boxes the kit lays out, so none sits flush against another; every kit layout gap between boxes is at least
+this much, and changing the token moves them all. `--sheen-size-field` (38px) and `--sheen-size-control` (36px) are the
+dense field and the find row's control, shared by the select, the date fields and the affix; the other app parts' sizes
+are `--sheen-size-<part>` from tokens.json. The avatar tints are `--sheen-tint-blue`, `-red`, `-green`, `-orange`,
+`-purple`, `-teal`, `-violet` and `-gray` (Flutter sheen's `SheenTint`, the same in both themes). Motion springs are `--sheen-motion-*` (duration and easing), each with
 its duration alone as `--sheen-motion-*-duration` (0.7.1), for a delay that waits out a transition. A top toaster under the app bar takes
 `--sheen-toaster-top: calc(var(--sheen-size-app-bar) + var(--sheen-space-m))`. Change the accent by
 setting `--sheen-accent` and `--sheen-accent-text`.

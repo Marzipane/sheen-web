@@ -1,0 +1,66 @@
+/* 0.8.0 select */
+/* <sheen-select> (75-select.js) draws a field and its list over the native select it keeps. The element is the field box:
+   the dense field (at least 38px, an 11px radius, the page background, a hairline, 14px words) or, with
+   variant="control", the control of a Filters panel (36px on the surface, 13.5px at 500). The trigger fills it, then the
+   clear button and the chevron at the end edge, 8px apart; the box grows when chips wrap. The list opens in the top layer,
+   so its rules start at its own classes and never at where it sits; the menu box look comes from .sheen-menu.sheen-glass
+   (opaque under .sheen-solid), so dark pages get a dark list. Rules that are the same as a kit rule join that rule's
+   selector list (03, 09, 11, 13, 15): the field ring after Tab, the invalid ring, the chevron's turn, a control's open
+   fill, the option rows, the Filters panel check box and tick, the search box and its words. Logical sides only. */
+
+/* without the script the native select shows as it is, with no box around it */
+sheen-select:not(:defined){display:contents}
+sheen-select{position:relative;display:flex;align-items:center;gap:max(var(--sheen-space-min),8px);min-inline-size:0;min-block-size:var(--sheen-size-field);padding:6px 12px;border-radius:11px;background:var(--sheen-background);box-shadow:inset 0 0 0 1px var(--sheen-separator);color:var(--sheen-text);cursor:pointer;box-sizing:border-box}
+.sheen-select-trigger{flex:1;min-inline-size:0;align-self:stretch;display:flex;align-items:center;margin:0;padding:0;border:0;background:none;color:inherit;font:inherit;font-size:14px;text-align:start;cursor:inherit}
+.sheen-select-value,.sheen-select-placeholder{flex:1;min-inline-size:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sheen-select-chevron{inline-size:18px;block-size:18px;color:var(--sheen-text-tertiary);pointer-events:none}
+/* the field rings around itself after Tab (13-app-pages), never after a press; with forced colors the system outline
+   stays, as on every field (0.7.1). Its own rule: the field rule's place in its media block is fixed by the 0.7 tests. */
+@media not (forced-colors: active){:root[data-sheen-focus]:not([data-sheen-keyboard]) sheen-select:has(>.sheen-select-trigger:focus-visible){outline:none}}
+/* the native select keeps the name, the value and the form's checks, out of sight and out of the way */
+.sheen-select-native{position:absolute;inset-block-end:0;inset-inline-start:0;inline-size:1px;block-size:1px;margin:0;padding:0;border:0;opacity:0;overflow:hidden;clip-path:inset(50%);pointer-events:none}
+
+/* the Filters panel control: the mockup's value is bold; the chevron is a control glyph (11-list-kit) */
+sheen-select[variant="control"]{min-block-size:var(--sheen-size-control);background:var(--sheen-surface)}
+sheen-select[variant="control"]>.sheen-select-trigger{font-size:13.5px;font-weight:500;line-height:1.2}
+sheen-select[variant="control"] .sheen-select-value{font-weight:700}
+
+/* multiple: one 24px tonal chip per chosen option, wrapping; its 16px remove mark */
+.sheen-select-chips{flex:1;min-inline-size:0;display:flex;flex-wrap:wrap;gap:max(var(--sheen-space-min),4px)}
+.sheen-select-chip{display:inline-flex;align-items:center;gap:4px;max-inline-size:100%;block-size:var(--sheen-size-select-chip);padding-inline:8px 4px;border-radius:12px;background:var(--sheen-tonal);font-size:12.5px;box-sizing:border-box}
+.sheen-select-chip>span:first-child{min-inline-size:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sheen-select-chip-remove{inline-size:16px;block-size:16px;flex:none;display:grid;place-items:center;border-radius:8px;color:var(--sheen-text-secondary);cursor:pointer}
+.sheen-select-chip-remove:hover{background:var(--sheen-tonal)}
+.sheen-select-chip-remove>.sheen-glyph{inline-size:14px;block-size:14px}
+
+/* the clear button: 24px round, a 16px glyph */
+.sheen-select-clear{flex:none;inline-size:var(--sheen-size-select-clear);block-size:var(--sheen-size-select-clear);display:grid;place-items:center;margin:0;padding:0;border:0;border-radius:50%;background:none;color:var(--sheen-text-tertiary);cursor:pointer}
+.sheen-select-clear:hover{background:var(--sheen-tonal)}
+.sheen-select-clear>.sheen-glyph{inline-size:16px;block-size:16px}
+
+/* the list box: a small menu (16px radius, 4px gaps) at least the field wide (the core sets --sheen-select-anchor-size)
+   and at most the screen. It doesn't scroll itself: the options scroll inside min(320px, 60vh) under the search box.
+   It inherits from the field it belongs to, so it sets its own words. */
+.sheen-select-pop{display:flex;flex-direction:column;gap:max(var(--sheen-space-min),4px);min-inline-size:min(var(--sheen-select-anchor-size,0px),calc(100vw - 16px));max-inline-size:calc(100vw - 16px);max-block-size:none;overflow:hidden;border-radius:16px;color:var(--sheen-text);font-size:13.5px;font-weight:400;white-space:normal;text-align:start;cursor:default}
+.sheen-select-list{display:flex;flex-direction:column;gap:1px;min-block-size:0;max-block-size:min(320px,60vh);overflow-y:auto;overscroll-behavior:contain}
+.sheen-select-list:focus{outline:none}
+.sheen-select-group{display:flex;flex-direction:column;gap:1px}
+.sheen-select-pop:has(>.sheen-select-empty:not([hidden]))>.sheen-select-list{display:none}
+.sheen-select-empty{display:flex;align-items:center;min-block-size:36px;padding:6px 10px;color:var(--sheen-text-tertiary)}
+
+/* an option: the row of a Filters panel option (11-list-kit). The active one on a chosen row keeps both fills, the
+   tonal one over the chosen tint, so the arrows stay visible on chosen rows. */
+.sheen-select-option[aria-selected="true"]:is(.sheen-active,:hover){background:linear-gradient(var(--sheen-tonal),var(--sheen-tonal)),color-mix(in srgb,var(--sheen-accent) 10%,transparent)}
+.sheen-select-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sheen-select-hint{font-size:12px;font-weight:400;color:var(--sheen-text-tertiary)}
+/* the check mark: an 18px place on every row; a box in a multiple list (11-list-kit), a lone accent tick in a single one */
+.sheen-select-check{display:inline-grid;place-content:center}
+.sheen-select-list:not([aria-multiselectable="true"]) .sheen-select-check::after{border-color:var(--sheen-accent-text)}
+
+/* the search box: the small palette's search field (15-app-forms) with the find row's words (11-list-kit); a text field,
+   so no ring */
+.sheen-select-search{display:flex;align-items:center;flex:none;cursor:text}
+
+/* the hidden attribute hides the parts, though they set their own display */
+:where(.sheen-select-option,.sheen-select-group,.sheen-select-clear,.sheen-select-empty,.sheen-select-chips,.sheen-select-search)[hidden]{display:none!important}
+/* end 0.8.0 select */

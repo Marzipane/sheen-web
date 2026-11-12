@@ -1,0 +1,87 @@
+/* 0.8.0 date fields */
+/* <sheen-date-field> and <sheen-date-range>: the page's native date inputs stay in the form, hidden. The field is the dense
+   form field (a 38px box, an 11px radius, 14px words, an 18px chevron at the end edge) or, with variant="control", the
+   find-row control (.sheen-control with a 15px calendar glyph and a chevron). The calendar opens in a popup at the dense
+   menu scale: a 16px radius, 13.5px words, a 16px glyph either side of the month, weekday names at 11px over 30px days at
+   12.5px; a range with presets is 540px wide with a 168px preset column at its start. Today has a thin accent ring, a
+   picked day or a range's ends the accent fill, the days between them an accent tint. Logical sides only, so Arabic
+   mirrors; the month arrows turn round in Arabic. */
+sheen-date-field,sheen-date-range{position:relative;display:block;min-inline-size:0}
+:is(sheen-date-field,sheen-date-range)[variant="control"]{display:inline-flex;vertical-align:top}
+/* the native input keeps its place in the form, unseen and out of the way (a page's field class may size it) */
+:is(sheen-date-field,sheen-date-range)>.sheen-date-native{position:absolute!important;inset-block-start:0;inset-inline-start:0;inline-size:1px!important;min-inline-size:0!important;block-size:1px!important;margin:0!important;padding:0!important;border:0!important;opacity:0;overflow:hidden;clip-path:inset(50%);pointer-events:none}
+
+/* the dense field */
+.sheen-date-trigger:not(.sheen-control){display:flex;align-items:center;gap:8px;inline-size:100%;min-block-size:var(--sheen-size-field);padding:6px 12px;border:0;border-radius:11px;background:var(--sheen-background);box-shadow:inset 0 0 0 1px var(--sheen-separator);color:var(--sheen-text);font:inherit;font-size:14px;text-align:start;cursor:pointer}
+.sheen-date-trigger:not(.sheen-control):disabled{opacity:.45;cursor:not-allowed}
+.sheen-date-trigger:not(.sheen-control)[aria-invalid="true"]{box-shadow:inset 0 0 0 2px var(--sheen-danger)}
+.sheen-date-trigger:not(.sheen-control)>.sheen-date-chevron{inline-size:18px;block-size:18px;flex:none;color:var(--sheen-text-tertiary)}
+.sheen-date-text{flex:1;min-inline-size:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:start}
+.sheen-date-placeholder{color:var(--sheen-text-tertiary)}
+/* the find-row control: the value in the control's 600 weight; open, the control's tonal fill */
+.sheen-control.sheen-date-trigger>.sheen-date-text{flex:none}
+.sheen-control.sheen-date-trigger[aria-invalid="true"]{box-shadow:inset 0 0 0 2px var(--sheen-danger)}
+
+/* the popup: as wide as the field, from 260px to 360px; a range with presets 540px; never wider than the screen */
+.sheen-date-pop{display:flex;flex-direction:column;gap:max(var(--sheen-space-min),4px);box-sizing:border-box;inline-size:min(max(var(--sheen-size-date-pop-min),var(--sheen-date-anchor-size,0px)),var(--sheen-size-date-pop-max),calc(100vw - 16px));min-inline-size:0;max-inline-size:calc(100vw - 16px);max-block-size:calc(100vh - 16px);padding:6px;border-radius:16px}
+sheen-date-range[data-presets] .sheen-date-pop{inline-size:min(var(--sheen-size-date-range-pop),calc(100vw - 16px))}
+.sheen-date-pop[hidden]{display:none}
+.sheen-date-body{display:block;min-inline-size:0}
+sheen-date-range[data-presets] .sheen-date-body{display:grid;grid-template-columns:var(--sheen-size-date-presets) 1fr;gap:10px}
+
+/* presets: 36px rows at 13.5px with a lone tick on the chosen one, a hairline at their end edge; a long label wraps */
+.sheen-date-presets{display:flex;flex-direction:column;gap:1px;min-inline-size:0;padding-inline-end:8px;border-inline-end:1px solid var(--sheen-separator)}
+.sheen-date-preset{display:flex;align-items:center;gap:10px;min-block-size:36px;padding:6px 10px;border:0;border-radius:10px;background:none;color:var(--sheen-text);font:inherit;font-size:13.5px;text-align:start;cursor:pointer}
+.sheen-date-preset>span:last-child{flex:1;min-inline-size:0;overflow-wrap:anywhere}
+.sheen-date-preset:hover{background:var(--sheen-tonal)}
+.sheen-date-preset[aria-checked="true"]{background:color-mix(in srgb,var(--sheen-accent) 10%,transparent);font-weight:600}
+.sheen-date-tick{flex:none;inline-size:18px;block-size:18px;display:inline-grid;place-content:center}
+.sheen-date-preset[aria-checked="true"]>.sheen-date-tick::after{content:"";inline-size:9px;block-size:5px;border-inline-start:2px solid var(--sheen-accent-text);border-block-end:2px solid var(--sheen-accent-text);transform:translateY(-1px) rotate(-45deg)}
+[dir="rtl"] .sheen-date-preset[aria-checked="true"]>.sheen-date-tick::after{transform:translateY(-1px) rotate(45deg)}
+
+/* the calendar: the month between its arrows, the weekday names, the days */
+.sheen-cal{display:flex;flex-direction:column;gap:8px;min-inline-size:0;padding:4px;font-size:13.5px}
+.sheen-cal-head{display:flex;align-items:center;justify-content:space-between;gap:var(--sheen-space-min)}
+.sheen-cal-title{font-weight:700;text-align:center}
+/* the arrows are 24px targets (WCAG 2.5.8) around a 16px glyph; their spare 4px reaches into the gaps, so the row keeps
+   the height of its words */
+.sheen-cal-prev,.sheen-cal-next{flex:none;display:inline-grid;place-items:center;inline-size:var(--sheen-size-calendar-button);block-size:var(--sheen-size-calendar-button);margin-block:-4px;padding:0;border:0;border-radius:8px;background:none;color:var(--sheen-text-secondary);cursor:pointer}
+:is(.sheen-cal-prev,.sheen-cal-next)>svg{inline-size:16px;block-size:16px}
+:is(.sheen-cal-prev,.sheen-cal-next):hover:not([aria-disabled="true"]){background:var(--sheen-tonal);color:var(--sheen-text)}
+:is(.sheen-cal-prev,.sheen-cal-next)[aria-disabled="true"]{opacity:.45;cursor:not-allowed}
+[dir="rtl"] :is(.sheen-cal-prev,.sheen-cal-next)>svg{transform:scaleX(-1)}
+.sheen-cal-grid{display:flex;flex-direction:column;row-gap:2px;text-align:center;font-size:12.5px}
+.sheen-cal-row{display:grid;grid-template-columns:repeat(7,1fr)}
+.sheen-cal-weekdays>small{padding-block-end:4px;font-size:11px;font-weight:600;color:var(--sheen-text-tertiary)}
+.sheen-cal-day{display:grid;place-items:center;min-inline-size:0;block-size:var(--sheen-size-calendar-day);padding:0;border:0;border-radius:0;background:none;color:var(--sheen-text);font:inherit;font-variant-numeric:tabular-nums;cursor:pointer}
+.sheen-cal-day:not([aria-selected="true"],[aria-disabled="true"]):hover{background:var(--sheen-tonal);border-radius:8px}
+.sheen-cal-day[aria-selected="true"],.sheen-cal-day.sheen-cal-in{background:color-mix(in srgb,var(--sheen-accent) 12%,transparent)}
+/* the day the arrows reach takes the hover fill; the ring only after Tab, as on every button */
+.sheen-cal-day:focus-visible{background:var(--sheen-tonal);border-radius:8px;outline:2px solid var(--sheen-accent-text);outline-offset:-2px}
+.sheen-cal-day.sheen-cal-end{background:var(--sheen-accent);color:var(--sheen-on-accent);border-radius:8px;font-weight:700}
+.sheen-cal-day[aria-current="date"]:not(.sheen-cal-end){box-shadow:inset 0 0 0 1px var(--sheen-accent-text);border-radius:8px}
+.sheen-cal-day[aria-disabled="true"]{opacity:.45;cursor:not-allowed}
+
+/* a range's two ends under the calendar: 42px boxes, the end's word at 11px over its date at 13px */
+.sheen-date-ends{display:grid;grid-template-columns:1fr 1fr;gap:max(var(--sheen-space-min),8px)}
+.sheen-date-end{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;min-inline-size:0;block-size:var(--sheen-size-date-end);padding-inline:12px;border-radius:11px;background:var(--sheen-surface);box-shadow:inset 0 0 0 1px var(--sheen-separator);color:var(--sheen-text);line-height:1.2;white-space:nowrap}
+.sheen-date-end>small{font-size:11px;font-weight:500;color:var(--sheen-text-tertiary)}
+.sheen-date-end>b{min-block-size:1.2em;font-size:13px;font-weight:600}
+
+/* the footer: a note at the start, then Clear, Cancel and Apply at the end, over a hairline */
+.sheen-date-foot{display:flex;align-items:center;justify-content:flex-end;gap:max(var(--sheen-space-min),8px);padding:8px 4px 2px;border-block-start:1px solid var(--sheen-separator)}
+.sheen-date-note{margin-inline-end:auto;color:var(--sheen-text-tertiary);font-size:12px}
+.sheen-date-foot>.sheen-button.sheen-small{block-size:34px;border-radius:17px;padding-inline:16px;font-size:13.5px}
+
+/* rings: the field's button, the arrows and the presets ring after Tab; never after a press, Esc, Enter or the arrows.
+   A preset the arrows reach takes the hover fill instead. */
+.sheen-date-trigger:not(.sheen-control):focus-visible{outline:2px solid var(--sheen-accent-text);outline-offset:2px}
+:is(.sheen-cal-prev,.sheen-cal-next):focus-visible{outline:2px solid var(--sheen-accent-text);outline-offset:1px}
+.sheen-date-preset:focus-visible{outline:2px solid var(--sheen-accent-text);outline-offset:-2px}
+@media not (forced-colors: active){:root[data-sheen-focus]:not([data-sheen-keyboard]) :is(.sheen-date-trigger,.sheen-cal-prev,.sheen-cal-next,.sheen-date-preset,.sheen-cal-day):focus-visible{outline:none}
+:root[data-sheen-focus]:not([data-sheen-keyboard]) .sheen-date-preset:not([aria-checked="true"]):focus-visible{background:var(--sheen-tonal)}}
+
+/* a phone: the presets go above the calendar */
+@media (max-width:559px){sheen-date-range[data-presets] .sheen-date-body{grid-template-columns:1fr}
+sheen-date-range[data-presets] .sheen-date-presets{padding-inline-end:0;padding-block-end:8px;border-inline-end:0;border-block-end:1px solid var(--sheen-separator)}}
+/* end 0.8.0 date fields */

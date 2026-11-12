@@ -23,6 +23,20 @@ for (const [theme, marker] of [['dark', 'static const SheenColors _dark'], ['lig
     if ((tokens.color[theme][name] || '').toUpperCase() !== css) problems.push(`${theme}.${name}: Flutter ${css}, sheen-web ${tokens.color[theme][name]}`);
   }
 }
+// SheenTint (0.8.0): the tints an avatar picks from by a hash of the name. The colours and their order in SheenTint.all
+// must match, or one person gets another colour on the web than in the app.
+const tintAt = dart.indexOf('abstract final class SheenTint');
+if (tintAt < 0) problems.push('tint: Flutter sheen has no SheenTint class');
+else {
+  const block = dart.slice(tintAt, dart.indexOf('\n}', tintAt));
+  const theirs = Object.fromEntries([...block.matchAll(/static const Color (\w+) = Color\(0xFF([0-9A-Fa-f]{6})\)/g)].map(([, n, rgb]) => [n, '#' + rgb.toUpperCase()]));
+  const order = ((block.match(/static const List<Color> all = \[([^\]]*)\]/) || [])[1] || '').split(',').map((s) => s.trim()).filter(Boolean);
+  const ours = tokens.tint || {};
+  if (order.join() !== Object.keys(ours).join()) problems.push(`tint order: Flutter SheenTint.all [${order}], sheen-web [${Object.keys(ours)}]`);
+  for (const n of new Set([...Object.keys(theirs), ...Object.keys(ours)])) {
+    if ((ours[n] || '').toUpperCase() !== theirs[n]) problems.push(`tint.${n}: Flutter ${theirs[n]}, sheen-web ${ours[n]}`);
+  }
+}
 const light = dart.match(/defaultLightAccent = Color\(0xFF([0-9A-F]{6})\)/i)[1];
 const darkAcc = dart.match(/defaultDarkAccent = Color\(0xFF([0-9A-F]{6})\)/i)[1];
 if (tokens.color.light.accent !== '#' + light.toUpperCase()) problems.push(`light.accent: Flutter #${light}`);

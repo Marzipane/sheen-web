@@ -56,7 +56,8 @@ test('a side panel with a heading keeps the Filters footer at its bottom edge', 
 });
 
 test('small tables: 16px checkboxes in the accent; a busy table is one solid placeholder block', () => {
-  has('.sheen-table.sheen-small input[type="checkbox"]{inline-size:16px;block-size:16px;accent-color:var(--sheen-accent)}');
+  // 0.8.0: a switch in a small table keeps its own size
+  has('.sheen-table.sheen-small input[type="checkbox"]:where(:not([role="switch"],.sheen-switch input)){inline-size:16px;block-size:16px;accent-color:var(--sheen-accent)}');
   // (the normalizer drops the space before ":is("; the min file below keeps the descendant combinator)
   has('.sheen-table[aria-busy="true"]:is(th,td){color:transparent;background:var(--sheen-track);border-color:transparent;border-radius:7px}');
   has('.sheen-table[aria-busy="true"]:is(th,td)>:not(input){visibility:hidden}');
@@ -73,7 +74,7 @@ test('status block: a glyph in a 72px circle of its tone, a title, narrow words 
   has('.sheen-status.sheen-warning .sheen-status-glyph{background:color-mix(in srgb,var(--sheen-warning) 16%,transparent);color:var(--sheen-warning)}');
   has('.sheen-status:is(.sheen-danger,.sheen-warning,.sheen-success){color:var(--sheen-text-secondary)}');
   has('.sheen-status p{margin:0;max-inline-size:34ch;font-size:15px;line-height:1.3}');
-  has('.sheen-status-actions{display:flex;flex-direction:column;gap:8px;margin-block-start:8px;inline-size:min(100%,280px)}');
+  has('.sheen-status-actions{display:flex;flex-direction:column;gap:max(var(--sheen-space-min),8px);margin-block-start:8px;inline-size:min(100%,280px)}');
   has('.sheen-status-actions>*{inline-size:100%}');
 });
 

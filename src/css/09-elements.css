@@ -182,7 +182,7 @@ sheen-menu-button{position:relative;display:inline-block}
 .sheen-menu-item:hover,.sheen-menu-item:focus-visible{background:var(--sheen-track)}
 .sheen-menu-item[aria-disabled="true"]{color:var(--sheen-text-tertiary);cursor:not-allowed}
 .sheen-menu-item:has(.sheen-menu-words){display:flex;align-items:center;gap:10px}
-.sheen-menu-words{display:flex;flex-direction:column;flex:1;min-inline-size:0}
+.sheen-select-words,.sheen-menu-words{display:flex;flex-direction:column;flex:1;min-inline-size:0}
 .sheen-menu-hint{font-size:11.5px;font-weight:500;color:var(--sheen-text-tertiary)}
 .sheen-menu-item .sheen-kbd{margin-inline-start:auto}
 .sheen-menu-item.sheen-danger{color:var(--sheen-danger)}
