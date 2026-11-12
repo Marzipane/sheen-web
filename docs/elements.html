@@ -15,7 +15,7 @@
 <div class="sheen-aurora" aria-hidden="true"></div>
 <main class="sheen-container" style="padding-block:32px">
   <header class="sheen-topbar sheen-glass">
-    <h1 class="sheen-topbar-title">sheen elements <span class="sheen-footnote sheen-secondary">0.8.0</span></h1>
+    <h1 class="sheen-topbar-title">sheen elements <span class="sheen-footnote sheen-secondary">0.9.0</span></h1>
     <button class="sheen-button sheen-small" id="theme" type="button">Light / dark</button>
     <button class="sheen-button sheen-small" id="dir" type="button">LTR / RTL</button>
     <button class="sheen-search-trigger" id="openCmd" type="button"><sheen-glyph name="search"></sheen-glyph><span>Command palette</span><kbd class="sheen-kbd">⌘K</kbd></button>
@@ -88,7 +88,7 @@
     <div class="sheen-list-message" style="margin-block-start:12px"><sheen-glyph name="search" size="28"></sheen-glyph><b>No results match these filters</b><p>Try removing a filter.</p><span class="sheen-list-message-actions"><button class="sheen-button sheen-small" type="button">Clear all</button></span></div>
   </section>
 
-  <section id="s-forms"><h2 class="sheen-title">App forms: select, date fields, avatar, confirm</h2>
+  <section id="s-forms"><h2 class="sheen-title">App forms: select, lookup, date fields, avatar, confirm</h2>
     <div class="sheen-panel sheen-glass">
       <div class="sheen-fields sheen-small">
         <label class="sheen-form-field sheen-small"><span>Area</span>
@@ -99,6 +99,10 @@
           <sheen-select placeholder="Any team" search="Search teams" empty="No matches" clear="Clear" remove="Remove @label">
             <select name="teams" multiple><option value="a" selected>Morning team</option><option value="b" selected>Evening team</option><option value="c">Night team</option></select>
           </sheen-select></label>
+        <label class="sheen-form-field sheen-small"><span>Customer (10 000, searched by the page)</span>
+          <sheen-lookup id="customer" name="customer" placeholder="Any customer" search="Search customers" loading="Searching…" empty="No matches" error="Couldn't load the customers" retry="Try again" more="@count of @total shown. Type to narrow" clear="Clear"></sheen-lookup></label>
+        <label class="sheen-form-field sheen-small"><span>Customers (multiple)</span>
+          <sheen-lookup id="customers" name="customers" multiple placeholder="Any customer" search="Search customers" loading="Searching…" empty="No matches" error="Couldn't load the customers" retry="Try again" more="@count of @total shown. Type to narrow" clear="Clear" remove="Remove @label"></sheen-lookup></label>
         <label class="sheen-form-field sheen-small"><span>From</span>
           <sheen-date-field placeholder="Pick a date" prev="Previous month" next="Next month" clear="Clear"><input type="date" name="from"></sheen-date-field></label>
         <label class="sheen-form-field sheen-small"><span>Buffer between jobs</span>
@@ -172,6 +176,22 @@ addEventListener('DOMContentLoaded', () => {
     { target: '#openCmd', title: 'One box for everything', text: 'Press ⌘K and type what you want.' },
     { target: '#s-edit sheen-transcript', title: 'Edit by text', text: 'Delete words to cut the video.' }];
   $('#tourBtn').onclick = () => $('#tour').start();
+  // <sheen-lookup>: a fake API over 10 000 customers, 20 a page, 300 ms away, that stops when the signal aborts
+  const first = ['Maria', 'Omar', 'Lina', 'Sam', 'Noor', 'Ali', 'Rita', 'Yusuf', 'Hana', 'Karim'];
+  const last = ['Santos', 'Haddad', 'Khan', 'Park', 'Rossi', 'Novak', 'Silva', 'Ito', 'Brown', 'Mensah'];
+  const people = Array.from({ length: 10000 }, (_, i) => ({ value: 'c' + (i + 1), label: first[i % 10] + ' ' + last[Math.floor(i / 10) % 10] + ' ' + (i + 1), hint: 'Customer ' + (i + 1) }));
+  const fold = (t) => t.normalize('NFD').replace(/\p{M}+/gu, '').toLocaleLowerCase();
+  function search(query, signal) {
+    return new Promise((resolve, reject) => {
+      const timer = setTimeout(() => {
+        const q = fold(query), hits = q ? people.filter((p) => fold(p.label).includes(q)) : people;
+        resolve({ options: hits.slice(0, 20), total: hits.length });
+      }, 300);
+      if (signal) signal.addEventListener('abort', () => { clearTimeout(timer); reject(new DOMException('Aborted', 'AbortError')); });
+    });
+  }
+  for (const id of ['#customer', '#customers']) $(id).addEventListener('sheen-lookup-query', (e) => e.detail.respond(search(e.detail.query, e.detail.signal)));
+  $('#customers').chosen = [{ value: 'c2', label: people[1].label }];
   const log = (t) => { $('#recordLog').textContent = t; };
   $('#card').attach($('#recordLink'));
   $('#card').addEventListener('sheen-hover-open', () => {

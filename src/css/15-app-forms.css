@@ -10,7 +10,7 @@
 .sheen-form-field.sheen-small textarea.sheen-input{block-size:auto;min-block-size:76px}
 .sheen-form-field.sheen-small .sheen-input::placeholder{color:var(--sheen-text-tertiary)}
 .sheen-form-field.sheen-small>small{color:var(--sheen-text-tertiary)}
-sheen-select:has(>.sheen-select-trigger[aria-invalid="true"]),.sheen-form-field.sheen-small .sheen-input[aria-invalid="true"]{box-shadow:inset 0 0 0 2px var(--sheen-danger)}
+sheen-lookup:has(>.sheen-select-trigger[aria-invalid="true"]),sheen-select:has(>.sheen-select-trigger[aria-invalid="true"]),.sheen-form-field.sheen-small .sheen-input[aria-invalid="true"]{box-shadow:inset 0 0 0 2px var(--sheen-danger)}
 .sheen-form-field.sheen-small:has(.sheen-select-trigger[aria-invalid="true"])>small,.sheen-form-field.sheen-small:has(.sheen-input[aria-invalid="true"])>small{color:var(--sheen-danger)}
 .sheen-fields.sheen-small{gap:max(var(--sheen-space-min),12px) max(var(--sheen-space-min),16px)}
 .sheen-fields>.sheen-wide{grid-column:1/-1}
