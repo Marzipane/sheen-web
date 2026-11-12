@@ -90,17 +90,20 @@ test('a disabled select is faint and not allowed', () => {
 });
 
 test('the native select stays in the form, out of sight and out of the way', () => {
-  has('sheen-select>.sheen-select-native,sheen-lookup>.sheen-select-native{position:absolute;inset-block-end:0;inset-inline-start:0;inline-size:1px;block-size:1px;margin:0;padding:0;border:0;opacity:0;overflow:hidden;clip-path:inset(50%);pointer-events:none}');
+  has('sheen-select .sheen-select-native,sheen-lookup .sheen-select-native{position:absolute;inset-block-end:0;inset-inline-start:0;inline-size:1px;block-size:1px;margin:0;padding:0;border:0;opacity:0;overflow:hidden;clip-path:inset(50%);pointer-events:none}');
 });
 
 test('inside a glass .sheen-field the native select stays hidden: its rule outranks the field\'s reset of its select', () => {
   // .sheen-field select{all:unset;…;width:100%} (0,1,1) would put the native select back on the page at full width and
   // leave the trigger no room; the native rule matches it at the same specificity and comes later, so it wins.
   const field = css.indexOf('.sheen-field input,.sheen-field select,.sheen-field textarea{all:unset');
-  const native = css.indexOf('sheen-select>.sheen-select-native,sheen-lookup>.sheen-select-native{position:absolute');
+  const native = css.indexOf('sheen-select .sheen-select-native,sheen-lookup .sheen-select-native{position:absolute');
   assert.ok(field >= 0 && native >= 0, 'both rules are in the built CSS');
   assert.ok(native > field, 'the native rule comes after the field rule');
-  assert.ok(!/(^|[}\s,])\.sheen-select-native\{/.test(css), 'no rule left at one class only, which the field rule would beat');
+  assert.ok(
+    !rules.some(([s]) => s.split(/,(?![^(]*\))/).map((x) => x.trim()).includes('.sheen-select-native')),
+    'no rule left at one class only, which the field rule would beat',
+  );
 });
 
 test('the list box is a small menu: 16px radius, 6px padding, 4px gaps, at least the field wide, at most the screen', () => {
