@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en-GB" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Date fields size fixture</title>
+<link rel="stylesheet" href="../../dist/sheen.css">
+<!-- The date fields of sheen-web 0.8.0 as an app list page and form draw them: a find-row date range with presets,
+     open with a custom range being picked, and a dense form date field. Query: theme=light|dark, lang=en|ar,
+     show=range|field|both (default both), open=range|field|none (default range). -->
+<style>
+  body { margin: 0; }
+  main { display: flex; flex-direction: column; gap: 32px; padding: 24px; max-inline-size: 1100px; }
+  .fixture-form { display: grid; grid-template-columns: 1fr 1fr; max-inline-size: 400px; }
+</style>
+<script>
+  (function () {
+    var q = new URLSearchParams(location.search), root = document.documentElement;
+    root.setAttribute('data-theme', q.get('theme') === 'dark' ? 'dark' : 'light');
+    if (q.get('lang') === 'ar') { root.lang = 'ar'; root.dir = 'rtl'; }
+  })();
+</script>
+</head>
+<body class="sheen sheen-solid">
+<main>
+  <div class="sheen-list-kit" id="find">
+    <div class="sheen-find-row">
+      <label class="sheen-control sheen-find"><input type="search" data-w="search" aria-label="Search"></label>
+      <sheen-date-range id="range" variant="control" today="2026-10-27" first-day="1">
+        <input type="date" name="from" value="2026-10-27"><input type="date" name="to" value="2026-11-25">
+      </sheen-date-range>
+      <button type="button" class="sheen-control" data-w="filters">Filters</button>
+    </div>
+  </div>
+  <div class="sheen-fields sheen-small fixture-form" id="form">
+    <label class="sheen-form-field sheen-small"><span data-w="fromLabel">From</span>
+      <sheen-date-field id="field" today="2026-10-27" first-day="1"><input type="date" name="start" value="2027-02-08"></sheen-date-field>
+    </label>
+    <label class="sheen-form-field sheen-small"><span data-w="toLabel">To</span>
+      <sheen-date-field id="field2" today="2026-10-27" first-day="1"><input type="date" name="end" value="2027-03-08"></sheen-date-field>
+    </label>
+  </div>
+</main>
+<script src="../../dist/sheen-elements.js"></script>
+<script>
+  (function () {
+    var q = new URLSearchParams(location.search), ar = q.get('lang') === 'ar';
+    var W = ar
+      ? { search: 'بحث', filters: 'الفلاتر', fromLabel: 'من', toLabel: 'إلى', placeholder: 'أي تاريخ', prev: 'الشهر السابق', next: 'الشهر التالي',
+          weekdays: 'ن ث ر خ ج س ح', from: 'من', to: 'إلى', custom: 'نطاق مخصص', note: 'بالتوقيت المحلي (GMT+4)', cancel: 'إلغاء', apply: 'تطبيق',
+          presets: ['اليوم', 'غدًا', 'الأيام السبعة القادمة', 'الأيام الثلاثون القادمة', 'هذا الشهر', 'الشهر القادم'] }
+      : { search: 'Search', filters: 'Filters', fromLabel: 'From', toLabel: 'To', placeholder: 'Any dates', prev: 'Previous month', next: 'Next month',
+          weekdays: 'Mo Tu We Th Fr Sa Su', from: 'From', to: 'To', custom: 'Custom range', note: 'Local time (GMT+4)', cancel: 'Cancel', apply: 'Apply',
+          presets: ['Today', 'Tomorrow', 'Next 7 days', 'Next 30 days', 'This month', 'Next month'] };
+    document.querySelectorAll('[data-w]').forEach(function (e) {
+      if (e.tagName === 'INPUT') e.placeholder = W[e.dataset.w] + '…'; else e.textContent = W[e.dataset.w];
+    });
+    var range = document.getElementById('range');
+    ['placeholder', 'prev', 'next', 'weekdays', 'from', 'to', 'custom', 'note', 'cancel', 'apply'].forEach(function (k) { range.setAttribute(k, W[k]); });
+    var spans = [['2026-10-27', '2026-10-27'], ['2026-10-28', '2026-10-28'], ['2026-10-27', '2026-11-02'], ['2026-10-27', '2026-11-25'], ['2026-10-01', '2026-10-31'], ['2026-11-01', '2026-11-30']];
+    range.presets = spans.map(function (s, i) { return { label: W.presets[i], start: s[0], end: s[1] }; });
+    ['field', 'field2'].forEach(function (id) {
+      var f = document.getElementById(id);
+      ['prev', 'next', 'weekdays'].forEach(function (k) { f.setAttribute(k, W[k]); });
+      f.setAttribute('placeholder', W.placeholder);
+    });
+    var show = q.get('show') || 'both';
+    if (show === 'range') document.getElementById('form').hidden = true;
+    if (show === 'field') document.getElementById('find').hidden = true;
+    var open = q.get('open') || 'range';
+    if (open === 'range') {
+      range.open();
+      // a custom range being picked: 28 to 31 October, not applied yet
+      range.querySelector('.sheen-cal-day[data-date="2026-10-28"]').click();
+      range.querySelector('.sheen-cal-day[data-date="2026-10-31"]').click();
+    } else if (open === 'field') document.getElementById('field').open();
+    document.documentElement.setAttribute('data-ready', '');
+  })();
+</script>
+</body>
+</html>

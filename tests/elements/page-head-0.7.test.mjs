@@ -11,7 +11,7 @@ const has = (part) => assert.ok(css.includes(part), part);
 const rule = (sel) => { const at = css.indexOf(sel + '{'); assert.ok(at >= 0, sel); return css.slice(at, css.indexOf('}', at) + 1); };
 
 test('the page head: a row of the words and the actions, lined up at the bottom, 16px apart, wrapping when narrow', () => {
-  has('.sheen-page-head{display:flex;flex-wrap:wrap;align-items:flex-end;gap:16px}');
+  has('.sheen-page-head{display:flex;flex-wrap:wrap;align-items:flex-end;gap:max(var(--sheen-space-min),16px)}');
 });
 
 test('the words take the room left, keep 320px (or the whole row when it is narrower) and wrap their own lines 4px by 10px apart', () => {
@@ -25,7 +25,7 @@ test('the crumbs: 12.5px tertiary on a line of their own; the secondary line is 
 });
 
 test('the actions 8px apart at the end edge, on the bottom line or on a line of their own', () => {
-  has('.sheen-page-head-actions{display:flex;flex-wrap:wrap;gap:8px;margin-inline-start:auto}');
+  has('.sheen-page-head-actions{display:flex;flex-wrap:wrap;gap:max(var(--sheen-space-min),8px);margin-inline-start:auto}');
   assert.ok(min.includes('.sheen-page-head-actions{'));
 });
 

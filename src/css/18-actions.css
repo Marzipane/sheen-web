@@ -1,0 +1,32 @@
+/* 0.8.0 action buttons and the confirm sheet */
+/* A danger button, an extra small button for a bulk bar's actions, and the small dialog's confirm option. Each is a class
+   a page opts in to; a page without them draws as in 0.7. Logical sides only, so Arabic mirrors. */
+
+/* a danger button: a step that takes something away (Take offline, Delete). The fill of a deal under white words, 4.5:1
+   in light and dark; the hover darkens the fill, so the words never lose contrast. A disabled one keeps the kit's faded
+   look and takes no hover. It never asks for the first focus: the app puts that on the safe button. */
+.sheen-button.sheen-danger{background:var(--sheen-deal-fill);color:var(--sheen-on-accent)}
+.sheen-button.sheen-danger:hover:not([disabled],[aria-disabled="true"]){filter:brightness(.94)}
+
+/* an extra small button: a bulk bar's actions. 32px tall, 12px sides, 13px words, 14px glyphs 6px from the words.
+   class="sheen-xsmall" on a sheen-menu-button makes its own button the same size. */
+.sheen-button.sheen-xsmall,sheen-menu-button.sheen-xsmall>.sheen-button{block-size:var(--sheen-size-button-xsmall);border-radius:calc(var(--sheen-size-button-xsmall) / 2);padding-inline:12px;gap:6px;font-size:13px}
+:is(.sheen-button.sheen-xsmall,sheen-menu-button.sheen-xsmall>.sheen-button) :is(.sheen-glyph,.sheen-icon){inline-size:14px;block-size:14px}
+
+/* the confirm sheet: <dialog class="sheen-dialog sheen-small sheen-confirm"> asks before a risky step. 440px wide, 14% down
+   the window, the head, body and foot with no padding of their own, so the question, the record, the words and the
+   buttons stack 10px apart. The record is a tag that hugs its words; the words are 13.5px and secondary; the buttons sit
+   at the end, 8px apart, 6px further down, 34px tall. Taller than the room under its top, it scrolls inside. */
+.sheen-dialog.sheen-small.sheen-confirm{inline-size:min(var(--sheen-size-confirm),calc(100vw - 32px));margin-block-start:14vh;max-block-size:calc(100dvh - 14vh - var(--sheen-space-l))}
+.sheen-dialog.sheen-small.sheen-confirm :is(.sheen-dialog-head,.sheen-dialog-body,.sheen-dialog-foot){padding:0}
+.sheen-dialog.sheen-small.sheen-confirm .sheen-dialog-body{display:flex;flex-direction:column;gap:inherit}
+/* the body's gap already keeps the minimum between two boxes, so its children take no block margin (the kit's
+   margin between two boxes sits at no specificity); at one class, so a page's own margin still wins */
+:where(.sheen-dialog.sheen-small.sheen-confirm) .sheen-dialog-body>*{margin-block:0}
+.sheen-dialog.sheen-small.sheen-confirm .sheen-dialog-body>.sheen-pill{align-self:flex-start;block-size:auto;padding:3px 10px;border-radius:8px;font-weight:600;color:var(--sheen-text)}
+.sheen-dialog.sheen-small.sheen-confirm .sheen-dialog-body>p{font-size:13.5px}
+/* the colour at no specificity, so a high-contrast .sheen-secondary on the same words still wins */
+:where(.sheen-dialog.sheen-small.sheen-confirm .sheen-dialog-body>p){color:var(--sheen-text-secondary)}
+.sheen-dialog.sheen-small.sheen-confirm .sheen-dialog-foot{gap:max(var(--sheen-space-min),8px);margin-block-start:6px}
+.sheen-dialog.sheen-small.sheen-confirm .sheen-dialog-foot .sheen-button{block-size:var(--sheen-size-confirm-button);border-radius:calc(var(--sheen-size-confirm-button) / 2);padding-inline:16px;font-size:14.5px}
+/* end 0.8.0 action buttons and the confirm sheet */

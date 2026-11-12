@@ -1,0 +1,30 @@
+/* Avatar (0.8.0): a person's initials in a circle, as Flutter sheen's SheenAvatar. <sheen-avatar> draws .sheen-avatar in
+   the light DOM: the initials in a <span>, or the filled user glyph on the track colour without a name, and the photo
+   after them, so it covers them once it loads. The diameter and the initials' size are tokens: 40 and 15 (size.avatarM,
+   avatarMText) without a size, size="s" 30 and 12, size="xs" 18 and 9.
+   Fill: data-tint, which the element sets from the name (or tint-key), picks one of the eight --sheen-tint-* tokens
+   (Flutter sheen's SheenTint, the same in both themes). White initials need 4.5:1 (WCAG AA), so each tint mixes toward
+   black, keeping the largest whole percent P of the tint that still reaches 4.5:1. color-mix in srgb scales each
+   gamma-encoded channel by P; a tint that passes alone keeps 100%. The circle runs at 135deg from that colour to 65% of
+   it, darker only, so the contrast holds across the whole circle. tests/elements/avatar-0.8.test.mjs reads every P from
+   the built CSS and checks both limits.
+   .sheen-avatar-name: the avatar beside a name (<b>) and a second line (<small>), as a table cell draws a person. */
+:where(.sheen-avatar)[hidden]{display:none!important}
+.sheen-avatar{--sheen-avatar-size:var(--sheen-size-avatar-m);--sheen-avatar-text:var(--sheen-size-avatar-m-text);display:inline-grid;place-items:center;flex:none;overflow:hidden;inline-size:var(--sheen-avatar-size);block-size:var(--sheen-avatar-size);border-radius:50%;background:var(--sheen-track);color:var(--sheen-on-accent);font-size:var(--sheen-avatar-text);font-weight:700;line-height:1;letter-spacing:0;white-space:nowrap}
+.sheen-avatar[size="s"]{--sheen-avatar-size:var(--sheen-size-avatar-s);--sheen-avatar-text:var(--sheen-size-avatar-s-text)}
+.sheen-avatar[size="xs"]{--sheen-avatar-size:var(--sheen-size-avatar-xs);--sheen-avatar-text:var(--sheen-size-avatar-xs-text)}
+.sheen-avatar>*{grid-area:1/1}
+.sheen-avatar>svg{inline-size:55%;block-size:55%;color:var(--sheen-text-tertiary)}
+.sheen-avatar>img{inline-size:100%;block-size:100%;object-fit:cover}
+.sheen-avatar[data-tint]{background:linear-gradient(135deg,var(--sheen-avatar-fill),color-mix(in srgb,var(--sheen-avatar-fill) 65%,#000))}
+.sheen-avatar[data-tint="blue"]{--sheen-avatar-fill:color-mix(in srgb,var(--sheen-tint-blue) 100%,#000)}
+.sheen-avatar[data-tint="red"]{--sheen-avatar-fill:color-mix(in srgb,var(--sheen-tint-red) 92%,#000)}
+.sheen-avatar[data-tint="green"]{--sheen-avatar-fill:color-mix(in srgb,var(--sheen-tint-green) 81%,#000)}
+.sheen-avatar[data-tint="orange"]{--sheen-avatar-fill:color-mix(in srgb,var(--sheen-tint-orange) 79%,#000)}
+.sheen-avatar[data-tint="purple"]{--sheen-avatar-fill:color-mix(in srgb,var(--sheen-tint-purple) 100%,#000)}
+.sheen-avatar[data-tint="teal"]{--sheen-avatar-fill:color-mix(in srgb,var(--sheen-tint-teal) 90%,#000)}
+.sheen-avatar[data-tint="violet"]{--sheen-avatar-fill:color-mix(in srgb,var(--sheen-tint-violet) 100%,#000)}
+.sheen-avatar[data-tint="gray"]{--sheen-avatar-fill:color-mix(in srgb,var(--sheen-tint-gray) 100%,#000)}
+.sheen-avatar-name{display:inline-flex;align-items:center;gap:var(--sheen-space-s)}
+.sheen-avatar-name b{white-space:nowrap}
+.sheen-avatar-name small{display:block;color:var(--sheen-text-secondary);font-size:var(--sheen-size-avatar-note-text)}

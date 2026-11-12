@@ -38,29 +38,23 @@ class SheenMenuButton extends HTMLElement {
     this.addEventListener('focusout', function (e) {
       if (!self.menu.hidden && e.relatedTarget && !self.contains(e.relatedTarget)) self.hide();
     });
-    this.onOutside = function (e) { if (!self.contains(e.target)) self.hide(); };
-    // A menu on the screen would stay put while the page moves under it, so it follows its button on any scroll but its own,
-    // and closes once the button has left the box that scrolled (or the screen).
-    this.onScroll = function (e) {
-      var t = e.target;
-      if (t && t.nodeType === 1 && self.menu.contains(t)) return;
-      if (self.outside(t && t.nodeType === 1 && t.contains(self) ? t.getBoundingClientRect() : { left: 0, top: 0, right: window.innerWidth, bottom: window.innerHeight })) return self.hide();
-      self.replace();
-    };
-    this.onResize = function () { self.replace(); };
     this.draw();
   }
   disconnectedCallback() { if (this.menu) this.hide(); }
-  static get observedAttributes() { return ['label', 'glyph', 'variant', 'icon', 'chevron', 'compact']; }
+  static get observedAttributes() { return ['label', 'glyph', 'variant', 'icon', 'chevron', 'compact', 'tone']; }
   attributeChangedCallback(name, was, now) {
     if (!this.menu) return;
     this.look();
     if (!this.hasAttribute('glyph')) this.button.removeAttribute('aria-label');
     this.name(this.getAttribute('label') || '');
   }
-  // The button's class from variant: the tonal button (or the 0.5.1 icon button with a glyph), or the control.
+  // The button's class from variant: the tonal button (or the 0.5.1 icon button with a glyph), the control, and for a
+  // picker in a table cell (0.8.0) the cell's words (text) or a status pill (pill) in its tone: tone="success", "warning"
+  // or "danger"; any other tone keeps the plain pill.
   look() {
-    this.button.className = this.getAttribute('variant') === 'control' ? 'sheen-control' : this.hasAttribute('glyph') ? 'sheen-icon-button' : 'sheen-button';
+    var variant = this.getAttribute('variant'), tone = this.getAttribute('tone');
+    var pill = 'sheen-pill' + (tone === 'success' || tone === 'warning' || tone === 'danger' ? ' sheen-' + tone : '');
+    this.button.className = variant === 'control' ? 'sheen-control' : variant === 'text' ? 'sheen-cell-button' : variant === 'pill' ? pill : this.hasAttribute('glyph') ? 'sheen-icon-button' : 'sheen-button';
     this.button.classList.toggle('sheen-compact-glyph', this.hasAttribute('compact'));
   }
   // The visible text, or for a glyph button the glyph and an accessible name. An icon or a chevron puts the words in a span
@@ -99,44 +93,21 @@ class SheenMenuButton extends HTMLElement {
       self.menu.appendChild(row);
     });
   }
+  // The menu opens as a popup (00-core.js): in the top layer under the button, following it on scroll and resize, closed by
+  // a press outside or once the button scrolls out of its box.
   open() {
-    this.menu.hidden = false;
-    if (typeof this.menu.showPopover === 'function') { this.menu.setAttribute('popover', 'manual'); this.menu.showPopover(); }
+    var self = this;
     this.button.setAttribute('aria-expanded', 'true');
-    this.replace();
-    document.addEventListener('pointerdown', this.onOutside, true);
-    window.addEventListener('scroll', this.onScroll, true);
-    window.addEventListener('resize', this.onResize);
+    if (!this.shown) this.shown = popup(this.menu, this.button, this, function () { self.hide(); });
     // The first item that is safe to land on: never a danger one, so Enter right after opening can't delete.
     var first = this.rows().filter(function (row) { return !row.classList.contains('sheen-danger'); })[0];
     (first || this.menu).focus();
   }
-  replace() {
-    this.menu.classList.remove('sheen-menu-flip', 'sheen-menu-up');
-    this.place();
-  }
-  // Whether the button has wholly left this box.
-  outside(box) {
-    var b = this.button.getBoundingClientRect();
-    return b.bottom <= box.top || b.top >= box.bottom || b.right <= box.left || b.left >= box.right;
-  }
-  // The menu is placed from the screen (the top layer, or fixed), under the button at its start edge, measured where
-  // nothing narrows it. It lines up with the button's end edge when it would leave the screen, and opens upward when it
-  // doesn't fit below and there is more room above.
-  place() {
-    var at = placeUnder(this.menu, this.button.getBoundingClientRect());
-    this.menu.classList.toggle('sheen-menu-flip', at.flip);
-    this.menu.classList.toggle('sheen-menu-up', at.up);
-  }
   // Closes and leaves focus where it is: for a press outside or focus that has moved on.
   hide() {
-    // A removed menu has already left the top layer, and hiding it again would throw.
-    if (this.menu.hasAttribute('popover') && this.menu.isConnected && !this.menu.hidden) this.menu.hidePopover();
+    if (this.shown) { this.shown.stop(); this.shown = null; }
     this.menu.hidden = true;
     this.button.setAttribute('aria-expanded', 'false');
-    document.removeEventListener('pointerdown', this.onOutside, true);
-    window.removeEventListener('scroll', this.onScroll, true);
-    window.removeEventListener('resize', this.onResize);
   }
   // Closes and gives focus back to the button: for Esc, a pick or the button itself.
   close() {

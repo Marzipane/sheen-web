@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>affix and cell picker size fixture</title>
+<link rel="stylesheet" href="../../dist/sheen.css">
+<!-- Size fixture for the 0.8.0 affix and cell pickers. ?theme=light|dark and ?lang=en|ar set the theme, the direction and
+     the words. Dense fields two to a row: a unit after the value, a prefix before it, and an invalid one with its hint;
+     then a small table in a card whose Van cells are text pickers and whose Status cells are pill pickers in each tone. -->
+<script>
+  var q = new URLSearchParams(location.search), ar = q.get('lang') === 'ar';
+  document.documentElement.setAttribute('data-theme', q.get('theme') === 'dark' ? 'dark' : 'light');
+  if (ar) { document.documentElement.lang = 'ar'; document.documentElement.dir = 'rtl'; }
+</script>
+<style>
+  body { margin: 0; }
+  main { padding: var(--sheen-space-xxl); display: grid; gap: var(--sheen-space-xxl); justify-items: start; }
+  .sheen-fields { inline-size: 640px; }
+</style>
+</head>
+<body class="sheen">
+<main>
+  <div class="sheen-fields sheen-small">
+    <label class="sheen-form-field sheen-small" data-probe="field"><span data-ar="الهامش بين المهام">Buffer between jobs</span>
+      <span class="sheen-affix" data-probe="affix"><input class="sheen-input" type="number" value="30"><span class="sheen-affix-unit" data-ar="دقيقة">min</span></span></label>
+    <label class="sheen-form-field sheen-small"><span data-ar="الحد الأدنى">Minimum</span>
+      <span class="sheen-affix" data-probe="prefix"><span class="sheen-affix-unit" data-ar="من">from</span><input class="sheen-input" type="number" value="80"></span></label>
+    <label class="sheen-form-field sheen-small"><span data-ar="التعبئة كل">Refill every</span>
+      <span class="sheen-affix" data-probe="invalid"><input class="sheen-input" type="number" value="0" aria-invalid="true"><span class="sheen-affix-unit" data-ar="أيام">days</span></span>
+      <small data-ar="يوم واحد على الأقل">At least 1 day</small></label>
+    <label class="sheen-form-field sheen-small"><span data-ar="الاسم">Name</span>
+      <input class="sheen-input" value="Downtown" data-probe="plain"></label>
+  </div>
+  <div class="sheen-table-card sheen-table-wrap">
+    <table class="sheen-table sheen-small" data-probe="table">
+      <thead><tr><th aria-sort="none"><button type="button" class="sheen-sort-button" data-ar="الاسم">Name</button></th><th aria-sort="none"><button type="button" class="sheen-sort-button" data-ar="الشاحنة">Van</button></th><th aria-sort="none"><button type="button" class="sheen-sort-button" data-ar="الحالة">Status</button></th></tr></thead>
+      <tbody>
+        <tr><td data-probe="name-td" data-ar="وسط المدينة">Downtown</td><td data-probe="van-td"><sheen-menu-button class="sheen-small" variant="text" label="HC6"></sheen-menu-button></td><td data-probe="status-td"><sheen-menu-button class="sheen-small" variant="pill" tone="success" label="Active" data-ar="نشط"></sheen-menu-button></td></tr>
+        <tr><td data-ar="المرسى">Marina</td><td><sheen-menu-button class="sheen-small" variant="text" label="HC7"></sheen-menu-button></td><td data-probe="warn"><sheen-menu-button class="sheen-small" variant="pill" tone="warning" label="Away" data-ar="غائب"></sheen-menu-button></td></tr>
+        <tr><td data-ar="الميناء">Harbour</td><td><sheen-menu-button class="sheen-small" variant="text" label="HC9"></sheen-menu-button></td><td data-probe="danger"><sheen-menu-button class="sheen-small" variant="pill" tone="danger" label="Blocked" data-ar="محظور"></sheen-menu-button></td></tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+<script>
+  if (ar) document.querySelectorAll('[data-ar]').forEach(function (el) {
+    if (el.localName === 'sheen-menu-button') el.setAttribute('label', el.dataset.ar); else el.textContent = el.dataset.ar;
+  });
+</script>
+<script src="../../dist/sheen-elements.js"></script>
+<script>
+  var vans = ['HC6', 'HC7', 'HC9'].map(function (v) { return { id: v, label: v }; });
+  var states = ar ? ['نشط', 'غائب', 'محظور'] : ['Active', 'Away', 'Blocked'];
+  document.querySelectorAll('sheen-menu-button[variant="text"]').forEach(function (m) { m.items = vans; });
+  document.querySelectorAll('sheen-menu-button[variant="pill"]').forEach(function (m) { m.items = states.map(function (s, i) { return { id: 's' + i, label: s }; }); });
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>sheen-avatar size fixture</title>
+<link rel="stylesheet" href="../../dist/sheen.css">
+<!-- Size fixture for <sheen-avatar> (0.8.0). ?theme=light|dark and ?lang=en|ar set the theme and the direction.
+     The first table cell draws a person the way a list's name column does: a small avatar with one letter beside the
+     name and a second line. The rows under it show every size, every tint and the no-name glyph. -->
+<script>
+  var q = new URLSearchParams(location.search);
+  document.documentElement.setAttribute('data-theme', q.get('theme') === 'dark' ? 'dark' : 'light');
+  if (q.get('lang') === 'ar') { document.documentElement.lang = 'ar'; document.documentElement.dir = 'rtl'; }
+</script>
+<style>
+  body { margin: 0; }
+  main { padding: var(--sheen-space-xxl); display: grid; gap: var(--sheen-space-xxl); justify-items: start; }
+  .row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sheen-space-m); }
+</style>
+</head>
+<body class="sheen">
+<main>
+  <table class="sheen-table sheen-small" data-probe="table">
+    <thead><tr><th>Name</th><th>Area</th></tr></thead>
+    <tbody>
+      <tr><td data-probe="cell"><span class="sheen-avatar-name"><sheen-avatar name="Maria Santos" size="s" letters="1" data-probe="avatar"></sheen-avatar><span><a href="#"><b>Maria Santos</b></a><small>Downtown</small></span></span></td><td>Downtown</td></tr>
+      <tr><td><span class="sheen-avatar-name"><sheen-avatar name="عمر حداد" size="s" letters="1"></sheen-avatar><span><a href="#"><b>عمر حداد</b></a><small>Marina</small></span></span></td><td>Marina</td></tr>
+    </tbody>
+  </table>
+  <div class="row" data-probe="sizes">
+    <sheen-avatar name="Ada Lovelace"></sheen-avatar>
+    <sheen-avatar name="Ada Lovelace" size="s"></sheen-avatar>
+    <sheen-avatar name="Ada Lovelace" size="xs"></sheen-avatar>
+    <sheen-avatar></sheen-avatar>
+    <sheen-avatar size="s"></sheen-avatar>
+  </div>
+  <div class="row" data-probe="tints">
+    <sheen-avatar name="Alan Turing"></sheen-avatar>
+    <sheen-avatar name="Cher"></sheen-avatar>
+    <sheen-avatar name="Sara Lee"></sheen-avatar>
+    <sheen-avatar name="Grace Hopper"></sheen-avatar>
+    <sheen-avatar name="Hamza R."></sheen-avatar>
+    <sheen-avatar name="Lina Park"></sheen-avatar>
+    <sheen-avatar name="Ada Lovelace"></sheen-avatar>
+    <sheen-avatar name="Maria Santos"></sheen-avatar>
+  </div>
+</main>
+<script src="../../dist/sheen-elements.js"></script>
+</body>
+</html>

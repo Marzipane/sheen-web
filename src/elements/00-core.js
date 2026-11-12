@@ -3,7 +3,7 @@
 // - takes all of its words from attributes (already translated); it never renders text of its own;
 // - mirrors for dir="rtl" (positions use inset-inline-start, keys follow the reading direction);
 // - follows light/dark through the sheen tokens and stops motion under prefers-reduced-motion.
-var VERSION = '0.7.1';
+var VERSION = '0.8.0';
 
 function define(tag, cls) {
   if (!window.customElements.get(tag)) window.customElements.define(tag, cls);
@@ -68,12 +68,59 @@ function placeUnder(box, a) {
   var left = atEnd ? a.right - width : a.left;
   var flip = left < 0 || left + width > w;
   if (flip) left = atEnd ? a.left : a.right - width;
-  // Wider than the room on either side (a phone): it keeps to the screen.
-  left = clamp(left, 0, Math.max(0, w - width));
+  // Wider than the room on either side (a phone): it keeps to the screen, and from 0.8.0 the minimum gap
+  // (--sheen-space-min) from its edges where the screen has that much room to spare, so it never sits flush against one.
+  var room = Math.max(0, w - width);
+  if (left < 0 || left > room) {
+    var edge = Math.min(parseFloat(cssVar(document.documentElement, '--sheen-space-min', '0')) || 0, room / 2);
+    left = clamp(left, edge, room - edge);
+  }
   var up = a.bottom + gap + height > h && a.top > h - a.bottom;
   s.left = left + 'px';
   s.top = (up ? Math.max(0, a.top - height - gap) : a.bottom + gap) + 'px';
   return { flip: flip, up: up };
+}
+
+// A popup opened from an anchor (0.8.0): a menu, a select's list, a calendar. popup(box, anchor, host, gone) shows box in
+// the top layer (popover) where the API exists, else fixed, so no scrolling box, glass box or sticky cell cuts it off, and
+// places it under anchor (placeUnder), marking it sheen-menu-flip when it lines up with the anchor's other edge and
+// sheen-menu-up when it opens upward. It follows the anchor on any scroll but its own and on resize, and calls gone() on a
+// press outside host, or once the anchor has wholly left the box that scrolled (or the screen). Returns { place, stop }:
+// place() places it again; stop() takes it out of the top layer, hides it and drops the listeners.
+function popup(box, anchor, host, gone) {
+  function place() {
+    box.classList.remove('sheen-menu-flip', 'sheen-menu-up');
+    var at = placeUnder(box, anchor.getBoundingClientRect());
+    box.classList.toggle('sheen-menu-flip', at.flip);
+    box.classList.toggle('sheen-menu-up', at.up);
+  }
+  // Whether the anchor has wholly left this box.
+  function outside(r) {
+    var b = anchor.getBoundingClientRect();
+    return b.bottom <= r.top || b.top >= r.bottom || b.right <= r.left || b.left >= r.right;
+  }
+  function onPress(e) { if (!host.contains(e.target)) gone(); }
+  function onScroll(e) {
+    var t = e.target;
+    if (t && t.nodeType === 1 && box.contains(t)) return;
+    if (outside(t && t.nodeType === 1 && t.contains(anchor) ? t.getBoundingClientRect() : { left: 0, top: 0, right: window.innerWidth, bottom: window.innerHeight })) return gone();
+    place();
+  }
+  function stop() {
+    // A removed box has already left the top layer, and hiding it again would throw.
+    if (box.hasAttribute('popover') && box.isConnected && !box.hidden) box.hidePopover();
+    box.hidden = true;
+    document.removeEventListener('pointerdown', onPress, true);
+    window.removeEventListener('scroll', onScroll, true);
+    window.removeEventListener('resize', place);
+  }
+  box.hidden = false;
+  if (typeof box.showPopover === 'function') { box.setAttribute('popover', 'manual'); box.showPopover(); }
+  place();
+  document.addEventListener('pointerdown', onPress, true);
+  window.addEventListener('scroll', onScroll, true);
+  window.addEventListener('resize', place);
+  return { place: place, stop: stop };
 }
 
 function reducedMotion() {

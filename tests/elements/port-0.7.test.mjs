@@ -54,7 +54,8 @@ test('small cells stay on one line up to 260px with an ellipsis; .sheen-wrap wra
   has('.sheen-table.sheen-small td{padding:10px 14px;border-block-end:0;border-block-start:1px solid var(--sheen-separator);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-inline-size:260px}');
   has('.sheen-table.sheen-small.sheen-wrap:is(th,td){white-space:normal}');
   has('.sheen-table.sheen-small.sheen-wrap td{max-inline-size:none;vertical-align:top;overflow-wrap:break-word}');
-  has('.sheen-table.sheen-small input[type="checkbox"]{inline-size:16px;block-size:16px;accent-color:var(--sheen-accent)}');
+  // 0.8.0: a switch in a small table keeps its own size
+  has('.sheen-table.sheen-small input[type="checkbox"]:where(:not([role="switch"],.sheen-switch input)){inline-size:16px;block-size:16px;accent-color:var(--sheen-accent)}');
 });
 
 test('mk-loading: a busy table\'s cells lose their lines; their checkboxes stay', () => {

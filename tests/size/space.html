@@ -1,0 +1,39 @@
+<!doctype html>
+<!-- 0.8.0 the minimum gap: a form dialog as an app stacks it (a footnote, a date field, a row of two time fields, a hub
+     select, a reason field), to see the gap between its boxes before and after --sheen-space-min. -->
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Minimum gap</title>
+<link rel="stylesheet" href="../../dist/sheen.css">
+<style>
+  body { margin: 0; background: var(--sheen-background); font-family: system-ui, sans-serif; }
+  /* the page's own two-column row, as an app writes it */
+  .times { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sheen-space-m); }
+</style>
+</head>
+<body class="sheen">
+<main>
+  <dialog class="sheen-dialog" open aria-labelledby="t" style="position:static;margin:24px auto">
+    <form class="sheen-form" method="dialog">
+      <div class="sheen-dialog-head"><h2 id="t">Close a time range</h2></div>
+      <div class="sheen-dialog-body">
+        <p class="sheen-secondary sheen-footnote">Bookings already in the range move to the review queue.</p>
+        <div class="sheen-field"><label for="d">Date</label><input id="d" type="text" value="Tue 3 Nov"></div>
+        <div class="times">
+          <div class="sheen-field"><label for="f">From</label><input id="f" type="text" value="8:00 AM"></div>
+          <div class="sheen-field"><label for="to">To</label><input id="to" type="text" value="11:00 AM"></div>
+        </div>
+        <div class="sheen-field"><label for="h">Hub</label><select id="h"><option>Downtown</option><option>Marina</option></select></div>
+        <div class="sheen-field"><label for="r">Reason</label><input id="r" type="text" value="Fire drill"></div>
+      </div>
+      <div class="sheen-dialog-foot">
+        <button type="button" class="sheen-button sheen-small">Cancel</button>
+        <button type="submit" class="sheen-button sheen-small sheen-glass-prominent">Close range</button>
+      </div>
+    </form>
+  </dialog>
+</main>
+</body>
+</html>

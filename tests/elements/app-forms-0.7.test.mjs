@@ -23,7 +23,7 @@ test('a dense field is a 13px label at 500 over a 38px box with an 11px radius a
 });
 
 test('dense fields sit two to a row, 12px by 16px apart; a wide one takes the row', () => {
-  has('.sheen-fields.sheen-small{gap:12px 16px}');
+  has('.sheen-fields.sheen-small{gap:max(var(--sheen-space-min),12px) max(var(--sheen-space-min),16px)}');
   has('.sheen-fields>.sheen-wide{grid-column:1/-1}');
 });
 
@@ -34,7 +34,7 @@ test('a select drawn as a field shows its value and an 18px chevron in the same 
 });
 
 test('a side panel footer holds Cancel and the main action on the panel\'s bottom edge, growing alike from 128px and wrapping when narrow', () => {
-  has('.sheen-panel-foot{display:flex;flex-wrap:wrap;gap:10px;margin-block-start:auto;padding-block-start:14px}');
+  has('.sheen-panel-foot{display:flex;flex-wrap:wrap;gap:max(var(--sheen-space-min),10px);margin-block-start:auto;padding-block-start:14px}');
   has('.sheen-panel-foot>*{flex:1 0 128px}');
   has('sheen-side-panel.sheen-headed .sheen-panel-body>:is(.sheen-filter-footer,.sheen-panel-foot){margin-block-start:auto}'.replace(' .sheen-panel-body>:is', ' .sheen-panel-body>:is'));
 });
@@ -87,7 +87,7 @@ test('the small command palette is a 560px box with a 36px search field, 36px ro
 });
 
 test('a small dialog 720px wide; the shortcuts in three columns of keys and words, one column when narrow', () => {
-  has('.sheen-dialog.sheen-small{display:flex;flex-direction:column;gap:10px;inline-size:min(720px,calc(100vw - 32px));padding:20px;border-radius:20px;background:var(--sheen-surface);box-shadow:0 0 0 1px var(--sheen-separator),0 24px 60px rgba(16,20,30,.22)}');
+  has('.sheen-dialog.sheen-small{display:flex;flex-direction:column;gap:max(var(--sheen-space-min),10px);inline-size:min(720px,calc(100vw - 32px));padding:20px;border-radius:20px;background:var(--sheen-surface);box-shadow:0 0 0 1px var(--sheen-separator),0 24px 60px rgba(16,20,30,.22)}');
   has('.sheen-dialog.sheen-small:not([open]){display:none}');
   has('.sheen-dialog.sheen-small .sheen-dialog-head{padding:18px 20px 6px;justify-content:space-between}');
   has('.sheen-dialog.sheen-small .sheen-dialog-head>:first-child{font-size:22px;line-height:1.2;letter-spacing:-.022em}');

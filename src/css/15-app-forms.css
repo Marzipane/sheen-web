@@ -10,9 +10,9 @@
 .sheen-form-field.sheen-small textarea.sheen-input{block-size:auto;min-block-size:76px}
 .sheen-form-field.sheen-small .sheen-input::placeholder{color:var(--sheen-text-tertiary)}
 .sheen-form-field.sheen-small>small{color:var(--sheen-text-tertiary)}
-.sheen-form-field.sheen-small .sheen-input[aria-invalid="true"]{box-shadow:inset 0 0 0 2px var(--sheen-danger)}
-.sheen-form-field.sheen-small:has(.sheen-input[aria-invalid="true"])>small{color:var(--sheen-danger)}
-.sheen-fields.sheen-small{gap:12px 16px}
+sheen-select:has(>.sheen-select-trigger[aria-invalid="true"]),.sheen-form-field.sheen-small .sheen-input[aria-invalid="true"]{box-shadow:inset 0 0 0 2px var(--sheen-danger)}
+.sheen-form-field.sheen-small:has(.sheen-select-trigger[aria-invalid="true"])>small,.sheen-form-field.sheen-small:has(.sheen-input[aria-invalid="true"])>small{color:var(--sheen-danger)}
+.sheen-fields.sheen-small{gap:max(var(--sheen-space-min),12px) max(var(--sheen-space-min),16px)}
 .sheen-fields>.sheen-wide{grid-column:1/-1}
 
 /* a select drawn as a field: its value and an 18px chevron in one box, the chevron at the end edge */
@@ -24,7 +24,7 @@
    128px and growing alike (equal when both labels fit in 128px), one under the other when the row is too narrow. In a
    panel with a heading it sticks to the end of the scrolling body, so a body longer than the window scrolls under it
    and the buttons stay 20px above the panel's bottom edge. */
-.sheen-panel-foot{display:flex;flex-wrap:wrap;gap:10px;margin-block-start:auto;padding-block-start:14px}
+.sheen-panel-foot{display:flex;flex-wrap:wrap;gap:max(var(--sheen-space-min),10px);margin-block-start:auto;padding-block-start:14px}
 .sheen-panel-foot>*{flex:1 0 128px}
 sheen-side-panel.sheen-headed .sheen-panel-body:has(>.sheen-panel-foot){padding-block-end:0}
 sheen-side-panel.sheen-headed .sheen-panel-body>.sheen-panel-foot{position:sticky;inset-block-end:0;margin-inline:-20px;padding:14px 20px 20px;background:inherit}
@@ -53,7 +53,7 @@ sheen-side-panel.sheen-headed .sheen-panel-body>.sheen-panel-foot{position:stick
 
 /* the small command palette: a 560px box, a 36px search field, 36px rows with 18px glyphs, plain key caps */
 sheen-command-palette.sheen-small .sheen-cmd{inline-size:min(560px,calc(100vw - 32px));padding:10px;gap:10px;border-radius:20px;margin-block-start:14vh}
-sheen-command-palette.sheen-small .sheen-cmd-head{block-size:36px;padding:0 12px;gap:7px;border:0;border-radius:11px;box-shadow:inset 0 0 0 1px var(--sheen-separator);font-size:13.5px}
+.sheen-select-search,sheen-command-palette.sheen-small .sheen-cmd-head{block-size:36px;padding:0 12px;gap:7px;border:0;border-radius:11px;box-shadow:inset 0 0 0 1px var(--sheen-separator);font-size:13.5px}
 sheen-command-palette.sheen-small .sheen-cmd-head>.sheen-glyph{inline-size:15px;block-size:15px}
 sheen-command-palette.sheen-small .sheen-cmd-input{font-size:13.5px}
 sheen-command-palette.sheen-small .sheen-cmd-list{display:flex;flex-direction:column;gap:1px;padding:0;max-block-size:340px}
@@ -63,7 +63,7 @@ sheen-command-palette.sheen-small .sheen-cmd-row .sheen-glyph{inline-size:18px;b
 sheen-command-palette.sheen-small .sheen-cmd-row[aria-selected="true"]{background:var(--sheen-tonal)}
 
 /* a small dialog, and shortcuts in three columns of keys and words; one column when narrow */
-.sheen-dialog.sheen-small{display:flex;flex-direction:column;gap:10px;inline-size:min(720px,calc(100vw - 32px));padding:20px;border-radius:20px;background:var(--sheen-surface);box-shadow:0 0 0 1px var(--sheen-separator),0 24px 60px rgba(16,20,30,.22)}
+.sheen-dialog.sheen-small{display:flex;flex-direction:column;gap:max(var(--sheen-space-min),10px);inline-size:min(720px,calc(100vw - 32px));padding:20px;border-radius:20px;background:var(--sheen-surface);box-shadow:0 0 0 1px var(--sheen-separator),0 24px 60px rgba(16,20,30,.22)}
 .sheen-dialog.sheen-small:not([open]){display:none}
 .sheen-dialog.sheen-small .sheen-dialog-head{padding:18px 20px 6px;justify-content:space-between}
 .sheen-dialog.sheen-small .sheen-dialog-head>:first-child{font-size:22px;line-height:1.2;letter-spacing:-.022em}

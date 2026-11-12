@@ -1,5 +1,150 @@
 # Changelog
 
+## 0.8.0
+
+A select and date fields of the kit's own, an avatar, a minimum gap between boxes, and the small parts app pages were
+missing: a danger button, a 32px button, a confirm sheet, a wide side panel, a tight table, end-aligned cells, a compact
+row •••, a unit after a value and pickers drawn as a cell's words or a status pill. Additive: a page that uses none of
+the new elements, classes or attributes sees the same layout, except that a dialog or panel body no longer stacks two
+boxes flush (see "A minimum gap").
+
+### `<sheen-select>`
+
+- A select whose list the page draws from the tokens, so it opens in the dark theme's colours (the browser's own list
+  opened white there) and mirrors in Arabic. Put your `<select>` inside it. The select stays the form control: its
+  name, value, `multiple`, `required`, its own or a fieldset's `disabled`, form reset and FormData work as before, a
+  framework binds it as any select (Angular's `formControlName` or `(change)`), and a page without the elements script
+  shows it as it is.
+- The element hides the native select (out of the Tab order and the accessibility tree) and draws a `role="combobox"`
+  button with the chosen label or the `placeholder`, an 18px chevron, and a popup with a `role="listbox"`: one
+  `role="option"` row per option, a `role="group"` with its heading per optgroup, and an option's `data-hint` as a
+  second line. Hidden options get no row. The popup opens in the top layer under the field, at least as wide as it.
+- Keys follow the select-only combobox. Down, Up, Enter, Space and Alt+Down open; Home and End open on the first and
+  last option. Open, Down and Up move over the enabled options and stop at the ends, PageDown and PageUp move ten,
+  Enter or Space picks, Alt+Up picks and closes, Esc closes and marks the key handled (a side panel around it stays
+  open), Tab closes and moves on. Letters jump to the next option that starts with them: no case, no accents or Arabic
+  marks, 500 ms between keys, one letter typed again steps through the options that start with it.
+- A person's choice fires `input` then `change` on the native select, bubbling. A single select closes first, so a
+  `change` handler can move focus on; picking the chosen option again fires nothing. A multiple select toggles and
+  stays open. Focus leaving the field fires `blur` and `focusout` on the native select, so a form marks it touched.
+- A framework that sets `select.value`, `selectedIndex` or an option's `selected` gets a redrawn field and no events:
+  the element wraps those three on a prototype of its own select and options only, never on `HTMLSelectElement`.
+  Options and groups added, renamed or removed, and the select's `disabled`, `required` and `aria-invalid`, redraw it.
+- With no inner select the element makes one from its own `name`, `multiple` and `required`, and
+  `options = [{value, label, disabled, hint, group}]` fills it. `select`, `value`, `values`, `open()`, `close()`,
+  `sync()` and `clear()` complete the API. Its name comes from the select's `<label>`s; for a `<label>` around the
+  field it lists the label's parts outside the field, so a screen reader hears "Hub", not the value twice.
+- `search="Search hubs"` puts a search box at the list's top with focus in it. Typing keeps the options whose label holds
+  what you typed, blind to case, accents and Arabic hamza seats and short vowels, and hides a group left empty; the first
+  option left becomes active; `empty="No matches"` shows while nothing is left. Closing empties the box. The box never
+  submits a form and keeps its own events inside the element.
+- `clear="Clear"` adds a round clear button while something is chosen and the select is enabled: a single select goes
+  to its `""` option (or none), a multiple one to none, firing `input` then `change` once. Delete or Backspace on the
+  closed field of a single select does the same.
+- A `multiple` select shows a chip per chosen option, in the list's order. A press on a chip's remove mark unselects it
+  without opening the list; `remove="Remove @label"` is the mark's tooltip. Backspace on the closed field removes the
+  last chip. A chosen disabled option keeps its chip without a mark.
+- Looks: the dense field by default (at least `--sheen-size-field`, 38px, an 11px radius, 14px words, the chevron at
+  the end edge); `variant="control"` the 36px control of a Filters panel (`--sheen-size-control`). The list is a small
+  menu: glass, or opaque on the theme's surface under `.sheen-solid`, a 16px radius, options scrolling inside
+  `min(320px, 60vh)` under the search box. Options are the Filters panel's 36px rows: the active and hovered rows take
+  the tonal fill, a chosen one the accent tint at 600; a multiple list ticks the Filters panel's 18px box, a single
+  list shows a lone accent tick. Chips are 24px (`--sheen-size-select-chip`), the clear button 24px round
+  (`--sheen-size-select-clear`), the search box 36px. Only Tab brings a ring, around the field; `aria-invalid="true"`
+  rings it red. The select joins the selector lists of the kit rules it shares instead of copying them.
+
+### `<sheen-date-field>` and `<sheen-date-range>`
+
+- The kit's own date fields, in place of the browser's date input, which draws its own words and digits and lays out
+  badly in Arabic. Put the element around your `<input type="date">` (two for a range). The input stays the form value,
+  ISO `yyyy-mm-dd`, with its `name`, `min`, `max`, `required`, `disabled`, reset and FormData; a property set redraws the
+  field and fires nothing, and focus leaving the field blurs the input, so a form marks it touched.
+- The field shows the date from `Intl.DateTimeFormat` for the nearest `lang` (`en-AE` gives "8 Feb 2027"), a range a
+  preset's label when it matches one, else `formatRange`. The dense field by default (`--sheen-size-field`, red with
+  `aria-invalid`); `variant="control"` the find row's 36px control with a calendar glyph; `compact` keeps only the glyph.
+- A press or Down opens the calendar in a popup. Arrows move by day and week (mirrored in Arabic), PageUp and PageDown by
+  month (Shift: year), Home and End to the week's ends, Enter or Space picks, Esc closes as one layer, Tab stays inside.
+  A pick fires `input` then `change` on the input. `min` and `max` dim the days outside them. Today has a thin ring;
+  `today` takes it from your server. The week starts on the locale's first day; `first-day` (1 Monday … 7 Sunday) and
+  `weekdays` override Intl.
+- A range: the first pick sets the start, the second the end, and an end before the start swaps them. `from` and `to`
+  show both ends, `presets = [{label, start, end}]` adds a 168px preset column (a 540px popup), `custom` a last row, and
+  with `apply` (and `cancel`) the picks wait for Apply. `note` adds a footer line; `clear` a footer button.
+- Words come only from attributes: `placeholder`, `label`, `prev`, `next`, `clear`, `from`, `to`, `apply`, `cancel`,
+  `note`, `custom`. Size tokens: `--sheen-size-date-pop-min` (260px), `-date-pop-max` (360px), `-date-range-pop`
+  (540px), `-date-presets` (168px), `-date-end` (42px), `-calendar-day` (30px), `-calendar-button` (24px).
+
+### `<sheen-avatar>`
+
+- A person's initials in a circle, as Flutter sheen's `SheenAvatar`. `name` gives the initials (the first letter of the
+  first two words; `letters="1"` draws one) and the tint, through the same FNV-1a hash as `SheenAvatar.tintOf`, so a
+  person gets the same colour in the app and on the web. `tint-key` (a record's ID) picks the tint in place of the name.
+  `size="s"` is 30px with 12px initials, `size="xs"` 18px with 9px, 40px with 15px without. `image` covers the initials
+  once it loads; one that fails goes away. Without a name it shows the filled user glyph. `label` makes it an image with
+  that name; without it screen readers skip it.
+- The fill is one of eight `--sheen-tint-*` tokens (Flutter sheen's `SheenTint`, the same in both themes, checked
+  against the Flutter source in CI), mixed toward black until white initials reach 4.5:1, running at 135deg to 65% of
+  that colour. `.sheen-avatar-name` sets an avatar beside a `<b>` name and a `<small>` second line.
+
+### A minimum gap
+
+- One token, `--sheen-space-min` (8px, `space.min`), is the least room between two boxes the kit lays out: fields, field
+  rows, cards, buttons and controls never sit flush. Every kit layout gap between boxes reads
+  `max(var(--sheen-space-min), <its own value>)`: stacks, rows and grids, field grids, forms and choices, chip rows, the
+  find and applied rows, a list kit, dialog, panel and filter footers, a bulk bar, page header and status actions, empty
+  and message actions, a small dialog. Today's values are all 8px or more, so these layouts look the same; raising the
+  token raises every gap under it, and `--sheen-gap: 0` on a stack no longer makes its cards touch.
+- A dialog body or a side panel body keeps the minimum between two boxes it stacks, so a form dialog that puts its
+  fields straight in `.sheen-dialog-body` no longer draws them flush (0px became 8px in a dialog of a date, two times, a
+  hub and a reason). Text keeps its own margins, a filter group stays spaced by its heading, and the rules sit at no
+  specificity, so any rule that sets the margin wins.
+- A popup wider than the room on both sides of its anchor (a phone) keeps the minimum gap from the screen's edges where
+  the screen has that much to spare. One that fits still lines up with its anchor.
+
+### Buttons and the confirm sheet
+
+- `.sheen-button.sheen-danger`: a step that takes something away. The deal fill under white words, 5.6:1 in light and
+  4.7:1 in dark; its hover darkens the fill so the words keep their contrast; a disabled one fades as any button.
+- `.sheen-button.sheen-xsmall`: a 32px button for a bulk bar's actions (`--sheen-size-button-xsmall`), 13px words, 14px
+  glyphs; `class="sheen-xsmall"` on a `<sheen-menu-button>` sizes its button the same (add `sheen-small` for the dense
+  menu outside a bulk bar).
+- `.sheen-dialog.sheen-small.sheen-confirm`: the sheet that asks before a risky step, 440px wide
+  (`--sheen-size-confirm`), 14% down the window, scrolling inside when taller than the room. The question, the record
+  (a `.sheen-pill` that hugs its words), the words (a 13.5px secondary `<p>`) and the buttons stack 10px apart; the
+  buttons sit at the end edge, 34px tall (`--sheen-size-confirm-button`).
+
+### Tables, panels and menu buttons
+
+- `class="sheen-small sheen-wide"` on a `<sheen-side-panel>`: the dense content at 440px (`--sheen-size-panel-wide`), at
+  no specificity like `sheen-small`.
+- `.sheen-table.sheen-small.sheen-tight`: 9px at a cell's sides (`--sheen-size-table-tight-padding`) for a table with
+  many columns; the pinned ••• cell keeps 4px.
+- `class="sheen-end"` on a `th` or `td`: the words and a sort button at the end edge, mirrored in Arabic; with
+  `sheen-num` a number column. `.sheen-num` alone is unchanged.
+- `class="sheen-compact"` on a `.sheen-icon-button` or a `<sheen-menu-button glyph>`: the 30px row ••• (radius 9, no
+  fill, an 18px secondary glyph, the tonal fill when hovered or open), so a small table row is 51px as in the app
+  mockups instead of 65px. Tokens `--sheen-size-icon-button-compact`, `-radius` and `-glyph`.
+- `<sheen-menu-button>` takes `variant="text"` (the words of a table cell, as `.sheen-cell-button`, underlined while
+  open) and `variant="pill"` with `tone="success|warning|danger"` (a status pill, 22px with 12px words in a small table:
+  `--sheen-size-pill-small`, `-text`), for a picker inside a cell, with no chevron and no frame. Menu, keys and focus
+  stay the menu button's own.
+- `.sheen-affix` in a dense field puts a unit after an input's value ("30 min") inside the field's box, at the end edge
+  (a prefix when written before the input); a press on the unit focuses the input, an invalid input rings the box.
+- A page header's ••• (`variant="control"` with a glyph) takes the font size around it, so a size probe reads the same
+  font as on the app mockups; its box and glyph stay the same.
+- Fixed: a switch in a small table drew at 16px, because the table's 16px checkbox rule hit it. The rule skips
+  `role="switch"` and the kit's switch input now.
+
+### Under the hood
+
+- A shared `popup()` in the elements places, follows and closes every popup (menus, the select's list, the calendar);
+  `<sheen-menu-button>` uses it and behaves as in 0.7.1.
+- Size tokens shared by the new parts: `--sheen-size-field` (38px, the dense field) and `--sheen-size-control` (36px).
+- Tests, in jsdom and on the built CSS, per part: `select-core-0.8`, `select-more-0.8`, `select-css-0.8`,
+  `date-field-0.8`, `avatar-0.8`, `space-0.8`, `actions-0.8`, `table-panel-0.8`, `affix-cell-0.8`. Size fixtures under
+  `tests/size/` draw each part in English and Arabic, light and dark, for the size gate against the app mockups (2px on
+  controls and rows, 4% on wide boxes, equal fonts).
+
 ## 0.7.1
 
 An opt-in drawer for the sidebar shell under 760px, and three fixes to 0.7.0: less motion, forced colors after a press,

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>action buttons size fixture</title>
+<link rel="stylesheet" href="../../dist/sheen.css">
+<!-- Size fixture for the 0.8.0 action buttons (danger, extra small) and the confirm sheet. ?theme=light|dark and
+     ?lang=en|ar set the theme and the direction; ?show=confirm opens the confirm sheet. The bulk bar draws over a table
+     the way a list does while rows are ticked: the count, Select all, two extra small actions (a button with a glyph and a
+     menu button with a chevron) and Clear at the end. -->
+<script>
+  var q = new URLSearchParams(location.search);
+  document.documentElement.setAttribute('data-theme', q.get('theme') === 'dark' ? 'dark' : 'light');
+  if (q.get('lang') === 'ar') { document.documentElement.lang = 'ar'; document.documentElement.dir = 'rtl'; }
+</script>
+<script src="../../dist/sheen-elements.js"></script>
+<style>
+  body { margin: 0; min-block-size: 100dvh; }
+  main { padding: var(--sheen-space-xxl); display: grid; gap: var(--sheen-space-xxl); }
+  .card { border-radius: var(--sheen-radius-field); overflow: hidden; background: var(--sheen-surface); box-shadow: inset 0 0 0 1px var(--sheen-separator); }
+</style>
+</head>
+<body class="sheen">
+<main>
+  <div class="card">
+    <div class="sheen-bulk-bar" role="region" aria-label="Bulk actions" data-probe="bulk">
+      <span class="sheen-bulk-count"><b data-probe="count">3</b><span>selected</span></span>
+      <button class="sheen-link-button" type="button" data-probe="all">Select all 20</button>
+      <span class="sheen-bulk-actions">
+        <button class="sheen-button sheen-xsmall" type="button" data-probe="send"><sheen-glyph name="mail" size="14"></sheen-glyph><span>Send a note</span></button>
+        <sheen-menu-button class="sheen-xsmall" label="More actions" chevron data-probe="more"></sheen-menu-button>
+      </span>
+      <button class="sheen-link-button sheen-bulk-clear" type="button" data-probe="clear"><span>Clear</span><kbd class="sheen-kbd">Esc</kbd></button>
+    </div>
+    <table class="sheen-table sheen-small">
+      <thead><tr><th>Name</th><th>Area</th></tr></thead>
+      <tbody><tr><td>A1</td><td>Downtown</td></tr><tr><td>B2</td><td>Marina</td></tr></tbody>
+    </table>
+  </div>
+
+  <dialog class="sheen-dialog sheen-small sheen-confirm" role="alertdialog" aria-labelledby="confirm-q" aria-describedby="confirm-s" data-probe="confirm">
+    <div class="sheen-dialog-head"><h2 id="confirm-q" data-probe="title">Take this item offline?</h2></div>
+    <div class="sheen-dialog-body">
+      <span class="sheen-pill" data-probe="record"><bdi>A1</bdi></span>
+      <p id="confirm-s" class="sheen-footnote sheen-secondary" data-probe="says">Its work moves to others in the same area first, then to the next area; the rest waits for an answer.</p>
+    </div>
+    <div class="sheen-dialog-foot">
+      <button class="sheen-button sheen-small" type="button" data-probe="keep">Keep it running</button>
+      <button class="sheen-button sheen-small sheen-danger" type="button" data-probe="act">Take offline</button>
+    </div>
+  </dialog>
+</main>
+<script>
+  var more = document.querySelector('[data-probe="more"]');
+  more.items = [{ id: 'export', label: 'Export selected' }, { id: 'pause', label: 'Pause', danger: true }];
+  if (q.get('show') === 'confirm') {
+    var d = document.querySelector('[data-probe="confirm"]');
+    d.showModal();
+    d.querySelector('[data-probe="keep"]').focus();
+  }
+</script>
+</body>
+</html>

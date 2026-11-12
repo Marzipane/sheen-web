@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>table and panel size fixture</title>
+<link rel="stylesheet" href="../../dist/sheen.css">
+<!-- Size fixture for the 0.8.0 table and panel parts. ?theme=light|dark and ?lang=en|ar set the theme and the direction;
+     ?panel=1 opens the 440px side panel, ?panel=small the 400px one. A page header with its •••, a small table in a card
+     with a number column at the end edge, compact row ••• menu buttons, a plain compact icon button and switches (the
+     second and third rows; the first row holds what the mockups' rows hold), a tight small table with sortable
+     headers, and a 440px side panel beside the dense size. -->
+<script>
+  var q = new URLSearchParams(location.search);
+  document.documentElement.setAttribute('data-theme', q.get('theme') === 'dark' ? 'dark' : 'light');
+  if (q.get('lang') === 'ar') { document.documentElement.lang = 'ar'; document.documentElement.dir = 'rtl'; }
+</script>
+<style>
+  body { margin: 0; }
+  main { padding: var(--sheen-space-xxl); display: grid; gap: var(--sheen-space-xxl); }
+</style>
+</head>
+<body class="sheen">
+<main>
+  <header class="sheen-page-head" data-probe="head">
+    <div class="sheen-page-head-text"><h1 class="sheen-page-title">Services</h1></div>
+    <div class="sheen-page-head-actions">
+      <button type="button" class="sheen-button sheen-glass-prominent sheen-small">New</button>
+      <button type="button" class="sheen-button sheen-small">Export</button>
+      <sheen-menu-button class="sheen-small" glyph="more" variant="control" label="More actions" data-probe="head-more"></sheen-menu-button>
+    </div>
+  </header>
+  <div class="sheen-table-card sheen-table-wrap">
+    <table class="sheen-table sheen-small" data-probe="table">
+      <thead><tr data-probe="head-row"><th><input type="checkbox" aria-label="Select all"></th><th>Name</th><th>Type</th><th class="sheen-num sheen-end" data-probe="num-th">Price</th><th>Online</th><th>Status</th><th class="sheen-pin-end"><span class="sheen-visually-hidden">Actions</span></th></tr></thead>
+      <tbody>
+        <tr data-probe="row"><td><input type="checkbox" aria-label="Select" data-probe="check"></td><td>Downtown</td><td>Hourly</td><td class="sheen-num sheen-end" data-probe="num">30 / h</td><td>Yes</td><td><span class="sheen-pill sheen-success">Active</span></td><td class="sheen-pin-end"><sheen-menu-button class="sheen-small sheen-compact" glyph="more" label="Row actions" data-probe="row-more"></sheen-menu-button></td></tr>
+        <tr><td><input type="checkbox" aria-label="Select"></td><td>Marina</td><td>Fixed</td><td class="sheen-num sheen-end">1,250</td><td><label class="sheen-switch"><input type="checkbox" role="switch" aria-label="Online" data-probe="switch"></label></td><td><span class="sheen-pill">Draft</span></td><td class="sheen-pin-end"><button type="button" class="sheen-icon-button sheen-compact" aria-label="Row actions" data-probe="icon-compact"><svg class="sheen-glyph" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="6" cy="12" r="1.1"></circle><circle cx="12" cy="12" r="1.1"></circle><circle cx="18" cy="12" r="1.1"></circle></svg></button></td></tr>
+        <tr><td><input type="checkbox" aria-label="Select"></td><td>الخليج</td><td>30 min</td><td class="sheen-num sheen-end">85</td><td><label class="sheen-switch"><input type="checkbox" role="switch" aria-label="Online" checked></label></td><td><span class="sheen-pill sheen-success">Active</span></td><td class="sheen-pin-end"><sheen-menu-button class="sheen-small sheen-compact" glyph="more" label="Row actions"></sheen-menu-button></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="sheen-table-card sheen-table-wrap">
+    <table class="sheen-table sheen-small sheen-tight" data-probe="tight">
+      <thead><tr><th><input type="checkbox" aria-label="Select all"></th>
+        <th aria-sort="none"><button type="button" class="sheen-sort-button">Van <svg class="sheen-sort-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5.5"></path><path d="m6 11 6-6 6 6"></path></svg></button></th>
+        <th class="sheen-num sheen-end" aria-sort="none"><button type="button" class="sheen-sort-button">Level <svg class="sheen-sort-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5.5"></path><path d="m6 11 6-6 6 6"></path></svg></button></th>
+        <th class="sheen-num sheen-end" aria-sort="descending"><button type="button" class="sheen-sort-button">Rating <svg class="sheen-sort-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5.5"></path><path d="m6 11 6-6 6 6"></path></svg></button></th>
+        <th class="sheen-pin-end"><span class="sheen-visually-hidden">Actions</span></th></tr></thead>
+      <tbody>
+        <tr><td><input type="checkbox" aria-label="Select"></td><td>HC6</td><td class="sheen-num sheen-end">3</td><td class="sheen-num sheen-end">4.9</td><td class="sheen-pin-end"><sheen-menu-button class="sheen-small sheen-compact" glyph="more" label="Row actions"></sheen-menu-button></td></tr>
+        <tr><td><input type="checkbox" aria-label="Select"></td><td>Marina</td><td class="sheen-num sheen-end">12</td><td class="sheen-num sheen-end">5.0</td><td class="sheen-pin-end"><sheen-menu-button class="sheen-small sheen-compact" glyph="more" label="Row actions"></sheen-menu-button></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <sheen-side-panel class="sheen-small sheen-wide" heading="Edit" label="Edit" close-label="Close" data-probe="panel">
+    <p>Downtown</p>
+  </sheen-side-panel>
+  <sheen-side-panel class="sheen-small" heading="Filters" label="Filters" close-label="Close" data-probe="panel-small"></sheen-side-panel>
+</main>
+<script src="../../dist/sheen-elements.js"></script>
+<script>
+  if (q.get('panel') === '1') document.querySelector('[data-probe="panel"]').open();
+  if (q.get('panel') === 'small') document.querySelector('[data-probe="panel-small"]').open();
+</script>
+</body>
+</html>

@@ -63,7 +63,9 @@ test('forced colors: a side panel keeps an edge toward the page and a modal one\
 test('placement reads the direction from the box itself: placeUnder(box, anchor) takes no flag', () => {
   const js = read('dist/sheen-elements.js');
   assert.match(js, /function placeUnder\(box, a\) \{/);
-  assert.match(js, /placeUnder\(this\.menu, this\.button\.getBoundingClientRect\(\)\)/);
+  // 0.8.0: the menu opens through the shared popup(), which places its box under the anchor's rectangle, again with no flag
+  assert.match(js, /placeUnder\(box, anchor\.getBoundingClientRect\(\)\)/);
+  assert.match(js, /popup\(this\.menu, this\.button, this, function/);
 });
 
 test('the demo takes the app bar size from the token, fits a phone and names its sample data neutrally', () => {
