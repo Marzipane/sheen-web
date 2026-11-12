@@ -2,7 +2,11 @@
 
 ## 0.9.1
 
-Two fixes. Additive: nothing else changes.
+Two fixes and a short text at an option's end. Additive: nothing else changes.
+
+- An option of `<sheen-select>` takes `data-meta`, an `options` entry or a `<sheen-lookup>` answer takes `meta`: a short
+  text at the row's end edge in the Filters panel count's look (12.5px, tertiary, tabular digits, 500), such as how many
+  rows hold the value. The page writes it ready to show.
 
 - Fixed: a `<sheen-select>` or `<sheen-lookup>` inside a glass `.sheen-field` lost its trigger, because the field's reset
   of its select outranked the rule that hides the native select. The rule now names its host
