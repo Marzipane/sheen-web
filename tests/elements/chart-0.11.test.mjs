@@ -10,7 +10,7 @@ const css = read('dist/sheen.css').replace(/\s+/g, ' ').replace(/\s*([{};:,])\s*
 const tokens = JSON.parse(read('tokens/tokens.json'));
 const has = (part) => assert.ok(css.includes(part), part);
 
-// The mockups' chart() (olamop-foundation mockups/_src/desk.mjs), written apart from the element: a 600-wide viewBox,
+// The app mockups' chart drawing, written apart from the element: a 600-wide viewBox,
 // the axis 18px over the bottom, the scale 15% past the highest value or the limit, 12px of room over it.
 function mockup(v, H, lim = 0) {
   const W = 600, n = v.length, max = Math.max(...v, lim) * 1.15, bw = W / n, base = H - 18;
@@ -82,7 +82,14 @@ test('chart: without a highlight no bar dims; values group their thousands in th
   const { w, c, plot } = chart('', [{ label: 'Sun', value: 15200 }, { label: 'Mon', value: 980, text: '980 visits' }, { label: 'Tue', value: 0 }]);
   assert.equal(plot.querySelectorAll('.sheen-chart-dim').length, 0);
   assert.deepEqual(texts(plot, '.sheen-chart-value'), ['15,200', '980 visits', '0']);
-  assert.equal(c.style.getPropertyValue('--sheen-chart-height'), '180px', 'the size token\'s height without one given');
+  assert.equal(c.querySelector('svg').getAttribute('viewBox'), '0 0 600 180', 'the size token\'s height without one given');
+  assert.equal(c.style.getPropertyValue('--sheen-chart-height'), '', 'the stylesheet\'s height stays the page\'s');
+  c.setAttribute('height', '220');
+  assert.equal(c.style.getPropertyValue('--sheen-chart-height'), '220px');
+  assert.equal(c.querySelector('svg').getAttribute('viewBox'), '0 0 600 220');
+  c.removeAttribute('height');
+  assert.equal(c.style.getPropertyValue('--sheen-chart-height'), '', 'without the attribute it falls back again');
+  assert.equal(c.querySelector('svg').getAttribute('viewBox'), '0 0 600 180');
   c.setAttribute('lang', 'ar');
   assert.equal(plot.isConnected, false, 'a change of lang draws it again');
   assert.equal(c.querySelector('.sheen-chart-value').textContent, new w.Intl.NumberFormat('ar').format(15200));
@@ -94,11 +101,16 @@ test('chart: without a highlight no bar dims; values group their thousands in th
   assert.equal(c.querySelectorAll('.sheen-chart-dim').length, 0, 'an index past the points highlights nothing');
 });
 
-test('chart: a gap draws no bar and breaks the line; values below 0 sit on the axis', () => {
+test('chart: a gap draws no bar and breaks the line; a value below 0 sits on the axis and keeps its number', () => {
   const pts = [{ label: 'A', value: 3 }, { label: 'B', value: null }, { label: 'C', value: 4 }, { label: 'D', value: 5 }, { label: 'E', value: -2 }];
   const bars = chart('', pts);
-  assert.equal(bars.plot.querySelectorAll('.sheen-chart-bar').length, 4);
-  assert.deepEqual(texts(bars.plot, '.sheen-chart-value'), ['3', '4', '5', '0']);
+  const all = bars.plot.querySelectorAll('.sheen-chart-bar');
+  assert.equal(all.length, 4);
+  assert.equal(parseFloat(all[3].style.height), 0, 'the bar below 0 has no height');
+  assert.equal(parseFloat(all[3].style.top), 180 - 18, 'and sits on the axis');
+  const minus = new Intl.NumberFormat('en').format(-2);
+  assert.deepEqual(texts(bars.plot, '.sheen-chart-value'), ['3', '4', '5', minus]);
+  assert.equal(bars.table.querySelectorAll('td')[4].textContent, minus, 'screen readers hear the real number');
   assert.deepEqual(texts(bars.plot, '.sheen-chart-label'), ['A', 'B', 'C', 'D', 'E'], 'a gap keeps its label');
   const lines = chart('kind="line"', pts);
   assert.equal(lines.plot.querySelectorAll('.sheen-chart-line').length, 2);
@@ -125,6 +137,8 @@ test('chart: screen readers read a table of the labels and values, not the drawi
   assert.ok(bare.plot.querySelector('.sheen-chart-axis'), 'only the axis');
   const lim = chart('unit="%" limit="90"', [{ label: 'V1', value: 91 }]);
   assert.equal(lim.plot.querySelector('.sheen-chart-limit-label').textContent, '90%', 'a limit without words shows its value');
+  const line = chart('kind="line" highlight="0"', [{ label: 'V1', value: 91 }, { label: 'V2', value: 86 }]);
+  assert.equal(line.table.querySelectorAll('[aria-current]').length, 0, 'a line has no highlight to read out');
 });
 
 test('chart: points a framework set before the element was defined are kept; a new list draws again', () => {
@@ -146,9 +160,11 @@ test('chart CSS: the mockups\' look from tokens; Arabic mirrors the drawing and 
   has('--sheen-size-chart:180px');
   has('sheen-chart{display:block;position:relative;block-size:var(--sheen-chart-height,var(--sheen-size-chart))');
   has('sheen-chart[hidden]{display:none}');
-  has('[dir="rtl"] .sheen-chart-plot>svg{transform:scaleX(-1)}');
+  // :dir() follows the chart's own direction, so a left-to-right block inside an Arabic page keeps its line under its labels
+  has('.sheen-chart-plot:dir(rtl)>svg{transform:scaleX(-1)}');
   has('.sheen-chart-at{position:absolute;inset-inline-start:var(--sheen-chart-x);transform:translateX(-50%)');
-  has('[dir="rtl"] .sheen-chart-at{transform:translateX(50%)}');
+  has('.sheen-chart-at:dir(rtl){transform:translateX(50%)}');
+  assert.ok(!css.includes('[dir="rtl"] .sheen-chart'), 'no [dir] ancestor rule');
   has('.sheen-chart-bar{position:absolute;inset-inline-start:var(--sheen-chart-x);inline-size:var(--sheen-chart-w);border-radius:4px;background:var(--sheen-accent)}');
   has('.sheen-chart-bar.sheen-chart-dim{background:color-mix(in srgb,var(--sheen-accent) 35%,var(--sheen-track))}');
   has('.sheen-chart-line{fill:none;stroke:var(--sheen-accent);stroke-width:2.5');

@@ -16,13 +16,16 @@ attribute and class of 0.10.0 works as before.
 - `limit` draws a dashed line (the danger colour, 1.5px, 6 on 5 off) with `limit-label` at its end edge; without words
   it shows the limit's value.
 - A value shows as the point's `text` when the page gives one, else in the nearest `lang`'s digits followed by `unit`
-  ("91%", "108k"). A `null` value is a gap: no bar, and the line breaks there. Values below 0 sit on the axis.
-- `height` sets the height in px, else `--sheen-chart-height`, else the new `size.chart` token (180). The drawing
+  ("91%", "108k"). A `null` value is a gap: no bar, and the line breaks there. A value below 0 sits on the axis and
+  keeps its number in its words. `highlight` is for bars; a line ignores it.
+- `height` sets the height in px, else `--sheen-chart-height` as the page sets it when the chart draws, else the new
+  `size.chart` token (180). The drawing
   stretches to the width and its strokes keep their width; every word sits on top as HTML, so no text stretches. The
   geometry is the mockups': the axis 18px over the bottom, the scale 15% past the highest value or the limit.
 - Screen readers skip the drawing and read a table: `label` as its caption, a row per point with its label and value,
   the highlighted row marked current, then the limit's words. The element writes no words of its own.
-- In Arabic the chart runs from the right. Forced colours keep the bars and lines in system colours.
+- In Arabic the chart runs from the right. It follows its own direction (`:dir()`), so a left-to-right block inside an
+  Arabic page keeps its line under its labels. Forced colours keep the bars and lines in system colours.
 
 ### Date fields
 

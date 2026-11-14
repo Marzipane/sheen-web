@@ -3752,14 +3752,15 @@ if (typeof SheenSelect === 'function' && typeof SheenSelect.prototype.buildSearc
 // <sheen-chart kind="line" label="Rating by week" unit="%" height="160" highlight="4" limit="90" limit-label="Limit 90%">
 //   (0.11.0) A small bar or line chart in SVG and CSS, as the app mockups draw a report card's chart: the value over each
 //   bar or point, the labels under them, an optional highlighted bar, an optional dashed limit line with its words.
-//   chart.points = [{label, value, text}]: value is a number from 0 up, or null for a gap (no bar, a break in the line);
-//   text, when given, is the value as the page writes it, else the value in the nearest lang's digits followed by unit.
-//   kind: "bar" (the default) or "line". highlight: the index of the bar that stands out, the others dimmed. limit: a
-//   value drawn as a dashed line, with limit-label as its words (else the limit's value and unit). height: the chart's
-//   height in px, else --sheen-chart-height, else the size token (180). label: the chart's name for screen readers.
-//   The shapes are SVG stretched to the width; every word is HTML on top, so no text stretches. Screen readers skip the
-//   drawing and read a table of the labels and values. In Arabic the chart runs from the right. Every word comes from
-//   the page; the element writes none of its own.
+//   chart.points = [{label, value, text}]: value is a number, or null for a gap (no bar, a break in the line); a value
+//   below 0 sits on the axis. text, when given, is the value as the page writes it, else the value in the nearest lang's
+//   digits followed by unit. kind: "bar" (the default) or "line". highlight: the index of the bar that stands out, the
+//   others dimmed (bars only). limit: a value drawn as a dashed line, with limit-label as its words (else the limit's
+//   value and unit). height: the chart's height in px, else --sheen-chart-height as it is when the chart draws, else the
+//   size token (180). label: the chart's name for screen readers. The shapes are SVG stretched to the width; every word
+//   is HTML on top, so no text stretches. Screen readers skip the drawing and read a table of the labels and values.
+//   The chart runs from the right where its own direction is right to left. Every word comes from the page; the element
+//   writes none of its own.
 var CHART_W = 600;        // the viewBox width; the drawing stretches to the element's width
 var CHART_BELOW = 18;     // the band under the axis that holds the labels
 var CHART_ABOVE = 12;     // the room over the highest value, for its words
@@ -3778,17 +3779,19 @@ class SheenChart extends HTMLElement {
     this._points = Array.isArray(v) ? v.filter(function (p) { return p && typeof p === 'object'; }) : [];
     if (this.isConnected) this.render();
   }
-  // The chart's height in px: the attribute, else the page's --sheen-chart-height, else the size token.
+  // The chart's height in px: the attribute (written to --sheen-chart-height for the stylesheet), else the page's
+  // --sheen-chart-height, else the size token; 180, the token's value, when no stylesheet is loaded.
   height() {
     var n = parseFloat(this.getAttribute('height'));
-    if (n > 0) return n;
+    if (n > 0) { this.style.setProperty('--sheen-chart-height', n + 'px'); return n; }
+    this.style.removeProperty('--sheen-chart-height');
     n = parseFloat(cssVar(this, '--sheen-chart-height', '')) || parseFloat(cssVar(this, '--sheen-size-chart', ''));
     return n > 0 ? n : 180;
   }
-  // A point's value as a number, or null for a gap; below 0 counts as 0.
+  // A point's value as a number, or null for a gap.
   amount(p) {
     var v = p.value;
-    return typeof v === 'number' && isFinite(v) ? Math.max(0, v) : null;
+    return typeof v === 'number' && isFinite(v) ? v : null;
   }
   words(v, text) {
     if (text != null && text !== '') return String(text);
@@ -3802,11 +3805,13 @@ class SheenChart extends HTMLElement {
     var values = pts.map(function (p) { return self.amount(p); });
     var limit = parseFloat(this.getAttribute('limit'));
     if (!(limit >= 0)) limit = null;
+    // A highlight is a bar's: a line has none.
     var hi = parseInt(this.getAttribute('highlight'), 10);
-    if (!(hi >= 0 && hi < n)) hi = null;
+    if (!(bar && hi >= 0 && hi < n)) hi = null;
     var top0 = Math.max.apply(null, values.concat([limit || 0]).map(function (v) { return v || 0; }));
     var max = top0 > 0 ? top0 * CHART_HEADROOM : 1, base = H - CHART_BELOW, room = H - CHART_BELOW - CHART_ABOVE;
-    var y = function (v) { return base - (v / max) * room; };
+    // a value below 0 sits on the axis; its words keep the real number
+    var y = function (v) { return base - (Math.max(0, v) / max) * room; };
     var x = function (i) { return (i + 0.5) / n * 100; };
     var px = function (v) { return v.toFixed(1) + 'px'; };
     var at = function (cls, i, top, text) {
@@ -3817,7 +3822,6 @@ class SheenChart extends HTMLElement {
     };
 
     this.classList.add('sheen-chart');
-    this.style.setProperty('--sheen-chart-height', H + 'px');
     var svg = svgEl('svg', { viewBox: '0 0 ' + CHART_W + ' ' + H, preserveAspectRatio: 'none', focusable: 'false' });
     svg.appendChild(svgEl('line', { class: 'sheen-chart-axis', x1: 0, x2: CHART_W, y1: base, y2: base }));
     if (limit != null) svg.appendChild(svgEl('line', { class: 'sheen-chart-limit', x1: 0, x2: CHART_W, y1: y(limit), y2: y(limit) }));
