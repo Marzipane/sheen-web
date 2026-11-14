@@ -66,6 +66,18 @@ test('scope 0.10: a chip per pick under the search names it, and a press removes
   assert.equal(w.document.activeElement, p.querySelector('input[type=search]'), 'the last chip gone, focus goes to the search');
 });
 
+test('scope 0.10: a focused chip keeps focus when the page sets the value again, as a framework does after a change', () => {
+  const { w, p } = picker('', { mode: 'only', include: ['cat:clean', 's:sofa'], exclude: [] });
+  p.querySelector('.sheen-scope-chip[data-value="s:sofa"]').focus();
+  p.value = { mode: 'only', include: ['cat:clean', 's:sofa'], exclude: [] };
+  assert.equal(w.document.activeElement, p.querySelector('.sheen-scope-chip[data-value="s:sofa"]'));
+  // A press removes its pick; the framework then sets the new value, and focus stays on the chip that took its place.
+  p.addEventListener('sheen-scope-change', (e) => { p.value = e.detail; });
+  p.querySelector('.sheen-scope-chip[data-value="cat:clean"]').focus();
+  p.querySelector('.sheen-scope-chip[data-value="cat:clean"]').click();
+  assert.equal(w.document.activeElement, p.querySelector('.sheen-scope-chip[data-value="s:sofa"]'));
+});
+
 test('scope 0.10: "Select all shown" comes only with its label', () => {
   const { p } = picker('', { mode: 'only', include: [], exclude: [] });
   assert.equal(p.querySelector('.sheen-scope-shown').hidden, true);
@@ -194,6 +206,32 @@ test('scope 0.10: leaving the page aborts the ask that is out', () => {
   type(w, p, 'q');
   p.remove();
   assert.equal(signal.aborted, true);
+});
+
+test('scope 0.10: moved on the page while an ask is out, the picker drops its loading line', () => {
+  const { w, p } = picker('delay="0" loading-label="Searching…"', { mode: 'only', include: [], exclude: [] });
+  p.addEventListener('sheen-scope-query', (e) => e.detail.respond(new Promise(() => {})));
+  type(w, p, 'q');
+  assert.equal(p.querySelector('.sheen-scope-note').hidden, false);
+  const home = w.document.createElement('div');
+  w.document.body.appendChild(home);
+  home.appendChild(p);
+  assert.equal(p.querySelector('.sheen-scope-note').hidden, true);
+  assert.equal(p.querySelector('.sheen-scope-list').hasAttribute('aria-busy'), false);
+});
+
+test('scope 0.10: once the page answers, later asks wait for the pause, and only the last query goes', async () => {
+  const { w, p } = picker('delay="40"', { mode: 'only', include: [], exclude: [] });
+  const asked = [];
+  p.addEventListener('sheen-scope-query', (e) => { asked.push(e.detail.query); e.detail.respond([]); });
+  type(w, p, 'a');
+  assert.deepEqual(asked, ['a'], 'the first ask goes at once');
+  type(w, p, 'ab');
+  type(w, p, 'abc');
+  await tick(10);
+  assert.deepEqual(asked, ['a'], 'nothing while the person types');
+  await tick(60);
+  assert.deepEqual(asked, ['a', 'abc']);
 });
 
 test('scope 0.10: the look is ported from the mockup into tokens and rules', () => {

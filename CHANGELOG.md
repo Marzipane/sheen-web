@@ -14,7 +14,8 @@ for lists that grow. The value, the change event and every attribute of 0.9.1 ke
   pick, the groups and the foot.
 - A chip per pick under the search, in pick order: 26px, a 13px radius, 12px semibold words and a close mark. A whole
   group shows as the group's name. A press removes the pick, fires the change, and leaves focus on the next chip or,
-  after the last one, in the search box. `remove-label="Remove @label"` names each chip for screen readers.
+  after the last one, in the search box. A focused chip keeps focus when the page sets `value` again, as a framework does
+  after each change. `remove-label="Remove @label"` names each chip for screen readers.
 - Each group row is 30px, its label bold, and ends in its count, `1 / 3`: how many of its members the rule picks over
   how many it has. Members sit 24px in, on 30px rows; the list scrolls past 260px (`--sheen-scope-list-max` sets
   another height).

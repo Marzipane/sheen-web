@@ -1636,7 +1636,8 @@ define('sheen-side-panel', SheenSidePanel);
 //   in its group; a group picked whole whose members it doesn't all know keeps its rows ticked and locked.
 class SheenScopePicker extends HTMLElement {
   connectedCallback() {
-    if (this.list) return;
+    // Back on the page (moved by a framework): leaving it aborted the ask that was out, so its loading line goes.
+    if (this.list) { this.draw(); return; }
     var self = this, name = uid('scope');
     this._groups = this._groups || [];
     this._value = this._value || { mode: 'all', include: [], exclude: [] };
@@ -1666,7 +1667,7 @@ class SheenScopePicker extends HTMLElement {
     this.replaceChildren(h('fieldset', { class: 'sheen-scope-modes' }, h('legend', { text: this.getAttribute('label') || '' }), bar), this.body, this.status);
     this.draw();
   }
-  disconnectedCallback() { this.halt(); }
+  disconnectedCallback() { this.halt(); this.busy = false; }
   static get observedAttributes() { return ['result', 'hint', 'label', 'all-label', 'chosen-label', 'except-label', 'search-label', 'select-shown-label', 'empty-label', 'remove-label', 'loading-label', 'error-label']; }
   attributeChangedCallback(name, was, now) {
     if (!this.status) return;
@@ -1766,13 +1767,13 @@ class SheenScopePicker extends HTMLElement {
     this.draw();
     this.changed();
   }
-  unpick(id) {
-    var index = this.picks.indexOf(id);
+  // A chip's press: the pick goes, and drawing moves focus to the next chip (or the search box after the last one). The
+  // chip takes focus first, as a press doesn't focus a button in every browser.
+  unpick(id, chip) {
+    chip.focus();
     this.picks = this.picks.filter(function (p) { return p !== id; });
     this.draw();
     this.changed();
-    var chips = this.chips.querySelectorAll('button');
-    (chips[Math.min(index, chips.length - 1)] || this.search).focus();
   }
   // ---- the search the page answers
   typed(text) {
@@ -1790,7 +1791,7 @@ class SheenScopePicker extends HTMLElement {
   // Fires one ask; true when a handler answered it (at once or with a promise).
   ask() {
     var self = this, seq = ++this.seq, ctl = typeof AbortController === 'function' ? new AbortController() : null, said = false;
-    this.halt(true);
+    this.drop();
     this.ctl = ctl;
     this.failed = false;
     this.dispatchEvent(new CustomEvent('sheen-scope-query', { bubbles: true, detail: { query: this.asked, signal: ctl && ctl.signal, respond: function (answer) { said = true; self.take(seq, ctl, answer); } } }));
@@ -1817,9 +1818,13 @@ class SheenScopePicker extends HTMLElement {
     this.answer = this.asked ? groups : null;
     this.draw();
   }
-  // Stops the ask that is out (and the wait before the next, unless keepWait).
-  halt(keepWait) {
-    if (!keepWait && this.timer) { clearTimeout(this.timer); this.timer = null; }
+  // Stops the wait before the next ask and the ask that is out.
+  halt() {
+    if (this.timer) { clearTimeout(this.timer); this.timer = null; }
+    this.drop();
+  }
+  // Aborts the ask that is out, so its answer never shows.
+  drop() {
     if (this.ctl) { this.ctl.abort(); this.ctl = null; }
   }
   // ---- drawing
@@ -1834,7 +1839,7 @@ class SheenScopePicker extends HTMLElement {
     this.chips.replaceChildren();
     this.picks.forEach(function (id) {
       var label = self.label(id);
-      self.chips.appendChild(h('button', { type: 'button', class: 'sheen-scope-chip', 'data-value': id, 'aria-label': words ? fill(words, { label: label }) : null, title: words ? fill(words, { label: label }) : null, onclick: function () { self.unpick(id); } },
+      self.chips.appendChild(h('button', { type: 'button', class: 'sheen-scope-chip', 'data-value': id, 'aria-label': words ? fill(words, { label: label }) : null, title: words ? fill(words, { label: label }) : null, onclick: function (e) { self.unpick(id, e.currentTarget); } },
         h('span', { text: label }), glyph('close', 12)));
     });
     this.chips.hidden = !this.chips.children.length;
@@ -1842,12 +1847,20 @@ class SheenScopePicker extends HTMLElement {
   draw() {
     var self = this, mode = this._value.mode, choosing = mode !== 'all';
     var a = document.activeElement, focused = this.list.contains(a) ? { value: a.value, group: a.getAttribute('data-group') } : null;
+    var chip = a && a.parentNode === this.chips ? { value: a.getAttribute('data-value'), index: Array.prototype.indexOf.call(this.chips.children, a) } : null;
     this.radios.forEach(function (r) { var i = r.querySelector('input'); i.checked = i.value === mode; });
     this.body.hidden = !choosing;
     this.list.replaceChildren();
     this.drawFoot();
     if (!choosing) { this.chips.replaceChildren(); this.note.hidden = true; return; }
     this.drawChips();
+    // Drawing replaces the chips too (a framework sets value again after every change), so a focused chip keeps focus:
+    // the same pick, else the chip now in its place, else the search box once none is left.
+    if (chip) {
+      var chips = this.chips.children;
+      var same = Array.prototype.find.call(chips, function (c) { return c.getAttribute('data-value') === chip.value; });
+      (same || chips[Math.min(chip.index, chips.length - 1)] || this.search).focus();
+    }
     var waiting = this.busy && this.getAttribute('loading-label'), failed = this.failed && this.getAttribute('error-label');
     this.note.textContent = failed || waiting || '';
     this.note.hidden = !this.note.textContent;
