@@ -89,10 +89,19 @@
 .sheen-skeleton-circle{inline-size:44px;block-size:44px;border-radius:50%}
 
 /* stat tiles, tables, badges, linear progress, toolbars, swatches */
-.sheen-stat{display:flex;flex-direction:column;gap:4px;padding:18px;border-radius:20px;background:color-mix(in srgb,var(--sheen-surface) 82%,transparent);box-shadow:inset 0 0 0 1px var(--sheen-separator)}
-.sheen-stat-label{font-size:13.5px;font-weight:600;color:var(--sheen-text-secondary)}
-.sheen-stat-value{font-size:32px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1}
-.sheen-stat-note{font-size:13px;color:var(--sheen-text-tertiary)}
+/* the stat tile, as the app mockups draw it (0.10.0): a surface card with no frame (a soft shadow in the light theme), a
+   13px label in secondary words, a 26px value and a 12.5px semibold note in the text colour; a note takes .sheen-success,
+   .sheen-warning or .sheen-danger for good or bad news */
+.sheen-stat{display:flex;flex-direction:column;gap:4px;min-inline-size:0;padding:14px 16px;border-radius:18px;background:var(--sheen-surface);line-height:1.5}
+:root[data-theme="light"] .sheen-stat{box-shadow:0 1px 2px rgba(16,20,30,.05),0 4px 14px rgba(16,20,30,.05)}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .sheen-stat{box-shadow:0 1px 2px rgba(16,20,30,.05),0 4px 14px rgba(16,20,30,.05)}}
+@media (forced-colors: active){.sheen-stat{border:1px solid CanvasText}}
+.sheen-stat-label{font-size:13px;font-weight:400;color:var(--sheen-text-secondary)}
+.sheen-stat-value{font-size:26px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.sheen-stat-note{font-size:12.5px;font-weight:600;color:var(--sheen-text)}
+.sheen-stat-note.sheen-success{color:var(--sheen-success)}
+.sheen-stat-note.sheen-warning{color:var(--sheen-warning)}
+.sheen-stat-note.sheen-danger{color:var(--sheen-danger)}
 .sheen-table{inline-size:100%;border-collapse:collapse;font-size:15px}
 .sheen-table th{text-align:start;font-size:12.5px;font-weight:600;color:var(--sheen-text-secondary);padding:8px 10px;border-block-end:1px solid var(--sheen-separator)}
 .sheen-table td{padding:10px;border-block-end:1px solid var(--sheen-separator);vertical-align:middle}

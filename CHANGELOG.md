@@ -1,5 +1,51 @@
 # Changelog
 
+## 0.10.0
+
+The scope picker and the stat tile take the look of the app mockups, and the scope picker can search through the page
+for lists that grow. The value, the change event and every attribute of 0.9.1 keep working.
+
+### `<sheen-scope-picker>`
+
+- The look, at 13px: the label in medium secondary words over a segmented bar of the three modes (an 11px radius on the
+  tonal fill, 30px segments in semibold secondary words; the chosen one takes the surface, the text colour and a soft
+  shadow). The modes stay one radio group, so arrows move the choice and Tab enters once; the chosen segment rings
+  after Tab only. Then a 36px search field (the page background, a hairline, an 11px radius, no focus ring), a chip per
+  pick, the groups and the foot.
+- A chip per pick under the search, in pick order: 26px, a 13px radius, 12px semibold words and a close mark. A whole
+  group shows as the group's name. A press removes the pick, fires the change, and leaves focus on the next chip or,
+  after the last one, in the search box. `remove-label="Remove @label"` names each chip for screen readers.
+- Each group row is 30px, its label bold, and ends in its count, `1 / 3`: how many of its members the rule picks over
+  how many it has. Members sit 24px in, on 30px rows; the list scrolls past 260px (`--sheen-scope-list-max` sets
+  another height).
+- The foot: a hairline, then `result` in bold over `hint`, a new attribute, in small tertiary words. With neither, the
+  foot hides.
+- "Select all shown" shows only with `select-shown-label`, as the mockups draw no such button. A page that sets the
+  label keeps it.
+- A group may carry `total`, how many members it has in all. A group the page loaded in part then counts `1 / 12`, and
+  ticking every row it shows keeps the rows by name instead of turning into the whole group. A group picked whole
+  whose members the picker doesn't all know keeps its rows ticked and locked; its group row still unpicks it.
+- The search the page answers: typing fires `sheen-scope-query` with `{query, signal, respond}` (the first ask at once,
+  later ones once the person pauses for `delay` ms, 250 by default). A handler that calls `respond(groups)`, or
+  `respond` with a promise of them, takes the search over: the picker shows the groups it gets, with their totals, and
+  stops filtering its own. A newer ask aborts the signal and the picker drops the older answer. While an answer is out
+  the list is `aria-busy` and `loading-label` shows; a promise that rejects shows `error-label`, and Enter asks again.
+  Clearing the search shows `groups` again without asking. With no handler, the picker filters `groups` itself, as
+  before.
+- The picker names and counts from what it was given, `groups` and every answer, so a pick found through a search
+  keeps its chip name after the search clears. Give it each picked item inside its group.
+
+### Stat tile
+
+- `.sheen-stat` takes the mockups' tile: the surface with no frame (a soft shadow in the light theme), an 18px radius,
+  14px by 16px of padding, a 13px regular label in secondary words, a 26px value and a 12.5px semibold note in the
+  text colour. A note takes `.sheen-success`, `.sheen-warning` or `.sheen-danger` for good or bad news.
+
+### Tokens
+
+- `size.scopeSegment` (30), `size.scopeRow` (30), `size.scopeChip` (26) and `size.scopeList` (260), as
+  `--sheen-size-scope-*`.
+
 ## 0.9.1
 
 Two fixes and a short text at an option's end. Additive: nothing else changes.
