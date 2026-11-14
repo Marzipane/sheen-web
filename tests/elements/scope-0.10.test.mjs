@@ -123,6 +123,41 @@ test('scope 0.10: a group picked whole whose members the picker does not all kno
   assert.deepEqual(plain(p.value).include, ['hub:b']);
 });
 
+test('scope 0.10: groups set again replace a full group\'s members, so a member that moved stops counting there', () => {
+  const { w, p, changes } = picker('', { mode: 'only', include: [], exclude: [] });
+  const [clean, spec] = services;
+  p.groups = [
+    { ...clean, items: clean.items.filter((i) => i.id !== 's:move') },
+    { ...spec, items: [...spec.items, clean.items[2]] },
+  ];
+  assert.deepEqual(counts(p), ['0 / 2', '0 / 3']);
+  tickBox(w, box(p, 's:home'));
+  tickBox(w, box(p, 's:deep'));
+  assert.deepEqual(changes.at(-1).include, ['cat:clean'], 'every member ticked turns into the group, as in 0.9.1');
+});
+
+test('scope 0.10: an async handler claims the search with preventDefault, and the first ask waits for its answer', async () => {
+  const { w, p } = picker('delay="30" loading-label="Searching…"', { mode: 'only', include: [], exclude: [] });
+  const asked = [];
+  p.addEventListener('sheen-scope-query', async (e) => {
+    e.preventDefault();
+    asked.push(e.detail.query);
+    await tick(5);
+    e.detail.respond([{ id: 'g:far', label: 'Far', total: 9, items: [{ id: 'f:1', label: 'Far one' }] }]);
+  });
+  type(w, p, 'far');
+  const note = p.querySelector('.sheen-scope-note');
+  assert.equal(note.textContent, 'Searching…');
+  assert.equal(p.querySelector('.sheen-scope-empty'), null, 'no "nothing found" while the answer is out');
+  type(w, p, 'far o');
+  assert.deepEqual(asked, ['far'], 'the next ask waits for the pause');
+  await tick(60);
+  assert.deepEqual(asked, ['far', 'far o']);
+  assert.ok(box(p, 'f:1'));
+  assert.deepEqual(counts(p), ['0 / 9']);
+  assert.equal(note.hidden, true);
+});
+
 test('scope 0.10: without a handler the picker filters its own groups at once, as before', () => {
   const { w, p } = picker('', { mode: 'only', include: [], exclude: [] });
   const asks = record(p, 'sheen-scope-query');

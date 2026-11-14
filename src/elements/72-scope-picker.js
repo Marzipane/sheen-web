@@ -14,12 +14,14 @@
 //   Lists that grow: a group's total is how many members it has in all, so a group the page loaded only in part still
 //   counts "1 / 12" and picking every row it shows never turns into the whole group. Typing fires sheen-scope-query
 //   {query, signal, respond} once the person stops for delay ms (250 by default; the first ask goes at once). A handler
-//   that calls respond(groups), or respond with a promise of them, takes the search over: the picker shows the groups it
-//   is given and no longer filters its own. A newer ask aborts the signal and drops the older answer. While an answer is
+//   that calls respond(groups), or respond with a promise of them, during the event takes the search over: the picker
+//   shows the groups it is given and no longer filters its own. An async handler that answers after an await calls
+//   event.preventDefault() first. A newer ask aborts the signal and drops the older answer. While an answer is
 //   out the list is aria-busy and loading-label shows; a promise that rejects shows error-label, and Enter asks again.
 //   Without a handler the picker filters groups itself, as before. An empty search shows groups again without asking.
 //   The picker counts and names only what it was given (groups and every answer), so the page gives it each picked item
-//   in its group; a group picked whole whose members it doesn't all know keeps its rows ticked and locked.
+//   in its group; a group picked whole whose members it doesn't all know keeps its rows ticked and locked. Setting groups
+//   again replaces the members of each group it carries in full, so a member that moved stops counting where it was.
 class SheenScopePicker extends HTMLElement {
   connectedCallback() {
     // Back on the page (moved by a framework): leaving it aborted the ask that was out, so its loading line goes.
@@ -27,8 +29,7 @@ class SheenScopePicker extends HTMLElement {
     var self = this, name = uid('scope');
     this._groups = this._groups || [];
     this._value = this._value || { mode: 'all', include: [], exclude: [] };
-    this.known = this.known || {};
-    this.learn(this._groups);
+    this.know(this._groups);
     this.query = '';
     this.asked = '';
     this.answer = null;
@@ -67,22 +68,31 @@ class SheenScopePicker extends HTMLElement {
     else this.radios[['all-label', 'chosen-label', 'except-label'].indexOf(name)].lastChild.textContent = text;
   }
   get groups() { return this._groups || []; }
-  // New groups add to what the picker knows: a framework sets them again with every value, and a member an earlier answer
-  // brought must keep its name and its place in its group's count.
-  set groups(v) { this._groups = Array.isArray(v) ? v : []; this.known = this.known || {}; this.learn(this._groups); if (this.list) this.draw(); }
+  set groups(v) { this._groups = Array.isArray(v) ? v : []; this.know(this._groups); if (this.list) this.draw(); }
   get value() { return this.rule(); }
   set value(v) { this._value = { mode: v.mode, include: (v.include || []).slice(), exclude: (v.exclude || []).slice() }; if (this.list) this.draw(); }
   // In "only" the picks live in include, in "all except" in exclude.
   get picks() { return this._value.mode === 'only' ? this._value.include : this._value.exclude; }
   set picks(v) { if (this._value.mode === 'only') this._value.include = v; else this._value.exclude = v; }
-  // What the picker knows of each group, from groups and every answer: its label, its total and the members it has seen.
+  // The page's groups set what the picker knows of each group they carry in full, so a member that left a group stops
+  // counting there (a framework sets groups again after every change). A group loaded in part, with fewer items than its
+  // total, adds to the members the answers brought.
+  know(groups) {
+    this.known = this.known || {};
+    (groups || []).forEach(function (g) {
+      if (g && g.id != null && (g.total == null || (g.items || []).length >= g.total)) delete this.known[g.id];
+    }, this);
+    this.learn(groups);
+  }
+  // What the picker knows of each group, from groups and every answer: its label, its total and the members it has seen;
+  // and the name of every pick it has seen, which a chip keeps after the search that brought it clears.
   learn(groups) {
-    var known = this.known;
+    var known = this.known = this.known || {}, names = this.names = this.names || {};
     (groups || []).forEach(function (g) {
       if (!g || g.id == null) return;
       var k = known[g.id] || (known[g.id] = { label: g.label, total: 0, members: {}, order: [] });
-      k.label = g.label;
-      (g.items || []).forEach(function (i) { if (!(i.id in k.members)) k.order.push(i.id); k.members[i.id] = i.label; });
+      k.label = names[g.id] = g.label;
+      (g.items || []).forEach(function (i) { if (!(i.id in k.members)) k.order.push(i.id); k.members[i.id] = names[i.id] = i.label; });
       if (g.total != null) k.total = g.total;
     });
   }
@@ -103,12 +113,7 @@ class SheenScopePicker extends HTMLElement {
   }
   // A group picked whole can be split into its other members only when the picker knows every one of them.
   locked(group) { return this.whole(group) && this.members(group).length < this.total(group); }
-  label(id) {
-    var known = this.known, found = null;
-    if (known[id]) return known[id].label;
-    Object.keys(known).some(function (g) { if (id in known[g].members) { found = known[g].members[id]; return true; } return false; });
-    return found != null ? found : String(id);
-  }
+  label(id) { return this.names && id in this.names ? this.names[id] : String(id); }
   setMode(mode) {
     this._value.mode = mode;
     this.draw();
@@ -174,13 +179,19 @@ class SheenScopePicker extends HTMLElement {
     this.draw();
     this.timer = setTimeout(function () { self.timer = null; self.ask(); }, isNaN(delay) ? 250 : Math.max(0, delay));
   }
-  // Fires one ask; true when a handler answered it (at once or with a promise).
+  // Fires one ask; true when a handler took it: it answered (at once or with a promise), or it called preventDefault()
+  // and will answer later, as an async handler does after its await.
   ask() {
     var self = this, seq = ++this.seq, ctl = typeof AbortController === 'function' ? new AbortController() : null, said = false;
     this.drop();
     this.ctl = ctl;
     this.failed = false;
-    this.dispatchEvent(new CustomEvent('sheen-scope-query', { bubbles: true, detail: { query: this.asked, signal: ctl && ctl.signal, respond: function (answer) { said = true; self.take(seq, ctl, answer); } } }));
+    var ev = new CustomEvent('sheen-scope-query', { bubbles: true, cancelable: true, detail: { query: this.asked, signal: ctl && ctl.signal, respond: function (answer) { said = true; self.take(seq, ctl, answer); } } });
+    this.dispatchEvent(ev);
+    if (!said && ev.defaultPrevented) {
+      said = this.remote = this.busy = true;
+      this.draw();
+    }
     return said;
   }
   take(seq, ctl, answer) {

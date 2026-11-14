@@ -47,6 +47,26 @@
   ];
   p.groups = groups;
   p.value = { mode: 'all_except', include: [], exclude: ['s:sofa'] };
+  // ?state= puts the picker in one more state for a screenshot: only (Only these with a whole group and one item picked),
+  // locked (a group loaded in part and picked whole: its rows ticked and locked), answer (the page's answer to "sofa", a
+  // group still counting its total), loading (an answer still out) and error (an answer that failed).
+  var state = q.get('state');
+  if (state === 'only') p.value = { mode: 'only', include: ['cat:spec', 's:home'], exclude: [] };
+  if (state === 'locked') {
+    p.groups = [{ id: 'cat:clean', label: W.clean, total: 12, items: groups[0].items }, groups[1]];
+    p.value = { mode: 'only', include: ['cat:clean'], exclude: [] };
+  }
+  if (state === 'answer' || state === 'loading' || state === 'error') {
+    p.value = { mode: 'only', include: ['s:sofa'], exclude: [] };
+    p.addEventListener('sheen-scope-query', function (e) {
+      if (state === 'answer') e.detail.respond([{ id: 'cat:spec', label: W.spec, total: 2, items: [groups[1].items[0]] }]);
+      else if (state === 'loading') e.detail.respond(new Promise(function () {}));
+      else e.detail.respond(Promise.reject(new Error('offline')));
+    });
+    var box = p.querySelector('input[type=search]');
+    box.value = W.sofa.slice(0, 4);
+    box.dispatchEvent(new Event('input', { bubbles: true }));
+  }
   if (q.get('search') === 'page') p.addEventListener('sheen-scope-query', function (e) {
     var text = e.detail.query.toLowerCase();
     e.detail.respond(new Promise(function (done) {

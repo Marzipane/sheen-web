@@ -28,13 +28,15 @@ for lists that grow. The value, the change event and every attribute of 0.9.1 ke
   whose members the picker doesn't all know keeps its rows ticked and locked; its group row still unpicks it.
 - The search the page answers: typing fires `sheen-scope-query` with `{query, signal, respond}` (the first ask at once,
   later ones once the person pauses for `delay` ms, 250 by default). A handler that calls `respond(groups)`, or
-  `respond` with a promise of them, takes the search over: the picker shows the groups it gets, with their totals, and
-  stops filtering its own. A newer ask aborts the signal and the picker drops the older answer. While an answer is out
+  `respond` with a promise of them, during the event takes the search over: the picker shows the groups it gets, with
+  their totals, and stops filtering its own. An async handler that answers after an `await` calls
+  `event.preventDefault()` first, and the picker waits for it with the loading line. A newer ask aborts the signal and the picker drops the older answer. While an answer is out
   the list is `aria-busy` and `loading-label` shows; a promise that rejects shows `error-label`, and Enter asks again.
   Clearing the search shows `groups` again without asking. With no handler, the picker filters `groups` itself, as
   before.
 - The picker names and counts from what it was given, `groups` and every answer, so a pick found through a search
-  keeps its chip name after the search clears. Give it each picked item inside its group.
+  keeps its chip name after the search clears. Give it each picked item inside its group. Setting `groups` again
+  replaces the members of each group it carries in full, so a member that moved stops counting where it was.
 
 ### Stat tile
 
