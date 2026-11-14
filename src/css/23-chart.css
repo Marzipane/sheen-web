@@ -1,0 +1,25 @@
+/* <sheen-chart> (0.11.0): a small bar or line chart, as the app mockups draw a report card's, in the accent colour. The
+   shapes are SVG stretched to the width (strokes keep their width) and bars are boxes with a 4px radius; the values over
+   the bars or points and the labels under them are 11px words on top, the values semibold in secondary words with
+   tabular digits, the labels tertiary. A highlighted bar keeps the accent and the others dim to 35% of it over the
+   track; a limit is a dashed danger line with its words, semibold, at the end edge. In Arabic the chart runs from the
+   right. The height is --sheen-chart-height (the height attribute sets it), else the size token. */
+sheen-chart{display:block;position:relative;block-size:var(--sheen-chart-height,var(--sheen-size-chart));min-inline-size:0}
+sheen-chart[hidden]{display:none}
+.sheen-chart-plot{position:absolute;inset:0}
+.sheen-chart-plot>svg{display:block;inline-size:100%;block-size:100%;overflow:visible}
+/* :dir(), not [dir]: a left-to-right block inside an Arabic page keeps its line under its own labels */
+.sheen-chart-plot:dir(rtl)>svg{transform:scaleX(-1)}
+.sheen-chart-axis{stroke:var(--sheen-separator);stroke-width:1;vector-effect:non-scaling-stroke}
+.sheen-chart-limit{stroke:var(--sheen-danger);stroke-width:1.5;stroke-dasharray:6 5;vector-effect:non-scaling-stroke}
+.sheen-chart-line{fill:none;stroke:var(--sheen-accent);stroke-width:2.5;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.sheen-chart-area{fill:color-mix(in srgb,var(--sheen-accent) 14%,transparent)}
+.sheen-chart-bar{position:absolute;inset-inline-start:var(--sheen-chart-x);inline-size:var(--sheen-chart-w);border-radius:4px;background:var(--sheen-accent)}
+.sheen-chart-bar.sheen-chart-dim{background:color-mix(in srgb,var(--sheen-accent) 35%,var(--sheen-track))}
+.sheen-chart-at{position:absolute;inset-inline-start:var(--sheen-chart-x);transform:translateX(-50%);white-space:nowrap;font-size:11px;line-height:14px;pointer-events:none}
+.sheen-chart-at:dir(rtl){transform:translateX(50%)}
+.sheen-chart-value{font-weight:600;color:var(--sheen-text-secondary);font-variant-numeric:tabular-nums}
+.sheen-chart-label{color:var(--sheen-text-tertiary)}
+.sheen-chart-limit-label{position:absolute;inset-inline-end:0;white-space:nowrap;font-size:11px;font-weight:600;line-height:1.5;color:var(--sheen-danger);pointer-events:none}
+/* forced colours paint every box's background over: the bars keep a system colour, the dimmed ones grey */
+@media (forced-colors: active){.sheen-chart-bar{forced-color-adjust:none;background:CanvasText}.sheen-chart-bar.sheen-chart-dim{background:GrayText}.sheen-chart-line,.sheen-chart-limit{stroke:CanvasText}.sheen-chart-area{fill:none}}

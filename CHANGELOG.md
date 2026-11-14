@@ -1,5 +1,50 @@
 # Changelog
 
+## 0.11.0
+
+A chart element, the date field's own display format and an info tone for the status pill. Additive: every element,
+attribute and class of 0.10.0 works as before.
+
+### `<sheen-chart>`
+
+- A small bar or line chart in SVG and CSS, as the app mockups draw a report card's chart, with no drawing library. The
+  page gives `points` = [{label, value, text}]: each value shows over its bar or point and each label under it, at
+  11px, the values semibold in secondary words with tabular digits, the labels tertiary.
+- `kind="line"` draws the line (2.5px, the accent) over an area at 14% of the accent; bars are the default, 60% of their
+  slot wide with a 4px radius. `highlight` names the index of the bar that stands out: the others dim to 35% of the
+  accent over the track.
+- `limit` draws a dashed line (the danger colour, 1.5px, 6 on 5 off) with `limit-label` at its end edge; without words
+  it shows the limit's value.
+- A value shows as the point's `text` when the page gives one, else in the nearest `lang`'s digits followed by `unit`
+  ("91%", "108k"). A `null` value is a gap: no bar, and the line breaks there. A value below 0 sits on the axis and
+  keeps its number in its words. `highlight` is for bars; a line ignores it.
+- `height` sets the height in px, else `--sheen-chart-height` as the page sets it when the chart draws, else the new
+  `size.chart` token (180). The drawing
+  stretches to the width and its strokes keep their width; every word sits on top as HTML, so no text stretches. The
+  geometry is the mockups': the axis 18px over the bottom, the scale 15% past the highest value or the limit.
+- Screen readers skip the drawing and read a table: `label` as its caption, a row per point with its label and value,
+  the highlighted row marked current, then the limit's words. The element writes no words of its own.
+- In Arabic the chart runs from the right. It follows its own direction (`:dir()`), so a left-to-right block inside an
+  Arabic page keeps its line under its labels. Forced colours keep the bars and lines in system colours.
+
+### Date fields
+
+- `formatDate` (a property): a function from an ISO day to the page's words for it, such as the market's short date
+  ("Sat 14 Nov"). The field, a range's two ends under the calendar and the range in the field (its ends joined by a
+  dash) use it. Without it the field writes the day, short month and year for the nearest `lang`, as in 0.10.0. The
+  calendar's names for screen readers stay Intl's full date.
+- Fixed: `presets` set by a framework before the element was defined hid the setter; the field now takes it, and
+  `formatDate`, when it connects.
+
+### Status pill
+
+- `.sheen-pill.sheen-info`: the accent at 14% under the accent's text colour, for a state that is neither good nor bad
+  news, such as a booking. `<sheen-menu-button variant="pill" tone="info">` and `<x-sheen::pill tone="info">` take it.
+
+### Tokens
+
+- `size.chart` (180), as `--sheen-size-chart`.
+
 ## 0.10.0
 
 The scope picker and the stat tile take the look of the app mockups, and the scope picker can search through the page

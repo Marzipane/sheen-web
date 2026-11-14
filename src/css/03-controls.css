@@ -70,6 +70,8 @@
 .sheen-pill.sheen-success{background:color-mix(in srgb,var(--sheen-success) 16%,transparent);color:color-mix(in srgb,var(--sheen-success) 80%,var(--sheen-text))}
 .sheen-pill.sheen-warning{background:color-mix(in srgb,var(--sheen-warning) 16%,transparent);color:color-mix(in srgb,var(--sheen-warning) 80%,var(--sheen-text))}
 .sheen-pill.sheen-danger{background:color-mix(in srgb,var(--sheen-danger) 16%,transparent);color:color-mix(in srgb,var(--sheen-danger) 80%,var(--sheen-text))}
+/* info (0.11.0): a state that is neither good nor bad news but more than plain, such as a booking, in the accent */
+.sheen-pill.sheen-info{background:color-mix(in srgb,var(--sheen-accent) 14%,transparent);color:var(--sheen-accent-text)}
 .sheen-steps{display:flex;gap:6px;list-style:none;margin:0;padding:0}
 .sheen-steps li{flex:1;padding-top:12px;border-top:3px solid var(--sheen-track);font-size:13px;color:var(--sheen-text-tertiary);font-weight:600}
 .sheen-steps li[aria-current],.sheen-steps li.sheen-done{border-color:var(--sheen-accent-text);color:var(--sheen-text)}
