@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>scope picker size fixture</title>
+<link rel="stylesheet" href="../../dist/sheen.css">
+<!-- Size fixture for the 0.10.0 scope picker and stat tile, laid out as the app mockups draw them: a card with a picker
+     in "all except" (two groups, one pick, the result over its hint) and a row of four stat tiles, the last two with a
+     note. ?theme=light|dark and ?lang=en|ar set the theme and the direction. ?search=page answers the search from a list
+     here after 400ms, as a page answers it from an API, so the loading line shows. -->
+<script>
+  var q = new URLSearchParams(location.search);
+  document.documentElement.setAttribute('data-theme', q.get('theme') === 'dark' ? 'dark' : 'light');
+  var ar = q.get('lang') === 'ar';
+  if (ar) { document.documentElement.lang = 'ar'; document.documentElement.dir = 'rtl'; }
+  var W = ar
+    ? { services: 'الخدمات', all: 'الكل', only: 'هذه فقط', except: 'الكل عدا', search: 'بحث', empty: 'لا نتائج', remove: 'إزالة @label', loading: 'جارٍ البحث…', error: 'تعذر البحث',
+        clean: 'التنظيف', home: 'تنظيف المنزل', deep: 'تنظيف عميق', move: 'الانتقال', spec: 'متخصص', sofa: 'الكنب والسجاد', pack: 'الباقات',
+        result: 'يطبق على 4 من 5 خدمات', hint: '1 مستثناة · تنضم العناصر الجديدة تلقائياً',
+        tiles: [['السيارات', '20'], ['العدد المستخدم الآن', '6 من 34'], ['تعبئة مستحقة غداً', '1', 'HC6'], ['تعبئة متأخرة', '1', 'HC9 · يوم واحد', 'sheen-danger']] }
+    : { services: 'Services', all: 'All', only: 'Only these', except: 'All except', search: 'Search', empty: 'Nothing found', remove: 'Remove @label', loading: 'Searching…', error: 'Couldn\'t search',
+        clean: 'Cleaning', home: 'Home cleaning', deep: 'Deep cleaning', move: 'Move-in / move-out', spec: 'Specialist', sofa: 'Sofa & carpet', pack: 'Packages',
+        result: 'Applies to 4 of 5 services', hint: '1 excluded · new items join by themselves',
+        tiles: [['Vans', '20'], ['Kits in use now', '6 of 34'], ['Refill due tomorrow', '1', 'HC6'], ['Refill overdue', '1', 'HC9 · 1 day', 'sheen-danger']] };
+</script>
+<style>
+  body { margin: 0; }
+  main { padding: var(--sheen-space-xxl); display: grid; gap: var(--sheen-space-l); max-inline-size: 1125px; }
+  .fixture-card { padding: 16px 18px; border-radius: 18px; background: var(--sheen-surface); box-shadow: 0 1px 2px rgba(16,20,30,.05), 0 4px 14px rgba(16,20,30,.05); }
+  .fixture-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+</style>
+</head>
+<body class="sheen sheen-solid">
+<main>
+  <div class="fixture-stats" id="stats"></div>
+  <div class="fixture-card"><sheen-scope-picker id="scope"></sheen-scope-picker></div>
+</main>
+<script src="../../dist/sheen-elements.js"></script>
+<script>
+  var p = document.getElementById('scope');
+  [['label', W.services], ['all-label', W.all], ['chosen-label', W.only], ['except-label', W.except], ['search-label', W.search], ['empty-label', W.empty],
+   ['remove-label', W.remove], ['loading-label', W.loading], ['error-label', W.error], ['result', W.result], ['hint', W.hint]].forEach(function (a) { p.setAttribute(a[0], a[1]); });
+  var groups = [
+    { id: 'cat:clean', label: W.clean, items: [{ id: 's:home', label: W.home }, { id: 's:deep', label: W.deep }, { id: 's:move', label: W.move }] },
+    { id: 'cat:spec', label: W.spec, items: [{ id: 's:sofa', label: W.sofa }, { id: 's:pack', label: W.pack }] }
+  ];
+  p.groups = groups;
+  p.value = { mode: 'all_except', include: [], exclude: ['s:sofa'] };
+  // ?state= puts the picker in one more state for a screenshot: only (Only these with a whole group and one item picked),
+  // locked (a group loaded in part and picked whole: its rows ticked and locked), answer (the page's answer to "sofa", a
+  // group still counting its total), loading (an answer still out) and error (an answer that failed).
+  var state = q.get('state');
+  if (state === 'only') p.value = { mode: 'only', include: ['cat:spec', 's:home'], exclude: [] };
+  if (state === 'locked') {
+    p.groups = [{ id: 'cat:clean', label: W.clean, total: 12, items: groups[0].items }, groups[1]];
+    p.value = { mode: 'only', include: ['cat:clean'], exclude: [] };
+  }
+  if (state === 'answer' || state === 'loading' || state === 'error') {
+    p.value = { mode: 'only', include: ['s:sofa'], exclude: [] };
+    p.addEventListener('sheen-scope-query', function (e) {
+      if (state === 'answer') e.detail.respond([{ id: 'cat:spec', label: W.spec, total: 2, items: [groups[1].items[0]] }]);
+      else if (state === 'loading') e.detail.respond(new Promise(function () {}));
+      else e.detail.respond(Promise.reject(new Error('offline')));
+    });
+    var box = p.querySelector('input[type=search]');
+    box.value = W.sofa.slice(0, 4);
+    box.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+  if (q.get('search') === 'page') p.addEventListener('sheen-scope-query', function (e) {
+    var text = e.detail.query.toLowerCase();
+    e.detail.respond(new Promise(function (done) {
+      setTimeout(function () {
+        done(groups.map(function (g) { return { id: g.id, label: g.label, total: g.items.length, items: g.items.filter(function (i) { return i.label.toLowerCase().indexOf(text) >= 0; }) }; }).filter(function (g) { return g.items.length; }));
+      }, 400);
+    }));
+  });
+  var stats = document.getElementById('stats');
+  W.tiles.forEach(function (t) {
+    var tile = document.createElement('div');
+    tile.className = 'sheen-stat';
+    tile.innerHTML = '<span class="sheen-stat-label"></span><b class="sheen-stat-value"></b>' + (t[2] ? '<small class="sheen-stat-note"></small>' : '');
+    tile.children[0].textContent = t[0];
+    tile.children[1].textContent = t[1];
+    if (t[2]) { tile.children[2].textContent = t[2]; if (t[3]) tile.children[2].classList.add(t[3]); }
+    stats.appendChild(tile);
+  });
+</script>
+</body>
+</html>
