@@ -11,7 +11,7 @@ var TINTS = ["blue","red","green","orange","purple","teal","violet","gray"];
 // - takes all of its words from attributes (already translated); it never renders text of its own;
 // - mirrors for dir="rtl" (positions use inset-inline-start, keys follow the reading direction);
 // - follows light/dark through the sheen tokens and stops motion under prefers-reduced-motion.
-var VERSION = '0.10.0';
+var VERSION = '0.11.0';
 
 function define(tag, cls) {
   if (!window.customElements.get(tag)) window.customElements.define(tag, cls);
@@ -56,6 +56,19 @@ function glyph(name, size, label) {
   if (label) { svg.setAttribute('role', 'img'); svg.setAttribute('aria-label', label); }
   else svg.setAttribute('aria-hidden', 'true');
   return svg;
+}
+
+// An SVG element with its attributes (0.11.0).
+function svgEl(tag, attrs) {
+  var e = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  for (var k in attrs) if (Object.prototype.hasOwnProperty.call(attrs, k)) e.setAttribute(k, String(attrs[k]));
+  return e;
+}
+
+// The nearest lang, the element's own or an ancestor's, when Intl knows it; else undefined, the browser's own.
+function nearestLang(el) {
+  var holder = el.closest('[lang]'), lang = holder ? holder.getAttribute('lang') : '';
+  try { new Intl.DateTimeFormat(lang || undefined); return lang || undefined; } catch (e) { return undefined; }
 }
 
 function isRtl(el) {
@@ -1960,11 +1973,11 @@ class SheenMenuButton extends HTMLElement {
     this.name(this.getAttribute('label') || '');
   }
   // The button's class from variant: the tonal button (or the 0.5.1 icon button with a glyph), the control, and for a
-  // picker in a table cell (0.8.0) the cell's words (text) or a status pill (pill) in its tone: tone="success", "warning"
-  // or "danger"; any other tone keeps the plain pill.
+  // picker in a table cell (0.8.0) the cell's words (text) or a status pill (pill) in its tone: tone="success", "warning",
+  // "danger" or "info" (0.11.0); any other tone keeps the plain pill.
   look() {
     var variant = this.getAttribute('variant'), tone = this.getAttribute('tone');
-    var pill = 'sheen-pill' + (tone === 'success' || tone === 'warning' || tone === 'danger' ? ' sheen-' + tone : '');
+    var pill = 'sheen-pill' + (['success', 'warning', 'danger', 'info'].indexOf(tone) >= 0 ? ' sheen-' + tone : '');
     this.button.className = variant === 'control' ? 'sheen-control' : variant === 'text' ? 'sheen-cell-button' : variant === 'pill' ? pill : this.hasAttribute('glyph') ? 'sheen-icon-button' : 'sheen-button';
     this.button.classList.toggle('sheen-compact-glyph', this.hasAttribute('compact'));
   }
@@ -2830,6 +2843,9 @@ if (typeof SheenSelect === 'function' && typeof selectFold === 'function') (func
 //   Monday) overrides Intl's narrow weekday names; today="yyyy-mm-dd" sets the day marked as today (a market's own time).
 //   variant="control" draws the find-row control (a calendar glyph, the value, a chevron); compact keeps only the glyph in a
 //   narrow list kit. A range takes presets = [{label, start, end}], shown beside the calendar.
+//   formatDate = (iso) => words (0.11.0) writes each date the field shows, in the field and a range's two ends, in the
+//   page's own format ("Sat 14 Nov"); a range joins its two ends with a dash. Without it the field writes the day, short
+//   month and year for the nearest lang ("Nov 14, 2026"), as before. The calendar's names for screen readers stay Intl's.
 //   In the grid: arrows move by day and week (mirrored in Arabic), PageUp and PageDown by month (with Shift by year), Home
 //   and End to the week's ends, Enter or Space picks, Esc closes (marked handled: one Esc closes one layer), Tab stays in
 //   the popup. A range's second pick before its first swaps them. A pick sets the native input(s) and fires input then
@@ -2867,6 +2883,13 @@ class SheenDateBase extends HTMLElement {
   connectedCallback() {
     if (this.trigger) return;
     var self = this;
+    // A property a framework set before this element was defined sits on the instance and hides the accessor: set it again.
+    ['presets', 'formatDate'].forEach(function (p) {
+      if (!Object.prototype.hasOwnProperty.call(self, p)) return;
+      var v = self[p];
+      delete self[p];
+      self[p] = v;
+    });
     if (!this.found()) {
       // A framework may connect the element before it appends the input(s): wrap them once they arrive.
       if (!this.waiting) {
@@ -2964,9 +2987,17 @@ class SheenDateBase extends HTMLElement {
   // The native values as they are now: [start] or [start, end].
   values() { return (this.inputs || []).map(function (i) { return isoDate(NATIVE_VALUE.get.call(i)); }); }
   word(name) { return this.getAttribute(name); }
-  locale() {
-    var holder = this.closest('[lang]'), lang = holder ? holder.getAttribute('lang') : '';
-    try { new Intl.DateTimeFormat(lang || undefined); return lang || undefined; } catch (e) { return undefined; }
+  locale() { return nearestLang(this); }
+  // The page's words for a date (0.11.0): a function from an ISO day to its words.
+  get formatDate() { return this._formatDate || null; }
+  set formatDate(fn) {
+    this._formatDate = typeof fn === 'function' ? fn : null;
+    if (this.trigger) this.refresh();
+  }
+  // A date's words: the page's formatDate, else the day, short month and year for the nearest lang.
+  dayWords() {
+    var own = this.formatDate, f = this.format({ day: 'numeric', month: 'short', year: 'numeric' });
+    return function (iso) { return own ? String(own(iso)) : f.format(new Date(isoTime(iso))); };
   }
   format(opts) { return new Intl.DateTimeFormat(this.locale(), Object.assign({ timeZone: 'UTC' }, opts)); }
   firstDay() {
@@ -3113,14 +3144,15 @@ class SheenDateBase extends HTMLElement {
     this.toggleAttribute('data-chosen', chosen);
   }
   fieldText(vals) {
-    var f = this.format({ day: 'numeric', month: 'short', year: 'numeric' }), s = vals[0], e = vals[1];
+    var f = this.format({ day: 'numeric', month: 'short', year: 'numeric' }), one = this.dayWords(), s = vals[0], e = vals[1];
     if (this.ends === 2) {
       var preset = this.matching(vals);
       if (preset) return preset.label;
-      if (s && e) return typeof f.formatRange === 'function' ? f.formatRange(new Date(isoTime(s)), new Date(isoTime(e))) : f.format(new Date(isoTime(s))) + ' – ' + f.format(new Date(isoTime(e)));
-      if (e) return f.format(new Date(isoTime(e)));
+      // Intl writes a range of its own dates ("Nov 14 – 20, 2026"); the page's words for each end are joined by a dash.
+      if (s && e) return !this.formatDate && typeof f.formatRange === 'function' ? f.formatRange(new Date(isoTime(s)), new Date(isoTime(e))) : one(s) + ' – ' + one(e);
+      if (e) return one(e);
     }
-    return s ? f.format(new Date(isoTime(s))) : null;
+    return s ? one(s) : null;
   }
   matching(vals) {
     if (!vals[0] || !vals[1]) return null;
@@ -3216,8 +3248,8 @@ class SheenDateBase extends HTMLElement {
       rows.forEach(function (row) { row.setAttribute('tabindex', row === stop ? '0' : '-1'); });
     }
     if (this.endBox) {
-      var f = this.format({ day: 'numeric', month: 'short', year: 'numeric' });
-      Array.prototype.forEach.call(this.endBox.querySelectorAll('b'), function (b, i) { b.textContent = p[i] ? f.format(new Date(isoTime(p[i]))) : ''; });
+      var one = this.dayWords();
+      Array.prototype.forEach.call(this.endBox.querySelectorAll('b'), function (b, i) { b.textContent = p[i] ? one(p[i]) : ''; });
     }
   }
   // Moves the grid's focus to a day (kept within min and max), turning the month when it lies in another.
@@ -3715,6 +3747,126 @@ if (typeof SheenSelect === 'function' && typeof SheenSelect.prototype.buildSearc
   }
   define('sheen-lookup', SheenLookup);
 })();
+
+// ---- 79-chart.js
+// <sheen-chart kind="line" label="Rating by week" unit="%" height="160" highlight="4" limit="90" limit-label="Limit 90%">
+//   (0.11.0) A small bar or line chart in SVG and CSS, as the app mockups draw a report card's chart: the value over each
+//   bar or point, the labels under them, an optional highlighted bar, an optional dashed limit line with its words.
+//   chart.points = [{label, value, text}]: value is a number from 0 up, or null for a gap (no bar, a break in the line);
+//   text, when given, is the value as the page writes it, else the value in the nearest lang's digits followed by unit.
+//   kind: "bar" (the default) or "line". highlight: the index of the bar that stands out, the others dimmed. limit: a
+//   value drawn as a dashed line, with limit-label as its words (else the limit's value and unit). height: the chart's
+//   height in px, else --sheen-chart-height, else the size token (180). label: the chart's name for screen readers.
+//   The shapes are SVG stretched to the width; every word is HTML on top, so no text stretches. Screen readers skip the
+//   drawing and read a table of the labels and values. In Arabic the chart runs from the right. Every word comes from
+//   the page; the element writes none of its own.
+var CHART_W = 600;        // the viewBox width; the drawing stretches to the element's width
+var CHART_BELOW = 18;     // the band under the axis that holds the labels
+var CHART_ABOVE = 12;     // the room over the highest value, for its words
+var CHART_HEADROOM = 1.15; // the scale runs 15% past the highest value (or the limit)
+
+class SheenChart extends HTMLElement {
+  static get observedAttributes() { return ['kind', 'label', 'unit', 'height', 'highlight', 'limit', 'limit-label', 'lang']; }
+  connectedCallback() {
+    // A property a framework set before this element was defined sits on the instance and hides the accessor: set it again.
+    if (Object.prototype.hasOwnProperty.call(this, 'points')) { var v = this.points; delete this.points; this.points = v; }
+    this.render();
+  }
+  attributeChangedCallback() { if (this.isConnected) this.render(); }
+  get points() { return this._points || []; }
+  set points(v) {
+    this._points = Array.isArray(v) ? v.filter(function (p) { return p && typeof p === 'object'; }) : [];
+    if (this.isConnected) this.render();
+  }
+  // The chart's height in px: the attribute, else the page's --sheen-chart-height, else the size token.
+  height() {
+    var n = parseFloat(this.getAttribute('height'));
+    if (n > 0) return n;
+    n = parseFloat(cssVar(this, '--sheen-chart-height', '')) || parseFloat(cssVar(this, '--sheen-size-chart', ''));
+    return n > 0 ? n : 180;
+  }
+  // A point's value as a number, or null for a gap; below 0 counts as 0.
+  amount(p) {
+    var v = p.value;
+    return typeof v === 'number' && isFinite(v) ? Math.max(0, v) : null;
+  }
+  words(v, text) {
+    if (text != null && text !== '') return String(text);
+    if (v == null) return '';
+    var nf;
+    try { nf = new Intl.NumberFormat(nearestLang(this)); } catch (e) { nf = new Intl.NumberFormat(); }
+    return nf.format(v) + (this.getAttribute('unit') || '');
+  }
+  render() {
+    var self = this, pts = this.points, n = pts.length, H = this.height(), bar = this.getAttribute('kind') !== 'line';
+    var values = pts.map(function (p) { return self.amount(p); });
+    var limit = parseFloat(this.getAttribute('limit'));
+    if (!(limit >= 0)) limit = null;
+    var hi = parseInt(this.getAttribute('highlight'), 10);
+    if (!(hi >= 0 && hi < n)) hi = null;
+    var top0 = Math.max.apply(null, values.concat([limit || 0]).map(function (v) { return v || 0; }));
+    var max = top0 > 0 ? top0 * CHART_HEADROOM : 1, base = H - CHART_BELOW, room = H - CHART_BELOW - CHART_ABOVE;
+    var y = function (v) { return base - (v / max) * room; };
+    var x = function (i) { return (i + 0.5) / n * 100; };
+    var px = function (v) { return v.toFixed(1) + 'px'; };
+    var at = function (cls, i, top, text) {
+      var s = h('span', { class: 'sheen-chart-at ' + cls, text: text });
+      s.style.setProperty('--sheen-chart-x', x(i).toFixed(2) + '%');
+      s.style.top = px(top);
+      return s;
+    };
+
+    this.classList.add('sheen-chart');
+    this.style.setProperty('--sheen-chart-height', H + 'px');
+    var svg = svgEl('svg', { viewBox: '0 0 ' + CHART_W + ' ' + H, preserveAspectRatio: 'none', focusable: 'false' });
+    svg.appendChild(svgEl('line', { class: 'sheen-chart-axis', x1: 0, x2: CHART_W, y1: base, y2: base }));
+    if (limit != null) svg.appendChild(svgEl('line', { class: 'sheen-chart-limit', x1: 0, x2: CHART_W, y1: y(limit), y2: y(limit) }));
+    var plot = h('div', { class: 'sheen-chart-plot', 'aria-hidden': 'true' }, svg);
+    if (bar) {
+      values.forEach(function (v, i) {
+        if (v == null) return;
+        var b = h('span', { class: 'sheen-chart-bar' + (hi != null && hi !== i ? ' sheen-chart-dim' : '') });
+        b.style.setProperty('--sheen-chart-x', ((i + 0.2) / n * 100).toFixed(2) + '%');
+        b.style.setProperty('--sheen-chart-w', (0.6 / n * 100).toFixed(2) + '%');
+        b.style.top = px(y(v));
+        b.style.height = px(base - y(v));
+        plot.appendChild(b);
+      });
+    } else {
+      // Each run of points without a gap is one line over its own shaded area.
+      var runs = [], run = [];
+      values.forEach(function (v, i) {
+        if (v == null) { if (run.length) runs.push(run); run = []; return; }
+        run.push([(i + 0.5) * CHART_W / n, y(v)]);
+      });
+      if (run.length) runs.push(run);
+      runs.forEach(function (r) {
+        var line = r.map(function (p) { return p[0] + ' ' + p[1]; }).join(' L ');
+        svg.appendChild(svgEl('path', { class: 'sheen-chart-area', d: 'M ' + r[0][0] + ' ' + base + ' L ' + line + ' L ' + r[r.length - 1][0] + ' ' + base + ' Z' }));
+        svg.appendChild(svgEl('path', { class: 'sheen-chart-line', d: 'M ' + line }));
+      });
+    }
+    var shown = pts.map(function (p, i) { return self.words(values[i], p.text); });
+    values.forEach(function (v, i) { if (v != null && shown[i]) plot.appendChild(at('sheen-chart-value', i, y(v) - 17, shown[i])); });
+    pts.forEach(function (p, i) { if (p.label != null && p.label !== '') plot.appendChild(at('sheen-chart-label', i, H - 15, String(p.label))); });
+    var limitWords = limit == null ? '' : this.getAttribute('limit-label') || this.words(limit);
+    if (limitWords) {
+      var lim = h('span', { class: 'sheen-chart-limit-label', text: limitWords });
+      lim.style.top = px(y(limit) - 16);
+      plot.appendChild(lim);
+    }
+
+    // What screen readers read: a table of the labels and values, the highlighted row current, then the limit.
+    var label = this.getAttribute('label');
+    var table = h('table', { class: 'sheen-visually-hidden' }, label ? h('caption', { text: label }) : null,
+      h('tbody', null, ...pts.map(function (p, i) {
+        return h('tr', { 'aria-current': hi === i ? 'true' : null }, h('th', { scope: 'row', text: p.label == null ? '' : String(p.label) }), h('td', { text: shown[i] }));
+      })));
+    if (limitWords) this.replaceChildren(plot, table, h('p', { class: 'sheen-visually-hidden', text: limitWords }));
+    else this.replaceChildren(plot, table);
+  }
+}
+define('sheen-chart', SheenChart);
 
 // ---- 99-api.js
 // window.sheenElements: the version, the glyphs and a toast shortcut.

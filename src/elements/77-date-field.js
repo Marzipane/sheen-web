@@ -15,6 +15,9 @@
 //   Monday) overrides Intl's narrow weekday names; today="yyyy-mm-dd" sets the day marked as today (a market's own time).
 //   variant="control" draws the find-row control (a calendar glyph, the value, a chevron); compact keeps only the glyph in a
 //   narrow list kit. A range takes presets = [{label, start, end}], shown beside the calendar.
+//   formatDate = (iso) => words (0.11.0) writes each date the field shows, in the field and a range's two ends, in the
+//   page's own format ("Sat 14 Nov"); a range joins its two ends with a dash. Without it the field writes the day, short
+//   month and year for the nearest lang ("Nov 14, 2026"), as before. The calendar's names for screen readers stay Intl's.
 //   In the grid: arrows move by day and week (mirrored in Arabic), PageUp and PageDown by month (with Shift by year), Home
 //   and End to the week's ends, Enter or Space picks, Esc closes (marked handled: one Esc closes one layer), Tab stays in
 //   the popup. A range's second pick before its first swaps them. A pick sets the native input(s) and fires input then
@@ -52,6 +55,13 @@ class SheenDateBase extends HTMLElement {
   connectedCallback() {
     if (this.trigger) return;
     var self = this;
+    // A property a framework set before this element was defined sits on the instance and hides the accessor: set it again.
+    ['presets', 'formatDate'].forEach(function (p) {
+      if (!Object.prototype.hasOwnProperty.call(self, p)) return;
+      var v = self[p];
+      delete self[p];
+      self[p] = v;
+    });
     if (!this.found()) {
       // A framework may connect the element before it appends the input(s): wrap them once they arrive.
       if (!this.waiting) {
@@ -149,9 +159,17 @@ class SheenDateBase extends HTMLElement {
   // The native values as they are now: [start] or [start, end].
   values() { return (this.inputs || []).map(function (i) { return isoDate(NATIVE_VALUE.get.call(i)); }); }
   word(name) { return this.getAttribute(name); }
-  locale() {
-    var holder = this.closest('[lang]'), lang = holder ? holder.getAttribute('lang') : '';
-    try { new Intl.DateTimeFormat(lang || undefined); return lang || undefined; } catch (e) { return undefined; }
+  locale() { return nearestLang(this); }
+  // The page's words for a date (0.11.0): a function from an ISO day to its words.
+  get formatDate() { return this._formatDate || null; }
+  set formatDate(fn) {
+    this._formatDate = typeof fn === 'function' ? fn : null;
+    if (this.trigger) this.refresh();
+  }
+  // A date's words: the page's formatDate, else the day, short month and year for the nearest lang.
+  dayWords() {
+    var own = this.formatDate, f = this.format({ day: 'numeric', month: 'short', year: 'numeric' });
+    return function (iso) { return own ? String(own(iso)) : f.format(new Date(isoTime(iso))); };
   }
   format(opts) { return new Intl.DateTimeFormat(this.locale(), Object.assign({ timeZone: 'UTC' }, opts)); }
   firstDay() {
@@ -298,14 +316,15 @@ class SheenDateBase extends HTMLElement {
     this.toggleAttribute('data-chosen', chosen);
   }
   fieldText(vals) {
-    var f = this.format({ day: 'numeric', month: 'short', year: 'numeric' }), s = vals[0], e = vals[1];
+    var f = this.format({ day: 'numeric', month: 'short', year: 'numeric' }), one = this.dayWords(), s = vals[0], e = vals[1];
     if (this.ends === 2) {
       var preset = this.matching(vals);
       if (preset) return preset.label;
-      if (s && e) return typeof f.formatRange === 'function' ? f.formatRange(new Date(isoTime(s)), new Date(isoTime(e))) : f.format(new Date(isoTime(s))) + ' – ' + f.format(new Date(isoTime(e)));
-      if (e) return f.format(new Date(isoTime(e)));
+      // Intl writes a range of its own dates ("Nov 14 – 20, 2026"); the page's words for each end are joined by a dash.
+      if (s && e) return !this.formatDate && typeof f.formatRange === 'function' ? f.formatRange(new Date(isoTime(s)), new Date(isoTime(e))) : one(s) + ' – ' + one(e);
+      if (e) return one(e);
     }
-    return s ? f.format(new Date(isoTime(s))) : null;
+    return s ? one(s) : null;
   }
   matching(vals) {
     if (!vals[0] || !vals[1]) return null;
@@ -401,8 +420,8 @@ class SheenDateBase extends HTMLElement {
       rows.forEach(function (row) { row.setAttribute('tabindex', row === stop ? '0' : '-1'); });
     }
     if (this.endBox) {
-      var f = this.format({ day: 'numeric', month: 'short', year: 'numeric' });
-      Array.prototype.forEach.call(this.endBox.querySelectorAll('b'), function (b, i) { b.textContent = p[i] ? f.format(new Date(isoTime(p[i]))) : ''; });
+      var one = this.dayWords();
+      Array.prototype.forEach.call(this.endBox.querySelectorAll('b'), function (b, i) { b.textContent = p[i] ? one(p[i]) : ''; });
     }
   }
   // Moves the grid's focus to a day (kept within min and max), turning the month when it lies in another.

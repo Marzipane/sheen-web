@@ -49,11 +49,11 @@ class SheenMenuButton extends HTMLElement {
     this.name(this.getAttribute('label') || '');
   }
   // The button's class from variant: the tonal button (or the 0.5.1 icon button with a glyph), the control, and for a
-  // picker in a table cell (0.8.0) the cell's words (text) or a status pill (pill) in its tone: tone="success", "warning"
-  // or "danger"; any other tone keeps the plain pill.
+  // picker in a table cell (0.8.0) the cell's words (text) or a status pill (pill) in its tone: tone="success", "warning",
+  // "danger" or "info" (0.11.0); any other tone keeps the plain pill.
   look() {
     var variant = this.getAttribute('variant'), tone = this.getAttribute('tone');
-    var pill = 'sheen-pill' + (tone === 'success' || tone === 'warning' || tone === 'danger' ? ' sheen-' + tone : '');
+    var pill = 'sheen-pill' + (['success', 'warning', 'danger', 'info'].indexOf(tone) >= 0 ? ' sheen-' + tone : '');
     this.button.className = variant === 'control' ? 'sheen-control' : variant === 'text' ? 'sheen-cell-button' : variant === 'pill' ? pill : this.hasAttribute('glyph') ? 'sheen-icon-button' : 'sheen-button';
     this.button.classList.toggle('sheen-compact-glyph', this.hasAttribute('compact'));
   }

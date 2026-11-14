@@ -15,7 +15,7 @@
 <div class="sheen-aurora" aria-hidden="true"></div>
 <main class="sheen-container" style="padding-block:32px">
   <header class="sheen-topbar sheen-glass">
-    <h1 class="sheen-topbar-title">sheen elements <span class="sheen-footnote sheen-secondary">0.10.0</span></h1>
+    <h1 class="sheen-topbar-title">sheen elements <span class="sheen-footnote sheen-secondary">0.11.0</span></h1>
     <button class="sheen-button sheen-small" id="theme" type="button">Light / dark</button>
     <button class="sheen-button sheen-small" id="dir" type="button">LTR / RTL</button>
     <button class="sheen-search-trigger" id="openCmd" type="button"><sheen-glyph name="search"></sheen-glyph><span>Command palette</span><kbd class="sheen-kbd">⌘K</kbd></button>
@@ -123,6 +123,10 @@
       <div class="sheen-panel sheen-glass sheen-glow"><div class="sheen-panel-head"><h3>Glass panel</h3><span class="sheen-badge sheen-ok">Ready</span></div><div class="sheen-progress" style="--sheen-progress:64%"><span></span></div></div>
       <div class="sheen-panel"><div class="sheen-empty"><span class="sheen-empty-glyph"><sheen-glyph name="film" size="30"></sheen-glyph></span><p class="sheen-empty-title">No videos yet</p><p>Drop one in to start.</p></div></div>
     </div>
+    <div class="sheen-grid" style="--sheen-cols:2;margin-block-start:16px">
+      <div class="sheen-panel"><h3>Score by week</h3><sheen-chart id="chartLine" kind="line" label="Score by week" height="160"></sheen-chart></div>
+      <div class="sheen-panel"><h3>Load by team <span class="sheen-pill sheen-info">Booked</span></h3><sheen-chart id="chartBars" label="Load by team" height="160" highlight="0" unit="%" limit="90" limit-label="Limit 90%"></sheen-chart></div>
+    </div>
     <div class="sheen-chat" style="margin-block-start:16px;max-inline-size:520px"><div class="sheen-msg sheen-msg-user">Make 3 shorts with yellow captions</div><div class="sheen-msg sheen-msg-ai">Here is the plan: find 3 moments, make them vertical, add bold yellow captions.</div></div>
     <div class="sheen-row" style="margin-block-start:16px"><div class="sheen-skeleton sheen-skeleton-circle"></div><div style="flex:1"><div class="sheen-skeleton sheen-skeleton-line"></div><div class="sheen-skeleton sheen-skeleton-line sheen-short"></div></div></div>
     <p class="sheen-row" style="margin-block-start:16px"><button class="sheen-button sheen-glass-prominent" id="toastBtn" type="button">Show a toast</button><button class="sheen-button" id="tourBtn" type="button">Start the tour</button><button class="sheen-button" id="dialogBtn" type="button">Open a dialog</button></p>
@@ -139,6 +143,8 @@
 <script defer>
 addEventListener('DOMContentLoaded', () => {
   const $ = (s) => document.querySelector(s), root = document.documentElement;
+  $('#chartLine').points = [4.7, 4.8, 4.9, 4.8, 4.9, 5, 4.9, 4.9].map((value, i) => ({ label: 'W' + (i + 1), value }));
+  $('#chartBars').points = [91, 86, 84, 79, 74, 70, 62].map((value, i) => ({ label: 'T' + (i + 1), value }));
   $('#theme').onclick = () => { root.dataset.theme = root.dataset.theme === 'light' ? 'dark' : 'light'; };
   $('#dir').onclick = () => { root.dir = root.dir === 'rtl' ? 'ltr' : 'rtl'; $('#tl').render(); $('#graph').render(); $('#wave').draw(); };
   $('#openCmd').onclick = () => $('#cmd').open();

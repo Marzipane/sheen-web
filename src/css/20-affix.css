@@ -15,7 +15,7 @@
 /* 0.8.0 cell pickers */
 /* a menu button drawn as the value it sets, for a picker in a table cell. variant="text" is the cell's words (the kit's
    cell button, underlined on hover and while its menu is open); variant="pill" is a status pill in its tone (tone=
-   "success", "warning" or "danger"), a little deeper on hover and while open. Neither has a chevron or a frame: the
+   "success", "warning", "danger" or, from 0.11.0, "info"), a little deeper on hover and while open. Neither has a chevron or a frame: the
    trigger is as wide as its words. In a small table, or with .sheen-small, the pill is the table's 22px with 12px words.
    The menu, its keys and focus are the menu button's own; the ring shows after Tab only, like every button's. */
 sheen-menu-button[variant="text"]>.sheen-cell-button[aria-expanded="true"]{text-decoration:underline}

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>chart size fixture</title>
+<link rel="stylesheet" href="../../dist/sheen.css">
+<!-- Size fixture for the 0.11.0 chart, the date field's formatDate and the info pill, with the app mockups' sample data:
+     a line of eight weekly ratings (160px), bars by van with the first highlighted and a 90% limit (220px), and three
+     plain bars (160px), each in a card; then a status pill in each tone and a date field in a short date. ?theme=light|dark
+     and ?lang=en|ar set the theme and the direction; ?w=<px> sets the charts' width, to lay them over a mockup's. -->
+<script>
+  var q = new URLSearchParams(location.search);
+  document.documentElement.setAttribute('data-theme', q.get('theme') === 'dark' ? 'dark' : 'light');
+  var ar = q.get('lang') === 'ar';
+  if (ar) { document.documentElement.lang = 'ar'; document.documentElement.dir = 'rtl'; }
+  var W = ar
+    ? { rating: 'التقييم أسبوعيًا', van: 'حسب الشاحنة', limit: 'الحد 90%', reports: 'البلاغات شهريًا', months: ['أغسطس', 'سبتمبر', 'أكتوبر'],
+        pills: ['محجوز', 'مكتمل', 'متأخر', 'ملغى', 'مسودة'], day: ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'], mon: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'], last: 'آخر يوم عمل' }
+    : { rating: 'Rating by week', van: 'By van', limit: 'Limit 90%', reports: 'Reports by month', months: ['Aug', 'Sep', 'Oct'],
+        pills: ['Booked', 'Passed', 'Late', 'Cancelled', 'Draft'], day: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], mon: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], last: 'Last working day' };
+</script>
+<style>
+  body { margin: 0; }
+  main { padding: var(--sheen-space-xxl); display: grid; gap: var(--sheen-space-l); }
+  .fixture-card { padding: 16px 18px; border-radius: 18px; background: var(--sheen-surface); box-shadow: 0 1px 2px rgba(16,20,30,.05), 0 4px 14px rgba(16,20,30,.05); }
+  .fixture-card h3 { margin: 0 0 12px; font-size: 15px; }
+  .fixture-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+</style>
+</head>
+<body class="sheen sheen-solid">
+<main>
+  <div class="fixture-card"><h3 id="t1"></h3><sheen-chart id="ratings" kind="line" height="160"></sheen-chart></div>
+  <div class="fixture-card"><h3 id="t2"></h3><sheen-chart id="vans" height="220" highlight="0" unit="%" limit="90"></sheen-chart></div>
+  <div class="fixture-card"><h3 id="t3"></h3><sheen-chart id="reports" height="160"></sheen-chart></div>
+  <div class="fixture-card fixture-row" id="pills"></div>
+  <div class="fixture-card"><label class="sheen-form-field sheen-small"><span id="t4"></span>
+    <sheen-date-field id="date" today="2026-11-14"><input type="date" value="2026-11-14"></sheen-date-field></label></div>
+</main>
+<script src="../../dist/sheen-elements.js"></script>
+<script>
+  var w = q.get('w');
+  if (w) document.querySelectorAll('sheen-chart').forEach(function (c) { c.style.inlineSize = w + 'px'; });
+  document.getElementById('t1').textContent = W.rating;
+  document.getElementById('t2').textContent = W.van;
+  document.getElementById('t3').textContent = W.reports;
+  var r = document.getElementById('ratings');
+  r.setAttribute('label', W.rating);
+  r.points = [4.7, 4.8, 4.9, 4.8, 4.9, 5, 4.9, 4.9].map(function (v, i) { return { label: 'W' + (i + 1), value: v }; });
+  var v = document.getElementById('vans');
+  v.setAttribute('label', W.van);
+  v.setAttribute('limit-label', W.limit);
+  v.points = [91, 86, 84, 79, 74, 70, 62].map(function (x, i) { return { label: ['HC6', 'HC2', 'HC1', 'HC4', 'HC9', 'HC3', 'EX3'][i], value: x }; });
+  var rp = document.getElementById('reports');
+  rp.setAttribute('label', W.reports);
+  rp.points = [2, 2, 3].map(function (x, i) { return { label: W.months[i], value: x }; });
+  ['info', 'success', 'warning', 'danger', ''].forEach(function (tone, i) {
+    var p = document.createElement('span');
+    p.className = 'sheen-pill' + (tone ? ' sheen-' + tone : '');
+    p.textContent = W.pills[i];
+    document.getElementById('pills').appendChild(p);
+  });
+  document.getElementById('t4').textContent = W.last;
+  document.getElementById('date').formatDate = function (iso) {
+    var d = new Date(iso + 'T00:00:00Z');
+    return W.day[d.getUTCDay()] + ' ' + d.getUTCDate() + ' ' + W.mon[d.getUTCMonth()];
+  };
+</script>
+</body>
+</html>

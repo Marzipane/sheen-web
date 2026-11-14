@@ -3,7 +3,7 @@
 // - takes all of its words from attributes (already translated); it never renders text of its own;
 // - mirrors for dir="rtl" (positions use inset-inline-start, keys follow the reading direction);
 // - follows light/dark through the sheen tokens and stops motion under prefers-reduced-motion.
-var VERSION = '0.10.0';
+var VERSION = '0.11.0';
 
 function define(tag, cls) {
   if (!window.customElements.get(tag)) window.customElements.define(tag, cls);
@@ -48,6 +48,19 @@ function glyph(name, size, label) {
   if (label) { svg.setAttribute('role', 'img'); svg.setAttribute('aria-label', label); }
   else svg.setAttribute('aria-hidden', 'true');
   return svg;
+}
+
+// An SVG element with its attributes (0.11.0).
+function svgEl(tag, attrs) {
+  var e = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  for (var k in attrs) if (Object.prototype.hasOwnProperty.call(attrs, k)) e.setAttribute(k, String(attrs[k]));
+  return e;
+}
+
+// The nearest lang, the element's own or an ancestor's, when Intl knows it; else undefined, the browser's own.
+function nearestLang(el) {
+  var holder = el.closest('[lang]'), lang = holder ? holder.getAttribute('lang') : '';
+  try { new Intl.DateTimeFormat(lang || undefined); return lang || undefined; } catch (e) { return undefined; }
 }
 
 function isRtl(el) {
