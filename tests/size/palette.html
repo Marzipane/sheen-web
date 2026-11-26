@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>command palette fixture</title>
+<link rel="stylesheet" href="../../dist/sheen.css">
+<!-- Fixture for the 0.11.1 command palette, which lists every item while its box is empty: the small app palette in a
+     solid app, opened over ?n=<rows> items (200 by default) in three groups, a few actions, then the pages, then the
+     settings, each row with a glyph. ?theme=light|dark and ?lang=en|ar set the theme and the direction. It writes the
+     time to give the items, to open, and to the second frame after open into window.paletteTiming and the page's
+     <output>, and the time one typed letter takes to filter, so a browser run can read them. -->
+<script>
+  var q = new URLSearchParams(location.search);
+  document.documentElement.setAttribute('data-theme', q.get('theme') === 'dark' ? 'dark' : 'light');
+  var ar = q.get('lang') === 'ar';
+  if (ar) { document.documentElement.lang = 'ar'; document.documentElement.dir = 'rtl'; }
+  var W = ar
+    ? { label: 'قائمة الأوامر', placeholder: 'اكتب أمرًا أو ابحث', empty: 'لا نتائج', groups: ['إجراءات', 'الصفحات', 'الإعدادات'], row: ['إجراء', 'صفحة', 'إعداد'] }
+    : { label: 'Command menu', placeholder: 'Type a command or search', empty: 'Nothing found', groups: ['Actions', 'Pages', 'Settings'], row: ['Action', 'Page', 'Setting'] };
+</script>
+</head>
+<body class="sheen sheen-solid">
+<sheen-command-palette class="sheen-small"></sheen-command-palette>
+<output id="timing"></output>
+<script src="../../dist/sheen-elements.js"></script>
+<script>
+  var n = Math.max(20, Number(q.get('n')) || 200);
+  var glyphs = ['calendar', 'clock', 'document', 'filter', 'globe', 'grid', 'info', 'key', 'layers', 'link', 'location', 'mail'];
+  var sizes = [6, n - 16, 10];
+  var items = [];
+  sizes.forEach(function (size, g) {
+    for (var i = 1; i <= size; i++) {
+      items.push({ id: g + '-' + i, group: W.groups[g], label: W.row[g] + ' ' + i, glyph: glyphs[(items.length) % glyphs.length] });
+    }
+  });
+  var p = document.querySelector('sheen-command-palette');
+  p.setAttribute('label', W.label);
+  p.setAttribute('placeholder', W.placeholder);
+  p.setAttribute('empty', W.empty);
+  var t0 = performance.now();
+  p.items = items;
+  var t1 = performance.now();
+  p.open();
+  var t2 = performance.now();
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () {
+      var t3 = performance.now();
+      var timing = { rows: p.querySelectorAll('[role="option"]').length, itemsMs: t1 - t0, openMs: t2 - t1, paintedMs: t3 - t0 };
+      var t4 = performance.now();
+      p.value = W.row[1].charAt(0);
+      timing.typedRows = p.querySelectorAll('[role="option"]').length;
+      timing.typeMs = performance.now() - t4;
+      p.value = '';
+      window.paletteTiming = timing;
+      document.getElementById('timing').textContent = JSON.stringify(timing);
+    });
+  });
+</script>
+</body>
+</html>

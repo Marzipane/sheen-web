@@ -250,8 +250,4 @@ test('status pill: an info tone in the accent, as the mockups draw a booking; th
   assert.match(read('resources/views/components/pill.blade.php'), /\| info/);
 });
 
-test('0.11.0: the version', () => {
-  assert.equal(JSON.parse(read('package.json')).version, '0.11.0');
-  const w = page('');
-  assert.equal(w.sheenElements.version, '0.11.0');
-});
+// The version check moved to palette-0.11.1.test.mjs with 0.11.1.

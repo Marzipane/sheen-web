@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.11.1
+
+The command palette lists every item while its box is empty. From 0.3.0 to 0.11.0 it drew the first 60 rows, typed or
+not, so an app with more items lost its last groups until the person typed. Every attribute, property and event of
+0.11.0 works as before.
+
+### `<sheen-command-palette>`
+
+- The empty box lists every item, and typed words list every match. The source gave no reason for the cap of 60, so
+  0.11.1 drops it and adds no attribute for one: an app that lists its pages needs to see all of them. In Chromium the
+  small palette over 200 items opens in 6 ms and paints its second frame 28 ms after it gets the items; a typed letter
+  that matches 184 of them filters in 6 ms (`tests/size/palette.html`, `?n=200`).
+- PageDown and PageUp move the active row 10 rows, as the select does, and stop at the first and the last row. ↑ and ↓
+  still wrap. Ctrl+Home and Ctrl+End still reach the ends, since Home and End move the caret in the box.
+- A group's first row brings the group's head into view with it: Ctrl+Home, or an arrow onto a group's first row, used
+  to leave the head above the list's top edge.
+- The row under the pointer turns active without scrolling the list.
+- The notes and the README name `hideUntilTyped`, an item that shows only once something is typed.
+
 ## 0.11.0
 
 A chart element, the date field's own display format and an info tone for the status pill. Additive: every element,
