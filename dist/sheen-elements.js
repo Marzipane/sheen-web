@@ -11,7 +11,7 @@ var TINTS = ["blue","red","green","orange","purple","teal","violet","gray"];
 // - takes all of its words from attributes (already translated); it never renders text of its own;
 // - mirrors for dir="rtl" (positions use inset-inline-start, keys follow the reading direction);
 // - follows light/dark through the sheen tokens and stops motion under prefers-reduced-motion.
-var VERSION = '0.11.0';
+var VERSION = '0.11.1';
 
 function define(tag, cls) {
   if (!window.customElements.get(tag)) window.customElements.define(tag, cls);
@@ -421,8 +421,11 @@ define('sheen-toaster', SheenToaster);
 // <sheen-command-palette label="Command bar" placeholder="Type a command or search…" hotkey
 //                        empty="Nothing found" submit-label="Run “@q”">
 //   A ⌘K palette in a modal <dialog>: one text box over a grouped list. The list is a listbox the box controls
-//   (aria-activedescendant), so ↑ ↓ Home End move, Enter picks, Esc closes; typing filters on label, hint and keywords.
-//   palette.items = [{id, group, label, hint, keywords, glyph, disabled, reason}] (reason is shown when disabled).
+//   (aria-activedescendant), so ↑ ↓ move (and wrap), Ctrl+Home and Ctrl+End reach the ends, PageDown and PageUp move 10
+//   rows, Enter picks, Esc closes. The empty box lists every item; typing filters on label, hint and keywords and lists
+//   every match (0.11.1; up to 0.11.0 it drew the first 60).
+//   palette.items = [{id, group, label, hint, keywords, glyph, disabled, reason, hideUntilTyped}] (reason is shown when
+//   disabled; an item with hideUntilTyped shows only once something is typed).
 //   palette.open(text?) / palette.close() / palette.value.
 //   With submit-label, a first row runs what was typed as free text ("@q" is the text) and fires "sheen-submit"
 //   {text}; picking an item fires "sheen-select" {item, text}. With hotkey, ⌘K / Ctrl+K opens it anywhere.
@@ -494,7 +497,7 @@ class SheenCommandPalette extends HTMLElement {
   rows() {
     var rows = [], q = this.value.trim();
     if (q && this.getAttribute('submit-label')) rows.push({ free: true, label: fill(this.getAttribute('submit-label'), { q: q }), glyph: 'sparkle' });
-    return rows.concat(this.matches().slice(0, 60));
+    return rows.concat(this.matches());
   }
   render() {
     var self = this, rows = this.rows(), group = null;
@@ -514,7 +517,8 @@ class SheenCommandPalette extends HTMLElement {
           r.disabled && r.reason ? h('small', { class: 'sheen-tertiary', text: r.reason })
             : r.hint ? h('small', { class: 'sheen-secondary', text: r.hint }) : null),
         r.shortcut ? h('kbd', { class: 'sheen-kbd', text: r.shortcut }) : null);
-      row.addEventListener('pointermove', function () { if (self.active !== i) { self.active = i; self.mark(); } });
+      // The row under the pointer is in view already, so hovering it never scrolls the list.
+      row.addEventListener('pointermove', function () { if (self.active !== i) { self.active = i; self.highlight(); } });
       row.addEventListener('click', function () { self.active = i; self.pick(); });
       nodes.push(row);
     });
@@ -522,12 +526,23 @@ class SheenCommandPalette extends HTMLElement {
     this.list.replaceChildren.apply(this.list, nodes);
     this.mark();
   }
-  mark() {
+  // The active row is the selected option and the box's active descendant.
+  highlight() {
     var opts = this.list.querySelectorAll('[role="option"]'), self = this;
     opts.forEach(function (o, i) { o.setAttribute('aria-selected', i === self.active ? 'true' : 'false'); });
     var cur = opts[this.active];
-    if (cur) { this.input.setAttribute('aria-activedescendant', cur.id); if (cur.scrollIntoView) cur.scrollIntoView({ block: 'nearest' }); }
+    if (cur) this.input.setAttribute('aria-activedescendant', cur.id);
     else this.input.removeAttribute('aria-activedescendant');
+    return cur;
+  }
+  // highlight(), then scroll the active row into view; a group's first row brings the group's head with it (0.11.1), so
+  // Ctrl+Home or an arrow into a group doesn't leave the head above the list's top edge.
+  mark() {
+    var cur = this.highlight();
+    if (!cur || !cur.scrollIntoView) return;
+    var head = cur.previousElementSibling;
+    if (head && head.classList.contains('sheen-cmd-group')) head.scrollIntoView({ block: 'nearest' });
+    cur.scrollIntoView({ block: 'nearest' });
   }
   onKey(e) {
     var n = (this._rows || []).length;
@@ -535,6 +550,12 @@ class SheenCommandPalette extends HTMLElement {
     else if (e.key === 'ArrowUp') { e.preventDefault(); this.active = n ? (this.active - 1 + n) % n : 0; this.mark(); }
     else if (e.key === 'Home' && e.ctrlKey) { e.preventDefault(); this.active = 0; this.mark(); }
     else if (e.key === 'End' && e.ctrlKey) { e.preventDefault(); this.active = Math.max(0, n - 1); this.mark(); }
+    // 10 rows, as the select moves, stopping at the first and the last row (0.11.1).
+    else if (e.key === 'PageDown' || e.key === 'PageUp') {
+      e.preventDefault();
+      this.active = clamp(this.active + (e.key === 'PageDown' ? 10 : -10), 0, Math.max(0, n - 1));
+      this.mark();
+    }
     else if (e.key === 'Enter') { e.preventDefault(); this.pick(); }
   }
   pick() {
